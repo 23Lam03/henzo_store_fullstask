@@ -148,6 +148,14 @@ Còn 2 biến này điền theo domain Render:
 | `CORS_ORIGINS` | `https://henzo-store-web.onrender.com` |
 | `VITE_API_URL` | `https://henzo-store-api.onrender.com/api` |
 
+> 💡 **Từ phiên bản mới nhất, `CORS_ORIGINS` không bắt buộc phải set.**
+> Backend tự đọc `RENDER_EXTERNAL_URL` của chính nó. Tuy nhiên nên set
+> thủ công vì domain **frontend** là domain của service khác — backend
+> không tự biết.
+>
+> `VITE_API_URL` **vẫn bắt buộc** — biến này được inline lúc build
+> frontend, không có env nào khác thay thế được.
+
 > 🔒 **Vì sao tài liệu này không ghi sẵn giá trị thật?**
 > `MONGODB_URI` chứa mật khẩu database. Nếu nó nằm trong file markdown
 > được commit lên GitHub thì bất kỳ ai đọc repo cũng thấy. Hãy luôn copy
@@ -425,6 +433,47 @@ HTTP 200, 133747 bytes
 ---
 
 ## 🔧 Xử lý sự cố
+
+### `UPLOAD_STORE: Invalid option: expected one of "mongo"|"disk"`
+
+**Triệu chứng:** server exit ngay với status 1, deploy thất bại.
+
+```
+[CONFIG] Cấu hình môi trường không hợp lệ:
+  - UPLOAD_STORE: Invalid option: expected one of "mongo"|"disk"
+```
+
+**Nguyên nhân:** service được tạo **thủ công** (không qua Blueprint) nên
+`NODE_ENV` chưa được set. Code không nhận ra đang ở production và fallback
+sang đọc file `.env.example` — đây là **file template** có dòng
+`UPLOAD_STORE=` để trống → giá trị rỗng fail validate enum.
+
+**Cách sửa nhanh nhất — set biến môi trường trong Render:**
+
+Vào **henzo-store-api** → **Environment** → thêm:
+
+```
+NODE_ENV = production
+UPLOAD_STORE = mongo
+```
+
+Rồi **Save and deploy**.
+
+**Cách sửa triệt để hơn — dùng Blueprint:**
+
+1. Xoá service hiện tại
+2. Tạo lại qua **New → Blueprint** → chọn repo → Render tự set đủ
+   `NODE_ENV=production`, `UPLOAD_STORE=mongo`, `COOKIE_SECURE=true`,
+   `COOKIE_SAME_SITE=None`
+
+> ✅ **Đã được sửa trong code** (commit `70cb047`): backend giờ tự nhận ra
+> môi trường Render qua biến `RENDER=true` mà Render luôn set. Deploy lại
+> từ commit mới là dùng được, không cần set `NODE_ENV`.
+>
+> Các giá trị rỗng trong file `.env` cũng đã được bỏ qua tự động nên
+> không còn gây lỗi validate.
+
+---
 
 ### API trả `{"database":"error"}`
 
