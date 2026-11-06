@@ -1,9 +1,3 @@
-/**
- * THỬ CATEGORY THEO TÊN MODEL CHÍNH XÁC trên Commons.
- *
- * Phát hiện: Category:AMD Ryzen 9 7950X3D tồn tại -> thử với tên model
- * gốc (giữ dấu, viết tắc thường dùng trong tên category).
- */
 import { writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
@@ -42,7 +36,6 @@ async function catFiles(cat: string): Promise<string[]> {
   return out;
 }
 
-/** Kiểm tra category tồn tại (kể cả khi rỗng). */
 async function catExists(cat: string): Promise<boolean> {
   const d = await getJson(
     `https://commons.wikimedia.org/w/api.php?action=query&format=json` +
@@ -52,16 +45,15 @@ async function catExists(cat: string): Promise<boolean> {
   return !!p && !('missing' in p);
 }
 
-/** Sinh biến thể tên category từ tên model. */
 function variants(model: string): string[] {
   const v = new Set<string>();
   const base = model.trim();
   v.add(base);
-  // Bỏ các hậu tố mô tả
+
   v.add(base.replace(/\s+(Deep|Esports?)$/i, ''));
   v.add(base.replace(/\s+\d+(\.\d+)?in.*$/i, ''));
   v.add(base.replace(/\s+.*$/, ''));
-  // Không dấu
+
   for (const s of [...v]) {
     v.add(
       s.normalize('NFD')

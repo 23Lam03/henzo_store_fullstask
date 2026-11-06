@@ -1,23 +1,3 @@
-/**
- * ĐỒNG BỘ THƯƠNG HIỆU & BỘ ĐẾM SẢN PHẨM.
- *
- * Vấn đề phát hiện khi audit mở rộng:
- *  1. 44 sản phẩm có `brand` KHÔNG tồn tại trong collection `brands`
- *     (Keychron, Sony, Intel, AMD, NVIDIA, Bose, Elgato, G.Skill,
- *      Western Digital, Crucial, Seagate, Cooler Master, DeepCool,
- *      Belkin, Anker) -> lọc theo thương hiệu trên UI không ra kết quả.
- *  2. 1 sản phẩm ghi `Asus` (không đúng casing) còn 45 sản phẩm ghi `ASUS`
- *     -> tách thành 2 thương hiệu, filter `brand=ASUS` bỏ sót 1 sản phẩm.
- *  3. `productCount` của categories/brands/stores lệch với số sản phẩm
- *     thật -> badge "N sản phẩm" hiển thị sai.
- *
- * Script này:
- *   1. Chuẩn hoá casing thương hiệu (Asus -> ASUS, intel -> Intel...).
- *   2. Tạo brand còn thiếu kèm logo/màu thật từ `brand-logos.ts`.
- *   3. Đồng bộ `productCount` cho categories / brands / stores.
- *
- * Chạy: npx tsx scripts/sync-brands-and-counts.ts
- */
 import { connectDB, disconnectDB } from '../src/server/db';
 import { ProductModel } from '../src/server/models/Product';
 import { BrandModel } from '../src/server/models/Brand';
@@ -25,7 +5,6 @@ import { CategoryModel } from '../src/server/models/Category';
 import { StoreModel } from '../src/server/models/Store';
 import { brandLogo, brandColor } from '../src/server/data/brand-logos';
 
-/** Chuẩn hoá casing thương hiệu — tránh trùng "Asus"/"ASUS". */
 const BRAND_CANON: Record<string, string> = {
   asus: 'ASUS',
   intel: 'Intel',
@@ -79,13 +58,12 @@ const BRAND_CANON: Record<string, string> = {
   'philips': 'Philips',
 };
 
-/** Chuẩn hoá tên brand về dạng chuẩn của collection. */
 function canonBrand(raw: string): string {
   const t = raw.trim();
   if (!t) return t;
   const lower = t.toLowerCase();
   if (BRAND_CANON[lower]) return BRAND_CANON[lower];
-  // Giữ nguyên nếu đã khớp 1 brand đang có trong DB (so sánh không phân biệt hoa thường).
+
   return t;
 }
 
@@ -106,7 +84,6 @@ async function main() {
     'name brand categoryId categoryName storeId',
   ).lean();
 
-  // ─── 1. Chuẩn hoá casing brand ─────────────────────────────────────────
   let renamed = 0;
   for (const p of products) {
     const canon = canonBrand(String(p.brand ?? ''));
@@ -117,7 +94,6 @@ async function main() {
   }
   console.log(`[sync] Chuẩn hoá casing brand: ${renamed} sản phẩm`);
 
-  // ─── 2. Tạo brand còn thiếu ────────────────────────────────────────────
   const existingBrands = await BrandModel.find({}).lean();
   const existingNames = new Set(existingBrands.map((b) => String(b.name)));
   const usedSlugs = new Set(existingBrands.map((b) => String(b.slug)));
@@ -150,7 +126,6 @@ async function main() {
   }
   console.log(`[sync] Tạo brand mới: ${created}`);
 
-  // ─── 3. Đồng bộ productCount ──────────────────────────────────────────
   const finalProducts = await ProductModel.find({}).select(
     'brand categoryId storeId',
   ).lean();
@@ -197,7 +172,6 @@ async function main() {
 
   console.log(`[sync] Đồng bộ productCount — category: ${catFixed}, brand: ${brandFixed}, store: ${storeFixed}`);
 
-  // ─── 4. Báo cáo ───────────────────────────────────────────────────────
   const brands = await BrandModel.find({}).lean();
   const brandNames = new Set(brands.map((b) => String(b.name)));
   const orphans = [...productBrands.keys()].filter((b) => !brandNames.has(b));

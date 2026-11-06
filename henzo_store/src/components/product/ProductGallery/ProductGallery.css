@@ -1,9 +1,3 @@
-/* ═══════════════════════════════════════════════════════════════════════════
-   THƯ VIỆN ẢNH SẢN PHẨM
-   - Ảnh chính bo góc vừa, viền mảnh, nền trung tính
-   - Thumbnail dạng thanh ngang, viền active dạng gạch dưới mảnh
-═══════════════════════════════════════════════════════════════════════════ */
-
 .gallery {
   display: flex;
   flex-direction: column;
@@ -23,8 +17,6 @@
 .gallery__main--zoomed {
   cursor: zoom-out;
 }
-
-/* Ảnh sản phẩm: contain để không cắt khung sản phẩm */
 .gallery__main-img {
   width: 100%;
   height: 100%;

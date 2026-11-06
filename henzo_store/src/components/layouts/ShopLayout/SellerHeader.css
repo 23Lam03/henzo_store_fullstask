@@ -1,4 +1,3 @@
-/* Seller Header - sticky top bar */
 .seller-header {
   position: sticky;
   top: 0;
@@ -150,8 +149,6 @@
 .seller-header__profile-wrapper {
   position: relative;
 }
-
-/* Notification Dropdown */
 .seller-header__notif-dropdown {
   position: absolute;
   top: calc(100% + 8px);
@@ -265,8 +262,6 @@
   transition: background var(--transition-fast);
 }
 .seller-header__notif-footer:hover { background: var(--color-primary-soft); }
-
-/* Profile Dropdown */
 .seller-header__profile-btn {
   display: flex;
   align-items: center;
@@ -345,8 +340,6 @@
   background: var(--color-danger-soft);
   color: var(--color-danger);
 }
-
-/* Responsive */
 @media (max-width: 768px) {
   .seller-header {
     padding: 0 16px;

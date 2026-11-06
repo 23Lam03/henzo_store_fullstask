@@ -1,10 +1,3 @@
-/**
- * Lấy ảnh sản phẩm thật từ Commons CATEGORY theo hãng/loại.
- *
- * Ví dụ: Category:HyperX Cloud Alpha, Category:Corsair headsets,
- *        Category:AOC monitors, Category:Zowie monitors...
- * Mỗi file trả về tên + URL thumb.
- */
 import { writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
@@ -27,7 +20,6 @@ async function getJson(url: string): Promise<any> {
   return null;
 }
 
-/** File trong category (không recurse). */
 async function catFiles(cat: string): Promise<string[]> {
   const out: string[] = [];
   let cont: string | undefined;
@@ -48,7 +40,6 @@ async function catFiles(cat: string): Promise<string[]> {
   return out;
 }
 
-/** Sub-category con. */
 async function subCats(cat: string): Promise<string[]> {
   const d = await getJson(
     `https://commons.wikimedia.org/w/api.php?action=query&format=json` +
@@ -58,7 +49,6 @@ async function subCats(cat: string): Promise<string[]> {
   return (d?.query?.categorymembers ?? []).map((c: any) => c.title.replace(/^Category:/, ''));
 }
 
-/** Tìm category qua search. */
 async function findCats(q: string): Promise<string[]> {
   const d = await getJson(
     `https://commons.wikimedia.org/w/api.php?action=query&format=json` +

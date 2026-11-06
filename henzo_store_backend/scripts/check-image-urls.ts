@@ -1,14 +1,8 @@
-/**
- * Kiểm tra URL ảnh sản phẩm còn sống hay chết (HTTP status).
- *
- * Chạy: npx tsx scripts/check-image-urls.ts
- */
 import { connectDB, disconnectDB } from '../src/server/db';
 import { ProductModel } from '../src/server/models/Product';
 
 const TIMEOUT = 10_000;
 
-/** Kiểm tra 1 URL bằng HEAD, fallback GET nếu HEAD bị từ chối. */
 async function checkUrl(url: string): Promise<number> {
   const ctrl = new AbortController();
   const timer = setTimeout(() => ctrl.abort(), TIMEOUT);
@@ -29,7 +23,6 @@ async function main() {
   await connectDB();
   const docs = await ProductModel.find({}, { images: 1, name: 1, slug: 1 }).lean();
 
-  // Gom URL duy nhất để không check lặp.
   const urlMap = new Map<string, { count: number; products: string[] }>();
   for (const d of docs as any[]) {
     for (const u of (d.images ?? []) as string[]) {
@@ -47,7 +40,6 @@ async function main() {
   const alive: string[] = [];
   const errors: string[] = [];
 
-  // Check song song, giới hạn 10 request đồng thời.
   const CONCURRENCY = 10;
   let idx = 0;
   async function worker() {
@@ -65,7 +57,6 @@ async function main() {
   console.log(`[check] CHẾT (4xx/5xx): ${dead.length}`);
   console.log(`[check] LỖI mạng      : ${errors.length}`);
 
-  // Sản phẩm nào dùng URL chết
   const deadSet = new Set(dead);
   const errorSet = new Set(errors);
   const affected = (docs as any[]).filter((d) =>

@@ -1,12 +1,3 @@
-/**
- * TÌM ẢNH SẢN PHẨM QUA WIKIPEDIA (en) + WIKIDATA.
- *
- * Nhiều model không có ảnh riêng trên Commons nhưng có bài viết Wikipedia
- * (hoặc mục Wikidata) với ảnh sản phẩm. Script này:
- *   1. search enwiki theo tên/code model -> lấy pageimages (original)
- *   2. search wikidata theo tên -> lấy P18 (image)
- *   3. search commons insource/intitle với code
- */
 import { writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
@@ -29,7 +20,6 @@ async function getJson(url: string): Promise<any> {
   return null;
 }
 
-/** Ảnh bài viết Wikipedia (en). */
 async function wikiImages(title: string): Promise<any[]> {
   const d = await getJson(
     `https://en.wikipedia.org/w/api.php?action=query&format=json&titles=${encodeURIComponent(title)}` +
@@ -60,7 +50,6 @@ async function wikiSearch(q: string): Promise<any[]> {
   }));
 }
 
-/** P18 của Wikidata item. */
 async function wikidataImages(query: string): Promise<any[]> {
   const d = await getJson(
     `https://www.wikidata.org/w/api.php?action=wbsearchentities&format=json` +

@@ -1,7 +1,3 @@
-/**
- * Trích danh sách model (base key) chưa có trong bảng spec.
- * Ghi ra scripts/data/missing-spec-keys.json
- */
 import { writeFileSync } from 'fs';
 import { resolve } from 'path';
 import { connectDB, disconnectDB } from '../src/server/db';

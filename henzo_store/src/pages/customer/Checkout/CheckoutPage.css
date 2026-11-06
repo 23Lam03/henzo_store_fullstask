@@ -1,10 +1,3 @@
-/* ═══════════════════════════════════════════════════════════════════════════
-   TRANG THANH TOÁN
-   - Bước (stepper) dạng timeline mảnh, số thứ tự tròn
-   - Form theo lưới 2 cột, viền mảnh, focus ring nhẹ
-   - Tóm tắt đơn hàng dính bên phải, tổng tiền nổi bật
-═══════════════════════════════════════════════════════════════════════════ */
-
 .checkout-page {
   padding: var(--space-8) 0 var(--space-16);
   background: var(--color-background);
@@ -17,8 +10,6 @@
   justify-content: center;
   min-height: 68vh;
 }
-
-/* ─── Trạng thái rỗng ────────────────────────────────────────────────────── */
 
 .checkout-empty {
   display: flex;
@@ -54,8 +45,6 @@
   font-size: var(--font-size-sm);
   color: var(--color-text-secondary);
 }
-
-/* ─── Trạng thái thành công ──────────────────────────────────────────────── */
 
 .checkout-success {
   text-align: center;
@@ -130,8 +119,6 @@
   justify-content: center;
 }
 
-/* ─── Layout ─────────────────────────────────────────────────────────────── */
-
 .checkout-page__title {
   font-size: var(--font-size-3xl);
   font-family: var(--font-family-display);
@@ -150,8 +137,6 @@
 @media (max-width: 1024px) {
   .checkout-page__layout { grid-template-columns: minmax(0, 1fr); }
 }
-
-/* ─── Stepper ────────────────────────────────────────────────────────────── */
 
 .checkout-steps {
   display: flex;
@@ -212,8 +197,6 @@
   background: var(--color-border);
 }
 
-/* ─── Khối form ──────────────────────────────────────────────────────────── */
-
 .checkout-section {
   padding: var(--space-6);
   margin-bottom: var(--space-4);
@@ -256,8 +239,6 @@ textarea.input {
   min-height: 88px;
   line-height: var(--line-height-base);
 }
-
-/* ─── Phương thức thanh toán ─────────────────────────────────────────────── */
 
 .payment-methods {
   display: flex;
@@ -358,8 +339,6 @@ textarea.input {
   justify-content: flex-end;
   flex-wrap: wrap;
 }
-
-/* ─── Tóm tắt đơn hàng ──────────────────────────────────────────────────── */
 
 .checkout-order {
   padding: var(--space-5);

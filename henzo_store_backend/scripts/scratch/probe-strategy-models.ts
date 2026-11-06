@@ -1,12 +1,3 @@
-/**
- * DÒ ẢNH THẬT — NHIỀU CHIẾN LƯỢC cho các model còn thiếu.
- *
- * Chiến lược:
- *   1. full-text search kèm `filemime:image/*` + từ khoá mã model.
- *   2. search theo "Brand + loại sản phẩm" rồi lọc tên file có mã/series.
- *   3. category search theo tên series.
- * Lọc nhiễu: loại file có dấu hiệu sự kiện / booth / teardown / người.
- */
 import { writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
@@ -36,7 +27,6 @@ async function getJson(url: string): Promise<any> {
   return null;
 }
 
-/** Tìm file Commons (bitmap) theo full-text. */
 async function files(q: string, limit = 50): Promise<string[]> {
   const d = await getJson(
     `https://commons.wikimedia.org/w/api.php?action=query&format=json` +
@@ -48,7 +38,6 @@ async function files(q: string, limit = 50): Promise<string[]> {
     .filter((t: string) => !/\.(pdf|djvu|txt|webm|ogv|ogg|svg|stl|zip|gif|tif)$/i.test(t));
 }
 
-/** Tìm category. */
 async function cats(q: string, limit = 20): Promise<string[]> {
   const d = await getJson(
     `https://commons.wikimedia.org/w/api.php?action=query&format=json` +
@@ -57,7 +46,6 @@ async function cats(q: string, limit = 20): Promise<string[]> {
   return (d?.query?.search ?? []).map((s: any) => String(s.title).replace(/^Category:/, ''));
 }
 
-/** File trong category. */
 async function catFiles(cat: string, limit = 100): Promise<string[]> {
   const out: string[] = [];
   let cont: string | undefined;
@@ -79,11 +67,9 @@ async function catFiles(cat: string, limit = 100): Promise<string[]> {
   return out;
 }
 
-/** Dấu hiệu nhiễu: sự kiện, booth, teardown, người, bản vẽ. */
 const NOISE =
   /(booth|gamescom|computex|taigi|expo|show |fair|convention|press conference|award|circus|teardown|disassembl|teardown|inside|opened|circuit board|PCB|schematic|diagram|logo|store|shop|shelf|box|packaging|package|people|person|man |woman |hand |hands|team |player |player|esports|event|stage|crowd|portrait|drawing|sketch|illustration|poster|cover)/i;
 
-/** Mã/series đặc trưng của model. */
 const SERIES: Record<string, RegExp> = {
   'AOC CU34G2X 34in': /CU34G2|CU34|AGON/i,
   'ASUS ROG Harpe Ace Aim Lab Edition': /harpe|aim ?lab/i,
@@ -127,7 +113,6 @@ const SERIES: Record<string, RegExp> = {
   'Samsung Galaxy Tab S9': /galaxy ?tab ?s9|tab ?s9/i,
 };
 
-/** Truy vấn tìm kiếm cho mỗi model (ưu tiên mã cụ thể trước). */
 const QUERIES: Record<string, string[]> = {
   'AOC CU34G2X 34in': ['CU34G2X monitor', 'AOC AGON ultrawide monitor', 'AOC gaming monitor'],
   'ASUS ROG Harpe Ace Aim Lab Edition': ['ROG Harpe Ace mouse', 'Asus ROG mouse', 'Harpe Ace Aim Lab'],
@@ -192,7 +177,7 @@ async function main() {
           catFound.add(c);
         }
       }
-      // Mở rộng qua category.
+
       for (const c of [...catFound].slice(0, 10)) {
         for (const f of await catFiles(c)) {
           if (NOISE.test(f)) continue;

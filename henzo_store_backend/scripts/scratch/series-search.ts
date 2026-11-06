@@ -1,8 +1,3 @@
-/**
- * Tìm ảnh theo SERIES model (H60/H70/H80 thay vì HS60/HS80).
- *
- * Chạy: npx tsx scripts/series-search.ts
- */
 const UA = 'henzo-store/1.0 (model image resolver; dev@henzo.local)';
 
 async function getJson(url: string): Promise<any> {

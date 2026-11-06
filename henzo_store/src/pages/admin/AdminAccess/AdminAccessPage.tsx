@@ -56,7 +56,6 @@ export const AdminAccessPage = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [pendingDelete, setPendingDelete] = useState<string | null>(null);
 
-  // Add/Edit modal
   const [showModal, setShowModal] = useState(false);
   const [editTarget, setEditTarget] = useState<StaffMember | null>(null);
   const [formName, setFormName] = useState('');
@@ -66,11 +65,9 @@ export const AdminAccessPage = () => {
   const [formPassword, setFormPassword] = useState('');
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
 
-  // Role change inline
   const [changingId, setChangingId] = useState<string | null>(null);
 
-  /** Map DTO của backend sang model của trang. */
-  const toStaffMember = (s: any): StaffMember => {
+    const toStaffMember = (s: any): StaffMember => {
     const role = s.role ?? 'STAFF';
     const color = ROLE_COLORS[role] ?? ROLE_COLORS.STAFF;
     return {
@@ -86,8 +83,7 @@ export const AdminAccessPage = () => {
     };
   };
 
-  /** Tải danh sách nhân sự từ API. */
-  const loadStaff = useCallback(async () => {
+    const loadStaff = useCallback(async () => {
     setIsLoading(true);
     try {
       const res = await adminApi.staff({ pageSize: 200 });
@@ -140,13 +136,12 @@ export const AdminAccessPage = () => {
     if (!formName.trim()) e.name = 'Vui lòng nhập họ tên';
     if (!formEmail.trim()) e.email = 'Vui lòng nhập email';
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formEmail)) e.email = 'Email không hợp lệ';
-    // Tạo mới bắt buộc có mật khẩu (backend yêu cầu tối thiểu 6 ký tự).
+
     if (!editTarget && formPassword.length < 6) e.password = 'Mật khẩu tối thiểu 6 ký tự';
     return e;
   };
 
-  /** Lưu nhân sự (tạo mới hoặc cập nhật) qua API. */
-  const handleSave = async () => {
+    const handleSave = async () => {
     const e = validate();
     if (Object.keys(e).length > 0) { setFormErrors(e); return; }
 
@@ -187,8 +182,7 @@ export const AdminAccessPage = () => {
     }
   };
 
-  /** Khoá / mở khoá tài khoản nhân sự. */
-  const handleToggleStatus = async (id: string) => {
+    const handleToggleStatus = async (id: string) => {
     const member = staffList.find(s => s.id === id);
     if (!member) return;
     const nextStatus = member.status === 'active' ? 'locked' : 'active';
@@ -211,8 +205,7 @@ export const AdminAccessPage = () => {
     }
   };
 
-  /** Xoá nhân sự quản trị. */
-  const handleDelete = async (id: string) => {
+    const handleDelete = async (id: string) => {
     setIsSubmitting(true);
     try {
       await adminApi.deleteStaff(id);
@@ -231,8 +224,7 @@ export const AdminAccessPage = () => {
     }
   };
 
-  /** Đổi vai trò nhanh ngay trên bảng — gọi API rồi cập nhật danh sách. */
-  const handleInlineRoleChange = async (id: string, newRole: string) => {
+    const handleInlineRoleChange = async (id: string, newRole: string) => {
     setChangingId(null);
     const member = staffList.find(s => s.id === id);
     if (!member || member.role === newRole) return;
@@ -283,7 +275,7 @@ export const AdminAccessPage = () => {
         </div>
       </div>
 
-      {/* Role Cards */}
+      {}
       <div className="admin-section">
         <div className="admin-section__header">
           <h3 className="admin-section__title">Vai trò hệ thống</h3>
@@ -306,7 +298,7 @@ export const AdminAccessPage = () => {
         </div>
       </div>
 
-      {/* Permission Matrix */}
+      {}
       <div className="admin-section">
         <div className="admin-section__header">
           <h3 className="admin-section__title">Ma trận quyền hạn — {ROLE_OPTIONS.find(r => r.name === selectedRole)?.label}</h3>
@@ -336,14 +328,14 @@ export const AdminAccessPage = () => {
         </div>
       </div>
 
-      {/* Staff List */}
+      {}
       <div className="admin-section">
         <div className="admin-section__header">
           <h3 className="admin-section__title">Danh sách nhân viên &amp; cửa hàng</h3>
           <span className="admin-page__meta">{staffList.length} thành viên</span>
         </div>
 
-        {/* Toolbar */}
+        {}
         <div className="access-toolbar">
           <div className="access-search">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -459,7 +451,7 @@ export const AdminAccessPage = () => {
         </div>
       </div>
 
-      {/* Add/Edit Modal */}
+      {}
       {showModal && (
         <div className="modal-overlay" onClick={() => setShowModal(false)}>
           <div className="modal-box modal-box--wide" onClick={e => e.stopPropagation()}>

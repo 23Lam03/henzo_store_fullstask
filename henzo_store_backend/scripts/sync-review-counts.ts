@@ -1,15 +1,3 @@
-/**
- * ĐỒNG BỘ `reviewCount` / `rating` CỦA SẢN PHẨM THEO COLLECTION `reviews`.
- *
- * Vì sao cần:
- *   `Product.reviewCount` và `Product.rating` là dữ liệu cache (denormalized)
- *   để list sản phẩm không phải aggregate mỗi lần. Khi có đánh giá được
- *   thêm/xoá/ẩn, hai trường này lệch -> giao diện hiển thị sai số sao.
- *
- *   Script chỉ ĐỒNG BỘ (không tạo/xoá đánh giá), an toàn chạy lại nhiều lần.
- *
- * Chạy: npx tsx scripts/sync-review-counts.ts
- */
 import { connectDB, disconnectDB } from '../src/server/db';
 import { ProductModel } from '../src/server/models/Product';
 import { ReviewModel } from '../src/server/models/Review';
@@ -17,8 +5,6 @@ import { ReviewModel } from '../src/server/models/Review';
 async function main() {
   await connectDB();
 
-  // Tính theo review ĐANG HIỂN THỊ (isHidden = false) — khớp với điều kiện
-  // lọc mà route `GET /api/products/:id/reviews` dùng.
   const agg = await ReviewModel.aggregate([
     { $match: { isHidden: false } },
     {

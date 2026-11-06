@@ -1,8 +1,3 @@
-/**
- * Nghiệp vụ dashboard cho seller.
- *
- * Toàn bộ số liệu được tính từ dữ liệu thật trong DB, scope theo storeId.
- */
 import { OrderModel } from '../models/Order';
 import { ProductModel } from '../models/Product';
 import { PaymentModel } from '../models/Payment';
@@ -11,7 +6,6 @@ import { UserModel } from '../models/User';
 import { aggMatch } from '../http/store-scope';
 import { SellerOrderStatus, TransactionStatus } from '../constants';
 
-/** Khoảng thời gian của kỳ báo cáo. */
 export type Period = 'today' | 'week' | 'month' | 'year';
 
 export function periodStart(period: Period): Date {
@@ -39,7 +33,6 @@ export function periodStart(period: Period): Date {
   return start;
 }
 
-/** Khoảng thời gian liền trước, cùng độ dài — dùng tính % thay đổi. */
 export function previousPeriodStart(period: Period): Date {
   const current = periodStart(period);
 
@@ -68,30 +61,17 @@ export function previousPeriodStart(period: Period): Date {
   return new Date();
 }
 
-/** Tính % thay đổi so với kỳ trước. */
 function percentChange(current: number, previous: number): number {
   if (previous === 0) return current > 0 ? 100 : 0;
   return +(((current - previous) / previous) * 100).toFixed(1);
 }
 
-/**
- * Các sub-order thuộc store.
- *
- * Khi `storeId` là `undefined` (admin đang xem toàn bộ cửa hàng) -> lấy tất cả
- * sub-order của đơn.
- */
 function subsOfStore(order: any, storeId?: string) {
   const subOrders = order?.subOrders ?? [];
   if (!storeId) return subOrders;
   return subOrders.filter((s: any) => String(s.storeId) === String(storeId));
 }
 
-/**
- * Số liệu dashboard cho seller.
- * Khớp shape `SellerDashboardStats` của frontend.
- *
- * `storeId` = `undefined` -> admin xem toàn bộ cửa hàng.
- */
 export async function getSellerDashboardStats(storeId?: string) {
   const monthStart = periodStart('month');
   const prevMonthStart = previousPeriodStart('month');
@@ -171,8 +151,6 @@ export async function getSellerDashboardStats(storeId?: string) {
     0,
   );
 
-  // Tỷ lệ chuyển đổi: lượt xem sản phẩm -> số đơn.
-  // `$match` trong pipeline không tự ép chuỗi -> ObjectId.
   const viewSum = await ProductModel.aggregate([
     { $match: aggMatch(storeId) },
     { $group: { _id: null, views: { $sum: '$viewCount' } } },
@@ -201,10 +179,6 @@ export async function getSellerDashboardStats(storeId?: string) {
   };
 }
 
-/**
- * Tổng hợp tài chính cho seller.
- * Khớp shape `SellerFinanceSummary` của frontend.
- */
 export async function getSellerFinanceSummary(
   storeId?: string,
   period: Period = 'month',
@@ -254,7 +228,6 @@ export async function getSellerFinanceSummary(
   };
 }
 
-/** Doanh thu theo ngày (30 ngày gần nhất) — shape `DailyRevenue`. */
 export async function getDailyRevenue(storeId?: string, days = 30) {
   const start = new Date();
   start.setHours(0, 0, 0, 0);
@@ -297,7 +270,6 @@ export async function getDailyRevenue(storeId?: string, days = 30) {
   }));
 }
 
-/** Doanh thu theo tháng — shape `MonthlyData`. */
 export async function getMonthlyData(storeId?: string, months = 12) {
   const start = new Date();
   start.setDate(1);
@@ -344,7 +316,6 @@ export async function getMonthlyData(storeId?: string, months = 12) {
     }
   }
 
-  // Ước lượng số khách hàng mới theo tháng.
   const perMonth = Math.floor(customers.length / months);
 
   return [...buckets.entries()].map(([key, v]) => {

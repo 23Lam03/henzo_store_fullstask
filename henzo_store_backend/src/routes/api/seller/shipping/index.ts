@@ -16,8 +16,7 @@ export const Route = createFileRoute('/api/seller/shipping/')({
   server: {
     middleware: [corsMiddleware, requireAuth, requireStoreOwner],
     handlers: {
-      /** Danh sách vận đơn của cửa hàng. */
-      GET: withErrorHandling(async ({ request, context }) => {
+            GET: withErrorHandling(async ({ request, context }) => {
         await connectDB();
         const scope = getStoreScope(context);
 
@@ -35,7 +34,7 @@ export const Route = createFileRoute('/api/seller/shipping/')({
             .limit(pageSize)
             .lean(),
           ShippingModel.countDocuments(filter),
-          // `$match` trong pipeline không tự ép chuỗi -> ObjectId.
+
           ShippingModel.aggregate([
             { $match: scope.aggMatch() },
             { $group: { _id: '$status', count: { $sum: 1 } } },
@@ -57,10 +56,9 @@ export const Route = createFileRoute('/api/seller/shipping/')({
         );
       }),
 
-      /** Tạo vận đơn từ một sub-order đã bán. */
-      POST: withErrorHandling(async ({ request, context }) => {
+            POST: withErrorHandling(async ({ request, context }) => {
         await connectDB();
-        // Tạo vận đơn là thao tác ghi -> bắt buộc có một cửa hàng cụ thể.
+
         const storeId = getStoreScope(context).require();
         const body = (await request.json().catch(() => ({}))) as {
           orderId?: string;

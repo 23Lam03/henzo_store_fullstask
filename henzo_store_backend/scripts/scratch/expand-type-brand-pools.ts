@@ -1,21 +1,9 @@
-/**
- * MỞ RỘNG POOL ẢNH THEO (LOẠI, HÃNG) TỪ WIKIMEDIA COMMONS.
- *
- * `type-brand-pools.json` chỉ có 16 loại × vài hãng, nên nhiều model không
- * có ảnh fallback. Script này probe Commons theo từ khóa "<brand> <type>"
- * (vd "Corsair headset", "Logitech webcam", "Apple iPad") và ghi kết quả
- * vào `scripts/data/type-brand-pools.json`.
- *
- * Ảnh được chấm điểm: ưu tiên tên file CHỨA cả brand + từ khóa loại,
- * loại ảnh cảnh chụp/đời thường (mua bán, cửa hàng, biểu đồ...).
- */
 import { readFileSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { getJson, resolveFiles } from '../../lib/commons-files';
 
 const POOL_PATH = resolve(process.cwd(), 'scripts/data/type-brand-pools.json');
 
-/** Từ khóa tìm ảnh cho từng loại. */
 const TYPE_QUERY: Record<string, string> = {
   PHONE: 'smartphone',
   TABLET: 'tablet',
@@ -37,7 +25,6 @@ const TYPE_QUERY: Record<string, string> = {
   TABLET_PRO: 'tablet computer',
 };
 
-/** Cụm từ loại ảnh không dùng làm ảnh sản phẩm. */
 const BAD = /\b(shop|store|mall|market|sign|street|banner|poster|logo|chart|graph|diagram|map|comparison|compare|vs |versus|people|person|hand|hands|woman|man |boy|girl|protest|meeting|conference|exhibition|booth|trade show|package|box|unboxing|review|manual|instruction|advertis)/i;
 
 const BRANDS: Record<string, string[]> = {
@@ -60,7 +47,6 @@ const BRANDS: Record<string, string[]> = {
   SMARTWATCH: ['Apple Watch', 'Samsung Galaxy Watch', 'Garmin watch', 'Xiaomi watch'],
 };
 
-/** Chuẩn hoá tên file để so khớp. */
 const norm = (s: string): string =>
   s
     .replace(/^File:/, '')
@@ -69,7 +55,6 @@ const norm = (s: string): string =>
     .trim()
     .toLowerCase();
 
-/** Chấm điểm ứng viên. */
 function score(title: string, brand: string, typeWord: string): number {
   const t = norm(title);
   if (BAD.test(title)) return 0;
@@ -81,7 +66,7 @@ function score(title: string, brand: string, typeWord: string): number {
   if (hasBrand) s += 4;
   if (hasType) s += 4;
   if (hasBrand && hasType) s += 6;
-  // Ảnh chụp cận cảnh sản phẩm, tên ngắn gọn -> ưu tiên.
+
   const words = t.split(' ').length;
   if (words <= 6) s += 3;
   else if (words > 14) s -= 3;
@@ -138,7 +123,6 @@ for (const [typeKey, brands] of Object.entries(BRANDS)) {
 writeFileSync(POOL_PATH, JSON.stringify(pool, null, 2), 'utf-8');
 console.log(`\nĐã bổ sung ${added} cặp (loại, hãng)`);
 
-// Kiểm chứng: resolve được file nào.
 const all = [...new Set(Object.values(pool).flatMap((b) => Object.values(b).flat()))];
 const map = await resolveFiles(all);
 console.log(`Resolve được ${map.size}/${all.length} file`);

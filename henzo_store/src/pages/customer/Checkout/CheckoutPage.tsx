@@ -20,7 +20,7 @@ export const CheckoutPage = () => {
   const toast = useToast();
   const [step, setStep] = useState(1);
   const [payment, setPayment] = useState('COD');
-  // Mã tỉnh / mã huyện (không phải tên) — backend tra cứu theo mã.
+
   const [provinceCode, setProvinceCode] = useState('');
   const [districtCode, setDistrictCode] = useState('');
   const [wardCode, setWardCode] = useState('');
@@ -46,8 +46,6 @@ export const CheckoutPage = () => {
   const total = selectedItems.reduce((s, i) => s + i.product.price * i.quantity, 0);
   const shipping = total >= 500000 ? 0 : 30000;
 
-  // Tên tỉnh / huyện để hiển thị + gửi lên backend (backend cần TÊN để
-  // dựng snapshot địa chỉ trong đơn hàng).
   const province = useMemo(
     () => provinces.find((p) => p.code === provinceCode)?.name ?? '',
     [provinces, provinceCode],
@@ -61,7 +59,6 @@ export const CheckoutPage = () => {
     [wards, wardCode],
   );
 
-  // Nạp danh sách tỉnh/thành khi mở trang.
   useEffect(() => {
     let cancelled = false;
     locationsApi
@@ -80,7 +77,6 @@ export const CheckoutPage = () => {
     };
   }, []);
 
-  // Nạp quận/huyện khi đổi tỉnh.
   useEffect(() => {
     if (!provinceCode) {
       setDistricts([]);
@@ -104,7 +100,6 @@ export const CheckoutPage = () => {
     };
   }, [provinceCode]);
 
-  // Nạp phường/xã khi đổi quận/huyện.
   useEffect(() => {
     if (!districtCode) {
       setWards([]);
@@ -159,7 +154,7 @@ export const CheckoutPage = () => {
           shippingWard: ward,
           note: form.note,
           paymentMethod: payment,
-          // Server tự tính tiền & trừ kho, chỉ cần gửi id + số lượng.
+
           items: selectedItems.map(i => ({
             productId: i.product.id,
             quantity: i.quantity,

@@ -28,8 +28,7 @@ export const Route = createFileRoute('/api/addresses/')({
   server: {
     middleware: [corsMiddleware, requireAuth],
     handlers: {
-      /** Danh sách địa chỉ của khách. */
-      GET: withErrorHandling(async ({ context }) => {
+            GET: withErrorHandling(async ({ context }) => {
         await connectDB();
         const list = await AddressModel.find({
           userId: context.auth.userId,
@@ -39,8 +38,7 @@ export const Route = createFileRoute('/api/addresses/')({
         return ok(list.map(toAddressDto));
       }),
 
-      /** Thêm địa chỉ mới. */
-      POST: withErrorHandling(async ({ request, context }) => {
+            POST: withErrorHandling(async ({ request, context }) => {
         await connectDB();
         const body = await readJson(request, addressSchema);
 
@@ -48,7 +46,6 @@ export const Route = createFileRoute('/api/addresses/')({
           userId: context.auth.userId,
         });
 
-        // Địa chỉ đầu tiên luôn là mặc định.
         const isDefault = body.isDefault || count === 0;
 
         if (isDefault) {

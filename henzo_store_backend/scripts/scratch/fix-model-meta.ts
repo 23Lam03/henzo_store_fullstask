@@ -1,10 +1,3 @@
-/**
- * GÁN ẢNH FALLBACK THÔNG MINH CHO MODEL CHƯA CÓ ẢNH RIÊNG.
- *
- * Dùng `extmetadata` của Commons để xác nhận ảnh đúng HÃNG + đúng DÒNG
- * sản phẩm (vì tên file Commons thường không chứa tên hãng, vd
- * "ST100VoidPro" là tai nghe Corsair).
- */
 import { connectDB, disconnectDB } from '../../src/server/db';
 import { ProductModel } from '../../src/server/models/Product';
 import { modelName } from '../../lib/model-name';
@@ -21,7 +14,6 @@ const SCORE_MIN = 9;
 await connectDB();
 const products = await ProductModel.find({}).select('name images brand categoryName').lean();
 
-// Gom theo model.
 const groups = new Map<
   string,
   { ids: string[]; brand: string; categoryName: string }

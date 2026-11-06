@@ -1,10 +1,3 @@
-/**
- * KIỂM TRA ẢNH CHÍNH TRONG DB THEO ĐÚNG MODEL.
- *
- * `verify-product-criteria-deep.ts` chỉ phát hiện ảnh SAI LOẠI (điện thoại
- * mà ra ảnh laptop). Script này kiểm tra mức chặt hơn: ảnh chính có chứa
- * token tên model/series trong tên file hay không.
- */
 import { connectDB, disconnectDB } from '../../src/server/db';
 import { ProductModel } from '../../src/server/models/Product';
 
@@ -40,10 +33,9 @@ const fileFromUrl = (url: string): string => {
   return parts[parts.length - 1] ?? '';
 };
 
-/** Lấy phần "model" của tên sản phẩm: bỏ hãng + dung lượng/tối đa ở đuôi. */
 function modelOf(name: string): string {
   return name
-    .replace(/^\s*\S+\s+/, '') // bỏ hãng
+    .replace(/^\s*\S+\s+/, '')
     .replace(/\s+(256|512|128|256GB|512GB|1TB|2TB|4TB)\b.*$/i, '')
     .trim();
 }

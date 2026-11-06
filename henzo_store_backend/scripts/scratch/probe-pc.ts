@@ -1,6 +1,3 @@
-/**
- * Probe ảnh case PC / custom build / GPU card thật (dùng cho nhóm "PC Gaming").
- */
 import { writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 

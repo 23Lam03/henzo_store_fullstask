@@ -1,7 +1,3 @@
-/* ═══════════════════════════════════════════════════════════════════════════
-   PHẦN ĐÁNH GIÁ SẢN PHẨM
-═══════════════════════════════════════════════════════════════════════════ */
-
 .product-review {
   max-width: 860px;
 }
@@ -20,8 +16,6 @@
   font-weight: 700;
   color: var(--color-text-primary);
 }
-
-/* ─── Form ───────────────────────────────────────────────────────────────── */
 
 .review-form {
   padding: var(--space-6);
@@ -85,8 +79,6 @@
   justify-content: flex-end;
 }
 
-/* ─── Tổng quan điểm ─────────────────────────────────────────────────────── */
-
 .product-review__summary {
   display: flex;
   align-items: center;
@@ -145,8 +137,6 @@
   font-family: inherit;
   cursor: pointer;
 }
-
-/* ─── Danh sách ──────────────────────────────────────────────────────────── */
 
 .product-review__list {
   display: flex;

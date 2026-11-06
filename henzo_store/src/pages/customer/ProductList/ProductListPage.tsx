@@ -29,7 +29,6 @@ export const ProductListPage = () => {
   const search = searchParams.get('q') || '';
   const singleCategory = searchParams.get('category') || '';
 
-  // Đọc toàn bộ tham số lọc từ URL.
   const brandsParam = searchParams.get('brands') || '';
   const categoriesParam = searchParams.get('categories') || '';
   const priceMinParam = searchParams.get('priceMin');
@@ -52,7 +51,6 @@ export const ProductListPage = () => {
   const activeInStock = inStockParam === '1';
   const activeHasDiscount = hasDiscountParam === '1';
 
-  // Danh mục + thương hiệu lấy từ backend để số liệu luôn khớp dữ liệu thật.
   useEffect(() => {
     let cancelled = false;
     const load = async () => {
@@ -80,7 +78,7 @@ export const ProductListPage = () => {
       try {
         const res = await catalogApi.products({
           search: search || undefined,
-          // Ưu tiên danh mục con đang lọc, nếu không thì danh mục trên URL.
+
           category: activeCategories.length ? activeCategories.join(',') : singleCategory || undefined,
           brands: activeBrands.length ? activeBrands : undefined,
           minPrice: activePriceMin,
@@ -156,7 +154,6 @@ export const ProductListPage = () => {
     });
   };
 
-  // Bộ lọc dùng slug danh mục để backend tự resolve (kể cả danh mục con).
   const filterCategories = categories.map(c => ({
     name: c.name,
     slug: c.slug,

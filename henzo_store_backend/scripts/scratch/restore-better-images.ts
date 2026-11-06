@@ -1,9 +1,3 @@
-/**
- * PHỤC HỒI ẢNH CHÍNH CŨ cho sản phẩm mà lượt gán fallback vừa rồi gán sai.
- *
- * Dùng `scripts/data/products-backup.json` (snapshot trước khi sửa ảnh) để
- * lấy lại ảnh chính cũ, nhưng GIỮ lại các ảnh mới đúng model đã gán.
- */
 import { connectDB, disconnectDB } from '../../src/server/db';
 import { ProductModel } from '../../src/server/models/Product';
 import { readFileSync } from 'node:fs';
@@ -28,10 +22,9 @@ for (const p of products) {
   if (!imgs.length) continue;
 
   const model = modelName(String(p.name ?? ''));
-  // Nếu ảnh chính hiện tại ĐÃ khớp model -> không cần phục hồi.
+
   if (fileMatchesName(model, imgs[0])) continue;
 
-  // Tìm ảnh cũ đã khớp model.
   const goodOld = (old.images as string[]).find((u) => fileMatchesName(model, u));
   if (!goodOld) continue;
 

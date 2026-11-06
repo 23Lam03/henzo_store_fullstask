@@ -1,8 +1,3 @@
-/**
- * Kiểm tra sâu: subcategory + tên file chứa mã dòng sản phẩm.
- *
- * Chạy: npx tsx scripts/deep-check.ts HyperX Cloud
- */
 const UA = 'henzo-store/1.0 (model image resolver; dev@henzo.local)';
 
 async function getJson(url: string): Promise<any> {
@@ -39,7 +34,6 @@ async function main() {
   const subs = await subCats(cat);
   subs.forEach((s: string) => console.log('  ', s));
 
-  // Tìm mọi category có chứa từ khóa.
   for (const kw of ['Cloud', 'Headset', 'Alpha', 'Void', 'Katar', 'T500', 'XM2']) {
     const d = await getJson(
       `https://commons.wikimedia.org/w/api.php?action=query&format=json` +

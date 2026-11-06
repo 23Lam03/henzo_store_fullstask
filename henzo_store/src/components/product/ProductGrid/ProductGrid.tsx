@@ -39,7 +39,7 @@ export const ProductGrid = ({ products, viewMode = 'grid', loading }: ProductGri
 
   return (
     <RevealGroup
-      // Khóa lại theo viewMode + danh sách để stagger chạy lại khi đổi bộ lọc.
+
       key={`${viewMode}-${products.length}`}
       className={`product-grid product-grid--${viewMode}`}
       threshold={0.05}

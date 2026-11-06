@@ -1,4 +1,3 @@
-/** Liệt kê MỌI file ảnh Corsair / MSI / Gigabyte / ASUS trên Commons (search + category tree). */
 import { writeFileSync } from 'node:fs';
 
 const UA = 'henzo-store/1.0 (model image resolver; dev@henzo.local)';

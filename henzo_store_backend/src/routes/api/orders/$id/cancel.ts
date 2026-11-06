@@ -29,11 +29,7 @@ export const Route = createFileRoute('/api/orders/$id/cancel')({
   server: {
     middleware: [corsMiddleware, requireAuth],
     handlers: {
-      /**
-       * Khách huỷ đơn.
-       * Chỉ huỷ được trong 1 giờ đầu và khi đơn chưa được xác nhận.
-       */
-      POST: withErrorHandling(async ({ request, params, context }) => {
+            POST: withErrorHandling(async ({ request, params, context }) => {
         await connectDB();
         const body = await readJson(request, cancelSchema).catch(
           () => ({ reason: undefined }) as z.infer<typeof cancelSchema>,
@@ -55,7 +51,6 @@ export const Route = createFileRoute('/api/orders/$id/cancel')({
           throw badRequest('Đơn hàng đã giao, không thể huỷ. Vui lòng liên hệ hỗ trợ.');
         }
 
-        // Quyền huỷ trong 1 giờ đầu (trừ admin).
         if (!isAdmin) {
           const elapsed = Date.now() - new Date(order.createdAt).getTime();
           if (elapsed > ORDER_CANCEL_WINDOW_MS) {
@@ -75,10 +70,6 @@ export const Route = createFileRoute('/api/orders/$id/cancel')({
           }
         }
 
-        // Huỷ các sub-order chưa xử lý.
-        // Chỉ những sub-order **thực sự chuyển sang cancelled** mới được hoàn
-        // tồn kho. Sub-order đã giao (`shipped`/`delivering`/`delivered`) giữ
-        // nguyên trạng thái và không hoàn kho — hàng đã rời kho.
         const cancellable = (order.subOrders ?? []).filter(
           (s: any) =>
             ![
@@ -88,15 +79,7 @@ export const Route = createFileRoute('/api/orders/$id/cancel')({
             ].includes(s.status as any),
         );
 
-        /**
-         * Hoàn tồn kho TRƯỚC khi đổi trạng thái.
-         *
-         * `restoreStockForSubOrders` chỉ hoàn sub-order còn ở kho
-         * (`pending`/`confirmed`/`preparing`), nên:
-         * - Hủy lần 2 sẽ không cộng tồn kho thêm (idempotent).
-         * - Sub-order đã giao không bao giờ bị hoàn kho.
-         */
-        const restoreTargets = cancellable.map((s: any) => ({
+                const restoreTargets = cancellable.map((s: any) => ({
           ...s.toObject?.() ?? s,
         }));
         await restoreStockForSubOrders(restoreTargets);
@@ -110,10 +93,6 @@ export const Route = createFileRoute('/api/orders/$id/cancel')({
           } as any);
         }
 
-        // Trạng thái tổng của đơn được suy ra từ các sub-order còn lại.
-        // Nếu một shop đã giao hàng, đơn không thể mang trạng thái "đã huỷ"
-        // toàn cục — nó chuyển sang "đang vận chuyển" cho tới khi shop đó giao
-        // xong, đồng thời phần đã huỷ vẫn được hoàn tồn kho.
         const hasShipped = (order.subOrders ?? []).some((s: any) =>
           [
             SellerOrderStatus.SHIPPED,
@@ -144,17 +123,7 @@ export const Route = createFileRoute('/api/orders/$id/cancel')({
 
         await order.save();
 
-        /**
-         * Hoàn tiền cho các giao dịch của đơn bị huỷ.
-         *
-         * Trước đây chỉ có admin action `refund` mới cập nhật trạng thái
-         * payment — nên đơn khách tự huỷ vẫn giữ payment `success`, khiến
-         * doanh thu & phí sàn của seller tính cho cả đơn đã huỷ.
-         *
-         * Chỉ hoàn các giao dịch của store bị huỷ, để không ảnh hưởng tới
-         * phần đơn của store khác còn đang giao.
-         */
-        const cancelledStoreIds = cancellable.map((s: any) => String(s.storeId));
+                const cancelledStoreIds = cancellable.map((s: any) => String(s.storeId));
         if (cancelledStoreIds.length) {
           await PaymentModel.updateMany(
             {

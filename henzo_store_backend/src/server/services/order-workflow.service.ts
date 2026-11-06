@@ -1,9 +1,3 @@
-/**
- * Nghiệp vụ chuyển trạng thái đơn hàng.
- *
- * Seller điều khiển sub-order (theo từng cửa hàng), admin điều khiển cả đơn.
- * Mỗi lần chuyển trạng thái đều được ghi vào `statusHistory` để dựng timeline.
- */
 import { Types } from 'mongoose';
 import { OrderModel } from '../models/Order';
 import { PaymentModel } from '../models/Payment';
@@ -19,10 +13,6 @@ import {
   TransactionStatus,
 } from '../constants';
 
-/**
- * Sơ đồ chuyển trạng thái hợp lệ của sub-order (phía seller).
- * Không cho nhảy cóc qua các bước trung gian.
- */
 const SELLER_TRANSITIONS: Record<string, SellerOrderStatusValue[]> = {
   pending: ['confirmed', 'cancelled'],
   confirmed: ['preparing', 'cancelled'],
@@ -34,7 +24,6 @@ const SELLER_TRANSITIONS: Record<string, SellerOrderStatusValue[]> = {
   returned: [],
 };
 
-/** Nhãn tiếng Việt cho timeline. */
 export const STATUS_LABELS: Record<string, string> = {
   pending: 'Chờ xác nhận',
   confirmed: 'Đã xác nhận',
@@ -58,9 +47,6 @@ export interface UpdateStatusInput {
   actorRole: 'SHOP' | 'ADMIN' | 'CUSTOMER';
 }
 
-/**
- * Chuyển trạng thái sub-order (seller) hoặc toàn bộ đơn (admin).
- */
 export async function updateOrderStatus(input: UpdateStatusInput) {
   const order = await OrderModel.findById(input.orderId);
   if (!order) throw notFound('Không tìm thấy đơn hàng');
@@ -82,21 +68,11 @@ export async function updateOrderStatus(input: UpdateStatusInput) {
       );
     }
 
-    // Trạng thái trước khi chuyển — dùng để quyết định có hoàn tồn kho hay không.
     const previousStatus = String(sub.status);
 
-    /**
-     * Hoàn tồn kho TRƯỚC khi đổi trạng thái sang `cancelled`.
-     *
-     * Chỉ hoàn cho sub-order của riêng cửa hàng này. Trước đây hàm hoàn toàn
-     * bộ `order.items` — gây tồn kho ảo khi đơn có nhiều cửa hàng, và có thể
-     * đẩy `sold` xuống dưới 0. `restoreStockForSubOrders` tự bỏ qua sub-order
-     * đã hủy/đã giao nên gọi lại lần nữa không cộng tồn kho thêm.
-     */
-    if (target === SellerOrderStatus.CANCELLED) {
+        if (target === SellerOrderStatus.CANCELLED) {
       await restoreStockForSubOrders([sub.toObject?.() ?? sub]);
 
-      // Hoàn tiền giao dịch của riêng cửa hàng này.
       await PaymentModel.updateMany(
         {
           orderId: order._id,
@@ -119,7 +95,7 @@ export async function updateOrderStatus(input: UpdateStatusInput) {
 
     if (target === SellerOrderStatus.DELIVERED) {
       sub.deliveredAt = new Date();
-      // COD: đánh dấu đã thanh toán khi giao thành công.
+
       if (order.paymentMethod === 'cod') {
         order.paymentStatus = OrderPaymentStatus.PAID;
         await PaymentModel.updateMany(
@@ -129,7 +105,6 @@ export async function updateOrderStatus(input: UpdateStatusInput) {
       }
     }
 
-    // Đồng bộ trạng thái tổng của đơn.
     order.status = deriveCustomerStatus(order.subOrders) as any;
     await order.save();
 
@@ -144,7 +119,6 @@ export async function updateOrderStatus(input: UpdateStatusInput) {
     return order;
   }
 
-  // ─── Admin: đổi trạng thái toàn bộ đơn ─────────────────────────────────
   if (isAdmin) {
     const customerStatus = SELLER_TO_CUSTOMER_STATUS[target] ?? target;
     if (!Object.values(CustomerOrderStatus).includes(customerStatus as any)) {
@@ -175,14 +149,6 @@ export async function updateOrderStatus(input: UpdateStatusInput) {
   throw forbidden('Không có quyền cập nhật đơn hàng');
 }
 
-/**
- * Suy ra trạng thái tổng của đơn từ các sub-order.
- * - Tất cả đã giao -> delivered
- * - Có phần đang vận chuyển -> shipping
- * - Có phần đang xử lý -> processing
- * - Tất cả đã huỷ -> cancelled
- * - Còn lại -> pending / confirmed
- */
 export function deriveCustomerStatus(subOrders: any[]): string {
   if (!subOrders?.length) return CustomerOrderStatus.PENDING;
 
@@ -216,7 +182,6 @@ export function deriveCustomerStatus(subOrders: any[]): string {
   return CustomerOrderStatus.PENDING;
 }
 
-/** Thông báo cho khách hàng. */
 async function notifyCustomer(
   order: any,
   title: string,
@@ -233,7 +198,6 @@ async function notifyCustomer(
   });
 }
 
-/** Thông báo cho cửa hàng liên quan. */
 async function notifySeller(
   order: any,
   storeId: string | undefined,

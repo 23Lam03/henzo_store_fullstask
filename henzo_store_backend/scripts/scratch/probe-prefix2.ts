@@ -1,8 +1,3 @@
-/**
- * PROBE PREFIX (allpages) — thử nhiều dạng prefix, có/khoảng trắng.
- *
- * Chạy: npx tsx scripts/probe-prefix2.ts
- */
 import { getJson } from '../lib/commons-files';
 
 const PREFIXES = [

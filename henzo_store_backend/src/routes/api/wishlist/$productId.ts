@@ -13,8 +13,7 @@ export const Route = createFileRoute('/api/wishlist/$productId')({
   server: {
     middleware: [corsMiddleware, requireAuth],
     handlers: {
-      /** Thêm sản phẩm vào danh sách yêu thích. */
-      POST: withErrorHandling(async ({ params, context }) => {
+            POST: withErrorHandling(async ({ params, context }) => {
         await connectDB();
 
         if (!Types.ObjectId.isValid(params.productId)) {
@@ -39,8 +38,7 @@ export const Route = createFileRoute('/api/wishlist/$productId')({
         return ok({ productId: String(product._id), isSaved: true });
       }),
 
-      /** Xoá sản phẩm khỏi danh sách yêu thích. */
-      DELETE: withErrorHandling(async ({ params, context }) => {
+            DELETE: withErrorHandling(async ({ params, context }) => {
         await connectDB();
 
         const wishlist = await WishlistModel.findOne({

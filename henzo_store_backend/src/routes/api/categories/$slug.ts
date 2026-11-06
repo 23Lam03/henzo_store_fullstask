@@ -27,7 +27,6 @@ export const Route = createFileRoute('/api/categories/$slug')({
           .sort({ order: 1, name: 1 })
           .lean();
 
-        // Sản phẩm của danh mục cha bao gồm cả danh mục con.
         const childIds = children.map((c) => c._id);
         const productCount = await ProductModel.countDocuments({
           status: ProductStatus.ACTIVE,

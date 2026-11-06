@@ -29,8 +29,7 @@ export const Route = createFileRoute('/api/seller/promotions/$id')({
   server: {
     middleware: [corsMiddleware, requireAuth, requireStoreOwner],
     handlers: {
-      /** Chi tiết chương trình khuyến mãi. */
-      GET: withErrorHandling(async ({ params, context }) => {
+            GET: withErrorHandling(async ({ params, context }) => {
         await connectDB();
         const scope = getStoreScope(context);
 
@@ -44,10 +43,9 @@ export const Route = createFileRoute('/api/seller/promotions/$id')({
         return ok(toSellerPromotion(promo));
       }),
 
-      /** Cập nhật trạng thái / thông tin chương trình khuyến mãi. */
-      PATCH: withErrorHandling(async ({ request, params, context }) => {
+            PATCH: withErrorHandling(async ({ request, params, context }) => {
         await connectDB();
-        // Cập nhật là thao tác ghi -> bắt buộc có một cửa hàng cụ thể.
+
         const storeId = getStoreScope(context).require();
         const body = await readJson(request, updateSchema);
 
@@ -68,7 +66,7 @@ export const Route = createFileRoute('/api/seller/promotions/$id')({
         if (body.discountType !== undefined) promo.discountType = body.discountType;
         if (body.discountValue !== undefined) {
           promo.discountValue = body.discountValue;
-          // `discount` là % giảm — chỉ dùng khi loại giảm là percent.
+
           if (body.discountType === undefined || body.discountType === 'percent') {
             promo.discount = body.discountValue;
           }
@@ -85,10 +83,9 @@ export const Route = createFileRoute('/api/seller/promotions/$id')({
         return ok(toSellerPromotion(promo));
       }),
 
-      /** Xoá chương trình khuyến mãi của cửa hàng. */
-      DELETE: withErrorHandling(async ({ params, context }) => {
+            DELETE: withErrorHandling(async ({ params, context }) => {
         await connectDB();
-        // Xoá là thao tác ghi -> bắt buộc có một cửa hàng cụ thể.
+
         const storeId = getStoreScope(context).require();
 
         const promo = await PromotionModel.findById(params.id);

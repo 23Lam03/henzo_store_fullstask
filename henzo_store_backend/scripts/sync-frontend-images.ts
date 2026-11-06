@@ -1,15 +1,3 @@
-/**
- * Đồng bộ ảnh THẬT (đã resolve từ Wikimedia) vào dữ liệu mock của frontend.
- *
- * Vì sao cần:
- * - `henzo_store/src/data/products.ts` và `sellerData.ts` là FALLBACK khi
- *   backend chưa sẵn sàng. Nếu chúng giữ ảnh stock Unsplash thì người dùng
- *   lại thấy ảnh sai.
- * - Sau khi đồng bộ, cả frontend lẫn backend đều trỏ tới CÙNG bộ ảnh thật
- *   -> không còn sự khác biệt giữa 2 nguồn.
- *
- * Chạy: npx tsx scripts/sync-frontend-images.ts
- */
 import { readFileSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { modelName } from './lib/model-name';
@@ -21,7 +9,6 @@ interface ModelImages {
   title: string;
 }
 
-/** Đường dẫn thư mục data của frontend. */
 const FRONTEND_DATA = resolve(process.cwd(), '../henzo_store/src/data');
 
 function loadModelImages(): Record<string, ModelImages> {
@@ -44,12 +31,6 @@ function loadModelImages(): Record<string, ModelImages> {
   }
 }
 
-/**
- * Ghi ảnh thật vào mảng `images` của một khối sản phẩm trong file TS.
- *
- * File frontend là TypeScript sinh tay, nên ta thay thế theo vị trí dòng
- * để giữ nguyên format (dấu nháy đơn, thụt lề).
- */
 function replaceImagesBlock(
   source: string,
   startIdx: number,
@@ -60,7 +41,6 @@ function replaceImagesBlock(
   const close = source.indexOf('],', open);
   if (close < 0) return source;
 
-  // Giữ thụt lề của dòng `images: [`.
   const lineStart = source.lastIndexOf('\n', open) + 1;
   const indent = source.slice(lineStart, open);
 
@@ -79,8 +59,7 @@ async function main() {
     return;
   }
 
-  /** Tìm pool ảnh cho 1 tên sản phẩm (kèm fallback model cha). */
-  const poolFor = (name: string): string[] | null => {
+    const poolFor = (name: string): string[] | null => {
     const own = MODEL_IMAGES[modelName(name)]?.images;
     if (own?.length) return own;
     for (const parent of modelParentChain(modelName(name))) {
@@ -90,12 +69,10 @@ async function main() {
     return null;
   };
 
-  // ─── 1. products.ts ────────────────────────────────────────────────────────
   const productsPath = resolve(FRONTEND_DATA, 'products.ts');
   let productsSrc = readFileSync(productsPath, 'utf-8');
   const before = productsSrc;
 
-  // Mỗi sản phẩm bắt đầu bằng `name: '...'`.
   const nameRe = /name:\s*'([^']+)'/g;
   let m: RegExpExecArray | null;
   const patches: Array<{ start: number; images: string[] }> = [];
@@ -105,7 +82,6 @@ async function main() {
     patches.push({ start: m.index, images: pool.slice(0, 5) });
   }
 
-  // Áp từ CUỐI về ĐẦU để không làm lệch chỉ số.
   for (const p of patches.reverse()) {
     productsSrc = replaceImagesBlock(productsSrc, p.start, p.images);
   }

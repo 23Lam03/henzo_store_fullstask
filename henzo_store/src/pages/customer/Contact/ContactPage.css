@@ -19,8 +19,6 @@
   margin: 0 auto;
   line-height: 1.6;
 }
-
-/* Layout */
 .contact-layout {
   display: grid;
   grid-template-columns: 1fr 380px;
@@ -39,15 +37,11 @@
   font-size: var(--font-size-sm);
   color: var(--color-text-secondary);
 }
-
-/* Form */
 .contact-form {
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
 }
-
-/* Info Section */
 .contact-info-section {
   display: flex;
   flex-direction: column;
@@ -104,8 +98,6 @@
   font-weight: 700;
   color: var(--color-text-primary);
 }
-
-/* Social */
 .contact-social-list {
   padding: var(--space-4) var(--space-5) var(--space-5);
   display: flex;
@@ -148,8 +140,6 @@
   font-size: var(--font-size-xs);
   color: var(--color-text-muted);
 }
-
-/* FAQ */
 .contact-faq-list {
   padding: var(--space-4) var(--space-5);
   display: flex;
@@ -183,8 +173,6 @@
   color: var(--color-primary);
   font-weight: 600;
 }
-
-/* Branches */
 .contact-branches {
   margin-bottom: var(--space-10);
 }
@@ -261,8 +249,6 @@
 .contact-branch-card__row a:hover {
   text-decoration: underline;
 }
-
-/* Success State */
 .contact-page__success {
   min-height: 60vh;
   display: flex;
@@ -313,8 +299,6 @@
   margin-bottom: var(--space-6);
   line-height: 1.8;
 }
-
-/* Responsive */
 @media (max-width: 1024px) {
   .contact-layout {
     grid-template-columns: 1fr;

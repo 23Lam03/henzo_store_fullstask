@@ -1,9 +1,3 @@
-/**
- * Mật khẩu & token.
- * - Hash: bcryptjs (thuần JS, không cần native binding)
- * - Access token: JWT ngắn hạn, trả về trong body để client lưu localStorage
- * - Refresh token: JWT dài hạn, nằm trong cookie httpOnly
- */
 import bcrypt from 'bcryptjs';
 import jwt, { type SignOptions } from 'jsonwebtoken';
 import { config } from '../../config/env';
@@ -23,9 +17,9 @@ export async function verifyPassword(
 }
 
 export interface TokenPayload {
-  sub: string; // userId
+  sub: string;
   role: string;
-  storeId?: string; // dành cho role SHOP
+  storeId?: string;
   type: 'access' | 'refresh';
 }
 
@@ -65,7 +59,6 @@ export function verifyRefreshToken(token: string): TokenPayload | null {
   }
 }
 
-/** Sinh mã đơn hàng dạng HDN-YYYYMMDD-XXX */
 export function buildOrderNumber(date = new Date()): string {
   const y = date.getFullYear();
   const m = String(date.getMonth() + 1).padStart(2, '0');
@@ -74,12 +67,10 @@ export function buildOrderNumber(date = new Date()): string {
   return `HDN-${y}${m}${d}-${suffix}`;
 }
 
-/** Sinh mã ticket hỗ trợ dạng TKTSPT-XXX */
 export function buildTicketCode(seq: number): string {
   return `TKTSPT-${String(seq).padStart(3, '0')}`;
 }
 
-/** Sinh mã giao dịch thanh toán. */
 export function buildTransactionId(): string {
   return `TXN${Date.now()}${Math.floor(Math.random() * 1000)
     .toString()

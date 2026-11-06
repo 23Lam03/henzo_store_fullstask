@@ -25,11 +25,7 @@ export const Route = createFileRoute('/api/admin/access/staff')({
   server: {
     middleware: [corsMiddleware, requireAuth, requireAdmin, requirePermission('Phân quyền')],
     handlers: {
-      /**
-       * Danh sách nhân sự quản trị + ma trận quyền hạn theo vai trò.
-       * Khớp với trang "Quản Lý Phân Quyền" của frontend.
-       */
-      GET: withErrorHandling(async ({ request }) => {
+            GET: withErrorHandling(async ({ request }) => {
         await connectDB();
         const url = new URL(request.url);
         const sp = url.searchParams;
@@ -73,8 +69,7 @@ export const Route = createFileRoute('/api/admin/access/staff')({
         });
       }),
 
-      /** Thêm nhân sự quản trị mới. */
-      POST: withErrorHandling(async ({ request }) => {
+            POST: withErrorHandling(async ({ request }) => {
         await connectDB();
         const body = await readJson(request, staffSchema);
 

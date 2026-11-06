@@ -1,6 +1,3 @@
-/**
- * THAY ẢNH ĐỘNG VẬT / SAI LOẠI trong DB bằng ảnh đúng loại từ pool đã lọc.
- */
 import { connectDB, disconnectDB } from '../../src/server/db';
 import { ProductModel } from '../../src/server/models/Product';
 import { modelName } from '../../lib/model-name';
@@ -39,7 +36,6 @@ for (const [model, list] of byModel) {
   if (main) primaryOwner.set(main, model);
 }
 
-/** Ảnh pool nào đã dùng làm ảnh chính. */
 const poolUsed = new Set(primaryOwner.keys());
 
 let fixed = 0;

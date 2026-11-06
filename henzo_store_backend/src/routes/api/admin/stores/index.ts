@@ -11,7 +11,6 @@ import { StoreStatus } from '@/server/constants';
 import { badRequest, conflict } from '@/server/http/errors';
 import { connectDB } from '@/server/db';
 
-/** Escape regex để tìm kiếm an toàn. */
 function escapeRegex(text: string): string {
   return text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
@@ -38,7 +37,6 @@ const storeSchema = z.object({
   bankName: z.string().trim().max(100).optional().default(''),
 });
 
-/** Sinh slug từ tên khi admin không cung cấp. */
 function slugify(input: string): string {
   return input
     .toLowerCase()
@@ -54,8 +52,7 @@ export const Route = createFileRoute('/api/admin/stores/')({
   server: {
     middleware: [corsMiddleware, requireAuth, requireAdmin],
     handlers: {
-      /** Danh sách cửa hàng (có lọc theo trạng thái / xác minh / tìm kiếm). */
-      GET: withErrorHandling(async ({ request }) => {
+            GET: withErrorHandling(async ({ request }) => {
         await connectDB();
         const url = new URL(request.url);
         const sp = url.searchParams;
@@ -101,8 +98,7 @@ export const Route = createFileRoute('/api/admin/stores/')({
         );
       }),
 
-      /** Tạo cửa hàng mới. */
-      POST: withErrorHandling(async ({ request }) => {
+            POST: withErrorHandling(async ({ request }) => {
         await connectDB();
         const body = await readJson(request, storeSchema);
 

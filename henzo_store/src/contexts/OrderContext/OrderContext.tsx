@@ -65,8 +65,7 @@ export const OrderProvider = ({ children }: { children: ReactNode }) => {
     };
   }, [refresh]);
 
-  /** Đặt hàng — server tính lại tiền, trừ kho & tạo vận đơn. */
-  const createOrder = useCallback(async (input: CreateOrderInput): Promise<Order> => {
+    const createOrder = useCallback(async (input: CreateOrderInput): Promise<Order> => {
     const order = await ordersApi.create(input);
     setOrders(prev => [order, ...prev]);
     return order;

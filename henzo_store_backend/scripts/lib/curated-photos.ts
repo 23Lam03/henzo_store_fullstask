@@ -1,27 +1,8 @@
-/**
- * POOL ẢNH THẬT ĐÃ KIỂM CHỨNG từ Wikimedia Commons.
- *
- * Mỗi ảnh đã được kiểm tra:
- *  - tồn tại trên Commons (URL API xác nhận)
- *  - là ẢNH SẢN PHẨM THẬT (không phải ảnh người, booth, sự kiện, logo)
- *  - đúng LOẠI sản phẩm (headset / mouse / SSD / ...)
- *
- * Dùng cho các model KHÔNG có ảnh riêng trên Commons (dòng niche):
- *   "Corsair HS60 Wireless"  -> Corsair headset thật  -> ST100VoidPro.jpg
- *   "Crucial T500"           -> Crucial SSD thật      -> Crucial MX100/MX300
- *   "HyperX Cloud Alpha"     -> headset thật đúng loại
- *
- * Ảnh chính được phân bổ lại (distributePrimaryImages) nên mỗi model có
- * ảnh chính RIÊNG -> trang chủ không hiển thị trùng lặp.
- */
 export interface CuratedPhoto {
-  /** Tên file Commons (không kèm "File:"). */
-  file: string;
-  /** Mô tả ngắn. */
-  desc: string;
+    file: string;
+    desc: string;
 }
 
-/** Ảnh HEADSET thật (đúng loại "tai nghe"). */
 export const HEADSET_PHOTOS: CuratedPhoto[] = [
   { file: 'ST100VoidPro.jpg', desc: 'CORSAIR ST100 and Void Pros' },
   { file: 'Casques d\'écoute de podcast.jpg', desc: 'Des casques d\'écoute Corsair' },
@@ -35,7 +16,6 @@ export const HEADSET_PHOTOS: CuratedPhoto[] = [
   { file: 'PS4-Headset.jpg', desc: 'PS4-Headset' },
 ];
 
-/** Ảnh CHUỘT thật (đúng loại "chuột"). */
 export const MOUSE_PHOTOS: CuratedPhoto[] = [
   { file: 'Corsair Katar Pro Wireless.jpg', desc: 'Corsair Katar Pro Wireless' },
   { file: 'Corsair Scimitar 2 2017-01-01.jpg', desc: 'Corsair Scimitar' },
@@ -51,7 +31,6 @@ export const MOUSE_PHOTOS: CuratedPhoto[] = [
   { file: 'Raton de PC.jpg', desc: 'Ratón de PC con luces' },
 ];
 
-/** Ảnh SSD / Ổ cứng thật (đúng loại "PC Gaming" - storage). */
 export const STORAGE_PHOTOS: CuratedPhoto[] = [
   { file: 'Crucial MX100 SSD 256GB 20140905.jpg', desc: 'Crucial MX100 256GB SSD' },
   { file: 'Crucial SSD MX300 525GB-8478.jpg', desc: 'Crucial SSD MX300 525GB, 2.5"' },
@@ -61,13 +40,11 @@ export const STORAGE_PHOTOS: CuratedPhoto[] = [
   { file: 'MSATA SSD.jpg', desc: '256GB MSATA SSD' },
 ];
 
-/** Ảnh BÀN PHÍM thật. */
 export const KEYBOARD_PHOTOS: CuratedPhoto[] = [
   { file: 'Corsair K65 1 2017-01-01.jpg', desc: 'Corsair K65 keyboard' },
   { file: 'Corsair K60.jpg', desc: 'Corsair K60 keyboard' },
 ];
 
-/** Pool theo tên danh mục (tiếng Việt). */
 export const CATEGORY_PHOTO_POOL: Record<string, CuratedPhoto[]> = {
   'Tai nghe': HEADSET_PHOTOS,
   Chuột: MOUSE_PHOTOS,
@@ -75,11 +52,6 @@ export const CATEGORY_PHOTO_POOL: Record<string, CuratedPhoto[]> = {
   'Bàn phím': KEYBOARD_PHOTOS,
 };
 
-/**
- * Ảnh RIÊNG theo hãng + loại — ưu tiên cao hơn pool chung.
- *
- * Ví dụ "Corsair HS60 Wireless" -> ảnh Corsair headset thật, đúng hãng.
- */
 export const BRAND_CATEGORY_PHOTOS: Record<string, CuratedPhoto[]> = {
   'Corsair|Tai nghe': [
     { file: 'ST100VoidPro.jpg', desc: 'CORSAIR ST100 and Void Pros' },

@@ -1,11 +1,3 @@
-/**
- * DÒ ẢNH THẬT QUA WIKIPEDIA (pageimages) CHO CÁC MODEL CÒN THIẾU.
- *
- * Wikipedia có bài riêng cho phần lớn model (Corsair HS60, Zowie XL2546X,
- * FireCuda 530, Odyssey G9...) với ảnh chính đúng sản phẩm.
- * Song song: lấy luôn tên file Commons gốc (qua prop=pageimages + imageinfo)
- * để đưa vào curated-model-files.json.
- */
 import { readFileSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
@@ -30,7 +22,6 @@ async function getJson(url: string): Promise<any> {
 
 const LANGS = ['en', 'de', 'fr', 'es', 'ja', 'zh', 'pl', 'ru', 'it', 'pt'];
 
-/** Tìm bài Wikipedia (kèm ảnh) khớp model. */
 async function wikiHit(model: string, lang: string) {
   const d = await getJson(
     `https://${lang}.wikipedia.org/w/api.php?action=query&format=json` +
@@ -48,7 +39,6 @@ async function wikiHit(model: string, lang: string) {
   return out;
 }
 
-/** Lấy tên file Commons gốc của ảnh Wikipedia (qua pageimage -> Commons). */
 async function commonsFileFor(
   title: string,
   lang: string,
@@ -60,7 +50,7 @@ async function commonsFileFor(
   const p = Object.values<any>(d?.query?.pages ?? {})[0];
   const name = p?.pageimage ?? null;
   if (!name) return null;
-  // Chuyển tên file sang Commons.
+
   const c = await getJson(
     `https://commons.wikimedia.org/w/api.php?action=query&format=json` +
       `&titles=${encodeURIComponent(`File:${name}`)}&prop=imageinfo&iiprop=url|mime&iiurlwidth=1000`,
@@ -71,7 +61,6 @@ async function commonsFileFor(
   return { file: String(cp.title).replace(/^File:/, ''), url: String(ii.thumburl ?? ii.url) };
 }
 
-/** Danh sách model cần dò (lấy từ audit: ảnh chính chưa đúng model). */
 const MODELS: string[] = [
   'AOC CU34G2X 34in',
   'ASUS ROG Harpe Ace Aim Lab Edition',
@@ -114,7 +103,6 @@ const MODELS: string[] = [
   'Samsung Galaxy Tab S9',
 ];
 
-/** Rút "code" đặc trưng để so khớp tiêu đề bài viết. */
 function codeOf(model: string): string {
   const m = model.replace(/\s+\d+(\.\d+)?in\b/i, '').trim();
   const parts = m.split(/\s+/).filter((w) => !/^(wireless|rgb|usb|gaming|esports|carbon|qhd|oled|pro|plus|max|mini|deep|2k|tổng|hợp|in)$/i.test(w));
@@ -133,7 +121,7 @@ async function main() {
         const pages = await wikiHit(code, lang);
         for (const p of pages) {
           if (!p.thumb) continue;
-          // Chỉ giữ bài mà tiêu đề chứa phần lớn code.
+
           const t = p.title.toLowerCase();
           const key = code
             .toLowerCase()

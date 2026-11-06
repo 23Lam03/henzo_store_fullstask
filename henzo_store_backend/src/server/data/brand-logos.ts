@@ -1,17 +1,5 @@
-/**
- * Logo thương hiệu — SVG thật, không phải ảnh stock.
- *
- * Trước đây logo lấy từ Unsplash (ảnh stock ngẫu nhiên): Sony hiện con mèo,
- * SteelSeries hiện vương miện, JBL hiện tai nghe, MSI trùng với Apple...
- * — không cái nào là logo thật. Giờ dùng:
- *
- * - **Simple Icons** (https://simpleicons.org) — logo vector chính xác, CC0.
- *   Endpoint: https://cdn.simpleicons.org/<slug>[/<màu>]
- * - **Wikimedia Commons** cho các hãng không có trong Simple Icons.
- *   URL đã tra cứu qua API `titles=` + kiểm tra HTTP 200.
- */
 export const BRAND_LOGOS: Record<string, string> = {
-  // ─── Hãng có logo trong Simple Icons ───────────────────────────────────
+
   Apple: 'https://cdn.simpleicons.org/apple/000000',
   Samsung: 'https://cdn.simpleicons.org/samsung/1428A0',
   ASUS: 'https://cdn.simpleicons.org/asus/0057B8',
@@ -43,12 +31,6 @@ export const BRAND_LOGOS: Record<string, string> = {
   Kingston: 'https://cdn.simpleicons.org/kingstontechnology/B01E24',
 };
 
-/**
- * Hãng KHÔNG có trong Simple Icons -> dùng logo chính thức trên Wikimedia.
- *
- * URL lấy từ API `action=query&titles=File:<tên>&prop=imageinfo` (đã kiểm
- * tra HTTP 200), ảnh ở dạng PNG 500px render từ SVG gốc.
- */
 export const BRAND_LOGOS_COMMONS: Record<string, string> = {
   Logitech:
     'https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Logitech_logo.svg/500px-Logitech_logo.svg.png',
@@ -80,7 +62,6 @@ export const BRAND_LOGOS_COMMONS: Record<string, string> = {
     'https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/8go_de_Ram_ddr3_1600mhz_G.SKILL.jpg/500px-8go_de_Ram_ddr3_1600mhz_G.SKILL.jpg',
 };
 
-/** Màu thương hiệu (dùng cho banner / overlay / chữ). */
 export const BRAND_COLORS: Record<string, string> = {
   Apple: '#1d1d1f',
   Samsung: '#1428a0',
@@ -131,26 +112,14 @@ export const BRAND_COLORS: Record<string, string> = {
   Crucial: '#0b8ecb',
 };
 
-/**
- * Lấy logo của một hãng.
- *
- * @returns URL logo, hoặc `''` nếu hãng không có logo (frontend hiện chữ).
- */
 export function brandLogo(brand: string): string {
   const key = brand.trim();
   const found = BRAND_LOGOS[key] ?? BRAND_LOGOS_COMMONS[key];
   if (found) return found;
-  // Hãng niche không có logo tự do trên Wikimedia (ROCCAT, Endgame Gear...)
-  // -> dùng monogram SVG do ta tự sinh, thay cho identicon dicebear.
+
   return monogramLogo(key);
 }
 
-/**
- * Sinh logo monogram SVG (data URI) cho hãng chưa có logo thật.
- *
- * Trước đây các hãng này dùng `api.dicebear.com/.../identicon` — hiện ra
- * các hình quân rút ngẫu nhiên, không liên quan gì tới thương hiệu.
- */
 function monogramLogo(brand: string): string {
   const initials = brand
     .split(/\s+/)
@@ -169,7 +138,6 @@ function monogramLogo(brand: string): string {
   return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
 }
 
-/** Lấy màu thương hiệu. */
 export function brandColor(brand: string): string {
   return BRAND_COLORS[brand.trim()] ?? '#4f46e5';
 }

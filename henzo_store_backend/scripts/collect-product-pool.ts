@@ -1,12 +1,3 @@
-/**
- * Sưu tầm pool ảnh SẢN PHẨM THẬT theo loại từ Commons.
- *
- * Chỉ nhận ảnh:
- *  - là ảnh chụp sản phẩm (không có người, không phải sự kiện/booth)
- *  - nằm trong category sản phẩm
- *
- * Chạy: npx tsx scripts/collect-product-pool.ts
- */
 import { writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
@@ -29,7 +20,6 @@ async function getJson(url: string): Promise<any> {
   return null;
 }
 
-/** Ảnh có người / sự kiện / bối cảnh -> không phải ảnh sản phẩm. */
 const NOT_PRODUCT =
   /\b(booth|game ?show|gamescom|comiket|esport|e-?sports|tournament|championship|person|people|man |woman |player |players|team |streamer|interview|autograph|meet and greet|fan |crowd|audience|stage|panel|signing|podium|exhibition|messe|trade show|fair|museum|shop |store |office|desk |setup|interior|box|package|unboxing|review|teardown|disassembl|schematic|circuit|motherboard|mainboard|module|stick|ram |sodimm|dimm\b)/i;
 
@@ -100,12 +90,11 @@ async function main() {
     const files = new Set<string>();
     for (const c of cats) for (const f of await catFiles(c)) files.add(f);
 
-    // Lấy mô tả để lọc.
     const all = await infoOf([...files]);
     const good = all.filter((f) => {
       const text = `${f.title} ${f.desc}`;
       if (NOT_PRODUCT.test(text)) return false;
-      // Phải nhắc đúng loại sản phẩm.
+
       const t = text.toLowerCase();
       const typeOk =
         cat === 'Tai nghe'

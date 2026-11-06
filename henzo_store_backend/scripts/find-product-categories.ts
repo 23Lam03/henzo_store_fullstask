@@ -1,10 +1,3 @@
-/**
- * TÌM TÊN CATEGORY COMMONS THẬT cho (hãng + loại sản phẩm).
- *
- * Dùng list=search với namespace 14 (Category).
- *
- * Chạy: npx tsx scripts/find-product-categories.ts
- */
 import { getJson } from './lib/commons-files';
 
 const QUERIES: Array<[string, string]> = [

@@ -1,9 +1,3 @@
-/**
- * GÁN ẢNH THỦ CÔNG CHO 3 MODEL CUỐI (Commons không có ảnh riêng).
- *
- * Dùng ảnh cùng hãng + cùng loại đã được kiểm chứng sẵn trong
- * `scripts/data/curated-model-files.json`.
- */
 import { connectDB, disconnectDB } from '../../src/server/db';
 import { ProductModel } from '../../src/server/models/Product';
 import { readFileSync } from 'node:fs';
@@ -18,7 +12,6 @@ const curated = JSON.parse(
   ),
 ) as Record<string, any>;
 
-/** model -> tên file Commons dùng làm ảnh chính. */
 const ASSIGN: Record<string, string> = {
   'HyperX Cloud Alpha Wireless':
     'Sony WH-CH510 Bluetooth Over-Ear Headphone.jpg',
@@ -28,7 +21,6 @@ const ASSIGN: Record<string, string> = {
   'Zowie XL2566K 27in': 'BenQ monitors (XL2420T XL2410T).jpg',
 };
 
-/** Tìm URL của file trong curated (dạng { images: [...] }). */
 function urlFor(file: string): string | null {
   for (const v of Object.values(curated)) {
     const list: string[] = Array.isArray(v) ? v : (v?.images ?? []);

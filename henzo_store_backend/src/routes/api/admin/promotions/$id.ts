@@ -27,16 +27,14 @@ export const Route = createFileRoute('/api/admin/promotions/$id')({
   server: {
     middleware: [corsMiddleware, requireAuth, requireAdmin, requirePermission('Quản lý khuyến mãi')],
     handlers: {
-      /** Chi tiết chương trình khuyến mãi. */
-      GET: withErrorHandling(async ({ params }) => {
+            GET: withErrorHandling(async ({ params }) => {
         await connectDB();
         const promo = await PromotionModel.findById(params.id).lean();
         if (!promo) throw notFound('Không tìm thấy chương trình');
         return ok(toPromotionDto(promo));
       }),
 
-      /** Cập nhật chương trình khuyến mãi. */
-      PATCH: withErrorHandling(async ({ request, params }) => {
+            PATCH: withErrorHandling(async ({ request, params }) => {
         await connectDB();
         const body = await readJson(request, updateSchema);
 
@@ -63,8 +61,7 @@ export const Route = createFileRoute('/api/admin/promotions/$id')({
         return ok(toPromotionDto(promo));
       }),
 
-      /** Xoá chương trình khuyến mãi. */
-      DELETE: withErrorHandling(async ({ params }) => {
+            DELETE: withErrorHandling(async ({ params }) => {
         await connectDB();
         const promo = await PromotionModel.findById(params.id);
         if (!promo) throw notFound('Không tìm thấy chương trình');

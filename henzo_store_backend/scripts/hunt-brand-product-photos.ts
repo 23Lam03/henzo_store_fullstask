@@ -1,12 +1,3 @@
-/**
- * SĂN ẢNH SẢN PHẨM CHO BRAND CÒN THIẾU.
- *
- * Chiến lược: CirrusSearch với `intitle:<brand>` + từ khóa loại sản phẩm,
- * rồi xác minh file qua CATEGORY Commons (file phải nằm trong category sản
- * phẩm của hãng và không có dấu hiệu sự kiện / người / teardown).
- *
- * Chạy: npx tsx scripts/hunt-brand-product-photos.ts
- */
 import { writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { getJson } from './lib/commons-files';
@@ -14,15 +5,11 @@ import { getJson } from './lib/commons-files';
 interface Hunt {
   brand: string;
   type: string;
-  /** Từ khóa CirrusSearch (nhiều biến thể). */
-  queries: string[];
-  /** Từ khóa bắt buộc có trong tên file (không phân biệt hoa thường). */
-  must: string[];
-  /** Từ khóa loại trừ trong tên file. */
-  not?: string[];
+    queries: string[];
+    must: string[];
+    not?: string[];
 }
 
-/** Category chứa ảnh sản phẩm (dùng để xác minh). */
 const PRODUCT_CAT = new RegExp(
   [
     'headset|headphone|earphone|earbud',
@@ -45,7 +32,6 @@ const PRODUCT_CAT = new RegExp(
   'i',
 );
 
-/** Category loại (người / sự kiện / teardown...). */
 const BAD_CAT = new RegExp(
   [
     'people|person|\\bman\\b|\\bwoman\\b|player|gamer|wearing|holding',
@@ -73,7 +59,7 @@ const BAD_DESC = new RegExp(
 );
 
 const HUNTS: Hunt[] = [
-  // ── Gigabyte: màn hình + laptop ──
+
   {
     brand: 'Gigabyte',
     type: 'MONITOR',
@@ -96,7 +82,6 @@ const HUNTS: Hunt[] = [
     not: ['booth', 'logo'],
   },
 
-  // ── Razer: màn hình ──
   {
     brand: 'Razer',
     type: 'MONITOR',
@@ -105,7 +90,6 @@ const HUNTS: Hunt[] = [
     not: ['booth', 'logo', 'blade', 'edge', 'forge', 'onza', 'controller', 'naga', 'deathadder', 'mouse', 'keyboard'],
   },
 
-  // ── HyperX: tai nghe ──
   {
     brand: 'HyperX',
     type: 'HEADSET',
@@ -119,7 +103,6 @@ const HUNTS: Hunt[] = [
     not: ['booth', 'logo', 'chair', 'fury', 'ram', 'predator', 'ssd', 'hx4'],
   },
 
-  // ── Corsair: tai nghe / chuột / bàn phím ──
   {
     brand: 'Corsair',
     type: 'HEADSET',
@@ -142,7 +125,6 @@ const HUNTS: Hunt[] = [
     not: ['booth', 'logo', 'aircraft', 'ship', 'car'],
   },
 
-  // ── SteelSeries ──
   {
     brand: 'SteelSeries',
     type: 'HEADSET',
@@ -165,7 +147,6 @@ const HUNTS: Hunt[] = [
     not: ['booth', 'logo', 'hebrew', 'faceit'],
   },
 
-  // ── Endgame Gear ──
   {
     brand: 'Endgame Gear',
     type: 'MOUSE',
@@ -174,7 +155,6 @@ const HUNTS: Hunt[] = [
     not: ['avengers', 'logo', 'endgame ('],
   },
 
-  // ── G.Skill ──
   {
     brand: 'G.Skill',
     type: 'RAM',
@@ -183,7 +163,6 @@ const HUNTS: Hunt[] = [
     not: ['booth', 'logo', 'promotional', 'computex'],
   },
 
-  // ── Zowie / BenQ ──
   {
     brand: 'BenQ',
     type: 'MONITOR',
@@ -192,7 +171,6 @@ const HUNTS: Hunt[] = [
     not: ['booth', 'logo', 'projector', 'camera', 'printer'],
   },
 
-  // ── LG UltraGear ──
   {
     brand: 'LG',
     type: 'MONITOR',
@@ -201,7 +179,6 @@ const HUNTS: Hunt[] = [
     not: ['booth', 'logo', 'gram', 'tv', 'phone', 'laptop'],
   },
 
-  // ── ViewSonic ──
   {
     brand: 'ViewSonic',
     type: 'MONITOR',
@@ -210,7 +187,6 @@ const HUNTS: Hunt[] = [
     not: ['booth', 'logo', 'stage', 'station', 'gaming show'],
   },
 
-  // ── Philips ──
   {
     brand: 'Philips',
     type: 'MONITOR',
@@ -219,7 +195,6 @@ const HUNTS: Hunt[] = [
     not: ['booth', 'logo', 'ambilight', 'wolips', 'television'],
   },
 
-  // ── HP Omen ──
   {
     brand: 'HP',
     type: 'MONITOR',
@@ -228,7 +203,6 @@ const HUNTS: Hunt[] = [
     not: ['booth', 'logo', 'laptop', 'notebook', 'omen 15'],
   },
 
-  // ── Samsung Odyssey ──
   {
     brand: 'Samsung',
     type: 'MONITOR',
@@ -237,7 +211,6 @@ const HUNTS: Hunt[] = [
     not: ['booth', 'logo', 'phone', 'tablet', 'ssd', 'laptop'],
   },
 
-  // ── Dell Alienware ──
   {
     brand: 'Dell',
     type: 'MONITOR',
@@ -246,7 +219,6 @@ const HUNTS: Hunt[] = [
     not: ['booth', 'logo', 'desktop', 'laptop', 'area-51'],
   },
 
-  // ── MSI MAG ──
   {
     brand: 'MSI',
     type: 'MONITOR',
@@ -255,7 +227,6 @@ const HUNTS: Hunt[] = [
     not: ['booth', 'logo', 'laptop', 'notebook', 'raider', 'katana', 'stealth', 'gaming'],
   },
 
-  // ── ASUS mouse ──
   {
     brand: 'Asus',
     type: 'MOUSE',
@@ -264,7 +235,6 @@ const HUNTS: Hunt[] = [
     not: ['booth', 'logo', 'phone', 'ally', 'keyboard', 'laptop'],
   },
 
-  // ── HP Omen / Gigabyte / Zowie: phụ kiện ──
   {
     brand: 'Razer',
     type: 'ACCESSORY',
@@ -320,7 +290,6 @@ async function main() {
       await new Promise((s) => setTimeout(s, 120));
     }
 
-    // Lọc theo tên file trước (rẻ).
     const byName = [...cands].filter((f) => {
       const n = f.toLowerCase();
       if (!h.must.some((m) => n.includes(m))) return false;
@@ -328,7 +297,6 @@ async function main() {
       return true;
     });
 
-    // Xác minh qua category.
     const info = await fileInfo(byName.slice(0, 400));
     const clean = byName.filter((f) => {
       const m = info.get(f);

@@ -59,7 +59,7 @@ export const ShopInventoryPage = () => {
         </div>
       </div>
 
-      {/* Alerts */}
+      {}
       {(outOfStockCount > 0 || lowStockCount > 0) && (
         <div className="seller-inventory__alerts">
           {outOfStockCount > 0 && (
@@ -77,7 +77,7 @@ export const ShopInventoryPage = () => {
         </div>
       )}
 
-      {/* Stats */}
+      {}
       <div className="admin-stats admin-stats--4">
         <div className="seller-inv-stat">
           <p className="seller-inv-stat__label">Tổng sản phẩm</p>
@@ -97,7 +97,7 @@ export const ShopInventoryPage = () => {
         </div>
       </div>
 
-      {/* Filters */}
+      {}
       <div className="seller-inventory__toolbar">
         <div className="seller-tabs" style={{ borderBottom: 'none', marginBottom: 0 }}>
           {STOCK_FILTERS.map(f => (
@@ -115,7 +115,7 @@ export const ShopInventoryPage = () => {
         </div>
       </div>
 
-      {/* Table */}
+      {}
       <div className="admin-section">
         <div className="seller-table-wrap">
           <table className="seller-table">

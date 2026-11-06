@@ -1,6 +1,3 @@
-/**
- * Probe pool ảnh THẬT theo LOẠI sản phẩm (dùng làm fallback cuối).
- */
 import { writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 

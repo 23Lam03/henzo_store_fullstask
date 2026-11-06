@@ -12,7 +12,6 @@ interface ProductCardProps {
   viewMode?: 'grid' | 'list';
 }
 
-/** Ảnh dự phòng khi ảnh thật không tải được. */
 const FALLBACK_IMAGE =
   'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=400';
 
@@ -27,7 +26,6 @@ export const ProductCard = ({ product, viewMode = 'grid' }: ProductCardProps) =>
   const navigate = useNavigate();
   const inWishlist = isInWishlist(product.id);
 
-  // Nhịp đập nhẹ khi bấm yêu thích
   const [beat, setBeat] = useState(false);
   const beatTimer = useRef<number | undefined>(undefined);
 
@@ -38,7 +36,7 @@ export const ProductCard = ({ product, viewMode = 'grid' }: ProductCardProps) =>
   const triggerBeat = () => {
     setBeat(false);
     if (beatTimer.current) window.clearTimeout(beatTimer.current);
-    // Ép trình duyệt vẽ lại để animation chạy lại từ đầu
+
     requestAnimationFrame(() => setBeat(true));
     beatTimer.current = window.setTimeout(() => setBeat(false), 560);
   };
@@ -119,8 +117,7 @@ export const ProductCard = ({ product, viewMode = 'grid' }: ProductCardProps) =>
     </div>
   );
 
-  /* ── LIST VIEW ───────────────────────────────────────────────────────── */
-  if (viewMode === 'list') {
+    if (viewMode === 'list') {
     return (
       <div className="product-card product-card--list">
         <Link
@@ -212,8 +209,7 @@ export const ProductCard = ({ product, viewMode = 'grid' }: ProductCardProps) =>
     );
   }
 
-  /* ── GRID VIEW ───────────────────────────────────────────────────────── */
-  return (
+    return (
     <div className="product-card">
       <Link to={productUrl} className="product-card__image-wrap">
         <img

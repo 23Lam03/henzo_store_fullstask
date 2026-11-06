@@ -1,22 +1,7 @@
-/**
- * HARVEST ẢNH SẢN PHẨM TỪ CATEGORY COMMONS — bản dùng tên category THẬT.
- *
- * Chiến lược 2 tầng:
- *   1. Category hãng + loại (vd "Category:Corsair headsets") -> ảnh chụp sản
- *      phẩm của hãng đó.
- *   2. Category theo MODEL cụ thể (vd "Category:Samsung 870 QVO") -> ảnh
- *      chính xác model.
- *
- * Mỗi file được kiểm tra lại bằng CATEGORY của nó: chỉ giữ file nằm trong
- * category sản phẩm và không nằm trong category người/sự kiện/teardown.
- *
- * Chạy: npx tsx scripts/harvest-product-categories.ts
- */
 import { writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { getJson } from './lib/commons-files';
 
-/** Category của file -> loại sản phẩm. */
 const TYPE_CATS: Array<[string, RegExp]> = [
   ['HEADSET', /headset|headphone|earphone|earbud|head ?band/i],
   ['MONITOR', /monitor|display/i],
@@ -37,12 +22,6 @@ const TYPE_CATS: Array<[string, RegExp]> = [
   ['PHONE', /smartphone|mobile phone|\biphone\b|galaxy [saz]|pixel/i],
 ];
 
-/**
- * Category bị loại (ảnh người / sự kiện / linh kiện rời / logo).
- *
- * LƯU Ý: phải bắt cả dạng số nhiều ("exhibit stands", "Corsair exhibit
- * stands at the Tokyo Game Show 2023") — dùng \b...\b + optional s.
- */
 const BAD_CAT = new RegExp(
   [
     'people|person|\\bman\\b|\\bwoman\\b|\\bboy\\b|\\bgirl\\b|player|gamer',
@@ -64,7 +43,6 @@ const BAD_CAT = new RegExp(
   'i',
 );
 
-/** Mô tả (ImageDescription) chứa từ khóa này -> ảnh sự kiện / người. */
 const BAD_DESC = new RegExp(
   [
     'booth|exhibit|stand|showroom|exhibition|\\bexpo\\b|convention',
@@ -77,7 +55,6 @@ const BAD_DESC = new RegExp(
   'i',
 );
 
-/** File bị loại theo tên. */
 const BAD_FILE = new RegExp(
   [
     'booth|gamescom|computex|it ?month|tokyo ?game|showroom|exhibition',
@@ -91,12 +68,8 @@ const BAD_FILE = new RegExp(
   'i',
 );
 
-/**
- * Danh sách category gốc theo hãng + loại.
- * (category thật trên Commons, đã verify)
- */
 const ROOT_CATS: Array<{ cat: string; brand: string }> = [
-  // Tai nghe
+
   { cat: 'Corsair headsets', brand: 'Corsair' },
   { cat: 'HyperX headsets', brand: 'HyperX' },
   { cat: 'SteelSeries headsets', brand: 'SteelSeries' },
@@ -108,7 +81,6 @@ const ROOT_CATS: Array<{ cat: string; brand: string }> = [
   { cat: 'Sennheiser headphones', brand: 'Sennheiser' },
   { cat: 'Sennheiser headsets', brand: 'Sennheiser' },
 
-  // Màn hình
   { cat: 'BenQ monitors', brand: 'BenQ' },
   { cat: 'BenQ LCD monitors', brand: 'BenQ' },
   { cat: 'LG monitors', brand: 'LG' },
@@ -134,7 +106,6 @@ const ROOT_CATS: Array<{ cat: string; brand: string }> = [
   { cat: 'Gigabyte monitors', brand: 'Gigabyte' },
   { cat: 'Razer monitors', brand: 'Razer' },
 
-  // Chuột
   { cat: 'Razer mice', brand: 'Razer' },
   { cat: 'Razer DeathAdder', brand: 'Razer' },
   { cat: 'Razer Basilisk V3', brand: 'Razer' },
@@ -144,7 +115,6 @@ const ROOT_CATS: Array<{ cat: string; brand: string }> = [
   { cat: 'Gigabyte mice', brand: 'Gigabyte' },
   { cat: 'ASUS mice', brand: 'Asus' },
 
-  // Bàn phím
   { cat: 'Corsair keyboards', brand: 'Corsair' },
   { cat: 'Razer keyboards', brand: 'Razer' },
   { cat: 'Logitech keyboards', brand: 'Logitech' },
@@ -152,16 +122,13 @@ const ROOT_CATS: Array<{ cat: string; brand: string }> = [
   { cat: 'ASUS keyboards', brand: 'Asus' },
   { cat: 'Gigabyte keyboards', brand: 'Gigabyte' },
 
-  // Mic
   { cat: 'Sennheiser microphones', brand: 'Sennheiser' },
   { cat: 'Blue Microphones Yeti', brand: 'Blue' },
 
-  // Webcam
   { cat: 'Logitech webcams', brand: 'Logitech' },
   { cat: 'Logitech Brio 300', brand: 'Logitech' },
   { cat: 'Logitech StreamCam', brand: 'Logitech' },
 
-  // Laptop
   { cat: 'Gigabyte laptops', brand: 'Gigabyte' },
   { cat: 'Gigabyte M912', brand: 'Gigabyte' },
   { cat: 'Samsung laptops', brand: 'Samsung' },
@@ -187,7 +154,6 @@ const ROOT_CATS: Array<{ cat: string; brand: string }> = [
   { cat: 'LG laptops', brand: 'LG' },
   { cat: 'Razer Blade laptops', brand: 'Razer' },
 
-  // Tablet
   { cat: 'Samsung Galaxy Tab', brand: 'Samsung' },
   { cat: 'Samsung Galaxy Tab S8', brand: 'Samsung' },
   { cat: 'Samsung Galaxy Tab S9', brand: 'Samsung' },
@@ -197,7 +163,6 @@ const ROOT_CATS: Array<{ cat: string; brand: string }> = [
   { cat: 'IPad Air', brand: 'Apple' },
   { cat: 'IPad Pro', brand: 'Apple' },
 
-  // Lưu trữ
   { cat: 'Samsung solid state drives', brand: 'Samsung' },
   { cat: 'Samsung 2.5" solid state drives', brand: 'Samsung' },
   { cat: 'Samsung M.2 solid state drives', brand: 'Samsung' },
@@ -213,21 +178,17 @@ const ROOT_CATS: Array<{ cat: string; brand: string }> = [
   { cat: 'Western Digital hard drives', brand: 'Western Digital' },
   { cat: 'Western Digital WD Blue hard disk drives', brand: 'Western Digital' },
 
-  // RAM
   { cat: 'Corsair memory modules', brand: 'Corsair' },
   { cat: 'Corsair Vengeance memory', brand: 'Corsair' },
   { cat: 'G.Skill memory', brand: 'Kingston' },
 
-  // Tản nhiệt
   { cat: 'Noctua (company)', brand: 'Noctua' },
   { cat: 'Arctic (company)', brand: 'Arctic' },
   { cat: 'CPU coolers', brand: 'Corsair' },
 
-  // Nguồn
   { cat: 'Computer power supplies', brand: 'Corsair' },
   { cat: 'Corsair power supplies', brand: 'Corsair' },
 
-  // VGA
   { cat: 'ASUS graphics cards', brand: 'Asus' },
   { cat: 'ASUS NVIDIA GeForce cards', brand: 'Asus' },
   { cat: 'MSI graphics cards', brand: 'MSI' },
@@ -235,7 +196,6 @@ const ROOT_CATS: Array<{ cat: string; brand: string }> = [
   { cat: 'GeForce RTX 40 series', brand: 'Asus' },
   { cat: 'GeForce RTX 50 series', brand: 'Asus' },
 
-  // CPU
   { cat: 'AMD Ryzen', brand: 'AMD' },
   { cat: 'AMD Ryzen 9000 series', brand: 'AMD' },
   { cat: 'AMD Ryzen 7000 series', brand: 'AMD' },
@@ -245,14 +205,12 @@ const ROOT_CATS: Array<{ cat: string; brand: string }> = [
   { cat: 'Intel Core i7', brand: 'Intel' },
   { cat: 'Intel Core i5', brand: 'Intel' },
 
-  // Case
   { cat: 'Computer cases', brand: 'Custom' },
   { cat: 'Corsair computer cases', brand: 'Corsair' },
   { cat: 'Lian Li computer cases', brand: 'Lian Li' },
   { cat: 'Cooler Master computer cases', brand: 'Cooler Master' },
   { cat: 'ASUS computer cases', brand: 'Asus' },
 
-  // Phụ kiện
   { cat: 'Anker power banks', brand: 'Anker' },
   { cat: 'Belkin chargers', brand: 'Belkin' },
   { cat: 'Elgato products', brand: 'Elgato' },
@@ -260,7 +218,6 @@ const ROOT_CATS: Array<{ cat: string; brand: string }> = [
   { cat: 'Corsair accessories', brand: 'Corsair' },
   { cat: 'ASUS ROG Phone', brand: 'Asus' },
 
-  // ── Category con từ category HÃNG (tên thật, đã verify) ──
   { cat: 'Corsair products', brand: 'Corsair' },
   { cat: 'Corsair Power Supply Units', brand: 'Corsair' },
   { cat: 'Corsair computer cooling fans', brand: 'Corsair' },
@@ -297,7 +254,6 @@ const ROOT_CATS: Array<{ cat: string; brand: string }> = [
   { cat: 'Gigabyte mobile phones', brand: 'Gigabyte' },
 ];
 
-/** Category riêng theo model (độ chính xác cao nhất). */
 const MODEL_CATS: Array<{ cat: string; brand: string; type: string }> = [
   { cat: 'Samsung 870 QVO', brand: 'Samsung', type: 'STORAGE' },
   { cat: 'Samsung 990 PRO NVMe M.2 SSD', brand: 'Samsung', type: 'STORAGE' },
@@ -375,16 +331,11 @@ async function fileCats(
   return out;
 }
 
-/** Xác định loại sản phẩm từ tên category. */
 function typeFromCat(cat: string): string {
   for (const [t, re] of TYPE_CATS) if (re.test(cat)) return t;
   return '';
 }
 
-/**
- * Loại sản phẩm cho category không thể đoán từ tên (vd "Corsair products"
- * chứa cả case, RAM, PSU, headset...).
- */
 const TYPE_OVERRIDES: Record<string, string> = {
   'Corsair products': 'PC_CASE',
   'Corsair Power Supply Units': 'PSU',
@@ -436,7 +387,6 @@ async function main() {
     const { files, subcats } = await catMembers(cat);
     const direct = files.filter((f) => !BAD_FILE.test(f));
 
-    // Subcategory sản phẩm (không phải sự kiện / người).
     const goodSubs = subcats.filter((s) => !BAD_CAT.test(s));
     const pool = [...direct];
     if (depth < 2) {

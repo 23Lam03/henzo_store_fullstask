@@ -1,15 +1,7 @@
-/**
- * XÂY POOL ẢNH CHẤT LƯỢNG THEO LOẠI SẢN PHẨM (không theo hãng).
- *
- * `type-image-pools.json` cũ chứa nhiều ảnh lạ (ảnh chuột, ảnh cảnh chụp
- * trong cửa hàng...). Script này dựng lại pool sạch: mỗi loại chỉ giữ ảnh
- * mà TÊN FILE chứa đúng từ khóa của loại đó.
- */
 import { readFileSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { getJson } from '../../lib/commons-files';
 
-/** Từ khóa BẮT BUỘC có trong tên file ảnh, theo loại sản phẩm. */
 const TYPE_KEYWORD: Record<string, string[]> = {
   'Điện thoại': ['iphone', 'galaxy s', 'pixel', 'phone', 'smartphone', 'redmi', 'oneplus', 'fone'],
   Tablet: ['ipad', 'galaxy tab', 'tablet'],
@@ -22,10 +14,8 @@ const TYPE_KEYWORD: Record<string, string[]> = {
   'Phụ kiện': ['webcam', 'microphone', 'charger', 'power adapter', 'usb-c cable', 'dock', 'hub', 'cable'],
 };
 
-/** Ảnh loại này không dùng được. */
 const BAD = /\b(shop|store|mall|market|street|banner|poster|logo|chart|graph|diagram|map|comparison|people|person|hand|hands|woman|man\b|boy|girl|protest|meeting|conference|booth|package|unboxing|manual|instruction|advertis|crowd|building|room|office|cat|dog|animal|flower|plant|landscape|mountain|food|fruit|car\b|vehicle|train|building|church|temple|statue|painting|drawing|animation|cartoon|comic|screenshot|chart)\b/i;
 
-/** Từ khóa loại KHÔNG được xuất hiện (tránh ảnh lạc loại). */
 const NOT_TYPE: Record<string, string[]> = {
   Chuột: ['keyboard', 'headset', 'headphone', 'monitor', 'laptop', 'phone'],
   'Bàn phím': ['mouse', 'headset', 'headphone', 'monitor', 'laptop', 'phone'],
@@ -38,7 +28,6 @@ const NOT_TYPE: Record<string, string[]> = {
   'PC Gaming': ['mouse', 'keyboard', 'headset', 'headphone', 'monitor', 'phone', 'webcam'],
 };
 
-/** Chuẩn hoá tên file. */
 const norm = (s: string): string =>
   s
     .replace(/^File:/, '')
@@ -69,7 +58,7 @@ async function probe(type: string, keyword: string, limit = 20): Promise<string[
     const file = (String(ii.url ?? '').split('/').pop() ?? title).replace(/^\d+px-/, '');
     if (seen.has(file)) continue;
     seen.add(file);
-    // Ảnh chụp sản phẩm riêng (tên file ngắn) được ưu tiên.
+
     const words = n.split(' ').filter(Boolean).length;
     let score = 10;
     if (words <= 4) score += 5;
@@ -95,7 +84,7 @@ for (const [type, keywords] of Object.entries(TYPE_KEYWORD)) {
 
 const outPath = resolve(process.cwd(), 'scripts/data/type-image-pools.json');
 const old = JSON.parse(readFileSync(outPath, 'utf-8'));
-// Giữ lại các loại không nằm trong danh sách này.
+
 const merged = { ...old, ...pools };
 writeFileSync(outPath, JSON.stringify(merged, null, 2), 'utf-8');
 console.log(`\nĐã ghi ${outPath}`);

@@ -1,17 +1,7 @@
-/**
- * KIỂM KHOA ẢNH THEO TỪNG MODEL.
- *
- * Với mỗi model trong dataset, kiểm tra ảnh CHÍNH hiện tại có phải ảnh
- * đúng model (tên file chứa tên model/series) hay chỉ là ảnh pool dùng chung
- * (cùng hãng / cùng loại / ảnh "anh em").
- *
- * Xuất: scripts/data/model-audit.json
- */
 import { readFileSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { modelName } from './lib/model-name';
 
-/** Token dừng không mang thông tin về model. */
 const STOP = new Set([
   'pro', 'plus', 'max', 'ultra', 'mini', 'air', 'se', 'gen', 'series',
   'in', 'inch', 'gb', 'tb', 'gaming', 'wireless', 'rgb', 'black', 'white',
@@ -19,7 +9,6 @@ const STOP = new Set([
   'with', 'and', 'the', 'for', 'edition', 'combo', 'package', 'kit',
 ]);
 
-/** Token của model, loại bỏ stop-word, sắp xếp dài->ngắn. */
 function tokens(model: string): string[] {
   return model
     .replace(/[()]/g, ' ')
@@ -28,7 +17,6 @@ function tokens(model: string): string[] {
     .sort((a, b) => b.length - a.length);
 }
 
-/** Chuẩn hoá tên file về chuỗi so sánh. */
 function normTitle(title: string): string {
   return title
     .replace(/^File:/, '')
@@ -54,19 +42,17 @@ export interface Audit {
   source: string;
   primaryTitle: string;
   primaryFile: string;
-  /** true nếu ảnh chính có tên model/series trong tên file. */
-  exact: boolean;
-  /** số ảnh trong bộ có tên model/series. */
-  exactCount: number;
+    exact: boolean;
+    exactCount: number;
 }
 
 function isExact(model: string, file: string): boolean {
   const t = normTitle(file);
   const toks = tokens(model);
-  // Cần ít nhất 1 token quan trọng (>=3 ký tự) xuất hiện trong tên file.
+
   const hit = toks.filter((x) => x.length >= 3 && t.includes(x.toLowerCase()));
   if (!hit.length) return false;
-  // Series đủ đặc thì ok, ví dụ "Galaxy S24", "RTX 4090".
+
   return hit.length >= 1;
 }
 
@@ -118,7 +104,7 @@ export function auditModels(): Audit[] {
       exactCount,
     });
   }
-  // Thêm các model có trong dataset nhưng chưa có entry -> coi như thiếu ảnh.
+
   for (const [model, m] of meta) {
     if (db[model]) continue;
     out.push({

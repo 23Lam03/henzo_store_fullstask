@@ -11,8 +11,7 @@ export const Route = createFileRoute('/api/orders/$id/tracking')({
   server: {
     middleware: [corsMiddleware, requireAuth],
     handlers: {
-      /** Theo dõi vận chuyển: timeline + mã vận đơn. */
-      GET: withErrorHandling(async ({ params, context }) => {
+            GET: withErrorHandling(async ({ params, context }) => {
         await connectDB();
 
         const order =

@@ -1,8 +1,3 @@
-/**
- * Probe cuối: Wikipedia đa ngôn ngữ + Commons REST search + Wikidata SPARQL.
- *
- * Chạy: npx tsx scripts/probe-multisource.ts "HyperX Cloud Alpha" "Corsair HS60"
- */
 const UA = 'henzo-store/1.0 (model image resolver; dev@henzo.local)';
 
 async function getJson(url: string): Promise<any> {
@@ -27,7 +22,6 @@ async function main() {
   for (const m of models) {
     console.log(`\n########## ${m}`);
 
-    // 1) Commons REST search (khác generator=search).
     const r = await getJson(
       `https://commons.wikimedia.org/w/rest.php/v1/search/page?q=${encodeURIComponent(m)}&limit=8`,
     );
@@ -37,7 +31,6 @@ async function main() {
     console.log(`  commons-rest: ${pages.length}`);
     pages.forEach((p: any) => console.log(`    ${p.title}`));
 
-    // 2) Commons search có điều kiện mime + filemime.
     const r2 = await getJson(
       `https://commons.wikimedia.org/w/api.php?action=query&format=json` +
         `&generator=search&gsrnamespace=6&gsrsearch=${encodeURIComponent(m)}` +
@@ -47,7 +40,6 @@ async function main() {
     console.log(`  api+filemime jpeg: ${rows.length}`);
     rows.forEach((p: any) => console.log(`    ${p.title}`));
 
-    // 3) Wikidata SPARQL: tìm item có label chứa model.
     const sparql = `SELECT ?item ?itemLabel ?image WHERE {
       ?item rdfs:label ?label .
       FILTER(CONTAINS(LCASE(?label), ${JSON.stringify(m.toLowerCase())}))

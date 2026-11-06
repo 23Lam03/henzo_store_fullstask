@@ -5,7 +5,6 @@ import { ok } from '@/server/http/response';
 import { badRequest } from '@/server/http/errors';
 import { listDistricts, findProvince } from '@/server/services/location.service';
 
-/** Quận/huyện thuộc tỉnh/thành phố. */
 export const Route = createFileRoute(
   '/api/locations/provinces/$code/districts',
 )({

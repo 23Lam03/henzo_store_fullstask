@@ -1,8 +1,3 @@
-/**
- * Tìm ảnh Commons cho 1 model: thử nhiều chiến lược.
- *
- * Chạy: npx tsx scripts/debug-find.ts "Corsair HS60 Wireless"
- */
 const UA = 'henzo-store/1.0 (model image resolver; dev@henzo.local)';
 
 async function getJson(url: string): Promise<any> {

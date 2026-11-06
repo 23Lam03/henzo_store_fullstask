@@ -1,10 +1,3 @@
-/**
- * Kiểm chứng tích hợp nhóm 1-3 với MongoDB thật.
- *
- * Chạy: npx tsx scripts/verify-integration.ts
- *
- * Test tự tạo dữ liệu rồi dọn dẹp — không đụng vào dữ liệu đang có.
- */
 import { connectDB, disconnectDB } from '../src/server/db';
 import { ProductModel } from '../src/server/models/Product';
 import { PaymentModel } from '../src/server/models/Payment';
@@ -25,7 +18,6 @@ function check(name: string, cond: boolean, detail?: unknown) {
   }
 }
 
-/** Tạo product test với storeId giả (không cần store thật). */
 async function makeProduct(stock: number, sold: number) {
   const { Types } = await import('mongoose');
   const doc = await ProductModel.create({
@@ -45,7 +37,6 @@ async function main() {
   await connectDB();
   console.log('\n═══ NHÓM 1: Hoàn tồn kho ═══');
 
-  // --- 1.1 sold không bị âm ---
   {
     const p = await makeProduct(10, 3);
     await ProductModel.updateOne(
@@ -68,7 +59,6 @@ async function main() {
     await ProductModel.deleteOne({ _id: p._id });
   }
 
-  // --- 1.2 chỉ hoàn cho sub-order còn ở kho ---
   {
     const p1 = await makeProduct(10, 2);
     const p2 = await makeProduct(10, 4);
@@ -95,10 +85,9 @@ async function main() {
     await ProductModel.deleteMany({ _id: { $in: [p1._id, p2._id] } });
   }
 
-  // --- 1.3 idempotent: gọi 2 lần chỉ hoàn 1 lần ---
   {
     const p = await makeProduct(10, 2);
-    // Lần 1: sub-order còn ở kho (pending) -> được hoàn.
+
     await restoreStockForSubOrders([
       {
         storeId: 'store-a',
@@ -106,7 +95,7 @@ async function main() {
         items: [{ productId: String(p._id), quantity: 3 }],
       },
     ]);
-    // Lần 2: sub-order đã chuyển sang cancelled -> KHÔNG hoàn thêm.
+
     await restoreStockForSubOrders([
       {
         storeId: 'store-a',
@@ -123,7 +112,6 @@ async function main() {
     await ProductModel.deleteOne({ _id: p._id });
   }
 
-  // --- 1.4 sold lớn hơn qty ---
   {
     const p = await makeProduct(10, 20);
     await restoreStockForSubOrders([
@@ -138,7 +126,6 @@ async function main() {
     await ProductModel.deleteOne({ _id: p._id });
   }
 
-  // --- 1.5 deductStock chặn âm kho ---
   {
     const p = await makeProduct(5, 0);
     const ok1 = await deductStock(p._id, 3);
@@ -152,7 +139,6 @@ async function main() {
 
   console.log('\n═══ NHÓM 3: Phí sàn ═══');
 
-  // --- 3.1 platformFee tính đúng tỷ lệ ---
   {
     const amount = 1000000;
     const fee = Math.floor(amount * PLATFORM_FEE_RATE);
@@ -161,7 +147,6 @@ async function main() {
     check('netAmount = amount - fee', amount - fee === 977000);
   }
 
-  // --- 3.2 Payment lưu đúng storeId + platformFee ---
   {
     const { Types } = await import('mongoose');
     const storeId = new Types.ObjectId();

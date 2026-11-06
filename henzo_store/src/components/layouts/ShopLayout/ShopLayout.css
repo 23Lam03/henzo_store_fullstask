@@ -1,14 +1,8 @@
-/* ═══════════════════════════════════════════════════════════════════════════
-   SHOP / SELLER LAYOUT
-═══════════════════════════════════════════════════════════════════════════ */
-
 .shop-layout {
   display: flex;
   min-height: 100vh;
   background: var(--color-background);
 }
-
-/* ─── Sidebar ────────────────────────────────────────────────────────────── */
 .shop-layout__sidebar {
   width: var(--sidebar-width);
   background: var(--color-surface);
@@ -115,8 +109,6 @@
   border-color: var(--color-primary);
   background: var(--color-primary-soft);
 }
-
-/* ─── Mobile Overlay ────────────────────────────────────────────────────── */
 .shop-layout__mobile-overlay {
   position: fixed;
   inset: 0;
@@ -125,8 +117,6 @@
   z-index: calc(var(--z-modal) - 1);
   animation: fade-in var(--transition-fast) ease;
 }
-
-/* ─── Main Area ─────────────────────────────────────────────────────────── */
 .shop-layout__main {
   flex: 1;
   margin-left: var(--sidebar-width);
@@ -146,8 +136,6 @@
     margin-left: 0;
   }
 }
-
-/* ─── Content ───────────────────────────────────────────────────────────── */
 .shop-layout__content {
   flex: 1;
   padding: var(--space-6);
@@ -165,8 +153,6 @@
     padding: var(--space-4);
   }
 }
-
-/* ─── Shop Page Shared Styles ───────────────────────────────────────────── */
 .shop-page {
   max-width: 1400px;
   margin: 0 auto;
@@ -201,8 +187,6 @@
   gap: var(--space-3);
   flex-wrap: wrap;
 }
-
-/* ─── Filter Bar ────────────────────────────────────────────────────────── */
 .filter-bar {
   display: flex;
   align-items: center;
@@ -248,8 +232,6 @@
 .filter-bar__search-input::placeholder {
   color: var(--color-text-muted);
 }
-
-/* ─── Data Table ────────────────────────────────────────────────────────── */
 .data-table {
   width: 100%;
   overflow-x: auto;
@@ -284,8 +266,6 @@
 .data-table__row:hover {
   background: var(--color-background);
 }
-
-/* ─── Modal Overlay ─────────────────────────────────────────────────────── */
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -356,8 +336,6 @@
   padding: var(--space-4) var(--space-6);
   border-top: 1px solid var(--color-border);
 }
-
-/* ─── Tabs ─────────────────────────────────────────────────────────────── */
 .tabs {
   display: flex;
   gap: 2px;
@@ -412,8 +390,6 @@
   align-items: center;
   justify-content: center;
 }
-
-/* ─── Pagination ─────────────────────────────────────────────────────────── */
 .pagination {
   display: flex;
   align-items: center;
@@ -461,8 +437,6 @@
   opacity: 0.4;
   cursor: not-allowed;
 }
-
-/* ─── Chart Container ────────────────────────────────────────────────────── */
 .chart-container {
   padding: var(--space-4);
   min-height: 200px;
@@ -507,8 +481,6 @@
   text-align: center;
   white-space: nowrap;
 }
-
-/* ─── Stat Cards ─────────────────────────────────────────────────────────── */
 .stat-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -577,8 +549,6 @@
 .stat-card__change--negative {
   color: var(--color-danger);
 }
-
-/* ─── Quick Actions ─────────────────────────────────────────────────────── */
 .quick-actions-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -628,8 +598,6 @@
   font-weight: 600;
   color: var(--color-text-primary);
 }
-
-/* ─── Responsive ─────────────────────────────────────────────────────────── */
 @media (max-width: 1024px) {
   .stat-grid {
     grid-template-columns: repeat(3, 1fr);

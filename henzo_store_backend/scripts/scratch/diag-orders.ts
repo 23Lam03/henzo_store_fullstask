@@ -23,7 +23,7 @@ import { OrderModel } from '../../src/server/models/Order';
       total++;
       const pid = String(it.productId ?? '');
       if (bySlug.has(pid)) continue;
-      // thử khớp theo slug / name đã lưu trong item
+
       const cand = bySlug.get(String(it.productSlug ?? '')) ?? byName.get(String(it.productName ?? ''));
       if (cand) {
         if (bySlug.has(String(it.productSlug ?? ''))) bySlugHit++;
@@ -40,7 +40,6 @@ import { OrderModel } from '../../src/server/models/Order';
   console.log(`  KHÔNG khớp được: ${miss} (${misses.size} tên khác nhau)`);
   console.log('  15 mẫu không khớp:', [...misses.entries()].slice(0, 15).map(([k, v]) => `${k}(${v})`).join(', '));
 
-  // Kiểm tra item hợp lệ có còn đúng giá không
   let priceMismatch = 0;
   for (const o of orders) {
     for (const it of (o.items ?? [])) {

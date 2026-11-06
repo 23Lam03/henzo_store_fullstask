@@ -13,8 +13,7 @@ export const Route = createFileRoute('/api/seller/payments/')({
   server: {
     middleware: [corsMiddleware, requireAuth, requireStoreOwner],
     handlers: {
-      /** Lịch sử giao dịch của cửa hàng. */
-      GET: withErrorHandling(async ({ request, context }) => {
+            GET: withErrorHandling(async ({ request, context }) => {
         await connectDB();
         const scope = getStoreScope(context);
 
@@ -33,8 +32,7 @@ export const Route = createFileRoute('/api/seller/payments/')({
             .limit(pageSize)
             .lean(),
           PaymentModel.countDocuments(filter),
-          // `$match` trong pipeline không tự ép chuỗi -> ObjectId,
-          // nên phải dùng `aggMatch()` đã ép kiểu.
+
           PaymentModel.aggregate([
             { $match: scope.aggMatch() },
             {

@@ -20,7 +20,6 @@ export const Route = createFileRoute('/api/orders/$id')({
 
         if (!order) throw notFound('Không tìm thấy đơn hàng');
 
-        // Khách chỉ xem được đơn của mình; admin thì xem được tất cả.
         const isOwner = String(order.customerId) === context.auth.userId;
         const isAdmin = context.auth.role === 'ADMIN';
         if (!isOwner && !isAdmin) {

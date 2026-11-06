@@ -42,8 +42,7 @@ export const Route = createFileRoute('/api/seller/products/$id')({
   server: {
     middleware: [corsMiddleware, requireAuth, requireStoreOwner],
     handlers: {
-      /** Chi tiết sản phẩm của cửa hàng. */
-      GET: withErrorHandling(async ({ params, context }) => {
+            GET: withErrorHandling(async ({ params, context }) => {
         await connectDB();
         const storeId = getStoreScope(context).require();
 
@@ -56,8 +55,7 @@ export const Route = createFileRoute('/api/seller/products/$id')({
         return ok(toProductDto(product));
       }),
 
-      /** Cập nhật sản phẩm. */
-      PATCH: withErrorHandling(async ({ request, params, context }) => {
+            PATCH: withErrorHandling(async ({ request, params, context }) => {
         await connectDB();
         const storeId = getStoreScope(context).require();
         const body = await readJson(request, updateSchema);
@@ -72,7 +70,6 @@ export const Route = createFileRoute('/api/seller/products/$id')({
           if (value !== undefined) (product as any)[key] = value;
         }
 
-        // Tính lại % giảm giá nếu giá thay đổi.
         if (body.price !== undefined || body.originalPrice !== undefined) {
           product.originalPrice =
             body.originalPrice ?? product.originalPrice ?? product.price;
@@ -87,7 +84,6 @@ export const Route = createFileRoute('/api/seller/products/$id')({
 
         await product.save();
 
-        // Đồng bộ tồn kho nếu số lượng thay đổi.
         if (body.stock !== undefined || body.minStock !== undefined) {
           const sku = product.sku || `SKU-${String(product._id).slice(-8).toUpperCase()}`;
           const { status, available } = recalcInventory(
@@ -121,8 +117,7 @@ export const Route = createFileRoute('/api/seller/products/$id')({
         return ok(toProductDto(product));
       }),
 
-      /** Xoá sản phẩm (soft delete -> chuyển sang hidden). */
-      DELETE: withErrorHandling(async ({ params, context }) => {
+            DELETE: withErrorHandling(async ({ params, context }) => {
         await connectDB();
         const storeId = getStoreScope(context).require();
 

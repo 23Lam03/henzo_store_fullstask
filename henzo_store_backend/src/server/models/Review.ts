@@ -1,6 +1,3 @@
-/**
- * Model Review — đánh giá sản phẩm + phản hồi của người bán.
- */
 import { Schema, type InferSchemaType } from 'mongoose';
 import { defineModel } from './registry';
 
@@ -25,20 +22,16 @@ const reviewSchema = new Schema(
     userName: { type: String, default: '' },
     userAvatar: { type: String, default: '' },
 
-    /** Đơn hàng đã mua — dùng để đánh dấu "đã mua hàng". */
-    orderId: { type: Schema.Types.ObjectId, ref: 'Order', index: true },
+        orderId: { type: Schema.Types.ObjectId, ref: 'Order', index: true },
 
     rating: { type: Number, required: true, min: 1, max: 5 },
     comment: { type: String, required: true },
     images: { type: [String], default: [] },
 
-    /** Đánh giá đã mua hàng thật. */
-    isVerified: { type: Boolean, default: false },
-    /** Người bán đã ẩn đánh giá (moderation). */
-    isHidden: { type: Boolean, default: false, index: true },
+        isVerified: { type: Boolean, default: false },
+        isHidden: { type: Boolean, default: false, index: true },
 
-    /** Phản hồi của cửa hàng. */
-    hasResponse: { type: Boolean, default: false },
+        hasResponse: { type: Boolean, default: false },
     sellerResponse: { type: String, default: '' },
     sellerRespondedAt: { type: Date },
 
@@ -87,7 +80,6 @@ export function toReviewDto(review: any) {
   };
 }
 
-/** DTO phía seller — shape `SellerReview`. */
 export function toSellerReview(review: any) {
   if (!review) return null;
   const obj = review.toObject ? review.toObject() : { ...review };

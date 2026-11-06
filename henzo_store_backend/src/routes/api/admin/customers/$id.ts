@@ -28,8 +28,7 @@ export const Route = createFileRoute('/api/admin/customers/$id')({
   server: {
     middleware: [corsMiddleware, requireAuth, requireAdmin, requirePermission('Quản lý khách hàng')],
     handlers: {
-      /** Chi tiết khách hàng + lịch sử đơn hàng. */
-      GET: withErrorHandling(async ({ params }) => {
+            GET: withErrorHandling(async ({ params }) => {
         await connectDB();
 
         const user = await UserModel.findById(params.id).lean();
@@ -66,8 +65,7 @@ export const Route = createFileRoute('/api/admin/customers/$id')({
         });
       }),
 
-      /** Cập nhật thông tin khách hàng. */
-      PATCH: withErrorHandling(async ({ request, params }) => {
+            PATCH: withErrorHandling(async ({ request, params }) => {
         await connectDB();
         const body = await readJson(request, updateSchema);
 
@@ -85,8 +83,7 @@ export const Route = createFileRoute('/api/admin/customers/$id')({
         return ok(toAdminUser(user));
       }),
 
-      /** Khoá / mở khoá tài khoản khách hàng. */
-      POST: withErrorHandling(async ({ request, params }) => {
+            POST: withErrorHandling(async ({ request, params }) => {
         await connectDB();
         const body = await readJson(request, actionSchema);
 
@@ -103,8 +100,7 @@ export const Route = createFileRoute('/api/admin/customers/$id')({
         return ok(toAdminUser(user));
       }),
 
-      /** Xoá tài khoản khách hàng. */
-      DELETE: withErrorHandling(async ({ params }) => {
+            DELETE: withErrorHandling(async ({ params }) => {
         await connectDB();
 
         const user = await UserModel.findById(params.id);

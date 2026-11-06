@@ -1,9 +1,5 @@
-/**
- * Enums & hằng số nghiệp vụ — dùng chung cho cả model và API.
- * Giá trị phải khớp chính xác với frontend (`henzo_store/src/types`).
- */
 
-// ─── Vai trò ──────────────────────────────────────────────────────────────────
+
 export const UserRole = {
   GUEST: 'GUEST',
   CUSTOMER: 'CUSTOMER',
@@ -16,7 +12,6 @@ export type UserRoleValue = (typeof UserRole)[keyof typeof UserRole];
 
 export const USER_ROLES = Object.values(UserRole);
 
-// ─── Trạng thái đơn hàng (phía khách) ────────────────────────────────────────
 export const CustomerOrderStatus = {
   PENDING: 'pending',
   CONFIRMED: 'confirmed',
@@ -28,7 +23,6 @@ export const CustomerOrderStatus = {
 export type CustomerOrderStatusValue =
   (typeof CustomerOrderStatus)[keyof typeof CustomerOrderStatus];
 
-// ─── Trạng thái đơn hàng (phía seller) ────────────────────────────────────────
 export const SellerOrderStatus = {
   PENDING: 'pending',
   CONFIRMED: 'confirmed',
@@ -42,10 +36,6 @@ export const SellerOrderStatus = {
 export type SellerOrderStatusValue =
   (typeof SellerOrderStatus)[keyof typeof SellerOrderStatus];
 
-/**
- * Ánh xạ trạng thái seller -> customer.
- * (đối chiếu `SellerContext.mapCustomerStatusToSellerStatus` ở frontend)
- */
 export const SELLER_TO_CUSTOMER_STATUS: Record<string, string> = {
   pending: 'pending',
   confirmed: 'confirmed',
@@ -57,7 +47,6 @@ export const SELLER_TO_CUSTOMER_STATUS: Record<string, string> = {
   returned: 'cancelled',
 };
 
-/** Ánh xạ trạng thái customer -> seller. */
 export const CUSTOMER_TO_SELLER_STATUS: Record<string, string> = {
   pending: 'pending',
   confirmed: 'confirmed',
@@ -67,7 +56,6 @@ export const CUSTOMER_TO_SELLER_STATUS: Record<string, string> = {
   cancelled: 'cancelled',
 };
 
-// ─── Trạng thái thanh toán ────────────────────────────────────────────────────
 export const OrderPaymentStatus = {
   UNPAID: 'unpaid',
   PAID: 'paid',
@@ -89,8 +77,6 @@ export const AdminPaymentStatus = {
   REFUNDED: 'refunded',
 } as const;
 
-// ─── Phương thức thanh toán ───────────────────────────────────────────────────
-/** Chuẩn hoá về lowercase để lưu trong DB (đồng nhất seller + admin). */
 export const PaymentMethod = {
   COD: 'cod',
   BANKING: 'banking',
@@ -101,7 +87,6 @@ export const PaymentMethod = {
 } as const;
 export type PaymentMethodValue = (typeof PaymentMethod)[keyof typeof PaymentMethod];
 
-/** Map giá trị frontend gửi lên (viết hoa/tách) -> giá trị chuẩn. */
 export const PAYMENT_METHOD_ALIASES: Record<string, PaymentMethodValue> = {
   COD: 'cod',
   cod: 'cod',
@@ -124,7 +109,6 @@ export const PAYMENT_METHOD_ALIASES: Record<string, PaymentMethodValue> = {
   installment: 'installment',
 };
 
-// ─── Vận chuyển ──────────────────────────────────────────────────────────────
 export const ShippingStatus = {
   WAITING_PICKUP: 'waiting_pickup',
   PICKED_UP: 'picked_up',
@@ -145,14 +129,12 @@ export const SHIPPING_CARRIERS = [
   'Ahamove',
 ] as const;
 
-// ─── Kho hàng ─────────────────────────────────────────────────────────────────
 export const InventoryStatus = {
   IN_STOCK: 'in_stock',
   LOW_STOCK: 'low_stock',
   OUT_OF_STOCK: 'out_of_stock',
 } as const;
 
-// ─── Khuyến mãi ───────────────────────────────────────────────────────────────
 export const PromotionType = {
   VOUCHER: 'voucher',
   FLASH_SALE: 'flash_sale',
@@ -173,14 +155,12 @@ export const DiscountType = {
   SHIPPING: 'shipping',
 } as const;
 
-/** Trạng thái khuyến mãi admin (suy ra từ ngày bắt đầu/kết thúc). */
 export const AdminPromotionStatus = {
   UPCOMING: 'upcoming',
   ACTIVE: 'active',
   ENDED: 'ended',
 } as const;
 
-// ─── Hỗ trợ / ticket ──────────────────────────────────────────────────────────
 export const TicketCategory = {
   ORDER: 'order',
   PAYMENT: 'payment',
@@ -226,7 +206,6 @@ export const MessageSender = {
   SYSTEM: 'system',
 } as const;
 
-// ─── Thông báo ────────────────────────────────────────────────────────────────
 export const CustomerNotificationType = {
   ORDER: 'order',
   PROMOTION: 'promotion',
@@ -255,7 +234,6 @@ export const NotificationAudience = {
   STORES: 'stores',
 } as const;
 
-// ─── Cửa hàng ────────────────────────────────────────────────────────────────
 export const StoreStatus = {
   ACTIVE: 'active',
   INACTIVE: 'inactive',
@@ -268,8 +246,6 @@ export const ProductStatus = {
   HIDDEN: 'hidden',
 } as const;
 
-// ─── Quyền hạn (RBAC) ─────────────────────────────────────────────────────────
-/** 14 quyền chuẩn hiển thị trong ma trận phân quyền — khớp `ALL_PERMISSIONS` ở frontend. */
 export const ALL_PERMISSIONS = [
   'Xem dashboard',
   'Quản lý sản phẩm',
@@ -289,11 +265,6 @@ export const ALL_PERMISSIONS = [
 
 export type Permission = (typeof ALL_PERMISSIONS)[number];
 
-/**
- * Ma trận quyền mặc định theo vai trò — khớp `ROLE_PERMS` ở frontend.
- * Ghi chú: một số vai trò có thêm quyền chỉ đọc ('Xem báo cáo', 'Xem đơn hàng',
- * 'Hỗ trợ khách hàng') không nằm trong 14 quyền hiển thị ở ma trận.
- */
 export const ROLE_PERMISSIONS: Record<string, string[]> = {
   ADMIN: [
     'Xem dashboard',
@@ -326,7 +297,6 @@ export const ROLE_PERMISSIONS: Record<string, string[]> = {
   ],
 };
 
-/** Metadata vai trò cho trang Phân quyền. */
 export const ROLE_META: Record<
   string,
   { label: string; desc: string; color: string; bg: string }
@@ -357,35 +327,18 @@ export const ROLE_META: Record<
   },
 };
 
-// ─── Nghiệp vụ đặt hàng ──────────────────────────────────────────────────────
-/** Ngưỡng miễn phí vận chuyển (đồng) — khớp frontend. */
 export const FREE_SHIPPING_THRESHOLD = 500_000;
-/** Phí vận chuyển cố định (đồng). */
 export const SHIPPING_FEE = 30_000;
-/**
- * Phí sàn — tỷ lệ nền tảng thu từ doanh thu của seller.
- *
- * Đây là **tỷ lệ duy nhất** dùng cho toàn hệ thống:
- * - `Payment.platformFee` = số tiền bị trừ khỏi doanh thu seller.
- * - Doanh thu nền tảng (admin finance) = tổng `platformFee` thu được.
- *
- * Không tách thành 2 tỷ lệ (phí sàn vs hoa hồng) vì sẽ dẫn tới việc thu
- * trùng hai lần trên cùng một đơn. Đổi giá trị ở đây là đủ cho cả hai phía.
- */
 export const PLATFORM_FEE_RATE = 0.023;
-/** Alias giữ lại cho các chỗ gọi tên "hoa hồng" — cùng giá trị với phí sàn. */
 export const PLATFORM_COMMISSION_RATE = PLATFORM_FEE_RATE;
-/** Thời gian tối đa được hủy đơn kể từ lúc đặt (ms). */
 export const ORDER_CANCEL_WINDOW_MS = 60 * 60 * 1000;
 
-// ─── Phân trang ───────────────────────────────────────────────────────────────
 export const PAGINATION = {
   defaultPageSize: 12,
   maxPageSize: 100,
   pageSizeOptions: [12, 24, 48, 96],
 } as const;
 
-// ─── Thông tin công ty / hệ thống ────────────────────────────────────────────
 export const SYSTEM = {
   companyName: 'Công ty TNHH Henzo Store',
   hotline: '1900 1234',
@@ -396,5 +349,4 @@ export const SYSTEM = {
   ticketCodePrefix: 'TKTSPT',
 } as const;
 
-/** Ngưỡng sản phẩm còn hàng / sắp hết — dùng cho badge & cảnh báo. */
 export const LOW_STOCK_THRESHOLD = 10;

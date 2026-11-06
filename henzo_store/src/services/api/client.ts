@@ -1,25 +1,4 @@
-/**
- * API client core — nền tảng giao tiếp với backend TanStack Start.
- *
- * Backend: http://localhost:4000/api
- * - Response chuẩn: { success, data, meta?, error? }
- * - Auth: Bearer access token + refresh token trong cookie httpOnly (path=/api/auth)
- * - Access token hết hạn -> tự refresh một lần rồi thử lại request.
- */
 
-/**
- * Chuẩn hoá base URL của API.
- *
- * `VITE_API_URL` có thể được cấu hình theo nhiều cách:
- *   · `https://api.example.com/api`  -> giữ nguyên
- *   · `https://api.example.com`     -> tự thêm `/api`
- *   · `https://api.example.com/`    -> tự thêm `/api`
- *
- * Việc tự thêm `/api` rất quan trọng khi deploy lên Render: Blueprint
- * lấy domain qua `RENDER_EXTERNAL_URL` — biến này **không** có đuôi
- * `/api`, nếu không chuẩn hoá thì mọi request sẽ trỏ tới
- * `https://api.example.com/products` và nhận 404.
- */
 function normalizeApiBaseUrl(raw: string): string {
   const trimmed = raw.trim().replace(/\/+$/, '');
   if (!trimmed) return 'http://localhost:4000/api';
@@ -31,28 +10,14 @@ export const API_BASE_URL = normalizeApiBaseUrl(
   import.meta.env.VITE_API_URL ?? 'http://localhost:4000/api',
 );
 
-/**
- * Gốc của API (không kèm `/api`) — dùng để dựng URL tuyệt đối cho tài nguyên
- * tĩnh như ảnh đã tải lên (`/api/uploads/xxx.png`).
- */
 export const API_ORIGIN = API_BASE_URL.replace(/\/api\/?$/, '');
 
-/** Host ảnh Wikimedia — sẽ đi qua proxy của backend. */
 const WIKIMEDIA_HOSTS = [
   'upload.wikimedia.org',
   'thumb.wikimedia.org',
   'commons.wikimedia.org',
 ];
 
-/**
- * Đưa URL ảnh Wikimedia về qua proxy của backend.
- *
- * Lý do: khi trang hiển thị hàng chục ảnh cùng lúc, trình duyệt gọi thẳng
- * `thumb.wikimedia.org` và bị Wikimedia trả `429 Too Many Requests` -> ảnh vỡ.
- * Backend proxy có cache đĩa nên mọi client dùng chung 1 bản tải về.
- *
- * Ảnh không phải Wikimedia (ảnh đã upload từ máy, ảnh nội bộ...) giữ nguyên.
- */
 export function proxiedImageUrl(url: string | undefined | null): string {
   if (!url) return '';
   let parsed: URL;
@@ -62,7 +27,7 @@ export function proxiedImageUrl(url: string | undefined | null): string {
     return url;
   }
   if (!WIKIMEDIA_HOSTS.includes(parsed.hostname)) return url;
-  // Bỏ tham số theo dõi (utm_*) cho gọn.
+
   parsed.search = '';
   return `${API_ORIGIN}/api/image?url=${encodeURIComponent(parsed.toString())}`;
 }
@@ -87,7 +52,6 @@ export interface ApiEnvelope<T> {
   error?: ApiErrorPayload;
 }
 
-/** Lỗi có mã từ backend — dùng để hiển thị message tiếng Việt. */
 export class ApiError extends Error {
   readonly status: number;
   readonly code: string;
@@ -102,15 +66,10 @@ export class ApiError extends Error {
   }
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Token store
-// ─────────────────────────────────────────────────────────────────────────────
-
 const ACCESS_TOKEN_KEY = 'henzo_access_token';
 
 export const tokenStore = {
-  /** Đọc token từ localStorage (ghi nhớ đăng nhập) hoặc sessionStorage (tab này). */
-  get: (): string | null => {
+    get: (): string | null => {
     try {
       return (
         localStorage.getItem(ACCESS_TOKEN_KEY) ??
@@ -120,31 +79,24 @@ export const tokenStore = {
       return null;
     }
   },
-  /** `remember = true` -> lưu lâu dài, ngược lại chỉ giữ trong tab hiện tại. */
-  set: (token: string, remember = true): void => {
+    set: (token: string, remember = true): void => {
     try {
       const store = remember ? localStorage : sessionStorage;
       store.setItem(ACCESS_TOKEN_KEY, token);
-      // Xoá bản sao ở store còn lại để tránh token cũ ghi đè.
+
       const other = remember ? sessionStorage : localStorage;
       other.removeItem(ACCESS_TOKEN_KEY);
-    } catch {
-      /* private mode — bỏ qua */
-    }
+    } catch {void 0; 
+          }
   },
   clear: (): void => {
     try {
       localStorage.removeItem(ACCESS_TOKEN_KEY);
       sessionStorage.removeItem(ACCESS_TOKEN_KEY);
-    } catch {
-      /* ignore */
-    }
+    } catch {void 0; 
+          }
   },
 };
-
-// ─────────────────────────────────────────────────────────────────────────────
-// URL helpers
-// ─────────────────────────────────────────────────────────────────────────────
 
 export type QueryValue = string | number | boolean | undefined | null;
 
@@ -159,11 +111,6 @@ export function qs(params?: Record<string, QueryValue>): string {
   return str ? `?${str}` : '';
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Core request
-// ─────────────────────────────────────────────────────────────────────────────
-
-/** Đăng ký listener được gọi khi phiên đăng nhập thất bại (để context logout). */
 type AuthFailureHandler = () => void;
 const authFailureHandlers = new Set<AuthFailureHandler>();
 
@@ -183,7 +130,7 @@ async function readEnvelope<T>(res: Response): Promise<ApiEnvelope<T>> {
   }
   try {
     const parsed = JSON.parse(text) as ApiEnvelope<T>;
-    // Ảnh Wikimedia đi qua proxy backend để tránh 429 rate-limit.
+
     return { ...parsed, data: rewriteImageUrls(parsed.data) };
   } catch {
     throw new ApiError(
@@ -194,12 +141,6 @@ async function readEnvelope<T>(res: Response): Promise<ApiEnvelope<T>> {
   }
 }
 
-/**
- * Duyệt sâu payload và thay mọi URL ảnh Wikimedia bằng URL proxy.
- *
- * Vì sao không sửa từng component: có hàng chục chỗ render `<img src={...}>`,
- * sửa tay dễ sót. Ở tầng API thì mọi nơi đều được hưởng.
- */
 function rewriteImageUrls<T>(value: T): T {
   if (typeof value === 'string') {
     return (proxiedImageUrl(value) as unknown) as T;
@@ -239,16 +180,10 @@ async function refreshAccessToken(): Promise<boolean> {
 interface RequestOptions {
   method?: string;
   body?: unknown;
-  /** Bỏ qua header Content-Type (vd: GET). */
-  headers?: Record<string, string>;
-  /** Cho phép gửi request khi chưa đăng nhập (mặc định true). */
-  auth?: boolean;
+    headers?: Record<string, string>;
+    auth?: boolean;
 }
 
-/**
- * Gọi API. Trả về `data` đã bóc khỏi envelope.
- * Tự refresh access token khi gặp 401 (một lần duy nhất).
- */
 export async function apiFetch<T>(
   url: string,
   options: RequestOptions = {},
@@ -275,7 +210,6 @@ export async function apiFetch<T>(
     body: options.body !== undefined ? JSON.stringify(options.body) : undefined,
   });
 
-  // Access token hết hạn -> refresh rồi thử lại một lần.
   if (res.status === 401 && retry && options.auth !== false) {
     const refreshed = await refreshAccessToken();
     if (refreshed) {
@@ -299,7 +233,6 @@ export async function apiFetch<T>(
   return payload.data;
 }
 
-/** Giống `apiFetch` nhưng trả kèm `meta` (phân trang). */
 export async function apiFetchWithMeta<T>(
   url: string,
   options: RequestOptions = {},
@@ -346,7 +279,6 @@ export async function apiFetchWithMeta<T>(
   return { data: payload.data, meta: payload.meta };
 }
 
-/** Xoá session cục bộ (dùng khi logout thất bại hoặc token hết hạn). */
 export function clearSession(): void {
   tokenStore.clear();
   try {
@@ -354,14 +286,9 @@ export function clearSession(): void {
     sessionStorage.removeItem('henzo_auth_user');
     localStorage.removeItem('henzo_auth_token');
     sessionStorage.removeItem('henzo_auth_token');
-  } catch {
-    /* ignore */
-  }
+  } catch {void 0; 
+      }
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Upload file
-// ─────────────────────────────────────────────────────────────────────────────
 
 export interface UploadedFileInfo {
   url: string;
@@ -370,12 +297,6 @@ export interface UploadedFileInfo {
   mimeType: string;
 }
 
-/**
- * Tải file lên server (multipart/form-data).
- *
- * `apiFetch` chỉ gửi JSON, nên upload cần hàm riêng. Vẫn giữ đúng cơ chế
- * refresh token khi gặp 401 và báo lỗi qua `ApiError` giống các API khác.
- */
 export async function apiUpload<T>(
   url: string,
   files: File[] | File,
@@ -387,7 +308,7 @@ export async function apiUpload<T>(
   for (const file of list) form.append(fieldName, file);
 
   const headers: Record<string, string> = {};
-  // KHÔNG set Content-Type — trình duyệt tự thêm boundary của multipart.
+
   const token = tokenStore.get();
   if (token) headers.Authorization = `Bearer ${token}`;
 

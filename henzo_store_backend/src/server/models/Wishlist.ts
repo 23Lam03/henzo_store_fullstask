@@ -1,6 +1,3 @@
-/**
- * Model Wishlist — danh sách yêu thích.
- */
 import { Schema, type InferSchemaType } from 'mongoose';
 import { defineModel } from './registry';
 

@@ -19,8 +19,7 @@ export const Route = createFileRoute('/api/support/tickets/$id')({
   server: {
     middleware: [corsMiddleware, requireAuth],
     handlers: {
-      /** Chi tiết phiếu hỗ trợ. */
-      GET: withErrorHandling(async ({ params, context }) => {
+            GET: withErrorHandling(async ({ params, context }) => {
         await connectDB();
 
         const ticket = await TicketModel.findById(params.id).lean();
@@ -35,8 +34,7 @@ export const Route = createFileRoute('/api/support/tickets/$id')({
         return ok(toCustomerTicket(ticket));
       }),
 
-      /** Khách phản hồi trong phiếu hỗ trợ. */
-      POST: withErrorHandling(async ({ request, params, context }) => {
+            POST: withErrorHandling(async ({ request, params, context }) => {
         await connectDB();
         const body = await readJson(request, replySchema);
 
@@ -49,7 +47,6 @@ export const Route = createFileRoute('/api/support/tickets/$id')({
           throw forbidden('Không có quyền phản hồi phiếu hỗ trợ này');
         }
 
-        // Phiếu đã đóng thì không nhận thêm phản hồi.
         if (
           ticket.status === CustomerTicketStatus.CLOSED &&
           !isStaff
@@ -64,7 +61,6 @@ export const Route = createFileRoute('/api/support/tickets/$id')({
           attachments: body.attachments,
         } as any);
 
-        // Khách phản hồi -> ticket quay lại trạng thái đang xử lý.
         if (!isStaff) {
           ticket.status = CustomerTicketStatus.OPEN;
         }

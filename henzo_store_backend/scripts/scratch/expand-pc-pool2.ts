@@ -1,8 +1,3 @@
-/**
- * Tìm ảnh PC/case thật qua Commons category (không dùng search full-text).
- *
- * Chạy: npx tsx scripts/expand-pc-pool2.ts
- */
 import { readFileSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { getJson } from '../lib/commons-files';

@@ -23,16 +23,14 @@ export const Route = createFileRoute('/api/admin/access/staff/$id')({
   server: {
     middleware: [corsMiddleware, requireAuth, requireAdmin, requirePermission('Phân quyền')],
     handlers: {
-      /** Chi tiết nhân sự. */
-      GET: withErrorHandling(async ({ params }) => {
+            GET: withErrorHandling(async ({ params }) => {
         await connectDB();
         const user = await UserModel.findById(params.id).lean();
         if (!user) throw notFound('Không tìm thấy thành viên');
         return ok(toAdminUser(user));
       }),
 
-      /** Sửa thông tin / vai trò / quyền hạn / trạng thái. */
-      PATCH: withErrorHandling(async ({ request, params }) => {
+            PATCH: withErrorHandling(async ({ request, params }) => {
         await connectDB();
         const body = await readJson(request, updateSchema);
 
@@ -50,7 +48,6 @@ export const Route = createFileRoute('/api/admin/access/staff/$id')({
 
         if (body.name !== undefined) user.name = body.name;
 
-        // Đổi vai trò -> reset quyền về mặc định nếu không chỉ định quyền mới.
         if (body.role !== undefined && body.role !== user.role) {
           user.role = body.role;
           if (!body.permissions) {
@@ -68,8 +65,7 @@ export const Route = createFileRoute('/api/admin/access/staff/$id')({
         return ok(toAdminUser(user));
       }),
 
-      /** Xoá nhân sự (không cho xoá chính mình). */
-      DELETE: withErrorHandling(async ({ params, context }) => {
+            DELETE: withErrorHandling(async ({ params, context }) => {
         await connectDB();
 
         const auth = context.auth as { userId: string };

@@ -7,18 +7,6 @@ import {
   isProxyableImageUrl,
 } from '@/server/services/image-proxy.service';
 
-/**
- * PROXY ẢNH (có cache trên đĩa).
- *
- * Đường dẫn: `/api/image?url=<url ảnh gốc>` → trả về binary ảnh.
- *
- * Mục đích: bảo vệ giao diện khỏi `429 Too Many Requests` từ Wikimedia
- * khi trang hiển thị nhiều ảnh cùng lúc. Backend tải ảnh về cache đĩa và
- * phục vụ lại — mọi client dùng chung cache, không còn tải trùng lên
- * Wikimedia.
- *
- * Ví dụ: `/api/image?url=https%3A%2F%2Fthumb.wikimedia.org%2F...jpg`
- */
 export const Route = createFileRoute('/api/image')({
   server: {
     middleware: [corsMiddleware],
@@ -41,7 +29,7 @@ export const Route = createFileRoute('/api/image')({
             headers: {
               'Content-Type': contentType,
               'Content-Length': String(body.byteLength),
-              // Cache ở trình duyệt 30 ngày — ảnh Commons gần như không đổi.
+
               'Cache-Control': 'public, max-age=2592000, immutable',
               'X-Image-Cache': fetched ? 'MISS' : 'HIT',
               'Access-Control-Allow-Origin': '*',

@@ -1,13 +1,3 @@
-/**
- * PHỤC HỒI scripts/data/model-images.json từ file frontend đã sinh
- * (henzo_store/src/data/modelImages.ts) — nguồn chuẩn, chứa URL ảnh đúng.
- *
- * `source` được suy ra lại:
- *   - model có trong MODEL_PHOTOS của finalize-model-images.ts -> 'commons-curated'
- *   - còn lại -> 'commons-code'
- *
- * Chạy: npx tsx scripts/restore-model-images.ts
- */
 import { readFileSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 

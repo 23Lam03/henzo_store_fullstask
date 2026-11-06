@@ -1,9 +1,3 @@
-/**
- * Sao lưu dữ liệu sản phẩm trước khi sửa ảnh/tên/slug.
- *
- * Chạy: npx tsx scripts/backup-products.ts
- * Kết quả: scripts/data/products-backup.json
- */
 import { writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { connectDB, disconnectDB } from '../src/server/db';

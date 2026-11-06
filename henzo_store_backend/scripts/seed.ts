@@ -1,13 +1,3 @@
-/**
- * Script nạp dữ liệu mẫu vào MongoDB.
- *
- *   node --experimental-strip-types scripts/seed.ts            # giữ dữ liệu cũ, thêm mới
- *   node --experimental-strip-types scripts/seed.ts --reset    # xoá sạch rồi nạp lại
- *
- * Dữ liệu lấy từ `scripts/data/frontend-mock.json` (trích xuất từ frontend).
- * Toàn bộ nghiệp vụ được giữ nguyên: multi-vendor sub-order, trạng thái seller,
- * phí sàn 2.3%, miễn phí ship >= 500.000đ, voucher, ticket, phân quyền.
- */
 import { existsSync, readFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -56,7 +46,6 @@ import { modelName } from './lib/model-name.ts';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const RESET = process.argv.includes('--reset');
 
-/** Tìm file `scripts/data/frontend-mock.json` bất kể script chạy từ đâu. */
 function resolveMockDataPath(): string {
   const candidates = [
     resolve(process.cwd(), 'scripts/data/frontend-mock.json'),
@@ -71,16 +60,6 @@ function resolveMockDataPath(): string {
   );
 }
 
-/**
- * Ảnh THẬT theo model sản phẩm (tra cứu từ Wikipedia / Wikimedia Commons).
- *
- * File `scripts/data/model-images.json` do `scripts/resolve-model-images.ts`
- * sinh ra. Key = TÊN MODEL chuẩn hoá (xem `lib/model-name.ts`), value =
- * { images: string[], source, title } — nhiều ảnh của cùng model.
- *
- * Nếu file không tồn tại -> dùng ảnh theo danh mục trong mock (đã kiểm chứng
- * đúng loại thiết bị bằng Vision framework).
- */
 function loadModelImages(): Record<string, { images: string[]; source: string; title: string }> {
   const p = resolve(__dirname, 'data/model-images.json');
   if (!existsSync(p)) {
@@ -95,7 +74,7 @@ function loadModelImages(): Record<string, { images: string[]; source: string; t
     const out: Record<string, { images: string[]; source: string; title: string }> = {};
     for (const [k, v] of Object.entries(raw)) {
       if (!v) continue;
-      // Định dạng mới: { images: [...] }
+
       if (Array.isArray(v.images)) {
         out[k] = {
           images: v.images.filter((u: unknown) => typeof u === 'string'),
@@ -104,7 +83,7 @@ function loadModelImages(): Record<string, { images: string[]; source: string; t
         };
         continue;
       }
-      // Định dạng cũ: { url }
+
       if (typeof v.url === 'string') {
         out[k] = {
           images: [v.url],
@@ -119,7 +98,6 @@ function loadModelImages(): Record<string, { images: string[]; source: string; t
   }
 }
 
-// ─── Kiểu dữ liệu từ frontend ────────────────────────────────────────────────
 interface FProduct {
   id: string;
   name: string;
@@ -261,12 +239,6 @@ interface FAdminPromotion {
   isActive: boolean;
 }
 
-/**
- * Khuyến mãi RIÊNG của cửa hàng (seller tự tạo).
- *
- * Khác `FAdminPromotion` (chương trình của sàn): có `storeId`, `discountType`,
- * `discountValue`, `usageLimit`, `targetProducts`, `targetCategories`.
- */
 interface FSellerPromotion {
   id: string;
   name: string;
@@ -313,7 +285,6 @@ interface FrontendMock {
   sellerPromotions: FSellerPromotion[];
 }
 
-// ─── Helper ───────────────────────────────────────────────────────────────────
 function slugify(input: string): string {
   return (
     input
@@ -327,7 +298,6 @@ function slugify(input: string): string {
   );
 }
 
-/** Ngày ngẫu nhiên trong khoảng `daysAgo` ngày gần nhất. */
 function daysAgo(days: number): Date {
   const d = new Date();
   d.setDate(d.getDate() - Math.floor(Math.random() * days));
@@ -335,7 +305,6 @@ function daysAgo(days: number): Date {
   return d;
 }
 
-/** Ngày ngẫu nhiên trong khoảng `months` tháng gần nhất (đầu tháng). */
 function monthsAgo(months: number): Date {
   const d = new Date();
   d.setDate(1);
@@ -361,7 +330,6 @@ const PAYMENT_METHOD_LABEL: Record<string, string> = {
   MoMo: 'momo',
 };
 
-/** Chuẩn hoá phương thức thanh toán từ frontend về giá trị trong DB. */
 function normalizeMethod(raw: string): PaymentMethodValue {
   const mapped = PAYMENT_METHOD_LABEL[raw];
   if (mapped) return mapped as PaymentMethodValue;
@@ -372,7 +340,6 @@ function normalizeMethod(raw: string): PaymentMethodValue {
   return 'cod';
 }
 
-// ─── Danh mục ────────────────────────────────────────────────────────────────
 const CATEGORIES = [
   {
     slug: 'dien-thoai',
@@ -448,7 +415,6 @@ const CATEGORIES = [
   },
 ];
 
-/** Map slug danh mục -> id trong DB (frontend dùng `cat-phone`...). */
 const CATEGORY_ID_MAP: Record<string, string> = {
   'cat-phone': 'dien-thoai',
   'cat-laptop': 'laptop',
@@ -460,7 +426,6 @@ const CATEGORY_ID_MAP: Record<string, string> = {
   'cat-accessory': 'phu-kien',
 };
 
-// ─── Seed ────────────────────────────────────────────────────────────────────
 async function seed() {
   console.log('[seed] Đang đọc dữ liệu frontend...');
   const raw = readFileSync(resolveMockDataPath(), 'utf-8');
@@ -491,7 +456,6 @@ async function seed() {
     ]);
   }
 
-  // ─── 1. Danh mục ────────────────────────────────────────────────────────
   console.log('[seed] Tạo danh mục...');
   const categoryMap = new Map<string, Types.ObjectId>();
   for (const c of CATEGORIES) {
@@ -513,20 +477,17 @@ async function seed() {
     categoryMap.set(c.slug, doc._id);
   }
 
-  // Ánh xạ **tên** danh mục -> id (mock lưu danh mục dạng tên, schema cần ObjectId).
   const categoryIdByName = new Map<string, Types.ObjectId>();
   for (const c of CATEGORIES) {
     const id = categoryMap.get(c.slug);
     if (id) categoryIdByName.set(c.name, id);
   }
 
-  // ─── 2. Thương hiệu ─────────────────────────────────────────────────────
   console.log('[seed] Tạo thương hiệu...');
   const brandMap = new Map<string, Types.ObjectId>();
   const allBrands = new Map<string, FBrand>();
   for (const b of mock.brands) allBrands.set(b.name, b);
 
-  // Bổ sung các brand xuất hiện trong sản phẩm nhưng chưa có trong MOCK_BRANDS.
   for (const p of mock.products) {
     if (!allBrands.has(p.brand)) {
       allBrands.set(p.brand, {
@@ -541,7 +502,7 @@ async function seed() {
 
   for (const b of allBrands.values()) {
     const count = mock.products.filter((p) => p.brand === b.name).length;
-    // Logo thật (Simple Icons / Wikimedia) thay cho ảnh stock ngẫu nhiên.
+
     const logo = brandLogo(b.name) || b.logo;
     const doc = await BrandModel.findOneAndUpdate(
       { slug: b.slug },
@@ -560,12 +521,10 @@ async function seed() {
     brandMap.set(b.name, doc._id);
   }
 
-  // ─── 3. Người dùng ──────────────────────────────────────────────────────
   console.log('[seed] Tạo người dùng...');
   const defaultPassword = await hashPassword('123456');
   const adminPassword = await hashPassword('admin123');
 
-  // Nhân sự quản trị (khớp `initStaff` ở trang phân quyền của frontend).
   const staffSeed = [
     {
       name: 'Quản Trị Viên Hệ Thống',
@@ -622,12 +581,10 @@ async function seed() {
     staffIds.push(user._id);
   }
 
-  // ─── 4. Cửa hàng ───────────────────────────────────────────────────────
   console.log('[seed] Tạo cửa hàng...');
   const storeMap = new Map<string, Types.ObjectId>();
   const storeDocs: any[] = [];
 
-  // Cửa hàng từ frontend (50 cửa hàng) — nguồn chính.
   const sourceStores = [
     ...mock.stores,
     ...mock.adminStores.filter(
@@ -669,7 +626,6 @@ async function seed() {
     storeDocs.push(doc);
   }
 
-  // Chủ cửa hàng (user role SHOP) cho cửa hàng đầu tiên.
   const primaryStore = storeDocs[0];
   const shopUser = await UserModel.findOneAndUpdate(
     { email: 'shop@henzo.com' },
@@ -694,41 +650,31 @@ async function seed() {
     { $set: { ownerId: shopUser._id } },
   );
 
-  // ─── 5. Sản phẩm ────────────────────────────────────────────────────────
   console.log('[seed] Tạo sản phẩm...');
   const productMap = new Map<string, Types.ObjectId>();
   const products: any[] = [];
 
-  // Ảnh thật theo model (iPhone 16 ≠ iPhone 15). Thiếu thì dùng ảnh mock.
   const MODEL_IMAGES = loadModelImages();
   let usedRealImage = 0;
 
-  /**
-   * Ảnh cho 1 sản phẩm: ưu tiên ảnh THẬT theo model.
-   *
-   * `model-images.json` key = TÊN MODEL chuẩn hoá (không phải slug), value =
-   * { images: [...], source, title }. Nhiều ảnh của cùng model được XOAY VÒNG
-   * cho các biến thể (màu/ dung lượng) khác nhau -> giao diện không bị lặp ảnh.
-   */
-  const variantCounter = new Map<string, number>();
+    const variantCounter = new Map<string, number>();
   const imagesFor = (p: { name: string; slug: string; images: string[] }): string[] => {
     const model = modelName(p.name);
     const hit = MODEL_IMAGES[model];
     if (hit?.images?.length) {
       usedRealImage++;
-      // Xoay vòng ảnh theo thứ tự biến thể của cùng model.
+
       const n = variantCounter.get(model) ?? 0;
       variantCounter.set(model, n + 1);
       const pool = hit.images;
       const picked = pool.slice(n % pool.length).concat(pool.slice(0, n % pool.length));
-      // Ghép thêm ảnh stock gốc để có nhiều góc nhìn trong trang chi tiết.
+
       const extra = p.images.filter((u) => !picked.includes(u)).slice(0, 2);
       return [...picked, ...extra];
     }
     return p.images;
   };
 
-  // Phân bổ sản phẩm cho các cửa hàng (mỗi sản phẩm thuộc 1 cửa hàng).
   const activeStores = storeDocs.filter((s) => s.status === 'active');
 
   for (let i = 0; i < mock.products.length; i++) {
@@ -776,7 +722,6 @@ async function seed() {
     products.push(doc);
   }
 
-  // Sản phẩm riêng của seller (từ mockSellerProducts) — gắn vào cửa hàng chính.
   const sellerProducts = (mock as any).sellerProducts ?? [];
   for (let i = 0; i < sellerProducts.length; i++) {
     const p = sellerProducts[i];
@@ -821,7 +766,6 @@ async function seed() {
     products.push(doc);
   }
 
-  // Cập nhật số lượng sản phẩm & điểm đánh giá cho từng cửa hàng.
   const storeProductCounts = new Map<string, number>();
   for (const p of products) {
     const key = String(p.storeId);
@@ -831,7 +775,6 @@ async function seed() {
     await StoreModel.updateOne({ _id: storeId }, { $set: { productCount: count } });
   }
 
-  // Cập nhật số lượng sản phẩm cho từng danh mục.
   const categoryProductCounts = new Map<string, number>();
   for (const p of products) {
     const key = String(p.categoryId);
@@ -841,7 +784,6 @@ async function seed() {
     await CategoryModel.updateOne({ _id: categoryId }, { $set: { productCount: count } });
   }
 
-  // ─── 6. Kho hàng (Inventory) ────────────────────────────────────────────
   console.log('[seed] Tạo dữ liệu kho hàng...');
   const inventoryDocs = products.map((p) => {
     const status =
@@ -878,11 +820,9 @@ async function seed() {
     );
   }
 
-  // ─── 7. Khách hàng ──────────────────────────────────────────────────────
   console.log('[seed] Tạo khách hàng...');
   const customerMap = new Map<string, Types.ObjectId>();
 
-  // Tài khoản khách hàng mẫu (đăng nhập được).
   const demoCustomer = await UserModel.findOneAndUpdate(
     { email: 'customer@henzo.com' },
     {
@@ -924,7 +864,6 @@ async function seed() {
     customerMap.set(c.id, user._id);
   }
 
-  // ─── 8. Đơn hàng (multi-vendor sub-order) ───────────────────────────────
   console.log('[seed] Tạo đơn hàng...');
   const orderDocs: any[] = [];
   const paymentDocs: any[] = [];
@@ -939,7 +878,6 @@ async function seed() {
     const customerId =
       customerList[i % customerList.length] ?? demoCustomer._id;
 
-    // Gom 1-3 sản phẩm ngẫu nhiên (có thể thuộc nhiều cửa hàng).
     const groupCount = 1 + (i % 3);
     const usedProducts = new Set<string>();
     const groups = new Map<string, { store: any; items: any[] }>();
@@ -986,7 +924,6 @@ async function seed() {
 
     const customerStatus = (o.status ?? 'pending') as string;
 
-    // Trạng thái sub-order tương ứng với trạng thái tổng.
     const sellerStatusMap: Record<string, string> = {
       pending: SellerOrderStatus.PENDING,
       confirmed: SellerOrderStatus.CONFIRMED,
@@ -1090,7 +1027,6 @@ async function seed() {
     );
     orderDocs.push(doc);
 
-    // Giao dịch thanh toán.
     const TXN_STATUS_BY_PAYMENT: Record<string, string> = {
       [OrderPaymentStatus.PAID]: TransactionStatus.SUCCESS,
       [OrderPaymentStatus.REFUNDED]: TransactionStatus.REFUNDED,
@@ -1121,7 +1057,6 @@ async function seed() {
     );
     paymentDocs.push(payment);
 
-    // Vận đơn cho sub-order đã giao.
     if (
       sellerStatus === SellerOrderStatus.DELIVERED ||
       sellerStatus === SellerOrderStatus.DELIVERING
@@ -1162,7 +1097,6 @@ async function seed() {
     );
   }
 
-  // ─── 9. Đánh giá ───────────────────────────────────────────────────────
   console.log('[seed] Tạo đánh giá...');
   const reviewDocs = [];
 
@@ -1230,7 +1164,6 @@ async function seed() {
     );
   }
 
-  // ─── 10. Khuyến mãi & voucher ──────────────────────────────────────────
   console.log('[seed] Tạo khuyến mãi...');
   const promoDocs = mock.adminPromotions.map((p) => ({
     title: p.title,
@@ -1266,14 +1199,7 @@ async function seed() {
     })),
   );
 
-  /**
-   * Khuyến mãi RIÊNG của cửa hàng (shop).
-   *
-   * `mock.adminPromotions` là chương trình của sàn (không có `storeId`), còn
-   * `mock.sellerPromotions` là chương trình do chính cửa hàng tạo — gắn với
-   * `storeId` để seller chỉ thấy / sửa được của cửa hàng mình.
-   */
-  const sellerPromoDocs = mock.sellerPromotions.map((p) => ({
+    const sellerPromoDocs = mock.sellerPromotions.map((p) => ({
     title: p.name,
     description: '',
     image: '',
@@ -1290,9 +1216,7 @@ async function seed() {
     maxDiscount: p.maxDiscount ?? 0,
     usageLimit: p.usageLimit ?? 0,
     usedCount: p.usedCount ?? 0,
-    // Schema khai báo `targetCategories`/`targetProducts` là mảng ObjectId,
-    // còn mock lưu tên danh mục -> phải ánh xạ sang id thật, nếu không sẽ
-    // ném BSONError khi ghi vào MongoDB.
+
     targetProducts: (p.targetProducts ?? [])
       .map((id: string) => productMap.get(id))
       .filter((id): id is Types.ObjectId => Boolean(id)),
@@ -1315,7 +1239,6 @@ async function seed() {
     );
   }
 
-  // Voucher dùng được khi checkout.
   const voucherDocs = [
     {
       code: 'HENZO10',
@@ -1374,7 +1297,6 @@ async function seed() {
     })),
   );
 
-  // ─── 11. Phiếu hỗ trợ ──────────────────────────────────────────────────
   console.log('[seed] Tạo phiếu hỗ trợ...');
   const ticketDocs = mock.adminTickets.map((t, i) => {
     const isShop = i % 3 !== 2;
@@ -1430,7 +1352,6 @@ async function seed() {
     })),
   );
 
-  // ─── 12. Thông báo ─────────────────────────────────────────────────────
   console.log('[seed] Tạo thông báo...');
   const notificationDocs = [
     {
@@ -1469,7 +1390,6 @@ async function seed() {
     })),
   );
 
-  // Thông báo admin (broadcast).
   await NotificationModel.bulkWrite(
     [
       {
@@ -1508,7 +1428,6 @@ async function seed() {
     })),
   );
 
-  // ─── 13. Blog ──────────────────────────────────────────────────────────
   console.log('[seed] Tạo bài viết...');
   await BlogModel.bulkWrite(
     mock.blogs.map((b) => ({
@@ -1534,7 +1453,6 @@ async function seed() {
     })),
   );
 
-  // ─── 14. Vai trò & quyền hạn ───────────────────────────────────────────
   console.log('[seed] Tạo cấu hình phân quyền...');
   await RoleModel.bulkWrite(
     Object.entries(ROLE_PERMISSIONS).map(([name, permissions]) => ({
@@ -1556,7 +1474,6 @@ async function seed() {
     })),
   );
 
-  // ─── Tổng kết ──────────────────────────────────────────────────────────
   const counts = {
     danhMuc: await CategoryModel.countDocuments({}),
     thuongHieu: await BrandModel.countDocuments({}),

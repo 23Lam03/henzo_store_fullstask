@@ -1,8 +1,3 @@
-/**
- * Liệt kê ảnh trong category Commons kèm mô tả (để chọn ảnh sản phẩm).
- *
- * Chạy: npx tsx scripts/cat-with-desc.ts "HyperX headsets" "HyperX"
- */
 const UA = 'henzo-store/1.0 (model image resolver; dev@henzo.local)';
 
 async function getJson(url: string): Promise<any> {

@@ -1,7 +1,3 @@
-/**
- * Test vòng đời cửa hàng qua API admin: tạo → cập nhật → xoá.
- * Chạy: npx tsx scripts/scratch/store-lifecycle.ts
- */
 import { connectDB } from '../../src/server/db';
 import { StoreModel } from '../../src/server/models/Store';
 
@@ -66,7 +62,6 @@ async function main() {
     console.log(`${!left ? '✅' : '❌'} store đã bị xoá khỏi DB`);
   }
 
-  // Dọn nếu còn sót.
   await StoreModel.deleteMany({ name: { $regex: /^TEST STORE/ } });
   console.log('\nđã dọn store test còn sót');
   process.exit(0);

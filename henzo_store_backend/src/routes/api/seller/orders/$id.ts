@@ -13,16 +13,13 @@ export const Route = createFileRoute('/api/seller/orders/$id')({
   server: {
     middleware: [corsMiddleware, requireAuth, requireStoreOwner],
     handlers: {
-      /** Chi tiết đơn hàng của cửa hàng. */
-      GET: withErrorHandling(async ({ params, context }) => {
+            GET: withErrorHandling(async ({ params, context }) => {
         await connectDB();
         const scope = getStoreScope(context);
 
         const order = await OrderModel.findById(params.id).lean();
         if (!order) throw notFound('Không tìm thấy đơn hàng');
 
-        // Admin chỉ định cửa hàng -> chỉ xem sub-order của cửa hàng đó.
-        // Admin không chỉ định -> xem toàn bộ sub-order của đơn.
         const storeId = scope.storeId;
 
         const owns = (order.subOrders ?? []).some(

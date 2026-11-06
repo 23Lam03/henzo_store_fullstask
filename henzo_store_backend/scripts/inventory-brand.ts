@@ -1,8 +1,3 @@
-/**
- * Kiểm kê TOÀN BỘ ảnh Commons có sẵn cho 1 hãng (mọi category liên quan).
- *
- * Chạy: npx tsx scripts/inventory-brand.ts Corsair
- */
 const UA = 'henzo-store/1.0 (model image resolver; dev@henzo.local)';
 
 async function getJson(url: string): Promise<any> {
@@ -22,7 +17,6 @@ async function getJson(url: string): Promise<any> {
   return null;
 }
 
-/** Đệ quy category Commons, gom file bitmap. */
 async function walk(cat: string, depth: number, acc: Set<string>): Promise<void> {
   if (depth < 0 || acc.size > 400) return;
   const d = await getJson(
@@ -46,7 +40,6 @@ async function main() {
   const brand = process.argv[2] ?? 'Corsair';
   const acc = new Set<string>();
 
-  // Các category gợi ý từ search namespace 14.
   const s = await getJson(
     `https://commons.wikimedia.org/w/api.php?action=query&format=json` +
       `&list=search&srnamespace=14&srsearch=${encodeURIComponent(brand)}&srlimit=20`,
@@ -54,7 +47,7 @@ async function main() {
   const cands = new Set<string>([brand, `${brand} (brand)`]);
   for (const x of s?.query?.search ?? []) {
     const n = String(x.title).replace(/^Category:/i, '');
-    // Chỉ giữ category có từ khóa hãng ở đầu (loại xe, phim, v.v.)
+
     if (new RegExp(`^${brand}\\b`, 'i').test(n)) cands.add(n);
   }
   console.log('Categories thử:', [...cands].join(', '));
@@ -64,7 +57,6 @@ async function main() {
   console.log(`\n=== ${acc.size} bitmap trong category của "${brand}" ===`);
   [...acc].sort().forEach((t) => console.log('  ', t));
 
-  // Thêm: search toàn Commons theo tên hãng + từ khoá sản phẩm.
   for (const kw of ['headset', 'headphones', 'mouse', 'keyboard', 'ssd', 'monitor']) {
     const d = await getJson(
       `https://commons.wikimedia.org/w/api.php?action=query&format=json` +

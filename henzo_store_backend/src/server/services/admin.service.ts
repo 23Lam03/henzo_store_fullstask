@@ -1,9 +1,3 @@
-/**
- * Nghiệp vụ dành cho admin — dashboard, tài chính & báo cáo toàn hệ thống.
- *
- * Mọi số liệu đều tính từ dữ liệu thật trong DB (không dùng số liệu mock
- * của frontend), scope toàn hệ thống.
- */
 import { OrderModel } from '../models/Order';
 import { ProductModel } from '../models/Product';
 import { PaymentModel } from '../models/Payment';
@@ -32,10 +26,6 @@ function monthStart(offset = 0): Date {
   return d;
 }
 
-/**
- * Số liệu tổng quan cho admin dashboard.
- * Khớp shape `ADMIN_STATS` + `MONTHLY_REVENUE` của frontend.
- */
 export async function getAdminDashboardStats() {
   const monthStartDate = monthStart(0);
   const prevMonthStartDate = monthStart(1);
@@ -125,7 +115,6 @@ export async function getAdminDashboardStats() {
   const monthRevenue = monthRevenueAgg[0]?.revenue ?? 0;
   const prevMonthRevenue = prevMonthRevenueAgg[0]?.revenue ?? 0;
 
-  // Doanh thu theo tháng (6 tháng gần nhất) — shape `MONTHLY_REVENUE`.
   const buckets = new Map<string, { revenue: number; orders: number }>();
   for (let i = 5; i >= 0; i--) {
     const d = monthStart(i);
@@ -190,10 +179,6 @@ export async function getAdminDashboardStats() {
   };
 }
 
-/**
- * Tổng hợp tài chính nền tảng — shape trang Admin Finance.
- * Hoa hồng nền tảng 5%, số dư khả dụng = 30% hoa hồng (giữ lại vận hành).
- */
 export async function getAdminFinanceSummary() {
   const [
     payments,
@@ -232,20 +217,12 @@ export async function getAdminFinanceSummary() {
     0,
   );
 
-  /**
-   * Doanh thu nền tảng = tổng phí sàn **đã thu thực tế** trên các giao dịch.
-   *
-   * Không tính lại từ `totalRevenue` vì:
-   * - Tỷ lệ có thể đổi theo thời gian, nên tính lại sẽ lệch với dữ liệu thật.
-   * - Giao dịch đã hoàn tiền không còn sinh phí sàn.
-   */
-  const platformCommission = completed.reduce(
+    const platformCommission = completed.reduce(
     (s: number, p: any) => s + (p.platformFee ?? 0),
     0,
   );
   const platformBalance = Math.floor(platformCommission * 0.3);
 
-  // Giao dịch nền tảng: hoa hồng từ các store + chi phí vận hành.
   const storeAgg = await OrderModel.aggregate([
     { $match: { status: { $ne: CustomerOrderStatus.CANCELLED } } },
     { $unwind: '$subOrders' },
@@ -262,7 +239,7 @@ export async function getAdminFinanceSummary() {
 
   const transactions = [
     ...storeAgg.map((s: any, i: number) => {
-      // Phí sàn của cửa hàng = sản phẩm doanh thu * tỷ lệ hiện hành.
+
       const commission = Math.floor((s.revenue ?? 0) * PLATFORM_COMMISSION_RATE);
       return {
         id: `TX${i + 1}`,
@@ -311,9 +288,6 @@ export async function getAdminFinanceSummary() {
   };
 }
 
-/**
- * Báo cáo tổng hợp — shape trang Admin Reports.
- */
 export async function getAdminReports() {
   const months = 6;
   const start = monthStart(months - 1);
@@ -362,7 +336,6 @@ export async function getAdminReports() {
 
   const totalRevenue = monthly.reduce((s, m) => s + m.revenue, 0);
 
-  // Doanh thu theo cửa hàng (tính từ sub-order).
   const storeRevenue = await OrderModel.aggregate([
     { $match: { createdAt: { $gte: start } } },
     { $unwind: '$subOrders' },

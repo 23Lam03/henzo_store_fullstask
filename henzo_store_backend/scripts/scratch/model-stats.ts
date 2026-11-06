@@ -1,6 +1,3 @@
-/**
- * Thống kê: bao nhiêu model (unique) đang cần ảnh đúng.
- */
 import { connectDB, disconnectDB } from '../../src/server/db';
 import { ProductModel } from '../../src/server/models/Product';
 import { modelName } from '../../lib/model-name';

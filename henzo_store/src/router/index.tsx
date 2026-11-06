@@ -7,19 +7,16 @@ import { RouteLoader } from '../components/common/RouteLoader/RouteLoader';
 import { MainLayout, ShopLayout, AdminLayout, AuthLayout } from '../components/layouts';
 import type { UserRole } from '../types';
 
-// ─── Các vai trò trong hệ thống ───────────────────────────────────────────────
 const CUSTOMER_ROLE: UserRole[] = ['CUSTOMER' as UserRole];
 const SHOP_ROLE: UserRole[] = ['SHOP' as UserRole, 'ADMIN' as UserRole];
 const ADMIN_ROLE: UserRole[] = ['ADMIN' as UserRole];
 
-// ─── Tải trang theo cơ chế lazy loading ───────────────────────────────────────
 const load = <T extends object>(fn: () => Promise<T>, key: keyof T) =>
   lazy(async () => {
     const mod = await fn();
     return { default: mod[key] as unknown as React.ComponentType };
   });
 
-// Các trang công khai
 const HomePage = load(() => import('../pages/customer/Home/HomePage'), 'HomePage');
 const ProductListPage = load(() => import('../pages/customer/ProductList/ProductListPage'), 'ProductListPage');
 const ProductDetailPage = load(() => import('../pages/customer/ProductDetail/ProductDetailPage'), 'ProductDetailPage');
@@ -35,12 +32,10 @@ const BlogDetailPage = load(() => import('../pages/customer/Blog/BlogDetailPage'
 const ShopPage = load(() => import('../pages/customer/Shops/ShopPage'), 'ShopPage');
 const ShopDetailPage = load(() => import('../pages/customer/Shops/ShopDetailPage'), 'ShopDetailPage');
 
-// Các trang xác thực
 const LoginPage = load(() => import('../pages/auth/LoginPage/LoginPage'), 'LoginPage');
 const RegisterPage = load(() => import('../pages/auth/RegisterPage/RegisterPage'), 'RegisterPage');
 const ForgotPasswordPage = load(() => import('../pages/auth/ForgotPasswordPage/ForgotPasswordPage'), 'ForgotPasswordPage');
 
-// Các trang khách hàng
 const CartPage = load(() => import('../pages/customer/Cart/CartPage'), 'CartPage');
 const CheckoutPage = load(() => import('../pages/customer/Checkout/CheckoutPage'), 'CheckoutPage');
 const WishlistPage = load(() => import('../pages/customer/Wishlist/WishlistPage'), 'WishlistPage');
@@ -58,7 +53,6 @@ const CustomerSettingsPage = load(() => import('../pages/customer/CustomerSettin
 const AddressesPage = load(() => import('../pages/customer/Addresses/AddressesPage'), 'AddressesPage');
 const PaymentsPage = load(() => import('../pages/customer/Payments/PaymentsPage'), 'PaymentsPage');
 
-// Các trang shop
 const ShopDashboardPage = load(() => import('../pages/shop/ShopDashboard/ShopDashboardPage'), 'ShopDashboardPage');
 const ShopProductListPage = load(() => import('../pages/shop/ShopProductList/ShopProductListPage'), 'ShopProductListPage');
 const CreateProductPage = load(() => import('../pages/shop/CreateProduct/CreateProductPage'), 'CreateProductPage');
@@ -74,7 +68,6 @@ const ShopProfilePage = load(() => import('../pages/shop/ShopProfile/ShopProfile
 const ShopShippingPage = load(() => import('../pages/shop/ShopShipping/ShopShippingPage'), 'ShopShippingPage');
 const ShopNotificationsPage = load(() => import('../pages/shop/ShopNotifications/ShopNotificationsPage'), 'ShopNotificationsPage');
 
-// Các trang quản trị viên
 const AdminDashboardPage = load(() => import('../pages/admin/AdminDashboard/DashboardPage'), 'AdminDashboardPage');
 const AdminProductPage = load(() => import('../pages/admin/AdminProduct/AdminProductPage'), 'AdminProductPage');
 const AdminProductEditPage = load(() => import('../pages/admin/AdminProduct/AdminProductEditPage'), 'AdminProductEditPage');
@@ -91,13 +84,10 @@ const AdminPromotionPage = load(() => import('../pages/admin/AdminPromotion/Admi
 const AdminAccessPage = load(() => import('../pages/admin/AdminAccess/AdminAccessPage'), 'AdminAccessPage');
 const AdminFinancePage = load(() => import('../pages/admin/AdminFinance/AdminFinancePage'), 'AdminFinancePage');
 
-// Các trang lỗi
 const NotFoundPage = load(() => import('../pages/errors/ErrorPages'), 'NotFoundPage');
 const ForbiddenPage = load(() => import('../pages/errors/ErrorPages'), 'ForbiddenPage');
 const ServerErrorPage = load(() => import('../pages/errors/ErrorPages'), 'ServerErrorPage');
 
-// ─── Thành phần bao cho từng trang ────────────────────────────────────────────
-// Bọc kèm hiệu ứng chuyển trang: nội dung mờ dần và trượt nhẹ khi đổi route.
 const Page = ({ children }: { children: ReactNode }) => {
   const { pathname } = useLocation();
   return (
@@ -109,13 +99,11 @@ const Page = ({ children }: { children: ReactNode }) => {
   );
 };
 
-// ─── Cấu hình router ──────────────────────────────────────────────────────────
-// basename phải khớp với base trong vite.config.ts: base: '/henzo_store/'
 const routerBasename = import.meta.env.BASE_URL || '/henzo_store/';
 
 export const router = createBrowserRouter(
   [
-    // ─── Tuyến xác thực ─────────────────────────────────────────────────────────
+
     {
       element: <AuthLayout />,
       children: [
@@ -125,7 +113,6 @@ export const router = createBrowserRouter(
       ],
     },
 
-    // ─── Tuyến công khai ────────────────────────────────────────────────────────
     {
       element: <MainLayout />,
       children: [
@@ -151,7 +138,6 @@ export const router = createBrowserRouter(
         { path: ROUTES.ABOUT, element: <Page><AboutPage /></Page> },
         { path: ROUTES.FAQ, element: <Page><FAQPage /></Page> },
 
-        // ─── Tuyến khách hàng được bảo vệ ───────────────────────────────────────
         {
           path: ROUTES.ACCOUNT,
           element: (
@@ -243,7 +229,6 @@ export const router = createBrowserRouter(
       ],
     },
 
-    // ─── Tuyến shop (/seller/*) ────────────────────────────────────────────────
     {
       path: '/seller',
       element: (
@@ -273,7 +258,6 @@ export const router = createBrowserRouter(
       ],
     },
 
-    // ─── Tuyến quản trị (/admin/*) ─────────────────────────────────────────────
     {
       path: '/admin',
       element: (
@@ -303,12 +287,10 @@ export const router = createBrowserRouter(
       ],
     },
 
-    // ─── Tuyến lỗi ──────────────────────────────────────────────────────────────
     { path: ROUTES.NOT_FOUND, element: <Page><NotFoundPage /></Page> },
     { path: ROUTES.FORBIDDEN, element: <Page><ForbiddenPage /></Page> },
     { path: ROUTES.SERVER_ERROR, element: <Page><ServerErrorPage /></Page> },
 
-    // ─── Tuyến bắt tất cả ─────────────────────────────────────────────────────
     { path: '*', element: <Navigate to={ROUTES.NOT_FOUND} replace /> },
   ],
   { basename: routerBasename }

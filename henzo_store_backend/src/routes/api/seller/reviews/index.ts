@@ -13,8 +13,7 @@ export const Route = createFileRoute('/api/seller/reviews/')({
   server: {
     middleware: [corsMiddleware, requireAuth, requireStoreOwner],
     handlers: {
-      /** Danh sách đánh giá của cửa hàng. */
-      GET: withErrorHandling(async ({ request, context }) => {
+            GET: withErrorHandling(async ({ request, context }) => {
         await connectDB();
         const scope = getStoreScope(context);
 
@@ -35,7 +34,7 @@ export const Route = createFileRoute('/api/seller/reviews/')({
             .limit(pageSize)
             .lean(),
           ReviewModel.countDocuments(filter),
-          // `$match` trong pipeline không tự ép chuỗi -> ObjectId.
+
           ReviewModel.aggregate([
             { $match: scope.aggMatch() },
             {

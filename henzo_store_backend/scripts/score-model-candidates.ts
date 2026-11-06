@@ -1,11 +1,3 @@
-/**
- * CHẤM ĐIỂM ỨNG VIÊN ẢNH CHO TỪNG MODEL (phiên bản chính xác).
- *
- * Nguyên tắc:
- *  - Bỏ token dung lượng (256GB, 1TB...) và từ chung.
- *  - Mã model phải khớp theo ranh giới từ.
- *  - Ưu tiên file có tên BẮT ĐẦU bằng tên model/series.
- */
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
@@ -94,7 +86,6 @@ const REJECT = new RegExp(
 const WORN =
   /broken|cracked|damaged|disassembl|\bopened\b|open ?case|internals?|circuit board|\bteardown\b/i;
 
-/** Token loại bỏ (kể cả dung lượng). */
 const STOP = new Set([
   'pro', 'plus', 'max', 'ultra', 'mini', 'air', 'gen', 'series', 'inch',
   'gaming', 'wireless', 'rgb', 'black', 'white', 'silver', 'grey', 'gray',
@@ -107,7 +98,6 @@ const STOP = new Set([
   'starting', 'starter', 'flagship', 'creator', 'pro', 'plus',
 ]);
 
-/** Loại bỏ hậu tố dung lượng / thuộc tính đặc biệt. */
 function stripNoise(model: string): string {
   return model
     .replace(/\b\d+\s?(GB|TB|MB)\b/gi, ' ')
@@ -133,7 +123,6 @@ function tokens(model: string): string[] {
     .sort((a, b) => b.length - a.length);
 }
 
-/** Mã đặc thù: chứa chữ + số, >=4 ký tự, không phải dung lượng. */
 function codes(model: string): string[] {
   const m = stripNoise(model).match(/[A-Za-z]+\d+[A-Za-z0-9\-]*|\d+[A-Za-z]+[A-Za-z0-9\-]*/g);
   return (m ?? []).filter((t) => t.length >= 4 && !/^\d+(GB|TB|MB)$/i.test(t));
@@ -143,7 +132,6 @@ function norm(s: string): string {
   return s.toLowerCase().replace(/[_.]/g, ' ').replace(/\s+/g, ' ').trim();
 }
 
-/** Khớp theo ranh giới từ trong chuỗi đã chuẩn hoá. */
 function hasToken(hay: string, token: string): boolean {
   const t = norm(token);
   const idx = hay.indexOf(t);
@@ -257,7 +245,6 @@ function scoreFile(
     reasons.push('type');
   }
 
-  // File bắt đầu bằng tên series -> rất nhiều khả năng là ảnh sản phẩm thật.
   const series = toks[0];
   if (series && hay.startsWith(norm(series))) {
     score += 40;
@@ -282,7 +269,6 @@ for (const model of allModels) {
 
 writeFileSync(resolve(DATA, 'scored-candidates.json'), JSON.stringify(results, null, 2), 'utf-8');
 
-// Báo cáo: model nào có ứng viên >= 120 (khớp mã model) -> chắc chắn đúng.
 const strong: string[] = [];
 const mid: string[] = [];
 for (const m of allModels) {

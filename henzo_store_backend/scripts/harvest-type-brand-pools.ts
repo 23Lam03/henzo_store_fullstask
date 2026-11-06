@@ -1,10 +1,3 @@
-/**
- * THU THẬP ẢNH TỪ CATEGORY LỚN THEO LOẠI, LỌC THEO HÃNG.
- *
- * Ví dụ: Category:Gaming headsets -> lấy hết file -> giữ file có tên chứa
- * "HyperX" / "Corsair" / "JBL" / "SteelSeries"...
- * Nhờ vậy ảnh vẫn là sản phẩm THẬT của đúng hãng, chỉ là khác model cụ thể.
- */
 import { writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
@@ -27,7 +20,6 @@ async function getJson(url: string): Promise<any> {
   return null;
 }
 
-/** File trong category (đệ quy 1 cấp subcat). */
 async function catFiles(cat: string, limit = 500): Promise<string[]> {
   const out: string[] = [];
   let cont: string | undefined;
@@ -55,7 +47,6 @@ async function subCats(cat: string): Promise<string[]> {
   return (d?.query?.categorymembers ?? []).map((c: any) => c.title.replace(/^Category:/, ''));
 }
 
-/** Category theo loại sản phẩm. */
 const TYPE_CATS: Record<string, string[]> = {
   HEADSET: ['Headsets', 'Gaming headsets', 'Headsets by brand', 'Headphones'],
   MONITOR: ['Computer monitors', 'LCD monitors', 'Gaming monitors'],
@@ -75,7 +66,6 @@ const TYPE_CATS: Record<string, string[]> = {
   ACCESSORY: ['Computer mice', 'Computer keyboards', 'USB hubs'],
 };
 
-/** Hãng cần lọc cho từng loại (không phân biệt hoa thường). */
 const BRANDS: Record<string, string[]> = {
   HEADSET: ['hyperx', 'corsair', 'jbl', 'steelseries', 'razer', 'logitech', 'sony', 'bose', 'astro', 'sennheiser', 'edifier', 'fantek', 'trust', 'qcy', 'edifier'],
   MONITOR: ['lg', 'aoc', 'asus', 'viewsonic', 'samsung', 'gigabyte', 'lenovo', 'hp', 'benq', 'zowie', 'dell', 'msi', 'corsair', 'razer', 'acer', 'philips', 'xiaomi', 'huawei', 'apple'],
@@ -95,7 +85,6 @@ const BRANDS: Record<string, string[]> = {
   ACCESSORY: ['logitech', 'razer', 'corsair', 'elgato', 'anker', 'belkin', 'apple', 'samsung'],
 };
 
-/** File nhiễu (người, sự kiện, linh kiện rời, vỡ...). */
 const REJECT = new RegExp(
   [
     'wcg', 'grand ?final', 'esport', 'tournament', 'championship', 'booth',
@@ -110,7 +99,6 @@ const REJECT = new RegExp(
   'i',
 );
 
-/** Tên file có thật sự là sản phẩm không. */
 const TYPE_HINT: Record<string, RegExp> = {
   HEADSET: /headset|headphone|earphone|head ?band|headset|micro ?phone/i,
   MONITOR: /monitor|display|screen|flat ?panel/i,

@@ -25,8 +25,7 @@ export const Route = createFileRoute('/api/seller/support/tickets/')({
   server: {
     middleware: [corsMiddleware, requireAuth, requireStoreOwner],
     handlers: {
-      /** Phiếu hỗ trợ liên quan tới cửa hàng. */
-      GET: withErrorHandling(async ({ request, context }) => {
+            GET: withErrorHandling(async ({ request, context }) => {
         await connectDB();
         const scope = getStoreScope(context);
 

@@ -1,14 +1,3 @@
-/**
- * PROBE: liệt kê TÊN FILE ứng viên trên Commons cho từng model cần ảnh.
- *
- * Dùng nhiều chiến lược:
- *   - list=allpages (prefix / prefix-free dạng search)
- *   - generator=search (full-text, namespace File)
- *   - generator=search intitle:<mã model>
- *   - categorymembers của Category:<tên>
- *
- * Chạy: npx tsx scripts/probe-candidates.ts <file.json>
- */
 import { readFileSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { getJson } from '../lib/commons-files';

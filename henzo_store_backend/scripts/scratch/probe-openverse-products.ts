@@ -1,12 +1,3 @@
-/**
- * THU THẬP ẢNH TỪ OPENVERSE (nguồn: Flickr, Nappy, StockSnap, ...).
- *
- * Openverse AND các từ trong truy vấn -> cần thử nhiều biến thể:
- *   "brand series", "brand model", "brand + loại sản phẩm", ...
- * Chỉ giữ giấy phép dùng thương mại (cc0 / pdm / by / by-sa).
- *
- * Dùng curl vì fetch() của Node bị chặn bởi proxy.
- */
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
 import { readFileSync, writeFileSync } from 'node:fs';
@@ -40,7 +31,6 @@ async function ov(query: string, pageSize = 20): Promise<any[]> {
   return [];
 }
 
-/** model -> các truy vấn (thử từ cụ thể -> rộng). */
 const QUERIES: Record<string, string[]> = {
   'AOC CU34G2X 34in': ['CU34G2X', 'AOC CU34G2X', 'AOC AGON CU34G2X', 'AOC ultrawide monitor', 'AOC gaming monitor'],
   'ASUS ROG Harpe Ace Aim Lab Edition': ['ROG Harpe Ace', 'Harpe Ace mouse', 'ROG Harpe Ace Aim Lab', 'Asus ROG gaming mouse'],
@@ -84,7 +74,6 @@ const QUERIES: Record<string, string[]> = {
   'Samsung Galaxy Tab S9': ['Samsung Galaxy Tab S9', 'Galaxy Tab S9 tablet'],
 };
 
-/** Chỉ giữ license dùng thương mại. */
 const OK_LICENSE = /^(cc0|pdm|by|by-sa)/i;
 
 async function main() {

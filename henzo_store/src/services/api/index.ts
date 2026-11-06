@@ -1,9 +1,3 @@
-/**
- * Barrel export cho tầng API.
- *
- * Import từ đây:
- *   import { catalogApi, cartApi, authApi } from '../../services/api';
- */
 export * from './client';
 export * from './auth';
 export * from './catalog';

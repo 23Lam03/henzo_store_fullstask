@@ -1,25 +1,13 @@
-/**
- * ⚠️  Dữ liệu mẫu (legacy) — KHÔNG dùng trực tiếp trong runtime của frontend.
- *
- * Toàn bộ ứng dụng đã chuyển sang backend TanStack (`henzo_store_backend`).
- * File này chỉ còn là **nguồn dữ liệu cho script seed** của backend:
- *   cd ../henzo_store_backend && npx tsx scripts/extract-frontend-data.ts
- */
 
-// ─── Admin Mock Data ───────────────────────────────────────────────────────────
-// 50 cửa hàng | 300 sản phẩm | 200 khách hàng | 500 đơn hàng
-// 300 giao dịch | 100 đánh giá | 50 khuyến mãi | 50 ticket hỗ trợ
 
 import type { Store, User, Order, Payment, Review, Promotion, SupportTicket } from '../types';
 
-// ─── Helper ───────────────────────────────────────────────────────────────────
 const randomDate = (daysAgo: number): string => {
   const d = new Date();
   d.setDate(d.getDate() - Math.floor(Math.random() * daysAgo));
   return d.toISOString();
 };
 
-// ─── Mock Stores (50) ────────────────────────────────────────────────────────
 export const MOCK_ADMIN_STORES: Store[] = [
   { id: 'store-1', name: 'Henzo Tech Store', email: 'contact@henzo.vn', phone: '0901234567', address: '123 Nguyễn Trãi, Quận 1, TP.HCM', avatar: 'https://api.dicebear.com/7.x/identicon/svg?seed=store1', rating: 4.8, productCount: 1234, isVerified: true, createdAt: randomDate(365) },
   { id: 'store-2', name: 'TechPro Shop', email: 'contact@techpro.vn', phone: '0902345678', address: '456 Lê Lợi, Quận 3, TP.HCM', avatar: 'https://api.dicebear.com/7.x/identicon/svg?seed=store2', rating: 4.7, productCount: 876, isVerified: true, createdAt: randomDate(300) },
@@ -73,7 +61,6 @@ export const MOCK_ADMIN_STORES: Store[] = [
   { id: 'store-50', name: 'Tripod Center', email: 'info@tripod.vn', phone: '0950123456', address: '3737 Võ Thị Sáu, Quận 3, TP.HCM', avatar: 'https://api.dicebear.com/7.x/identicon/svg?seed=store50', rating: 4.3, productCount: 67, isVerified: true, createdAt: randomDate(0) },
 ];
 
-// ─── Mock Customers (200) ────────────────────────────────────────────────────
 const firstNames = ['Nguyễn', 'Trần', 'Lê', 'Phạm', 'Hoàng', 'Huỳnh', 'Phan', 'Trương', 'Bùi', 'Đặng', 'Ngô', 'Đỗ', 'Hồ', 'Đinh', 'Trịnh', 'Cao', 'Lương', 'Đào', 'Tạ', 'Vũ'];
 const lastNames = ['Văn A', 'Thị B', 'Văn C', 'Thị D', 'Văn E', 'Thị F', 'Văn G', 'Thị H', 'Văn I', 'Thị K', 'Văn L', 'Thị M', 'Văn N', 'Thị P', 'Văn Q', 'Thị R', 'Văn S', 'Thị T', 'Văn U', 'Thị V'];
 const domains = ['gmail.com', 'yahoo.com', 'outlook.com', 'email.com', 'icloud.com'];
@@ -95,7 +82,6 @@ export const MOCK_ADMIN_CUSTOMERS: User[] = Array.from({ length: 200 }, (_, i) =
   };
 });
 
-// ─── Mock Orders (500) ───────────────────────────────────────────────────────
 const ORDER_STATUSES: Order['status'][] = ['pending', 'confirmed', 'processing', 'shipping', 'delivered', 'cancelled'];
 const PAYMENT_METHODS = ['COD', 'Chuyển khoản', 'VNPay', 'ZaloPay', 'MoMo'];
 
@@ -126,7 +112,6 @@ export const MOCK_ADMIN_ORDERS: Order[] = Array.from({ length: 500 }, (_, i) => 
   };
 });
 
-// ─── Mock Payments (300) ──────────────────────────────────────────────────────
 const PAYMENT_STATUSES: Payment['status'][] = ['pending', 'completed', 'failed', 'refunded'];
 export const MOCK_ADMIN_PAYMENTS: Payment[] = Array.from({ length: 300 }, (_, i) => {
   const order = MOCK_ADMIN_ORDERS[i % MOCK_ADMIN_ORDERS.length];
@@ -146,7 +131,6 @@ export const MOCK_ADMIN_PAYMENTS: Payment[] = Array.from({ length: 300 }, (_, i)
   };
 });
 
-// ─── Mock Reviews (100) ───────────────────────────────────────────────────────
 const REVIEW_COMMENTS = [
   'Sản phẩm tuyệt vời! Giao hàng nhanh, đóng gói cẩn thận.',
   'Chất lượng tốt như mô tả. Shop rất chuyên nghiệp.',
@@ -181,7 +165,6 @@ export const MOCK_ADMIN_REVIEWS: Review[] = Array.from({ length: 100 }, (_, i) =
   };
 });
 
-// ─── Mock Promotions (50) ────────────────────────────────────────────────────
 const PROMO_NAMES = [
   'Flash Sale Cuối Tuần', 'Voucher 200K', 'Sale iPhone 16', 'Giảm 30% Laptop Gaming',
   'Khuyến mãi mùa hè', 'Back to School', 'Giảm giá Apple Week', 'Samsung Festival',
@@ -208,7 +191,6 @@ export const MOCK_ADMIN_PROMOTIONS: Promotion[] = Array.from({ length: 50 }, (_,
   };
 });
 
-// ─── Mock Support Tickets (50) ───────────────────────────────────────────────
 const TICKET_SUBJECTS = [
   'Lỗi hiển thị sản phẩm trên app', 'Đơn hàng chưa được giao sau 7 ngày',
   'Hướng dẫn cập nhật thông tin cửa hàng', 'Sản phẩm bị lỗi từ đầu',
@@ -249,7 +231,6 @@ export const MOCK_ADMIN_TICKETS: SupportTicket[] = Array.from({ length: 50 }, (_
   };
 });
 
-// ─── Admin Stats Helper ───────────────────────────────────────────────────────
 export const ADMIN_STATS = {
   totalRevenue: 9945000000,
   totalOrders: 8234,
@@ -262,7 +243,6 @@ export const ADMIN_STATS = {
   totalTickets: 50,
 };
 
-// ─── Chart Data ────────────────────────────────────────────────────────────────
 export const MONTHLY_REVENUE = [
   { month: 'T1', revenue: 1245000000, orders: 1234 },
   { month: 'T2', revenue: 1456000000, orders: 1456 },

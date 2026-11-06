@@ -1,9 +1,3 @@
-/* ═══════════════════════════════════════════════════════════════════════════
-   HOME PAGE
-   Ngôn ngữ: EDITORIAL — hero dạng bìa tạp chí (chữ trái / ảnh phải), section
-   đánh số 01–05, danh mục dạng mục lục có gạch chân, không gradient tím.
-═══════════════════════════════════════════════════════════════════════════ */
-
 .home-page {
   width: 100%;
   max-width: 1400px;
@@ -19,8 +13,6 @@
   .home-page { padding: 0 var(--space-10); }
 }
 
-/* ─── Hero: bìa tạp chí ──────────────────────────────────────────────────── */
-
 .hero {
   display: grid;
   grid-template-columns: minmax(0, 0.94fr) minmax(0, 1.06fr);
@@ -30,8 +22,6 @@
   border-bottom: 1px solid var(--color-border);
   position: relative;
 }
-
-/* Hero vào hiện dạng mờ dần khi trang vừa tải */
 .hero__eyebrow,
 .hero__title,
 .hero__subtitle,
@@ -48,8 +38,6 @@
 .hero__dots { animation: hz-fade-up 620ms var(--motion-ease) both 420ms; }
 
 .hero__media { animation: hz-blur-in 780ms var(--motion-ease) both 120ms; }
-
-/* Vạch dọc mực — chi tiết bìa tạp chí */
 .hero::before {
   content: '';
   position: absolute;
@@ -149,8 +137,6 @@
   background: var(--color-surface-sunken);
   border: 1px solid var(--color-border);
 }
-
-/* Khung trắng mảnh trong ảnh — kiểu khung in, không phải khung bo */
 .hero__media::after {
   content: '';
   position: absolute;
@@ -158,8 +144,6 @@
   border: 1px solid rgba(255, 255, 255, 0.55);
   pointer-events: none;
 }
-
-/* Ảnh sản phẩm: contain để không cắt khung sản phẩm */
 .hero__image {
   position: absolute;
   inset: 0;
@@ -177,8 +161,6 @@
   transform: scale(1);
   animation: hz-ken-burns 9s ease-out both;
 }
-
-/* Hero 2 cột chỉ từ 900px; dưới đó xuống 1 cột */
 @media (max-width: 899px) {
   .hero {
     grid-template-columns: minmax(0, 1fr);
@@ -188,8 +170,6 @@
   .hero__media { aspect-ratio: 16 / 10; }
   .hero__title { font-size: var(--font-size-4xl); }
 }
-
-/* ─── Dải cam kết ───────────────────────────────────────────────────────── */
 
 .trust-strip {
   display: grid;
@@ -231,8 +211,6 @@
 @media (min-width: 900px) {
   .trust-strip { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 }
-
-/* ─── Dải tuyên ngôn ───────────────────────────────────────────────────── */
 
 .manifesto {
   display: grid;
@@ -323,8 +301,6 @@
   .manifesto__quote { font-size: var(--font-size-xl); }
 }
 
-/* ─── Section rhythm ─────────────────────────────────────────────────────── */
-
 .section-categories,
 .section-flash-sale,
 .section-featured,
@@ -333,8 +309,6 @@
 .section-banner-promo {
   padding: var(--space-12) 0;
 }
-
-/* Đường kẻ mảnh phân đoạn — chi tiết tạp chí */
 .section-categories,
 .section-flash-sale,
 .section-featured,
@@ -346,8 +320,6 @@
 .section-app-cta {
   padding: var(--space-8) 0 var(--space-16);
 }
-
-/* Số thứ tự section — chi tiết editorial */
 .section-head__index {
   display: block;
   font-family: var(--font-family-display);
@@ -367,8 +339,6 @@
 .section-head__title--flash { color: var(--color-text-primary); }
 
 .section-head__title--flash::before { background: var(--color-danger); }
-
-/* ─── Danh mục: dạng mục lục ────────────────────────────────────────────── */
 
 .categories-grid {
   display: grid;
@@ -451,15 +421,11 @@
   color: var(--color-accent);
 }
 
-/* ─── Lưới sản phẩm ─────────────────────────────────────────────────────── */
-
 .products-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: var(--space-3);
 }
-
-/* ─── Hàng cuộn Flash Sale ──────────────────────────────────────────────── */
 
 .products-scroll {
   display: flex;
@@ -497,16 +463,12 @@
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
-
-/* Đồng hồ đếm ngược — số nhấp nháy nhẹ mỗi giây */
 .flash-sale__clock {
   display: inline-block;
   min-width: 52px;
   text-align: center;
   animation: hz-tick 340ms var(--motion-ease);
 }
-
-/* ─── Skeleton ───────────────────────────────────────────────────────────── */
 
 .loading-grid { display: contents; }
 
@@ -539,8 +501,6 @@
   background-size: 200% 100%;
   animation: skeleton-loading 1.4s ease-in-out infinite;
 }
-
-/* ─── Banner khuyến mãi ─────────────────────────────────────────────────── */
 
 .promo-banner {
   position: relative;
@@ -602,10 +562,6 @@
   background: var(--color-surface-sunken);
   color: var(--color-text-primary);
 }
-
-/* ─── Thương hiệu ───────────────────────────────────────────────────────── */
-
-/* Dải chạy ngang — thay cho lưới tĩnh */
 .brands-marquee {
   margin: 0 calc(var(--content-gutter) * -1);
   padding-inline: var(--content-gutter);
@@ -665,8 +621,6 @@
   opacity: 1;
 }
 
-/* ─── App CTA ────────────────────────────────────────────────────────────── */
-
 .app-cta {
   background: var(--color-dark);
   border-radius: 0;
@@ -676,8 +630,6 @@
   overflow: hidden;
   border: 1px solid var(--color-dark);
 }
-
-/* Lưới hairline kiểu bản in — thay cho vòng sáng gradient */
 .app-cta::after {
   content: '';
   position: absolute;
@@ -741,10 +693,6 @@
   border-color: rgba(255, 255, 255, 0.55);
 }
 
-/* ═══════════════════════════════════════════════════════════════════════════
-   RESPONSIVE — TABLET
-═══════════════════════════════════════════════════════════════════════════ */
-
 @media (min-width: 768px) {
   .hero { padding: var(--space-12) 0; }
 
@@ -787,10 +735,6 @@
   .app-cta__content h2 { font-size: var(--font-size-3xl); }
 }
 
-/* ═══════════════════════════════════════════════════════════════════════════
-   RESPONSIVE — DESKTOP
-═══════════════════════════════════════════════════════════════════════════ */
-
 @media (min-width: 1024px) {
   .hero { gap: var(--space-12); }
   .hero__title { font-size: var(--font-size-6xl); }
@@ -826,10 +770,6 @@
   .app-cta { padding: var(--space-16); }
   .app-cta__content h2 { font-size: var(--font-size-4xl); }
 }
-
-/* ═══════════════════════════════════════════════════════════════════════════
-   RESPONSIVE — MOBILE
-═══════════════════════════════════════════════════════════════════════════ */
 
 @media (max-width: 767px) {
   .hero {

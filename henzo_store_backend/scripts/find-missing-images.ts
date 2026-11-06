@@ -1,11 +1,3 @@
-/**
- * Tìm ảnh sản phẩm cho các model còn thiếu qua nhiều nguồn:
- *  - Wikipedia (en + các ngôn ngữ khác) pageimages & media-list
- *  - Commons category đệ quy (Category:Corsair (brand) -> subcategory)
- *  - Commons search với bộ lọc filetype
- *
- * Chạy: npx tsx scripts/find-missing-images.ts
- */
 import { readFileSync, existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { modelName } from './lib/model-name';
@@ -29,7 +21,6 @@ async function getJson(url: string): Promise<any> {
   return null;
 }
 
-/** Ảnh trong media-list của 1 trang Wikipedia (bất kỳ ngôn ngữ). */
 async function wikiMedia(page: string, lang = 'en') {
   const d = await getJson(
     `https://${lang}.wikipedia.org/api/rest_v1/page/media-list/${encodeURIComponent(page)}`,
@@ -44,7 +35,6 @@ async function wikiMedia(page: string, lang = 'en') {
   return out;
 }
 
-/** Tìm trang Wikipedia liên quan (en). */
 async function wikiSearch(q: string) {
   const d = await getJson(
     `https://en.wikipedia.org/w/api.php?action=query&format=json&list=search` +
@@ -53,7 +43,6 @@ async function wikiSearch(q: string) {
   return (d?.query?.search ?? []).map((x: any) => String(x.title));
 }
 
-/** Sub-category của 1 category Commons. */
 async function subCats(cat: string) {
   const d = await getJson(
     `https://commons.wikimedia.org/w/api.php?action=query&format=json` +
@@ -63,7 +52,6 @@ async function subCats(cat: string) {
   return (d?.query?.categorymembers ?? []).map((x: any) => String(x.title));
 }
 
-/** File trong 1 category Commons (đệ quy, giới hạn chiều sâu). */
 async function catFiles(cat: string, depth = 2, max = 80): Promise<string[]> {
   const d = await getJson(
     `https://commons.wikimedia.org/w/api.php?action=query&format=json` +
@@ -114,7 +102,6 @@ async function main() {
     const info = byModel.get(m)!;
     console.log(`\n########## ${m}  [${info.brand} | ${info.categoryName}]`);
 
-    // A) Trang Wikipedia khớp tên.
     const titles = await wikiSearch(m);
     for (const t of titles.slice(0, 3)) {
       const files = await wikiMedia(t);
@@ -124,7 +111,6 @@ async function main() {
       console.log(`  WIKI "${t}" -> ${good.length ? good.slice(0, 4).join(' | ') : '(không có ảnh SP)'}`);
     }
 
-    // B) Category Commons theo tên model / dòng.
     for (const cat of [m, m.replace(/\s+(Wireless|Carbon|Red)$/i, '')]) {
       const f = await catFiles(cat, 1);
       if (f.length) {
@@ -132,7 +118,6 @@ async function main() {
       }
     }
 
-    // C) Category Commons theo hãng (đệ quy).
     const brandCat = info.brand === 'HyperX' ? 'HyperX' : `${info.brand} (brand)`;
     const bf = await catFiles(brandCat, 2, 60);
     const good = bf.filter((f) => {

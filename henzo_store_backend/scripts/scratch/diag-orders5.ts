@@ -4,7 +4,6 @@ import { OrderModel } from '../../src/server/models/Order';
 
 const STOP = new Set(['gb', 'tb', 'mb', 'ssd', 'inch', 'in']);
 
-/** Chuẩn hoá tên -> token chữ/số bỏ ký tự đặc biệt, bỏ số thứ tự cuối. */
 function tokens(name: string): string[] {
   return name
     .toLowerCase()
@@ -24,7 +23,6 @@ function tokens(name: string): string[] {
 
   const alive = new Set(products.map((p) => String(p._id)));
 
-  // Index sản phẩm theo token
   const prodTokens = products.map((p) => ({ p, t: new Set(tokens(String(p.name))) }));
   const brandTokens = new Map<string, any[]>();
   for (const p of products) {
@@ -43,18 +41,16 @@ function tokens(name: string): string[] {
       dead++;
       const name = String(it.productName ?? '');
 
-      // Bỏ số thứ tự ở cuối: "AirPods Pro 2 12" -> "AirPods Pro 2"
       const cleaned = name.replace(/\s+\d{1,3}$/, '').trim();
       const ct = new Set(tokens(cleaned));
       if (!ct.size) { unresolved++; misses.set(name, (misses.get(name) ?? 0) + 1); continue; }
 
-      // 1) điểm = |giao| / |token sản phẩm|
       let best: any = null; let bestScore = 0; let bestJaccard = 0;
       for (const { p, t } of prodTokens) {
         let inter = 0;
         for (const x of ct) if (t.has(x)) inter++;
         if (!inter) continue;
-        const score = inter / ct.size;             // bao phủ token đích
+        const score = inter / ct.size;
         const jac = inter / (ct.size + t.size - inter);
         if (score > bestScore || (score === bestScore && jac > bestJaccard)) {
           bestScore = score; bestJaccard = jac; best = p;

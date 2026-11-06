@@ -1,4 +1,3 @@
-/* Shipping Page */
 .seller-shipping-stat {
   display: flex;
   flex-direction: column;
@@ -13,5 +12,3 @@
 .seller-shipping-stat__label { font-size: var(--font-size-xs); color: var(--color-text-muted); margin: 0; font-weight: 500; }
 .seller-shipping-stat__value { font-size: var(--font-size-2xl); font-weight: 700; color: var(--color-text-primary); margin: 0; }
 .seller-shipping-address { font-size: var(--font-size-xs); color: var(--color-text-secondary); margin: 0; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-
-/* Reuse shared .seller-tabs, .seller-tab, .seller-pagination, .seller-table, .seller-empty, .seller-action-btn styles from OrderListPage.css */

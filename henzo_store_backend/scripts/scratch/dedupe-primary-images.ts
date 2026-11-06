@@ -1,12 +1,3 @@
-/**
- * LOẠI TRÙNG ẢNH CHÍNH GIỮA CÁC MODEL KHÁC NHAU.
- *
- * Nguyên tắc nghiệp vụ: hai model KHÁC NHAU không được dùng chung ảnh chính
- * (trừ khi chúng là biến thể cấu hình của cùng một thiết bị).
- *
- * Cách sửa: với mỗi ảnh bị dùng chung, tìm ảnh dự phòng cho từng model
- * (từ ảnh phụ sẵn có trong DB, hoặc từ Commons) và gán lại.
- */
 import { connectDB, disconnectDB } from '../../src/server/db';
 import { ProductModel } from '../../src/server/models/Product';
 import { modelName } from '../../lib/model-name';
@@ -16,7 +7,6 @@ import { findCandidates } from '../../lib/commons-model-search';
 await connectDB();
 const products = await ProductModel.find({}).select('name images brand').lean();
 
-/** model -> danh sách sản phẩm. */
 const byModel = new Map<string, any[]>();
 for (const p of products) {
   const m = modelName(String(p.name ?? ''));
@@ -26,7 +16,6 @@ for (const p of products) {
   byModel.set(m, arr);
 }
 
-/** Ảnh chính -> các model dùng chung. */
 const primaryOwners = new Map<string, string[]>();
 for (const [model, list] of byModel) {
   const main = String(list[0].images?.[0] ?? '');
@@ -43,27 +32,23 @@ let fixed = 0;
 let unresolved = 0;
 
 for (const [img, models] of conflicts) {
-  // Model giữ nguyên ảnh (đã có ảnh riêng), các model còn lại tìm ảnh khác.
+
   const [keep, ...others] = models;
   console.log(`\n${img.split('/').pop()?.slice(0, 60)}`);
   console.log(`  giữ: ${keep}`);
 
-  // Tập ảnh đã dùng làm ảnh chính (để tránh chọn lại).
   const usedPrimaries = new Set([...primaryOwners.keys()]);
 
   for (const model of others) {
     const list = byModel.get(model)!;
     const imgs = list[0].images.map(String);
 
-    // 1. Ưu tiên ảnh phụ sẵn có trong DB của chính model này mà chưa dùng làm
-    //    ảnh chính của model nào khác.
     const candidate = imgs
       .slice(1)
       .find((u) => !usedPrimaries.has(u) && fileMatchesName(model, u));
 
     let chosen = candidate;
 
-    // 2. Nếu không có, tìm trên Commons.
     if (!chosen) {
       const cands = await findCandidates(model, 8);
       const fresh = cands.find(

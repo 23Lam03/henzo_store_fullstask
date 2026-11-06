@@ -49,7 +49,7 @@ export const ShopReportsPage = () => {
         </div>
       </div>
 
-      {/* Summary Cards */}
+      {}
       <div className="admin-stats admin-stats--4">
         <div className="seller-report-stat">
           <div className="seller-report-stat__icon" style={{ background: 'rgba(31,85,87,0.1)', color: '#1F5557' }}>
@@ -81,7 +81,7 @@ export const ShopReportsPage = () => {
         </div>
       </div>
 
-      {/* Tabs */}
+      {}
       <div className="seller-tabs" style={{ borderBottom: '2px solid var(--color-border)', marginBottom: 20 }}>
         {(['revenue', 'orders', 'customers', 'products'] as ReportTab[]).map(t => (
           <button key={t} className={`seller-tab ${tab === t ? 'seller-tab--active' : ''}`} onClick={() => setTab(t)}>
@@ -90,7 +90,7 @@ export const ShopReportsPage = () => {
         ))}
       </div>
 
-      {/* Charts */}
+      {}
       <div className="admin-section seller-reports__chart-section">
         <div className="seller-report-chart">
           {tab === 'revenue' && (
@@ -166,7 +166,7 @@ export const ShopReportsPage = () => {
         </div>
       </div>
 
-      {/* Monthly Table */}
+      {}
       <div className="admin-section">
         <div className="admin-section__header">
           <h3 className="admin-section__title">Báo cáo chi tiết theo tháng</h3>

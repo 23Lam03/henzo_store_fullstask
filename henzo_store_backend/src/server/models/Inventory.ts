@@ -1,7 +1,3 @@
-/**
- * Model Inventory — tồn kho theo SKU của từng cửa hàng.
- * Cho phép mỗi sản phẩm có nhiều biến thể (SKU) nếu sau này cần.
- */
 import { Schema, type InferSchemaType } from 'mongoose';
 import { defineModel } from './registry';
 import { InventoryStatus } from '../constants';
@@ -18,8 +14,7 @@ const inventorySchema = new Schema(
     stock: { type: Number, default: 0, min: 0 },
     minStock: { type: Number, default: 10, min: 0 },
     reserved: { type: Number, default: 0, min: 0 },
-    /** stock - reserved */
-    available: { type: Number, default: 0, min: 0 },
+        available: { type: Number, default: 0, min: 0 },
     sold: { type: Number, default: 0, min: 0 },
     status: {
       type: String,
@@ -39,7 +34,6 @@ export type InventoryDoc = InferSchemaType<typeof inventorySchema>;
 
 export const InventoryModel = defineModel('Inventory', inventorySchema);
 
-/** Tính lại trạng thái & số lượng khả dụng. */
 export function recalcInventory(stock: number, minStock: number, reserved: number) {
   const status =
     stock === 0

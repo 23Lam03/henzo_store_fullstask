@@ -1,8 +1,3 @@
-/**
- * Kiểm tra logic suy ra danh mục/thương hiệu trên toàn bộ tập sản phẩm.
- *
- * Chạy: npx tsx scripts/verify-classify.ts
- */
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { inferBrand, inferCategory } from '../src/server/data/product-classify';

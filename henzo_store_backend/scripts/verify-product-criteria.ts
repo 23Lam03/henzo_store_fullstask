@@ -1,15 +1,3 @@
-/**
- * KIỂM TRA TOÀN BỘ TIÊU CHÍ SẢN PHẨM trong MongoDB.
- *
- * Bao phủ:
- *  1. Thông số kỹ thuật thật (>= 6 khoá, không còn mẫu random CPU/RAM/SSD)
- *  2. Mô tả khác generic, đúng model
- *  3. Tags không rỗng
- *  4. Tên / slug duy nhất
- *  5. Ảnh đúng model & không trùng lặp
- *  6. Giá / tồn kho hợp lệ
- *  7. Category / brand đầy đủ
- */
 import { connectDB, disconnectDB } from '../src/server/db';
 import { ProductModel } from '../src/server/models/Product';
 import { specModelKey } from '../../henzo_store/src/data/modelSpecs';
@@ -42,8 +30,7 @@ async function main() {
   const slugSet = new Set<string>();
   const slugDup = new Set<string>();
   const imgCount = new Map<string, string[]>();
-  /** Ảnh -> set model dùng ảnh đó (dùng để phát hiện trùng GIỮA CÁC MODEL). */
-  const imgModels = new Map<string, Set<string>>();
+    const imgModels = new Map<string, Set<string>>();
 
   for (const p of products) {
     const name = String(p.name);
@@ -53,7 +40,7 @@ async function main() {
     if (specKeys.length < MIN_SPECS) {
       issues['Thông số thiếu/quá ít'].push(`${name} (${specKeys.length} khoá)`);
     }
-    // Còn sót mẫu random: đúng 3 khoá CPU/RAM/SSD
+
     if (specKeys.length === 3 && RANDOM_KEYS.every((k) => k in specs)) {
       issues['Thông số còn dạng random'].push(`${name} -> ${JSON.stringify(specs)}`);
     }
@@ -101,7 +88,6 @@ async function main() {
   }
   for (const s of slugDup) issues['Slug trùng'].push(s);
 
-  // Ảnh trùng GIỮA CÁC MODEL KHÁC NHAU -> ảnh sai (lỗi nghiệp vụ).
   const crossModel = [...imgModels.entries()].filter(([, s]) => s.size > 1);
   for (const [img, models] of crossModel) {
     issues['Ảnh trùng giữa các model'].push(
@@ -109,8 +95,6 @@ async function main() {
     );
   }
 
-  // Ảnh phụ trùng giữa các biến thể CÙNG model -> chấp nhận được
-  // (cùng thiết bị, khác dung lượng/màu) — chỉ thống kê.
   const sameModelDup = [...imgCount.entries()].filter(([, v]) => v.length > 1);
   console.log(
     `\nℹ  Ảnh phụ dùng chung giữa các biến thể cùng model: ${sameModelDup.length} URL ` +

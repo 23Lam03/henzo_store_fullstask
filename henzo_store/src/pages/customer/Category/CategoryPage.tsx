@@ -22,7 +22,6 @@ export const CategoryPage = () => {
   const [sort, setSort] = useState('sold');
   const [page, setPage] = useState(1);
 
-  // Danh mục + thương hiệu lấy từ backend.
   useEffect(() => {
     let cancelled = false;
     const load = async () => {

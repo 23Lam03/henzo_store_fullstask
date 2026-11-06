@@ -1,8 +1,3 @@
-/**
- * Săn ảnh HyperX / Corsair / Endgame cụ thể (tên file chứa mã dòng).
- *
- * Chạy: npx tsx scripts/last-hunt.ts
- */
 const UA = 'henzo-store/1.0 (model image resolver; dev@henzo.local)';
 
 async function getJson(url: string): Promise<any> {

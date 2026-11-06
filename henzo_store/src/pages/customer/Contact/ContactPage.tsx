@@ -139,7 +139,7 @@ export const ContactPage = () => {
 
   return (
     <div className="contact-page">
-      {/* Page Header */}
+      {}
       <div className="contact-hero">
         <div className="container">
           <h1 className="contact-hero__title">Liên hệ HenzoStore</h1>
@@ -151,7 +151,7 @@ export const ContactPage = () => {
 
       <div className="container">
         <div className="contact-layout">
-          {/* Left: Form */}
+          {}
           <div className="contact-form-section">
             <div className="card">
               <div className="card-header">
@@ -239,9 +239,9 @@ export const ContactPage = () => {
             </div>
           </div>
 
-          {/* Right: Info */}
+          {}
           <div className="contact-info-section">
-            {/* Quick Contact */}
+            {}
             <div className="card contact-quick-card">
               <h3 className="contact-quick-card__title">Liên hệ nhanh</h3>
               <div className="contact-quick-list">
@@ -282,7 +282,7 @@ export const ContactPage = () => {
               </div>
             </div>
 
-            {/* Social */}
+            {}
             <div className="card contact-social-card">
               <h3 className="contact-social-card__title">Kết nối mạng xã hội</h3>
               <div className="contact-social-list">
@@ -300,7 +300,7 @@ export const ContactPage = () => {
               </div>
             </div>
 
-            {/* FAQ */}
+            {}
             <div className="card contact-faq-card">
               <h3 className="contact-faq-card__title">Câu hỏi thường gặp</h3>
               <div className="contact-faq-list">
@@ -321,7 +321,7 @@ export const ContactPage = () => {
           </div>
         </div>
 
-        {/* Office Branches */}
+        {}
         <div className="contact-branches">
           <h2 className="contact-branches__title">Hệ thống cửa hàng</h2>
           <div className="contact-branches__grid">

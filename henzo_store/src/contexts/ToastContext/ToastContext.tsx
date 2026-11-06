@@ -15,7 +15,6 @@ export interface ToastOptions extends Omit<Toast, 'id'> {}
 
 type ToastAdder = (opts: ToastOptions) => void;
 
-// Stable ref — never reassigned, only .current is updated
 const _toastRef: { current: ToastAdder } = { current: () => {} };
 
 export const ToastProvider = ({ children }: { children: ReactNode }) => {
@@ -89,7 +88,6 @@ const ICON_PATHS: Record<ToastVariant, string> = {
   info:    'M12 16v-4m0-4h.01M22 12a10 10 0 1 1-20 0 10 10 0 0 1 20 0z',
 };
 
-// Expose a function (not the ref) so pages can call: const toast = useToast(); toast(...)
 export const useToast = (): ToastAdder => {
   return useCallback((opts: ToastOptions) => {
     _toastRef.current(opts);

@@ -1,6 +1,3 @@
-/* Empty state dùng chung — kế thừa token từ global.css.
-   Icon dạng khung vuông hairline (không huy hiệu tròn màu pastel). */
-
 .empty-state {
   display: flex;
   flex-direction: column;

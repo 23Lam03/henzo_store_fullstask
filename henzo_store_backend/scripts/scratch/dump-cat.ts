@@ -1,8 +1,3 @@
-/**
- * LIỆT KÊ TOÀN BỘ FILE trong category (kèm category con) để soi tay.
- *
- * Chạy: npx tsx scripts/dump-cat.ts "Category A" "Category B"
- */
 import { getJson } from '../lib/commons-files';
 
 async function main() {

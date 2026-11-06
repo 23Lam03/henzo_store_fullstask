@@ -3,8 +3,6 @@
   margin: 0 auto;
   padding: var(--space-8) var(--space-4);
 }
-
-/* Header */
 .customer-support__header {
   display: flex;
   align-items: flex-start;
@@ -24,8 +22,6 @@
   color: var(--color-text-secondary);
   font-size: var(--font-size-sm);
 }
-
-/* Filters */
 .customer-support__filters {
   margin-bottom: var(--space-6);
 }
@@ -122,8 +118,6 @@
 .support-category-select {
   min-width: 160px;
 }
-
-/* Ticket List */
 .support-list {
   display: flex;
   flex-direction: column;
@@ -148,8 +142,6 @@
 .support-empty p {
   font-size: var(--font-size-sm);
 }
-
-/* Ticket Card */
 .support-ticket-card {
   background: var(--color-surface);
   border: 2px solid var(--color-border);
@@ -233,8 +225,6 @@
   font-weight: 600;
   font-size: var(--font-size-sm);
 }
-
-/* Modal */
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -336,8 +326,6 @@
   padding: var(--space-4) var(--space-6);
   border-top: 1px solid var(--color-border);
 }
-
-/* Chat */
 .support-chat {
   padding: var(--space-4) var(--space-6);
   display: flex;
@@ -416,8 +404,6 @@
 .support-chat__bubble--system .support-chat__time {
   text-align: right;
 }
-
-/* Reply */
 .support-reply {
   padding: var(--space-4) var(--space-6);
   border-top: 1px solid var(--color-border);
@@ -432,8 +418,6 @@
 .support-reply .btn {
   align-self: flex-end;
 }
-
-/* Responsive */
 @media (max-width: 640px) {
   .customer-support {
     padding: var(--space-4);

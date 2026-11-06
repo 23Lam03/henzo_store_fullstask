@@ -45,8 +45,7 @@ export const Route = createFileRoute('/api/seller/products/')({
   server: {
     middleware: [corsMiddleware, requireAuth, requireStoreOwner],
     handlers: {
-      /** Danh sách sản phẩm của cửa hàng. */
-      GET: withErrorHandling(async ({ request, context }) => {
+            GET: withErrorHandling(async ({ request, context }) => {
         await connectDB();
         const scope = getStoreScope(context);
 
@@ -99,16 +98,14 @@ export const Route = createFileRoute('/api/seller/products/')({
         );
       }),
 
-      /** Tạo sản phẩm mới. */
-      POST: withErrorHandling(async ({ request, context }) => {
+            POST: withErrorHandling(async ({ request, context }) => {
         await connectDB();
-        // Tạo sản phẩm là thao tác ghi -> bắt buộc có một cửa hàng cụ thể.
+
         const storeId = getStoreScope(context).require();
         const body = await readJson(request, productSchema);
 
         const slug = await uniqueProductSlug(body.slug || body.name);
 
-        // Tự suy ra tên danh mục nếu có categoryId.
         let categoryName = body.categoryName;
         if (body.categoryId) {
           const category = await CategoryModel.findById(body.categoryId)
@@ -134,7 +131,6 @@ export const Route = createFileRoute('/api/seller/products/')({
           viewCount: 0,
         });
 
-        // Đồng bộ bảng kho.
         await syncInventory(product, storeId);
 
         return ok(toProductDto(product), undefined, 201);
@@ -143,7 +139,6 @@ export const Route = createFileRoute('/api/seller/products/')({
   },
 });
 
-/** Sinh slug duy nhất cho sản phẩm. */
 async function uniqueProductSlug(input: string): Promise<string> {
   const base =
     input
@@ -164,7 +159,6 @@ async function uniqueProductSlug(input: string): Promise<string> {
   return slug;
 }
 
-/** Đồng bộ dòng tồn kho của sản phẩm. */
 async function syncInventory(product: any, storeId: string) {
   const sku = product.sku || `SKU-${String(product._id).slice(-8).toUpperCase()}`;
 

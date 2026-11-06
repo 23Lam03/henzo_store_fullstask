@@ -33,7 +33,7 @@ export const Route = createFileRoute('/api/seller/dashboard')({
             getSellerFinanceSummary(storeId, period),
             getDailyRevenue(storeId, 30),
             getMonthlyData(storeId, 12),
-            // Admin xem toàn bộ cửa hàng -> không có một store duy nhất.
+
             storeId ? StoreModel.findById(storeId).lean() : null,
           ]);
 

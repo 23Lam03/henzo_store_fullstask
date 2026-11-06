@@ -1,16 +1,3 @@
-/**
- * KHÔI PHỤC KHÁCH HÀNG / CỬA HÀNG BỊ XOÁ NHẦM.
- *
- * Bối cảnh: khi kiểm tra chức năng nút "Xoá" trên UI, route
- * `DELETE /api/admin/customers/:id` và `DELETE /api/admin/stores/:id` xoá
- * CỨNG (hard delete) — nên dùng để test sẽ mất dữ liệu thật.
- *
- * Script này đối chiếu DB với `scripts/data/frontend-mock.json` (nguồn seed
- * gốc) và tạo lại những bản ghi bị thiếu — giữ nguyên `_id` gốc để các
- * quan hệ (đơn hàng, đánh giá, sản phẩm) không bị đứt liên kết.
- *
- * Chạy: npx tsx scripts/restore-deleted-records.ts
- */
 import { existsSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { isValidObjectId, Types } from 'mongoose';
@@ -28,7 +15,6 @@ interface MockData {
   adminCustomers: any[];
 }
 
-/** Tìm file mock không quan tâm thư mục chạy. */
 function resolveMockDataPath(): string {
   const candidates = [
     resolve(process.cwd(), 'scripts/data/frontend-mock.json'),
@@ -48,7 +34,6 @@ async function main() {
 
   const password = await hashPassword('123456');
 
-  // ─── 1. Khôi phục khách hàng ──────────────────────────────────────────────
   let restoredUsers = 0;
   for (const c of mock.adminCustomers ?? []) {
     const email = String(c.email ?? '').toLowerCase();
@@ -73,9 +58,6 @@ async function main() {
   }
   console.log(`[restore] Khôi phục ${restoredUsers} khách hàng.`);
 
-  // ─── 1b. Khôi phục khách hàng mồ côi (dựa trên đơn hàng) ────────────────
-  // Đơn hàng giữ `customerId` + `customerName` — dùng để dựng lại user bị
-  // xoá nhầm mà không có trong file mock (tạo ngoài seed).
   const orders = await OrderModel.find({}).select(
     'customerId customerName',
   ).lean();
@@ -123,7 +105,6 @@ async function main() {
   }
   console.log(`[restore] Khôi phục ${restoredOrphans} khách hàng mồ côi.`);
 
-  // ─── 2. Khôi phục cửa hàng ───────────────────────────────────────────────
   const sourceStores = [
     ...(mock.stores ?? []),
     ...(mock.adminStores ?? []).filter(
@@ -166,7 +147,6 @@ async function main() {
     console.log(`[restore] + Cửa hàng ${name}`);
     restoredStores++;
 
-    // Gỡ ẩn các sản phẩm của cửa hàng (xoá store đã set status=hidden).
     const unhidden = await ProductModel.updateMany(
       { storeId: doc._id },
       { $set: { status: 'active' } },
@@ -179,7 +159,6 @@ async function main() {
   }
   console.log(`[restore] Khôi phục ${restoredStores} cửa hàng.`);
 
-  // ─── 3. Đồng bộ lại productCount ─────────────────────────────────────────
   const stores = await StoreModel.find({}).select('_id').lean();
   for (const st of stores) {
     const count = await ProductModel.countDocuments({
@@ -190,7 +169,6 @@ async function main() {
   }
   console.log('[restore] Đã đồng bộ productCount cho cửa hàng.');
 
-  // ─── 4. Tổng kết ─────────────────────────────────────────────────────────
   console.log(
     `[restore] Tổng: ${await UserModel.countDocuments({})} người dùng, ${
       await StoreModel.countDocuments({})

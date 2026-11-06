@@ -1,16 +1,8 @@
-/**
- * LỌC LẠI POOL ẢNH: loại ảnh không đúng loại sản phẩm.
- *
- * Ví dụ pool "Chuột" lẫn ảnh chuột nhắc (động vật), pool "Màn hình" lẫn ảnh
- * màn hình cũ. Script này áp bộ lọc NGỮ NGHĨA cho từng loại: ảnh còn lại
- * phải chứa từ khóa đúng loại VÀ không chứa từ khóa của loại khác/động vật.
- */
 import { readFileSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
 const POOL_PATH = resolve(process.cwd(), 'scripts/data/type-image-pools.json');
 
-/** Từ khóa BẮT BUỘC có trong tên file. */
 const MUST: Record<string, string[]> = {
   'Điện thoại': ['iphone', 'galaxy s', 'pixel', 'phone', 'smartphone', 'redmi', 'oneplus', 'fone'],
   Tablet: ['ipad', 'galaxy tab', 'tablet'],
@@ -23,7 +15,6 @@ const MUST: Record<string, string[]> = {
   'Phụ kiện': ['webcam', 'microphone', 'charger', 'power adapter', 'usb', 'dock', 'hub', 'cable'],
 };
 
-/** Từ khóa KHÔNG được có (loại khác, động vật, đời thường). */
 const FORBID: Record<string, string[]> = {
   Chuột: ['spider', 'lemmur', 'grass mouse', 'mouse-deer', 'chevo', 'brain', 'nucleus', 'cell', 'stained', 'kidney', 'pony', 'blossom', 'mouse trap', 'mechanism', 'animal', 'rodent'],
   'Bàn phím': ['keycap', 'switch only', 'layout chart'],
@@ -36,7 +27,6 @@ const FORBID: Record<string, string[]> = {
   'Phụ kiện': ['vector', 'clipart', 'diagram'],
 };
 
-/** Từ chung của mọi loại — ảnh chứa chúng không đủ để xác định loại. */
 const GENERIC = ['usb', 'cable'];
 
 const pools: Record<string, string[]> = JSON.parse(
@@ -59,7 +49,7 @@ for (const [type, urls] of Object.entries(pools)) {
     if (!must.length) return true;
     if (!must.some((k) => name.includes(k))) return false;
     if (forbid.some((k) => name.includes(k))) return false;
-    // Loại chung chỉ dùng khi loại đó không có từ khóa riêng (Phụ kiện).
+
     if (type !== 'Phụ kiện' && GENERIC.some((g) => name === g)) return false;
     return true;
   });

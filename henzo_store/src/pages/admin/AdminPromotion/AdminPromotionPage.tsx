@@ -37,7 +37,6 @@ const getPromoType = (id: string): string => {
   return TYPE_LABELS[idx % TYPE_LABELS.length];
 };
 
-/** Form khuyến mãi dùng chung cho tạo mới & chỉnh sửa. */
 interface PromoForm {
   title: string;
   code: string;
@@ -56,7 +55,6 @@ const EMPTY_PROMO_FORM: PromoForm = {
   endDate: '',
 };
 
-/** Chuẩn hoá ngày về `YYYY-MM-DD` cho input type="date". */
 const toDateInput = (value?: string): string => {
   if (!value) return '';
   const d = new Date(value);
@@ -72,7 +70,6 @@ export const AdminPromotionPage = () => {
   const [pendingDelete, setPendingDelete] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Modal tạo / sửa / chi tiết — trước đây điều hướng tới route không tồn tại.
   const [showForm, setShowForm] = useState(false);
   const [editingPromo, setEditingPromo] = useState<Promotion | null>(null);
   const [form, setForm] = useState<PromoForm>(EMPTY_PROMO_FORM);
@@ -89,8 +86,7 @@ export const AdminPromotionPage = () => {
     (statusFilter === 'all' || p.statusInfo.key === statusFilter)
   );
 
-  /** Mở modal tạo (promo = null) hoặc sửa (promo có id). */
-  const openForm = (promo: Promotion | null) => {
+    const openForm = (promo: Promotion | null) => {
     setEditingPromo(promo);
     setForm(
       promo
@@ -108,8 +104,7 @@ export const AdminPromotionPage = () => {
     setShowForm(true);
   };
 
-  /** Lưu khuyến mãi (tạo mới hoặc cập nhật). */
-  const handleSubmitForm = async () => {
+    const handleSubmitForm = async () => {
     const errors: Record<string, string> = {};
     if (!form.title.trim()) errors.title = 'Vui lòng nhập tên chương trình.';
     if (form.discount < 0 || form.discount > 100) {
@@ -154,8 +149,7 @@ export const AdminPromotionPage = () => {
     }
   };
 
-  /** Xoá khuyến mãi — gọi API thật rồi cập nhật danh sách. */
-  const handleDelete = async (id: string) => {
+    const handleDelete = async (id: string) => {
     setIsSubmitting(true);
     try {
       await deletePromotion(id);
@@ -272,7 +266,7 @@ export const AdminPromotionPage = () => {
         />
       </div>
 
-      {/* Modal tạo / sửa khuyến mãi */}
+      {}
       {showForm && (
         <div className="admin-modal-overlay" onClick={() => setShowForm(false)}>
           <div className="admin-modal admin-modal--lg" onClick={e => e.stopPropagation()}>

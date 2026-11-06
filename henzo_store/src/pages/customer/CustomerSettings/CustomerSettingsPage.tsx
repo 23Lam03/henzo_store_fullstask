@@ -19,7 +19,6 @@ export const CustomerSettingsPage = () => {
   const [activeTab, setActiveTab] = useState<Tab>('profile');
   const [saved, setSaved] = useState(false);
 
-  // Profile form
   const [profile, setProfile] = useState({
     name: '',
     email: '',
@@ -30,11 +29,9 @@ export const CustomerSettingsPage = () => {
   });
   const [profileErrors, setProfileErrors] = useState<Record<string, string>>({});
 
-  // Password form
   const [password, setPassword] = useState({ current: '', next: '', confirm: '' });
   const [passwordErrors, setPasswordErrors] = useState<Record<string, string>>({});
 
-  // Address form
   const [address, setAddress] = useState({
     name: '',
     phone: '',
@@ -46,8 +43,7 @@ export const CustomerSettingsPage = () => {
   });
   const [addressErrors, setAddressErrors] = useState<Record<string, string>>({});
 
-  /** Nạp hồ sơ thật từ API. */
-  useEffect(() => {
+    useEffect(() => {
     let cancelled = false;
     const load = async () => {
       try {
@@ -238,7 +234,7 @@ export const CustomerSettingsPage = () => {
         </div>
       )}
 
-      {/* Tabs */}
+      {}
       <div className="settings-tabs">
         {tabs.map(t => (
           <button
@@ -252,7 +248,7 @@ export const CustomerSettingsPage = () => {
       </div>
 
       <div className="settings-content">
-        {/* Profile Tab */}
+        {}
         {activeTab === 'profile' && (
           <div className="settings-card card">
             <div className="settings-card__header">
@@ -339,7 +335,7 @@ export const CustomerSettingsPage = () => {
           </div>
         )}
 
-        {/* Password Tab */}
+        {}
         {activeTab === 'password' && (
           <div className="settings-card card">
             <div className="settings-card__header">
@@ -402,7 +398,7 @@ export const CustomerSettingsPage = () => {
           </div>
         )}
 
-        {/* Address Tab */}
+        {}
         {activeTab === 'address' && (
           <div className="settings-card card">
             <div className="settings-card__header">

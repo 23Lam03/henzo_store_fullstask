@@ -20,11 +20,7 @@ export const Route = createFileRoute('/api/seller/reviews/$id')({
   server: {
     middleware: [corsMiddleware, requireAuth, requireStoreOwner],
     handlers: {
-      /**
-       * Ẩn / bỏ ẩn / phản hồi đánh giá.
-       * Seller chỉ được thao tác trên đánh giá của cửa hàng mình.
-       */
-      PATCH: withErrorHandling(async ({ request, params, context }) => {
+            PATCH: withErrorHandling(async ({ request, params, context }) => {
         await connectDB();
         const storeId = getStoreScope(context).require();
         const body = await readJson(request, actionSchema);

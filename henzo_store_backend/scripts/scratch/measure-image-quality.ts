@@ -1,7 +1,3 @@
-/**
- * ĐO CHẤT LƯỢNG ẢNH HIỆN TẠI: ảnh chính có chứa token BRAND / SERIES
- * của model không (thay vì đúng model).
- */
 import { connectDB, disconnectDB } from '../../src/server/db';
 import { ProductModel } from '../../src/server/models/Product';
 import { modelName } from '../../lib/model-name';

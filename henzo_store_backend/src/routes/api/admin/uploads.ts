@@ -7,12 +7,6 @@ import { ok } from '@/server/http/response';
 import { badRequest } from '@/server/http/errors';
 import { saveUploadedImage } from '@/server/services/upload.service';
 
-/**
- * Tải ảnh lên từ máy người dùng.
- *
- * Nhận `multipart/form-data` với field `file` (có thể gửi nhiều file).
- * Trả về danh sách ảnh đã lưu kèm URL public để nhúng vào sản phẩm.
- */
 export const Route = createFileRoute('/api/admin/uploads')({
   server: {
     middleware: [corsMiddleware, requireAuth, requireAdmin],

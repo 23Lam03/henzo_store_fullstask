@@ -1,8 +1,3 @@
-/**
- * Kiểm tra HTTP 200 cho mọi URL ảnh trong bảng logo thương hiệu.
- *
- * Chạy: npx tsx scripts/check-brand-logos.ts
- */
 import {
   BRAND_LOGOS,
   BRAND_LOGOS_COMMONS,

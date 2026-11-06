@@ -1,8 +1,3 @@
-/**
- * Kiểm tra liveness của tập ảnh curated (nhóm nhỏ, quan trọng).
- *
- * Chạy: npx tsx scripts/check-curated-images.ts
- */
 import { connectDB, disconnectDB } from '../src/server/db';
 import { ProductModel } from '../src/server/models/Product';
 
@@ -28,7 +23,6 @@ async function main() {
   await connectDB();
   const docs = await ProductModel.find({}).lean();
 
-  // Chỉ lấy ảnh từ sản phẩm "curated" (slug không theo pattern product-N-brand)
   const curated = (docs as any[]).filter(
     (d) => !/^product-\d+-/.test(String(d.slug ?? '')),
   );

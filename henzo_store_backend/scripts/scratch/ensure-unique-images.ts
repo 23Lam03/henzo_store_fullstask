@@ -1,15 +1,3 @@
-/**
- * ĐẢM BẢO MỖI MODEL CÓ BỘ ẢNH RIÊNG (không dùng chung với model khác).
- *
- * Nguyên tắc nghiệp vụ: mỗi model (dòng sản phẩm) có bộ ảnh riêng. Ảnh
- * chỉ được dùng chung giữa các BIẾN THẾ CẤU HÌNH của cùng một model
- * (vd iPhone 15 Pro Max 256GB và 512GB) — đó là đúng nghiệp vụ.
- *
- * Cách làm:
- *  1. Với mỗi ảnh bị nhiều model dùng, chọn một model "chủ" giữ lại
- *     (model đã có ảnh đúng nhất) và gỡ khỏi các model còn lại.
- *  2. Với model bị thiếu ảnh, tìm ảnh riêng trên Commons.
- */
 import { connectDB, disconnectDB } from '../../src/server/db';
 import { ProductModel } from '../../src/server/models/Product';
 import { modelName } from '../../lib/model-name';
@@ -32,7 +20,6 @@ for (const p of products) {
   byModel.set(m, arr);
 }
 
-/** Ảnh -> các model dùng ảnh đó. */
 const imgOwners = new Map<string, Set<string>>();
 for (const [model, list] of byModel) {
   for (const p of list) {
@@ -44,7 +31,6 @@ for (const [model, list] of byModel) {
   }
 }
 
-/** Ảnh -> model chủ (model dùng ảnh đó làm ảnh CHÍNH). */
 const primaryOf = new Map<string, string>();
 for (const [model, list] of byModel) {
   const main = String(list[0].images?.[0] ?? '');
@@ -56,8 +42,6 @@ console.log(
     `${[...imgOwners.values()].filter((s) => s.size > 1).length}`,
 );
 
-// Gỡ ảnh dùng chung khỏi model KHÔNG phải chủ (chủ = model dùng làm ảnh chính,
-// hoặc model khớp model nhất nếu không có chủ).
 const toRemove = new Map<string, Set<string>>();
 for (const [img, owners] of imgOwners) {
   if (owners.size <= 1) continue;
@@ -81,7 +65,6 @@ for (const [model, imgs] of toRemove) {
 }
 console.log(`Đã gỡ ảnh dùng chung khỏi ${removed} bản ghi`);
 
-// Bổ sung ảnh riêng cho model còn thiếu.
 const MIN_IMAGES = 3;
 const used = new Set<string>(primaryOf.keys());
 
@@ -102,7 +85,7 @@ for (const [model, list] of byModel) {
   let addedHere = 0;
   for (const c of fresh) {
     if (have.size + addedHere >= MIN_IMAGES) break;
-    // Ảnh phải khớp model (không chỉ khớp loại).
+
     if (!fileMatchesAll(model, c.url)) continue;
     have.add(c.url);
     used.add(c.url);

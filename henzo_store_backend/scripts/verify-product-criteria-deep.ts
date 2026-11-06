@@ -1,34 +1,3 @@
-/**
- * KIỂM TRA MỞ RỘNG — các tiêu chí CHƯA được `verify-product-criteria.ts` audit.
- *
- * Nhóm 1 — Toàn vẹn tham chiếu (referential integrity)
- *   - product.categoryId tồn tại trong `categories`
- *   - product.categoryName khớp với categoryId
- *   - product.brand tồn tại trong `brands`
- *   - product.storeId tồn tại trong `stores`
- *   - product.status là giá trị hợp lệ
- *   - review.productId / order.items[].productId tồn tại
- *
- * Nhóm 2 — Nhất quán số liệu denormalised
- *   - categories.productCount khớp số sản phẩm thật
- *   - brands.productCount khớp
- *   - stores.productCount khớp
- *   - products.reviewCount / rating khớp collection `reviews`
- *   - products.discount khớp (originalPrice - price) / originalPrice
- *
- * Nhóm 3 — Chất lượng nội dung sâu hơn
- *   - shortDescription có giá trị và <= 160 ký tự
- *   - sku không rỗng & không trùng
- *   - mỗi sản phẩm có >= MIN_IMAGES ảnh
- *   - specifications khớp BẢNG CHUẨN modelSpecs (không lệch)
- *   - ảnh: URL reachable (HTTP 200) + đúng loại sản phẩm
- *
- * Nhóm 4 — Độ phủ dữ liệu
- *   - mọi model trong DB đều có trong bảng chuẩn modelSpecs
- *   - các collection "homepage" (featured/hot/new) không rỗng
- *
- * Chạy: npx tsx scripts/verify-product-criteria-deep.ts
- */
 import { connectDB, disconnectDB } from '../src/server/db';
 import { ProductModel } from '../src/server/models/Product';
 import { CategoryModel } from '../src/server/models/Category';
@@ -45,13 +14,6 @@ import {
 const MIN_IMAGES = 3;
 const MAX_SHORT_DESC = 160;
 
-/**
- * Token định danh loại sản phẩm — dùng để kiểm ảnh đúng loại.
- *
- * Dùng chung `scripts/lib/image-type.ts` (nguồn chuẩn) để kiểm tra và
- * sửa ảnh dùng cùng một bộ quy tắc — tránh tình trạng script sửa ảnh
- * "đúng" nhưng script verify lại báo "sai".
- */
 import { isWrongType, typeHits } from './lib/image-type';
 import { modelType } from './lib/model-type';
 
@@ -59,7 +21,6 @@ function typeScore(imgUrl: string, categoryName: string): number {
   return typeHits(imgUrl, modelType('', categoryName));
 }
 
-/** Kiểm tra URL ảnh có trả về 200 (không tải toàn bộ, chỉ HEAD). */
 async function isReachable(url: string): Promise<boolean> {
   try {
     const ctrl = new AbortController();
@@ -97,7 +58,7 @@ async function main() {
   );
 
   const issues: Record<string, string[]> = {
-    // ─── Nhóm 1: toàn vẹn tham chiếu ───────────────────────────────────
+
     'categoryId không tồn tại': [],
     'categoryName lệch categoryId': [],
     'brand không tồn tại': [],
@@ -105,19 +66,19 @@ async function main() {
     'status không hợp lệ': [],
     'review trỏ product không tồn tại': [],
     'order item trỏ product không tồn tại': [],
-    // ─── Nhóm 2: nhất quán số liệu ──────────────────────────────────────
+
     'category.productCount lệch': [],
     'brand.productCount lệch': [],
     'store.productCount lệch': [],
     'reviewCount/rating lệch collection': [],
     'discount không khớp giá': [],
-    // ─── Nhóm 3: chất lượng nội dung ────────────────────────────────────
+
     'shortDescription thiếu/quá dài': [],
     'sku rỗng/trùng': [],
     'Ảnh < MIN_IMAGES': [],
     'spec lệch bảng chuẩn': [],
     'Ảnh sai loại sản phẩm': [],
-    // ─── Nhóm 4: độ phủ ────────────────────────────────────────────────
+
     'model chưa có trong bảng chuẩn': [],
     'collection homepage rỗng': [],
   };
@@ -132,7 +93,6 @@ async function main() {
   const skuCount = new Map<string, number>();
   const seenModels = new Set<string>();
 
-  // Đếm thực tế theo category / brand / store
   const realCatCount = new Map<string, number>();
   const realBrandCount = new Map<string, number>();
   const realStoreCount = new Map<string, number>();
@@ -144,7 +104,6 @@ async function main() {
     const brand = String(p.brand ?? '');
     const storeId = p.storeId ? String(p.storeId) : '';
 
-    // ── Nhóm 1 ──
     if (!catId || !catById.has(catId)) {
       issues['categoryId không tồn tại'].push(`${name} (${catId || 'rỗng'})`);
     } else {
@@ -168,12 +127,10 @@ async function main() {
       issues['status không hợp lệ'].push(`${name} (${p.status})`);
     }
 
-    // đếm
     if (catId) realCatCount.set(catId, (realCatCount.get(catId) ?? 0) + 1);
     if (brand) realBrandCount.set(brand, (realBrandCount.get(brand) ?? 0) + 1);
     if (storeId) realStoreCount.set(storeId, (realStoreCount.get(storeId) ?? 0) + 1);
 
-    // ── Nhóm 2: discount ──
     const price = Number(p.price ?? 0);
     const original = Number(p.originalPrice ?? 0);
     const discount = Number(p.discount ?? 0);
@@ -191,7 +148,6 @@ async function main() {
       );
     }
 
-    // ── Nhóm 3 ──
     const short = String(p.shortDescription ?? '');
     if (!short.trim()) issues['shortDescription thiếu/quá dài'].push(`${name} (rỗng)`);
     else if (short.length > MAX_SHORT_DESC)
@@ -206,7 +162,6 @@ async function main() {
       issues['Ảnh < MIN_IMAGES'].push(`${name} (${imgs.length}/${MIN_IMAGES})`);
     }
 
-    // specs có khớp bảng chuẩn không?
     const model = specModelKey(name);
     seenModels.add(model);
     const { specs: canonical, missing } = specsForProduct(name);
@@ -231,7 +186,6 @@ async function main() {
     if (n > 1) issues['sku rỗng/trùng'].push(`${sku} x${n}`);
   }
 
-  // ── Nhóm 1 tiếp: review / order ──
   for (const r of reviews) {
     const pid = String(r.productId ?? '');
     if (pid && !productIds.has(pid)) {
@@ -252,7 +206,6 @@ async function main() {
     }
   }
 
-  // ── Nhóm 2: productCount ──
   for (const c of categories) {
     const real = realCatCount.get(String(c._id)) ?? 0;
     if (Number(c.productCount ?? 0) !== real) {
@@ -278,7 +231,6 @@ async function main() {
     }
   }
 
-  // reviewCount / rating
   const revAgg = new Map<string, { n: number; sum: number }>();
   for (const r of reviews) {
     if (r.isHidden) continue;
@@ -304,7 +256,6 @@ async function main() {
     }
   }
 
-  // ── Nhóm 4: collection homepage ──
   const active = products.filter((p) => p.status === 'active');
   const homeCollections: Record<string, number> = {
     featured: active.filter((p) => p.isFeatured).length,
@@ -317,12 +268,6 @@ async function main() {
     if (v === 0) issues['collection homepage rỗng'].push(k);
   }
 
-  // ── Nhóm 3: ảnh sai loại ──
-  //
-  // Dùng chung quy tắc với script sửa ảnh (`lib/image-type.ts`): ảnh sai
-  // khi KHÔNG có token của loại sản phẩm VÀ có token của loại khác.
-  // Loại sản phẩm được suy ra từ TÊN sản phẩm (model) + danh mục, vì
-  // danh mục "Điện thoại" chứa cả tablet.
   const MAIN = 0;
   for (const p of products) {
     const imgs = (p.images ?? []).map(String);
@@ -336,7 +281,6 @@ async function main() {
     }
   }
 
-  // ── In báo cáo ──
   let total = 0;
   const order = [
     'categoryId không tồn tại',
@@ -370,7 +314,6 @@ async function main() {
 
   console.log('\nℹ  Collection homepage:', JSON.stringify(homeCollections));
 
-  // ── Kiểm tra URL ảnh reachable (chỉ ảnh chính, mẫu 60) ──
   const sample = products.slice(0, 60);
   const mains = sample.map((p) => String((p.images ?? [])[0] ?? '')).filter(Boolean);
   const results = await Promise.all(mains.map((u) => isReachable(u)));

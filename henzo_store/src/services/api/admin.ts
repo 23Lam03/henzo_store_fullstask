@@ -1,7 +1,3 @@
-/**
- * API phía admin — dashboard, cửa hàng, khách hàng, đơn hàng, thanh toán,
- * sản phẩm, đánh giá, khuyến mãi, phiếu hỗ trợ, báo cáo & phân quyền.
- */
 import {
   API_BASE_URL,
   API_ORIGIN,
@@ -89,11 +85,9 @@ export interface AdminTicket extends SupportTicket {
 }
 
 export const adminApi = {
-  /** Số liệu tổng quan hệ thống. */
-  dashboard: (): Promise<AdminDashboard> =>
+    dashboard: (): Promise<AdminDashboard> =>
     apiFetch<AdminDashboard>(`${API_BASE_URL}/admin/dashboard`),
 
-  // ─── Cửa hàng ─────────────────────────────────────────────────────────────
   async stores(
     params: {
       page?: number;
@@ -126,8 +120,7 @@ export const adminApi = {
       body: input,
     }),
 
-  /** Khóa / mở khóa / xác minh cửa hàng. */
-  storeAction: (
+    storeAction: (
     id: string,
     action: 'verify' | 'unverify' | 'lock' | 'unlock' | 'suspend',
     reason?: string,
@@ -143,7 +136,6 @@ export const adminApi = {
       { method: 'DELETE' },
     ),
 
-  // ─── Khách hàng ───────────────────────────────────────────────────────────
   async customers(
     params: {
       page?: number;
@@ -185,7 +177,6 @@ export const adminApi = {
       { method: 'DELETE' },
     ),
 
-  // ─── Đơn hàng ─────────────────────────────────────────────────────────────
   async orders(
     params: {
       page?: number;
@@ -205,8 +196,7 @@ export const adminApi = {
     };
   },
 
-  /** Chi tiết đơn + các giao dịch thanh toán của đơn. */
-  async order(
+    async order(
     id: string,
   ): Promise<{ order: Order; payments: Payment[] }> {
     const data = await apiFetch<{ order: Order; payments: Payment[] }>(
@@ -221,7 +211,6 @@ export const adminApi = {
       body: { status, ...(note ? { note } : {}) },
     }),
 
-  // ─── Sản phẩm ─────────────────────────────────────────────────────────────
   async products(
     params: {
       page?: number;
@@ -240,20 +229,17 @@ export const adminApi = {
     return { products: data?.products ?? [], total: meta?.total ?? 0 };
   },
 
-  /** Chi tiết một sản phẩm (dùng cho trang chỉnh sửa). */
-  product: (id: string): Promise<Product & { storeName: string; storeSlug: string }> =>
+    product: (id: string): Promise<Product & { storeName: string; storeSlug: string }> =>
     apiFetch<Product & { storeName: string; storeSlug: string }>(
       `${API_BASE_URL}/admin/products/${encodeURIComponent(id)}`,
     ),
 
-  /** Tải ảnh lên từ máy — trả về URL public dùng cho `images` của sản phẩm. */
-  async uploadImages(files: File[] | File): Promise<{ files: UploadedFileInfo[] }> {
+    async uploadImages(files: File[] | File): Promise<{ files: UploadedFileInfo[] }> {
     const res = await apiUpload<{ files: UploadedFileInfo[] }>(
       `${API_BASE_URL}/admin/uploads`,
       files,
     );
-    // Backend trả URL tương đối (`/api/uploads/...`) — gắn host API để ảnh
-    // hiển thị được từ frontend (khác origin).
+
     return {
       files: res.files.map(f => ({
         ...f,
@@ -274,7 +260,6 @@ export const adminApi = {
       { method: 'DELETE' },
     ),
 
-  // ─── Đánh giá ─────────────────────────────────────────────────────────────
   async reviews(
     params: {
       page?: number;
@@ -297,8 +282,7 @@ export const adminApi = {
     };
   },
 
-  /** Duyệt / ẩn / bỏ ẩn / xoá đánh giá. */
-  reviewAction: (
+    reviewAction: (
     id: string,
     action: 'approve' | 'hide' | 'unhide' | 'delete',
     reply?: string,
@@ -308,7 +292,6 @@ export const adminApi = {
       { method: 'POST', body: { action, ...(reply ? { reply } : {}) } },
     ),
 
-  // ─── Khuyến mãi ───────────────────────────────────────────────────────────
   async promotions(
     params: { page?: number; pageSize?: number; status?: string } = {},
   ): Promise<{ promotions: Promotion[]; counts: Record<string, number>; total: number }> {
@@ -341,7 +324,6 @@ export const adminApi = {
       { method: 'DELETE' },
     ),
 
-  // ─── Thanh toán ───────────────────────────────────────────────────────────
   async payments(
     params: {
       page?: number;
@@ -362,8 +344,7 @@ export const adminApi = {
     };
   },
 
-  /** Hoàn tiền cho một giao dịch. */
-  refundPayment: (
+    refundPayment: (
     id: string,
     reason?: string,
   ): Promise<Payment> =>
@@ -372,7 +353,6 @@ export const adminApi = {
       body: { paymentId: id, ...(reason ? { reason } : {}) },
     }),
 
-  // ─── Phiếu hỗ trợ ────────────────────────────────────────────────────────
   async tickets(
     params: {
       page?: number;
@@ -405,28 +385,24 @@ export const adminApi = {
       { method: 'PATCH', body: input },
     ),
 
-  /** Gửi phản hồi của admin cho khách hàng (thêm vào lịch sử ticket). */
-  replyTicket: (id: string, message: string): Promise<AdminTicket> =>
+    replyTicket: (id: string, message: string): Promise<AdminTicket> =>
     apiFetch<AdminTicket>(
       `${API_BASE_URL}/admin/support/tickets/${encodeURIComponent(id)}`,
       { method: 'POST', body: { message } },
     ),
 
-  /** Đóng phiếu hỗ trợ. */
-  closeTicket: (id: string): Promise<AdminTicket> =>
+    closeTicket: (id: string): Promise<AdminTicket> =>
     apiFetch<AdminTicket>(
       `${API_BASE_URL}/admin/support/tickets/${encodeURIComponent(id)}`,
       { method: 'DELETE' },
     ),
 
-  // ─── Báo cáo & tài chính ──────────────────────────────────────────────────
   reports: (): Promise<Record<string, unknown>> =>
     apiFetch<Record<string, unknown>>(`${API_BASE_URL}/admin/reports`),
 
   finance: (): Promise<Record<string, unknown>> =>
     apiFetch<Record<string, unknown>>(`${API_BASE_URL}/admin/finance`),
 
-  // ─── Phân quyền ───────────────────────────────────────────────────────────
   permissions: (): Promise<Record<string, unknown>> =>
     apiFetch<Record<string, unknown>>(`${API_BASE_URL}/admin/access/roles`),
 
@@ -454,8 +430,7 @@ export const adminApi = {
       body: input,
     }),
 
-  /** Cập nhật thông tin / vai trò / quyền của một nhân sự quản trị. */
-  updateStaff: (
+    updateStaff: (
     id: string,
     input: Record<string, unknown>,
   ): Promise<AdminCustomer> =>
@@ -464,14 +439,12 @@ export const adminApi = {
       { method: 'PATCH', body: input },
     ),
 
-  /** Xoá nhân sự quản trị. */
-  deleteStaff: (id: string): Promise<{ id: string; deleted: boolean }> =>
+    deleteStaff: (id: string): Promise<{ id: string; deleted: boolean }> =>
     apiFetch<{ id: string; deleted: boolean }>(
       `${API_BASE_URL}/admin/access/staff/${encodeURIComponent(id)}`,
       { method: 'DELETE' },
     ),
 
-  // ─── Thông báo ────────────────────────────────────────────────────────────
   async notifications(
     params: { page?: number; pageSize?: number; type?: string } = {},
   ): Promise<{ notifications: unknown[]; counts: Record<string, number>; total: number }> {

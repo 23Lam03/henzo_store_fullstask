@@ -1,8 +1,3 @@
-/**
- * TÌM TÊN CATEGORY COMMONS THẬT (từng query riêng).
- *
- * Chạy: npx tsx scripts/find-product-categories2.ts
- */
 import { getJson } from './lib/commons-files';
 
 const QUERIES = [

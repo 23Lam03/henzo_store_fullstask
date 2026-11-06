@@ -1,9 +1,3 @@
-/**
- * Tìm ảnh Commons có MÔ TẢ chứa từ khóa (insource:) — bắt được ảnh mà
- * tên file không chứa tên hãng.
- *
- * Chạy: npx tsx scripts/insource-search.ts "Corsair headset" "HyperX headset"
- */
 const UA = 'henzo-store/1.0 (model image resolver; dev@henzo.local)';
 
 async function getJson(url: string): Promise<any> {

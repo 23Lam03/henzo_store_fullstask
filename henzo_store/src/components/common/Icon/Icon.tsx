@@ -1,18 +1,8 @@
-/**
- * Icon set tập trung cho toàn bộ giao diện.
- *
- * Mục tiêu: thay thế emoji (📱💻📦🎉...) bằng SVG vector — nhất quán về
- * nét vẽ, dễ tô màu theo theme (currentColor), không phụ thuộc font emoji
- * và không bị lệch trên Windows/macOS.
- *
- * Dùng: <Icon name="phone" size={20} /> hoặc import { Icon } từ '.../Icon'.
- */
 import type { CSSProperties } from 'react';
 import './Icon.css';
 
 export type IconName =
-  /* Danh mục / sản phẩm */
-  | 'phone'
+    | 'phone'
   | 'laptop'
   | 'desktop'
   | 'monitor'
@@ -30,8 +20,7 @@ export type IconName =
   | 'ticket'
   | 'flash'
   | 'chart'
-  /* Hành động / điều hướng */
-  | 'search'
+    | 'search'
   | 'filter'
   | 'sort'
   | 'grid'
@@ -45,8 +34,7 @@ export type IconName =
   | 'arrow-right'
   | 'arrow-left'
   | 'external'
-  /* Trạng thái / thông báo */
-  | 'check'
+    | 'check'
   | 'check-circle'
   | 'alert'
   | 'info'
@@ -57,8 +45,7 @@ export type IconName =
   | 'bell'
   | 'shield'
   | 'sparkles'
-  /* Người dùng / liên hệ */
-  | 'user'
+    | 'user'
   | 'users'
   | 'heart'
   | 'phone-call'
@@ -67,8 +54,7 @@ export type IconName =
   | 'message'
   | 'wallet'
   | 'credit-card'
-  /* Khác */
-  | 'sun'
+    | 'sun'
   | 'moon'
   | 'upload'
   | 'download'
@@ -93,10 +79,8 @@ interface IconProps {
   style?: CSSProperties;
 }
 
-/** Đường dẫn SVG 24x24, dùng stroke cho nhất quán với phần còn lại của UI. */
 const PATHS: Record<IconName, string> = {
-  /* Danh mục / sản phẩm */
-  phone:
+    phone:
     'M7 2h10a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Zm3 17h4',
   laptop:
     'M4 5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v9H4V5Zm-1 11h18l-1.5 3H4.5L3 16Z',
@@ -125,8 +109,7 @@ const PATHS: Record<IconName, string> = {
     'M3 8a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v2a2 2 0 0 0 0 4v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-2a2 2 0 0 0 0-4V8Zm9-2v12',
   flash: 'M13 2 4 14h7l-1 8 9-12h-7l1-8Z',
   chart: 'M3 3v18h18M7 15v3m4-6v6m4-9v9m4-12v12',
-  /* Hành động / điều hướng */
-  search: 'M11 19a8 8 0 1 0 0-16 8 8 0 0 0 0 16Zm10 2-4.35-4.35',
+    search: 'M11 19a8 8 0 1 0 0-16 8 8 0 0 0 0 16Zm10 2-4.35-4.35',
   filter: 'M3 5h18l-7 8v6l-4 2v-8L3 5Z',
   sort: 'M7 4v16m0 0-3-3m3 3 3-3M17 20V4m0 0-3 3m3-3 3 3',
   grid: 'M4 4h7v7H4V4Zm9 0h7v7h-7V4ZM4 13h7v7H4v-7Zm9 0h7v7h-7v-7Z',
@@ -140,8 +123,7 @@ const PATHS: Record<IconName, string> = {
   'arrow-right': 'M5 12h14m-6-6 6 6-6 6',
   'arrow-left': 'M19 12H5m6 6-6-6 6-6',
   external: 'M14 4h6v6M20 4l-9 9M18 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5',
-  /* Trạng thái / thông báo */
-  check: 'm5 13 4 4L19 7',
+    check: 'm5 13 4 4L19 7',
   'check-circle': 'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Zm-4-9 3 3 5-5',
   alert:
     'M12 9v4m0 4h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z',
@@ -153,8 +135,7 @@ const PATHS: Record<IconName, string> = {
   bell: 'M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 0 1-3.4 0',
   shield: 'M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Zm-3-10 2 2 4-4',
   sparkles: 'm12 3 1.9 4.6L18.5 9l-4.6 1.4L12 15l-1.9-4.6L5.5 9l4.6-1.4L12 3ZM19 15l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8.8-2Z',
-  /* Người dùng / liên hệ */
-  user: 'M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z',
+    user: 'M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z',
   users:
     'M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm13 10v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8',
   heart:
@@ -168,8 +149,7 @@ const PATHS: Record<IconName, string> = {
     'M19 7V5a2 2 0 0 0-2-2H5a2 2 0 0 0 0 4h14a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5m14 8h.01',
   'credit-card':
     'M3 6h18v12H3V6Zm0 4h18M7 14h3',
-  /* Khác */
-  sun: 'M12 17a5 5 0 1 0 0-10 5 5 0 0 0 0 10Zm0-14v2m0 18v-2M5.6 5.6 7 7m10 10 1.4 1.4M3 12h2m14 0h2M5.6 18.4 7 17m10-10 1.4-1.4',
+    sun: 'M12 17a5 5 0 1 0 0-10 5 5 0 0 0 0 10Zm0-14v2m0 18v-2M5.6 5.6 7 7m10 10 1.4 1.4M3 12h2m14 0h2M5.6 18.4 7 17m10-10 1.4-1.4',
   moon: 'M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z',
   upload: 'M12 16V4m0 0L8 8m4-4 4 4M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2',
   download: 'M12 4v12m0 0-4-4m4 4 4-4M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2',
@@ -191,7 +171,6 @@ const PATHS: Record<IconName, string> = {
     'M8 2v4m8-4v4M3 10h18M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z',
 };
 
-/** Icon dạng đầy (fill) thay vì stroke — dùng cho rating, badge nền đặc. */
 const FILLED: IconName[] = ['star', 'flash', 'sparkles'];
 
 export const Icon = ({
@@ -222,7 +201,6 @@ export const Icon = ({
   );
 };
 
-/** Icon tròn nền màu nhạt — dùng cho các "stat card", "feature icon". */
 export const IconBadge = ({
   name,
   size = 20,

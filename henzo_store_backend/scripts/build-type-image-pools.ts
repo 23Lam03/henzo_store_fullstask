@@ -1,25 +1,9 @@
-/**
- * XÂY POOL ẢNH THEO LOẠI SẢN PHẨM (dùng làm fallback khi model không có
- * ảnh riêng).
- *
- * Vì sao cần:
- *   - `CATEGORY_IMAGES` chỉ có 2-3 ảnh/danh mục -> khi nhiều model cùng
- *     danh mục thiếu ảnh riêng, chúng bị gán TRÙNG ảnh với nhau.
- *   - Script này gom 25-40 ảnh THẬT cho từng loại (màn hình, chuột,
- *     bàn phím, tai nghe, laptop…) từ Wikimedia Commons -> mỗi model thiếu
- *     ảnh nhận một lát cắt KHÁC NHAU, không trùng.
- *
- * Kết quả: `scripts/data/type-image-pools.json`
- *
- * Chạy: npx tsx scripts/build-type-image-pools.ts
- */
 import { readFileSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
 const UA = 'henzo-store/1.0 (model image resolver; dev@henzo.local)';
 const DEST = resolve(process.cwd(), 'scripts/data/type-image-pools.json');
 
-/** Từ khoá tìm ảnh cho từng loại sản phẩm. */
 const TYPE_QUERIES: Record<string, string[]> = {
   'Điện thoại': [
     'smartphone', 'iPhone', 'Samsung Galaxy smartphone', 'Android phone',
@@ -60,10 +44,8 @@ const TYPE_QUERIES: Record<string, string[]> = {
   ],
 };
 
-/** Số ảnh tối đa mỗi loại (cần đủ lớn để mỗi model thiếu ảnh có lát riêng). */
 const PER_TYPE = Number(process.env.TYPE_POOL_SIZE ?? 150);
 
-/** Từ cấm — ảnh không phải sản phẩm chính. */
 const REJECT =
   /\b(disassembl|teardown|exploded|schematic|circuit|mainboard|motherboard|logic board|pcb|chipset|module|stick|sodimm|dimm|coolant|pump|connector|cable|port|button|wheel|underneath|bottom|top view|rear view|back view|side view|inside|interior|logo|icon|diagram|chart|booth|game ?show|gamescom|comiket|esport|tournament|championship|person|people|man|woman|player|streamer|interview|autograph|crowd|audience|stage|panel|signing|museum|store|office|desk|setup|box|package|unboxing|review|comparison|boit|tokyo-game-show|faceit|homestory|hwc|esl|blast|map|graph|chart|sign|poster|screenshot)\b/i;
 

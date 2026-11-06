@@ -1,12 +1,3 @@
-/**
- * Audit ảnh chính SAI LOẠI sản phẩm.
- *
- * Phát hiện bằng cách so từ khoá loại trong tên file ảnh với danh mục:
- *   - tên file có từ khoá thuộc LOẠI KHÁC -> sai loại
- *   - tên file không có từ khoá nào của đúng loại -> cần xem xét
- *
- * Chạy: npx tsx scripts/audit-wrong-type.ts
- */
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { modelName } from './lib/model-name';
@@ -53,10 +44,8 @@ for (const [model, v] of Object.entries<any>(all)) {
   const file = fileOf(v.images[0] ?? '');
   if (!file) continue;
 
-  // Có từ khoá của đúng loại -> OK.
   if (TYPE_KEYWORDS[cat].some((k) => file.includes(k))) continue;
 
-  // Có từ khoá của loại KHÁC -> SAI LOẠI.
   const otherCat = Object.entries(TYPE_KEYWORDS).find(
     ([c, kws]) =>
       c !== cat && kws.some((k) => file.includes(k)),

@@ -21,8 +21,7 @@ export const Route = createFileRoute('/api/seller/inventory/$sku')({
   server: {
     middleware: [corsMiddleware, requireAuth, requireStoreOwner],
     handlers: {
-      /** Chi tiết một dòng tồn kho theo SKU. */
-      GET: withErrorHandling(async ({ params, context }) => {
+            GET: withErrorHandling(async ({ params, context }) => {
         await connectDB();
         const scope = getStoreScope(context);
 
@@ -36,10 +35,9 @@ export const Route = createFileRoute('/api/seller/inventory/$sku')({
         return ok(toInventoryDto(item));
       }),
 
-      /** Cập nhật tồn kho theo SKU. */
-      PATCH: withErrorHandling(async ({ request, params, context }) => {
+            PATCH: withErrorHandling(async ({ request, params, context }) => {
         await connectDB();
-        // Cập nhật tồn kho là thao tác ghi -> bắt buộc có một cửa hàng cụ thể.
+
         const storeId = getStoreScope(context).require();
         const body = await readJson(request, stockSchema);
 
@@ -68,7 +66,6 @@ export const Route = createFileRoute('/api/seller/inventory/$sku')({
         item.lastRestocked = new Date();
         await item.save();
 
-        // Đồng bộ sản phẩm.
         await ProductModel.updateOne(
           { _id: item.productId, storeId },
           { $set: { stock: item.stock, minStock: item.minStock } },

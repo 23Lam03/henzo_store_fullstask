@@ -1,4 +1,3 @@
-/* Seller Sidebar Navigation */
 .seller-sidebar {
   flex: 1;
   overflow-y: auto;
@@ -87,8 +86,6 @@
   text-align: center;
   line-height: 1.6;
 }
-
-/* Collapsed state */
 .shop-layout__sidebar--collapsed .seller-sidebar__menu {
   align-items: center;
 }
@@ -102,8 +99,6 @@
 .shop-layout__sidebar--collapsed .seller-sidebar__chevron,
 .shop-layout__sidebar--collapsed .seller-sidebar__badge { display: none; }
 .shop-layout__sidebar--collapsed .seller-sidebar__icon { color: currentColor; }
-
-/* Responsive */
 @media (max-width: 1024px) {
   .shop-layout__sidebar {
     position: fixed;

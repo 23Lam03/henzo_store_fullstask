@@ -1,11 +1,3 @@
-/**
- * Trích xuất các POOL ảnh từ finalize-model-images.ts ra JSON.
- *
- * Dùng để gán nhiều ảnh dự phòng cho mỗi model, nhờ đó thuật toán phân bổ
- * ảnh chính có thể chọn ảnh KHÁC NHAU cho các model cùng nhóm.
- *
- * Chạy: npx tsx scripts/export-pools.ts
- */
 import { readFileSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 

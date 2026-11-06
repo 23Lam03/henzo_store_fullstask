@@ -1,11 +1,3 @@
-/**
- * Nghiệp vụ giỏ hàng & đặt hàng.
- *
- * BẤT KỲ client nào được tin cậy về giá hay tồn kho:
- * - Giá luôn lấy từ Product trong DB.
- * - Tồn kho luôn kiểm tra lại lúc thêm và lúc đặt hàng.
- * - Phí vận chuyển & voucher do server tính.
- */
 import { Types } from 'mongoose';
 import { CartModel } from '../models/Cart';
 import { ProductModel, toProductDto, computeDiscount } from '../models/Product';
@@ -31,21 +23,17 @@ import {
 import { buildOrderNumber, buildTransactionId } from '../auth/tokens';
 import { deductStock } from './inventory.service';
 
-// ─── Giỏ hàng ─────────────────────────────────────────────────────────────────
-
 export interface CartItemDto {
   product: any;
   quantity: number;
   selected: boolean;
 }
 
-/** Lấy giỏ hàng (kèm thông tin sản phẩm đầy đủ + tổng tiền). */
 export async function getCart(userId: string) {
   const cart = await CartModel.findOne({ userId }).lean();
 
   const items = cart?.items ?? [];
 
-  // Lấy thông tin sản phẩm mới nhất (giá/stock có thể đã thay đổi).
   const productIds = items.map((i: any) => i.productId);
   const products = await ProductModel.find({
     _id: { $in: productIds },
@@ -87,7 +75,6 @@ export async function getCart(userId: string) {
   };
 }
 
-/** Thêm sản phẩm vào giỏ. Tự cộng dồn nếu đã có. */
 export async function addToCart(
   userId: string,
   productId: string,
@@ -114,7 +101,6 @@ export async function addToCart(
   const currentQty = existing?.quantity ?? 0;
   const newQty = currentQty + quantity;
 
-  // Không cho vượt quá tồn kho thực tế.
   if (newQty > product.stock) {
     throw unprocessable(
       product.stock === 0
@@ -153,7 +139,6 @@ export async function addToCart(
   return getCart(userId);
 }
 
-/** Cập nhật số lượng (0 => xoá). */
 export async function updateCartItem(
   userId: string,
   productId: string,
@@ -181,7 +166,6 @@ export async function updateCartItem(
   return getCart(userId);
 }
 
-/** Chọn / bỏ chọn một sản phẩm. */
 export async function toggleCartItem(
   userId: string,
   productId: string,
@@ -198,7 +182,6 @@ export async function toggleCartItem(
   return getCart(userId);
 }
 
-/** Chọn tất cả / bỏ chọn tất cả. */
 export async function selectAllCartItems(userId: string, selected: boolean) {
   const cart = await CartModel.findOne({ userId });
   if (!cart) throw notFound('Giỏ hàng không tồn tại');
@@ -208,7 +191,6 @@ export async function selectAllCartItems(userId: string, selected: boolean) {
   return getCart(userId);
 }
 
-/** Xoá một sản phẩm khỏi giỏ. */
 export async function removeCartItem(userId: string, productId: string) {
   const cart = await CartModel.findOne({ userId });
   if (!cart) throw notFound('Giỏ hàng không tồn tại');
@@ -221,7 +203,6 @@ export async function removeCartItem(userId: string, productId: string) {
   return getCart(userId);
 }
 
-/** Xoá toàn bộ giỏ (hoặc chỉ các mục đang chọn). */
 export async function clearCart(userId: string, onlySelected = false) {
   const cart = await CartModel.findOne({ userId });
   if (!cart) return getCart(userId);
@@ -230,7 +211,7 @@ export async function clearCart(userId: string, onlySelected = false) {
     const removed = cart.items.filter((i: any) => i.selected).map((i: any) => i._id);
     cart.items.pull({ _id: { $in: removed } });
   } else {
-    // `cart.items` là DocumentArray — dùng pull để giữ đúng kiểu.
+
     cart.items.pull({});
   }
 
@@ -238,17 +219,11 @@ export async function clearCart(userId: string, onlySelected = false) {
   return getCart(userId);
 }
 
-// ─── Voucher ──────────────────────────────────────────────────────────────────
-
 export interface VoucherResult {
   discount: number;
   voucher: any;
 }
 
-/**
- * Kiểm tra voucher & tính số tiền giảm.
- * Điều kiện: đang hiệu lực, đủ đơn tối thiểu, chưa hết lượt, chưa hết hạn.
- */
 export async function resolveVoucher(
   code: string,
   subtotal: number,
@@ -282,7 +257,6 @@ export async function resolveVoucher(
     );
   }
 
-  // Voucher giới hạn theo cửa hàng.
   if (voucher.storeId && storeIds?.length) {
     if (!storeIds.includes(String(voucher.storeId))) {
       throw badRequest('Mã giảm giá không áp dụng cho cửa hàng này');
@@ -298,7 +272,7 @@ export async function resolveVoucher(
   } else if (voucher.discountType === DiscountType.FIXED) {
     discount = voucher.discountValue;
   } else {
-    // shipping: giảm tối đa phí vận chuyển.
+
     discount = Math.min(voucher.discountValue, SHIPPING_FEE);
   }
 
@@ -307,14 +281,6 @@ export async function resolveVoucher(
   return { discount, voucher };
 }
 
-// ─── Đặt hàng ─────────────────────────────────────────────────────────────────
-
-/**
- * Chia đều một khoản tiền cho N phần mà **tổng luôn bằng số tiền gốc**.
- *
- * Chia đều rồi gán phần dư cho các phần đầu (vd 30.000 cho 7 phần ->
- * 4 phần đầu nhận 4.286, 3 phần sau nhận 4.285, tổng vẫn đúng 30.000).
- */
 export function distributeEvenly(total: number, parts: number): number[] {
   if (parts <= 0) return [];
   const base = Math.floor(total / parts);
@@ -324,13 +290,6 @@ export function distributeEvenly(total: number, parts: number): number[] {
   );
 }
 
-/**
- * Chia khoản tiền theo tỷ trọng (trọng số) của từng phần.
- * Phần dư do làm tròn được gán cho phần có trọng số lớn nhất.
- *
- * @param total Tổng tiền cần chia.
- * @param weights Trọng số (tổng bằng 0 -> chia đều).
- */
 export function distributeByWeight(total: number, weights: number[]): number[] {
   if (!weights.length) return [];
   const sum = weights.reduce((s, w) => s + (w > 0 ? w : 0), 0);
@@ -340,7 +299,6 @@ export function distributeByWeight(total: number, weights: number[]): number[] {
   const floored = raw.map((r) => Math.floor(r));
   let remainder = total - floored.reduce((s, v) => s + v, 0);
 
-  // Gán phần dư cho các phần có trọng số lớn nhất trước.
   const order = raw
     .map((r, i) => ({ i, frac: r - Math.floor(r) }))
     .sort((a, b) => b.frac - a.frac);
@@ -378,23 +336,12 @@ export function normalizePaymentMethod(raw: string): PaymentMethodValue {
   return mapped;
 }
 
-/**
- * Tạo đơn hàng.
- *
- * Luồng:
- * 1. Gom items theo cửa hàng -> tạo sub-order cho từng store.
- * 2. Tính tiền server-side: subtotal, shipping (miễn phí >= 500k), voucher.
- * 3. Trừ tồn kho.
- * 4. Tạo giao dịch thanh toán + thông báo cho khách & các seller.
- */
 export async function createOrder(userId: string, input: CreateOrderInput) {
   const user = await UserModel.findById(userId).lean();
   if (!user) throw notFound('Người dùng không tồn tại');
 
-  // ─── 1. Chuẩn bị danh sách sản phẩm ───────────────────────────────────
   let requested: { productId: string; quantity: number }[] = input.items ?? [];
 
-  // Không truyền items -> lấy các mục đang chọn trong giỏ.
   if (!requested.length) {
     const cart = await CartModel.findOne({ userId }).lean();
     requested = (cart?.items ?? [])
@@ -416,7 +363,6 @@ export async function createOrder(userId: string, input: CreateOrderInput) {
   }).lean();
   const productMap = new Map(products.map((p) => [String(p._id), p]));
 
-  // ─── 2. Gom theo cửa hàng & kiểm tra tồn kho ──────────────────────────
   interface GroupItem {
     productId: Types.ObjectId;
     productName: string;
@@ -478,7 +424,6 @@ export async function createOrder(userId: string, input: CreateOrderInput) {
     groups.set(key, group);
   }
 
-  // Lấy tên cửa hàng.
   const storeIds = [...groups.keys()];
   const stores = await StoreModel.find({ _id: { $in: storeIds } })
     .lean()
@@ -488,7 +433,7 @@ export async function createOrder(userId: string, input: CreateOrderInput) {
   for (const [key, group] of groups) {
     const store = storeMap.get(key);
     group.storeName = store?.name ?? '';
-    // Cửa hàng không hoạt động -> không cho đặt hàng.
+
     if (store && store.status !== 'active') {
       throw badRequest(
         `Cửa hàng "${store.name}" đang tạm ngưng, không thể đặt hàng`,
@@ -497,12 +442,9 @@ export async function createOrder(userId: string, input: CreateOrderInput) {
     for (const item of group.items) item.storeName = group.storeName;
   }
 
-  // ─── 3. Tính tiền (server-side) ────────────────────────────────────────
   const allItems = [...groups.values()].flatMap((g) => g.items);
   const subtotal = allItems.reduce((sum, i) => sum + i.totalPrice, 0);
 
-  // Mỗi cửa hàng giao riêng -> mỗi sub-order có phí ship riêng,
-  // nhưng tổng phí ship hiển thị cho khách = tổng của các sub-order.
   const shippingFee = subtotal >= FREE_SHIPPING_THRESHOLD ? 0 : SHIPPING_FEE;
 
   let discount = 0;
@@ -525,26 +467,15 @@ export async function createOrder(userId: string, input: CreateOrderInput) {
 
   const paymentMethod = normalizePaymentMethod(input.paymentMethod);
 
-  // ─── 4. Tạo order ──────────────────────────────────────────────────────
   const orderNumber = buildOrderNumber();
 
-  /**
-   * Phân bổ phí vận chuyển cho từng sub-order mà **không mất đồng nào**.
-   * Chia đều có phần dư do làm tròn (vd 30.000 / 7 = 4.285 x 7 = 29.995),
-   * nên phần dư được gán cho các sub-order đầu tiên.
-   */
-  const groupList = [...groups.values()];
+    const groupList = [...groups.values()];
   const groupShippingFees = distributeEvenly(
     shippingFee,
     groupList.length,
   );
 
-  /**
-   * Phân bổ voucher theo tỷ trọng tiền hàng của từng cửa hàng.
-   * Voucher giảm giá toàn đơn nên phải chia lại theo giá trị đơn hàng,
-   * để tổng `discount` của các sub-order khớp đúng `discount` của đơn.
-   */
-  const groupDiscounts = distributeByWeight(
+    const groupDiscounts = distributeByWeight(
     discount,
     groupList.map((g) => g.items.reduce((s, i) => s + i.totalPrice, 0)),
   );
@@ -586,8 +517,7 @@ export async function createOrder(userId: string, input: CreateOrderInput) {
     discount,
     totalPrice,
     status: CustomerOrderStatus.PENDING,
-    // COD chưa thanh toán; các cổng online được đánh dấu đã thanh toán
-    // (thực tế sẽ xác nhận qua webhook của nhà cung cấp).
+
     paymentStatus:
       paymentMethod === 'cod' ? OrderPaymentStatus.UNPAID : OrderPaymentStatus.PAID,
     paymentMethod,
@@ -609,13 +539,10 @@ export async function createOrder(userId: string, input: CreateOrderInput) {
     ],
   });
 
-  // ─── 5. Trừ tồn kho ────────────────────────────────────────────────────
-  // Dùng `deductStock` để có điều kiện (stock - reserved >= qty), tránh âm kho
-  // khi nhiều khách đặt cùng lúc.
   for (const item of allItems) {
     const ok = await deductStock(item.productId, item.quantity);
     if (!ok) {
-      // Không đủ hàng nữa -> huỷ đơn vừa tạo và báo lỗi cho khách.
+
       await OrderModel.deleteOne({ _id: order._id });
       throw unprocessable(
         `Sản phẩm "${item.productName}" vừa hết hàng, vui lòng thử lại.`,
@@ -623,22 +550,13 @@ export async function createOrder(userId: string, input: CreateOrderInput) {
     }
   }
 
-  // Cập nhật số đơn của cửa hàng.
   await StoreModel.updateMany(
     { _id: { $in: storeIds } },
     { $inc: { orderCount: 1 } },
   );
 
-  // ─── 6. Giao dịch thanh toán ──────────────────────────────────────────
-  /**
-   * Một đơn marketplace có thể chứa hàng của nhiều cửa hàng → tạo **một giao
-   * dịch riêng cho từng store**. Cách này giúp:
-   * - Seller scope tài chính theo `Payment.storeId` hoạt động đúng.
-   * - Mỗi seller bị trừ đúng phí sàn trên phần doanh thu của mình.
-   * - Tổng `platformFee` của các giao dịch = doanh thu nền tảng thu được.
-   */
-  for (const sub of subOrders) {
-    // `sub.totalPrice` đã trừ phí ship & voucher của riêng cửa hàng này.
+    for (const sub of subOrders) {
+
     const subAmount = Math.max(0, sub.totalPrice);
     const subFee = Math.floor(subAmount * PLATFORM_FEE_RATE);
 
@@ -660,18 +578,15 @@ export async function createOrder(userId: string, input: CreateOrderInput) {
     });
   }
 
-  // Tăng số lượt dùng voucher.
   if (voucherId) {
     await VoucherModel.updateOne({ _id: voucherId }, { $inc: { usedCount: 1 } });
   }
 
-  // ─── 7. Xoá các mục đã đặt khỏi giỏ ──────────────────────────────────
   await CartModel.updateOne(
     { userId },
     { $pull: { items: { productId: { $in: productIds } } } },
   );
 
-  // ─── 8. Thông báo ──────────────────────────────────────────────────────
   await NotificationModel.create({
     userId: user._id,
     type: 'order',

@@ -1,8 +1,3 @@
-/**
- * Liệt kê TẤT CẢ ảnh Commons có chứa 1 từ khóa (bitmap, có tên hãng).
- *
- * Chạy: npx tsx scripts/list-commons.ts "Corsair headset"
- */
 const UA = 'henzo-store/1.0 (model image resolver; dev@henzo.local)';
 
 async function getJson(url: string): Promise<any> {

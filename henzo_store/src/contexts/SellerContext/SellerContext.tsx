@@ -15,10 +15,8 @@ interface SellerContextValue {
   store: SellerStore;
   stats: SellerDashboardStats;
   orders: SellerOrder[];
-  /** Tổng số đơn của cửa hàng (server-side, không bị giới hạn bởi pageSize). */
-  ordersTotal: number;
-  /** Đếm đơn theo trạng thái (server-side) — dùng cho badge trên tab. */
-  orderStatusCounts: Record<string, number>;
+    ordersTotal: number;
+    orderStatusCounts: Record<string, number>;
   payments: SellerPayment[];
   reviews: SellerReview[];
   promotions: SellerPromotion[];
@@ -46,8 +44,7 @@ interface SellerContextValue {
   getOrderById: (id: string) => SellerOrder | undefined;
   getProductById: (id: string) => unknown | undefined;
   refresh: () => Promise<void>;
-  /** Tải danh sách đơn theo bộ lọc server-side (trạng thái / tìm kiếm / trang). */
-  loadOrders: (params?: {
+    loadOrders: (params?: {
     status?: string;
     q?: string;
     page?: number;
@@ -63,7 +60,6 @@ export const useSeller = () => {
   return ctx;
 };
 
-/** Giá trị mặc định khi chưa tải được store (tránh crash render). */
 const EMPTY_STORE: SellerStore = {
   id: '',
   name: '',
@@ -120,22 +116,13 @@ export const SellerProvider = ({ children }: { children: ReactNode }) => {
 
   const isShop = isAuthenticated && (userRole === 'SHOP' || userRole === 'ADMIN');
 
-  /**
-   * Tải toàn bộ dữ liệu dashboard của cửa hàng.
-   *
-   * Mỗi endpoint được tải **độc lập** (không dùng `Promise.all` trần): nếu một
-   * endpoint lỗi (VD: 404, 500, mạng lỗi) thì phần còn lại vẫn hiển thị bình
-   * thường, thay vì toàn bộ dashboard trắng xóa. Lỗi được gom lại để hiển thị
-   * một thông báo tổng quát.
-   */
-  const refresh = useCallback(async () => {
+    const refresh = useCallback(async () => {
     if (!isShop) return;
     setIsLoading(true);
 
     const failures: string[] = [];
 
-    /** Chạy một endpoint, trả về `fallback` nếu lỗi (không làm hỏng cả batch). */
-    const safe = async <T,>(
+        const safe = async <T,>(
       label: string,
       fn: () => Promise<T>,
       fallback: T,
@@ -194,7 +181,6 @@ export const SellerProvider = ({ children }: { children: ReactNode }) => {
     setIsLoading(false);
   }, [isShop]);
 
-  // Tải thông báo riêng vì endpoint khác scope.
   const refreshNotifications = useCallback(async () => {
     if (!isShop) return;
     try {
@@ -221,13 +207,7 @@ export const SellerProvider = ({ children }: { children: ReactNode }) => {
     };
   }, [refresh, refreshNotifications]);
 
-  /**
-   * Tải danh sách đơn theo bộ lọc server-side.
-   *
-   * Backend đã hỗ trợ `status`, `q`, `page`, `pageSize` nên việc lọc/phân trang
-   * không còn bị giới hạn bởi 100 bản ghi đã nạp sẵn trong context.
-   */
-  const loadOrders = useCallback(
+    const loadOrders = useCallback(
     async (params: {
       status?: string;
       q?: string;
@@ -242,8 +222,7 @@ export const SellerProvider = ({ children }: { children: ReactNode }) => {
       });
       setOrders(result.orders);
       setOrdersTotal(result.total);
-      // Backend luôn tính `statusCounts` trên TOÀN BỘ đơn của cửa hàng
-      // (không phụ thuộc bộ lọc `status`), nên luôn cập nhật.
+
       setOrderStatusCounts(result.statusCounts ?? {});
       return result;
     },

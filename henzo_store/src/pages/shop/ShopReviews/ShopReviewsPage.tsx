@@ -64,7 +64,7 @@ export const ShopReviewsPage = () => {
         </div>
       </div>
 
-      {/* Rating Summary */}
+      {}
       <div className="seller-reviews__summary">
         <div className="seller-reviews__summary-score">
           <span className="seller-reviews__big-score">{avgRating}</span>
@@ -84,7 +84,7 @@ export const ShopReviewsPage = () => {
         </div>
       </div>
 
-      {/* Filters */}
+      {}
       <div className="seller-reviews__toolbar">
         <div className="seller-rating-filters">
           <button className={`seller-filter-btn ${ratingFilter === null ? 'seller-filter-btn--active' : ''}`} onClick={() => { setRatingFilter(null); setPage(1); }}>
@@ -102,7 +102,7 @@ export const ShopReviewsPage = () => {
         </div>
       </div>
 
-      {/* Reviews List */}
+      {}
       <div className="seller-reviews__list">
         {paginated.length === 0 ? (
           <div className="admin-section">
@@ -193,7 +193,7 @@ export const ShopReviewsPage = () => {
         ))}
       </div>
 
-      {/* Pagination */}
+      {}
       {filtered.length > perPage && (
         <div className="seller-pagination" style={{ justifyContent: 'center' }}>
           <div className="seller-pagination__buttons">

@@ -1,11 +1,3 @@
-/* ═══════════════════════════════════════════════════════════════════════════
-   HEADER — Thanh điều hướng trên cùng
-   Dùng chung token với global.css.
-
-   Ngôn ngữ: EDITORIAL — dải tiêu đề báo chí, chữ serif cho brand,
-   gạch chân thay cho nền bo tròn, không gradient, không viên sáng kính.
-═══════════════════════════════════════════════════════════════════════════ */
-
 .header {
   position: sticky;
   top: 0;
@@ -21,8 +13,6 @@
   padding: 0 var(--content-gutter);
   min-height: var(--header-height);
 }
-
-/* ─── Dải tiêu đề (masthead) ────────────────────────────────────────────── */
 
 .header__masthead {
   background: var(--color-dark);
@@ -116,8 +106,6 @@
   }
 }
 
-/* ─── Header Background Variants ─────────────────────────────────────────── */
-
 .header--transparent {
   background: var(--color-background);
   border-bottom: 1px solid var(--color-border);
@@ -140,8 +128,6 @@
     background: var(--color-background);
   }
 }
-
-/* ─── Logo ───────────────────────────────────────────────────────────────── */
 
 .header__logo {
   display: flex;
@@ -176,8 +162,6 @@
   .header__logo-text { display: none; }
 }
 
-/* ─── Navigation ─────────────────────────────────────────────────────────── */
-
 .header__nav {
   display: flex;
   align-items: center;
@@ -199,8 +183,6 @@
   white-space: nowrap;
   position: relative;
 }
-
-/* Gạch dưới mảnh thay vì nền bo tròn — chi tiết "không phải template" */
 .header__nav-link::after {
   content: '';
   position: absolute;
@@ -234,8 +216,6 @@
   font-family: inherit;
 }
 
-/* ─── Search ─────────────────────────────────────────────────────────────── */
-
 .header__search {
   flex: 1 1 auto;
   min-width: 0;
@@ -247,8 +227,6 @@
 @media (min-width: 1024px) {
   .header__search { max-width: 600px; }
 }
-
-/* Ở bề rộng trung bình, ưu tiên giữ đủ chỗ cho thanh tìm kiếm. */
 @media (max-width: 1150px) {
   .header__search { max-width: 460px; }
 }
@@ -260,8 +238,6 @@
 @media (max-width: 700px) {
   .header__search { max-width: 260px; }
 }
-
-/* ─── Actions ────────────────────────────────────────────────────────────── */
 
 .header__actions {
   display: flex;
@@ -314,8 +290,6 @@
   animation: badge-pulse 2.4s infinite;
   pointer-events: none;
 }
-
-/* Số nhảy nhẹ khi giá trị thay đổi (thêm/xoá yêu thích, giỏ hàng) */
 .header__badge.is-bumped {
   animation: hz-badge-pop 460ms var(--motion-ease);
 }
@@ -331,8 +305,6 @@
   font-family: var(--font-family);
   line-height: 1;
 }
-
-/* ─── User Button ────────────────────────────────────────────────────────── */
 
 .header__user-btn {
   gap: var(--space-2);
@@ -358,24 +330,16 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-
-/* Tên user chỉ hiện khi header đủ rộng. */
 @media (max-width: 1023px) {
   .header__user-name { display: none; }
 }
 
-/* ─── Mobile Menu Button ─────────────────────────────────────────────────── */
-
 .header__menu-btn { flex-shrink: 0; }
-
-/* ─── Mobile Search ──────────────────────────────────────────────────────── */
 
 .header__mobile-search {
   padding: var(--space-2) var(--space-3) var(--space-3);
   animation: fade-down var(--transition-normal) var(--ease-out);
 }
-
-/* ─── Mobile Menu Drawer ─────────────────────────────────────────────────── */
 
 .header__mobile-menu {
   position: fixed;
@@ -470,17 +434,11 @@
   animation: fade-in var(--transition-fast) ease;
 }
 
-/* ─── Header Spacer ──────────────────────────────────────────────────────── */
-
 .header-spacer { height: var(--header-height); }
 
 @media (max-width: 767px) {
   .header-spacer { height: var(--header-mobile-height); }
 }
-
-/* ═══ Header Responsive (đặt cuối file để thắng các rule phía trên) ═══════ */
-
-/* Nav: ẩn khi không còn đủ chỗ, dùng menu drawer thay thế. */
 @media (max-width: 1149px) {
   .header__nav { display: none; }
 }
@@ -488,18 +446,12 @@
 @media (min-width: 1150px) {
   .header__menu-btn { display: none; }
 }
-
-/* Nút so sánh chỉ hiện khi header đủ rộng. */
 @media (max-width: 1150px) {
   .header__compare-btn { display: none; }
 }
-
-/* Nút chế độ sáng/tối ẩn trên mobile (đã có trong menu drawer). */
 @media (max-width: 767px) {
   .header__theme-btn { display: none; }
 }
-
-/* Mobile: nút rút gọn để vừa 360px. */
 @media (max-width: 480px) {
   .header__logo-text { display: none; }
   .header__action-btn { width: 34px; height: 34px; }

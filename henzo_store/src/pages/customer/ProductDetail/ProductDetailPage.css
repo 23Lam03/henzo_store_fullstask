@@ -1,15 +1,7 @@
-/* ═══════════════════════════════════════════════════════════════════════════
-   TRANG CHI TIẾT SẢN PHẨM
-   Ngôn ngữ thiết kế: editorial hiện đại — nền trung tính, đường kẻ mảnh,
-   góc bo vừa phải, nhấn mạnh bằng typography thay vì gradient tím rực.
-═══════════════════════════════════════════════════════════════════════════ */
-
 .pd-root {
   padding-bottom: var(--space-16);
   background: var(--color-background);
 }
-
-/* ─── Skeleton ───────────────────────────────────────────────────────────── */
 
 .pd-skeleton {
   display: grid;
@@ -30,8 +22,6 @@
   padding-top: var(--space-6);
 }
 
-/* ─── Layout chính ──────────────────────────────────────────────────────── */
-
 .pd-main {
   display: grid;
   grid-template-columns: minmax(0, 1.02fr) minmax(0, 1fr);
@@ -44,8 +34,6 @@
   position: sticky;
   top: calc(var(--header-height) + var(--space-5));
 }
-
-/* ─── Buy box ────────────────────────────────────────────────────────────── */
 
 .pd-buybox {
   display: flex;
@@ -95,8 +83,6 @@
   color: var(--color-text-primary);
   margin: 0;
 }
-
-/* ─── Chỉ số: đánh giá / đã bán / tồn kho ───────────────────────────────── */
 
 .pd-metrics {
   display: flex;
@@ -158,8 +144,6 @@
   font-weight: 700;
 }
 
-/* ─── Khối giá ───────────────────────────────────────────────────────────── */
-
 .pd-price-card {
   display: flex;
   align-items: flex-end;
@@ -217,8 +201,6 @@
   color: var(--color-text-muted);
 }
 
-/* ─── Thông số rút gọn ───────────────────────────────────────────────────── */
-
 .pd-specs-inline {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -250,8 +232,6 @@
   font-weight: 600;
   color: var(--color-text-primary);
 }
-
-/* ─── Mua hàng ───────────────────────────────────────────────────────────── */
 
 .pd-purchase {
   display: flex;
@@ -368,8 +348,6 @@
   background: var(--color-danger-soft);
 }
 
-/* ─── Cam kết ────────────────────────────────────────────────────────────── */
-
 .pd-trust {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -403,8 +381,6 @@
   font-size: var(--font-size-xs);
   color: var(--color-text-muted);
 }
-
-/* ─── Tabs ───────────────────────────────────────────────────────────────── */
 
 .pd-tabs {
   display: flex;
@@ -473,11 +449,8 @@
 
 .pd-tabpanel {
   min-height: 220px;
-  /* Nội dung tab mờ dần khi chuyển tab */
   animation: hz-fade-up 340ms var(--motion-ease) both;
 }
-
-/* ─── Mô tả ──────────────────────────────────────────────────────────────── */
 
 .pd-description {
   max-width: var(--max-reading-width);
@@ -509,8 +482,6 @@
   margin-top: 1px;
 }
 
-/* ─── Sản phẩm liên quan ────────────────────────────────────────────────── */
-
 .pd-related {
   margin-top: var(--space-16);
 }
@@ -520,8 +491,6 @@
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: var(--space-5);
 }
-
-/* ─── Responsive ─────────────────────────────────────────────────────────── */
 
 @media (max-width: 1100px) {
   .pd-main {

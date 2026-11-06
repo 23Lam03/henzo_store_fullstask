@@ -1,12 +1,3 @@
-/**
- * TÌM FILE COMMONS THẬT CHO CÁC MODEL ĐANG DÙNG ẢNH SAI.
- *
- * Chiến lược: với mỗi model, trích ra các "code token" đặc thù (vd 7950X3D,
- * CU34G2X, 27GR95QE, HS60, XM2we...) rồi search Commons bằng
- *   - generator=search với `intitle:"<token>"`
- *   - insource search
- * Ghi kết quả ra scripts/data/missing-model-probe.json để chọn tay.
- */
 import { writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
@@ -49,7 +40,6 @@ async function search(query: string, limit = 30): Promise<any[]> {
   return out;
 }
 
-/** File Commons có thật trong các category sản phẩm, dùng làm pool dự phòng. */
 async function catFiles(cat: string): Promise<string[]> {
   const out: string[] = [];
   let cont: string | undefined;
@@ -70,7 +60,6 @@ async function catFiles(cat: string): Promise<string[]> {
   return out;
 }
 
-/** Danh sách model cần tìm + token/code gợi ý. */
 const TARGETS: Record<string, string[]> = {
   'AirPods 4 ANC Deep': ['AirPods 4', 'AirPods 4 ANC'],
   'AirPods Pro 2 USB-C Deep': ['AirPods Pro 2', 'AirPods Pro'],

@@ -1,8 +1,3 @@
-/**
- * Đọc file BMP 24-bit và in bản đồ ASCII để phân tích bố cục ảnh chụp.
- *
- * Dùng: npx tsx scripts/bmp-ascii.ts <file.bmp> [x0] [y0] [w] [h] [stepX]
- */
 import { readFileSync } from 'node:fs';
 
 const file = process.argv[2];

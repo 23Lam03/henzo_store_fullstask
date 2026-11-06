@@ -1,23 +1,3 @@
-/**
- * TẠO SẢN PHẨM CHO CÁC MODEL CHUẨN CÒN THIẾU.
- *
- * Vấn đề phát hiện khi audit mở rộng:
- *   Bảng thông số chuẩn (`henzo_store/src/data/modelSpecs.ts`) có 237
- *   model, nhưng catalog chỉ có 232 model -> 5 model chưa có sản phẩm:
- *     - Kingston FURY Beast DDR5  (RAM 32GB DDR5)
- *     - Kingston FURY Renegade     (SSD NVMe 1TB)
- *     - Logitech Streamcam        (webcam)
- *     - HyperX Cloud Alpha Wireless (tai nghe)
- *     - SteelSeries Arctis Nova 7 (tai nghe)
- *
- *   Hệ quả: 6 item trong đơn hàng cũ trỏ tới các model này không còn
- *   sản phẩm nào khớp -> mất dữ liệu đơn hàng.
- *
- * Script này tạo sản phẩm cho 5 model trên, đầy đủ thông số thật, giá
- * theo thị trường, ảnh thật từ pool Commons, mô tả + thẻ + SKU hợp lệ.
- *
- * Chạy: npx tsx scripts/create-missing-models.ts
- */
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { connectDB, disconnectDB } from '../src/server/db';
@@ -32,7 +12,6 @@ import { productDescription, productTags } from '../../henzo_store/src/data/prod
 import { modelName } from './lib/model-name';
 import { isWrongType } from './lib/image-type';
 
-/** Định nghĩa 5 sản phẩm cần bổ sung. */
 const NEW_PRODUCTS: Array<{
   name: string;
   brand: string;
@@ -129,7 +108,6 @@ async function main() {
   for (const def of NEW_PRODUCTS) {
     const slug = slugify(def.name);
 
-    // Đã tồn tại -> bỏ qua (script idempotent).
     const exists = await ProductModel.findOne({ slug }).lean();
     if (exists) {
       console.log(`[new-models] = ${def.name} (đã tồn tại)`);
@@ -142,7 +120,6 @@ async function main() {
       continue;
     }
 
-    // Thương hiệu chưa có -> tạo mới.
     let brand = brands.find((b: any) => b.name === def.brand);
     if (!brand) {
       brand = await BrandModel.create({
@@ -158,7 +135,6 @@ async function main() {
       console.log(`[new-models]   + brand "${def.brand}"`);
     }
 
-    // Ảnh: ưu tiên ảnh riêng của model, bỏ ảnh sai loại.
     const model = modelName(def.name);
     const type = def.categoryName;
     const own = (modelImages[model]?.images ?? []).filter(
@@ -191,7 +167,6 @@ async function main() {
       brand: def.brand,
     });
 
-    // Phân bổ cửa hàng theo thứ tự -> phân bổ đều, không dồn vào 1 store.
     const store = stores[created % stores.length];
 
     const doc = await ProductModel.create({
@@ -224,7 +199,6 @@ async function main() {
       sku: `SKU-NEW${String(created + 1).padStart(4, '0')}`,
     });
 
-    // Tồn kho.
     await InventoryModel.updateOne(
       { storeId: store._id, sku: doc.sku },
       {

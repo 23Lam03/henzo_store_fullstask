@@ -39,8 +39,7 @@ export const Route = createFileRoute('/api/seller/promotions/')({
   server: {
     middleware: [corsMiddleware, requireAuth, requireStoreOwner],
     handlers: {
-      /** Danh sách chương trình khuyến mãi của cửa hàng. */
-      GET: withErrorHandling(async ({ request, context }) => {
+            GET: withErrorHandling(async ({ request, context }) => {
         await connectDB();
         const scope = getStoreScope(context);
 
@@ -59,10 +58,9 @@ export const Route = createFileRoute('/api/seller/promotions/')({
         return ok(docs.map(toSellerPromotion));
       }),
 
-      /** Tạo chương trình khuyến mãi mới. */
-      POST: withErrorHandling(async ({ request, context }) => {
+            POST: withErrorHandling(async ({ request, context }) => {
         await connectDB();
-        // Tạo khuyến mãi là thao tác ghi -> bắt buộc có một cửa hàng cụ thể.
+
         const storeId = getStoreScope(context).require();
         const body = await readJson(request, promotionSchema);
 

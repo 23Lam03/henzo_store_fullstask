@@ -1,8 +1,3 @@
-/**
- * Tìm ảnh tai nghe/chuột/SSD của hãng qua nhiều truy vấn rộng.
- *
- * Chạy: npx tsx scripts/wide-search.ts Corsair "headset"
- */
 const UA = 'henzo-store/1.0 (model image resolver; dev@henzo.local)';
 
 async function getJson(url: string): Promise<any> {
@@ -50,7 +45,7 @@ async function main() {
     queries.push(`intitle:${brand} ${t}`);
     queries.push(`${brand.toLowerCase()} ${t}`);
   }
-  // Tên model cụ thể của Corsair headset.
+
   queries.push(
     'Corsair Void headset',
     'Corsair Void Pro',

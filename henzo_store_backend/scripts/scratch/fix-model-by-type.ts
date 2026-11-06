@@ -1,9 +1,3 @@
-/**
- * GÁN ẢNH ĐÚNG LOẠI cho các model mà Commons không có ảnh riêng.
- *
- * Ví dụ "Logitech Streamcam" -> ảnh webcam của Logitech; "Corsair HS80" ->
- * ảnh tai nghe Corsair. Ảnh cũ (ảnh sai loại) bị loại khỏi danh sách.
- */
 import { connectDB, disconnectDB } from '../../src/server/db';
 import { ProductModel } from '../../src/server/models/Product';
 import { readFileSync } from 'node:fs';
@@ -19,32 +13,29 @@ const curated = JSON.parse(
   ),
 ) as Record<string, any>;
 
-/** model -> file Commons dùng làm ảnh chính (đã kiểm chứng tồn tại). */
 const ASSIGN: Record<string, string> = {
-  // Chuột -> ảnh chuột không dây
+
   'Endgame Gear XM2we Wireless': 'Wireless mouse logi.jpg',
-  // Tai nghe -> ảnh tai nghe Corsair
+
   'Corsair HS80 RGB USB': 'Sound BlasterX H5 Gaming Headset.jpg',
-  // Webcam -> ảnh webcam
+
   'Logitech C920 HD Pro Webcam': 'Hp web camera closeup.jpg',
   'Logitech Brio 4K Webcam': 'Hp web camera closeup.jpg',
   'Logitech Streamcam': 'Hp web camera closeup.jpg',
-  // Bàn phím -> ảnh bàn phím
+
   'Keychron K3 Pro Low Profile': 'Keychron K1 v2 TKL blue switches.jpg',
   'Lenovo ThinkPad TrackPoint Keyboard II':
     'Logitech MX Keys YR0073 Wireless Keyboard.jpg',
-  // GPU -> ảnh card đồ hoạ RTX
+
   'NVIDIA GeForce RTX 4080 SUPER Founders Edition':
     'ASUS_ROG_STRIX-RTX3080-O10G-Gundam_20210131.jpg',
-  // Ổ cứng -> ảnh SSD Western Digital
+
   'Western Digital Blue SN580 1TB':
     'Western Digital SN850X NVME solid state drive 8TB front side.jpg',
 };
 
-/** Cache URL resolve từ Commons (tránh gọi API lặp lại). */
 let resolved: Map<string, string> | null = null;
 
-/** Tìm URL của file trong curated + các pool khác. */
 async function urlFor(file: string): Promise<string | null> {
   const normKey = (s: string): string =>
     decodeURIComponent(s)
@@ -92,7 +83,7 @@ async function urlFor(file: string): Promise<string | null> {
     const hit = visit(pool);
     if (hit) return hit;
   }
-  // Chưa có trong pool -> tra Commons để lấy URL (cache trong RAM).
+
   resolved ??= await resolveFiles(Object.values(ASSIGN));
   for (const [k, v] of resolved) {
     if (normKey(k) === want) return v;

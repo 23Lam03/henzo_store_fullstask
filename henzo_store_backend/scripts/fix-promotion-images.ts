@@ -1,23 +1,3 @@
-/**
- * GÁN ẢNH THẬT CHO CHƯƠNG TRÌNH KHUYẾN MÃI.
- *
- * Vấn đề phát hiện khi audit trang "Khuyến Mãi":
- *   - 97/197 chương trình có `image` rỗng -> thẻ hiển thị ảnh trống.
- *   - 100 chương trình còn lại dùng `https://picsum.photos/seed/...` — ảnh
- *     placeholder ngẫu nhiên, không liên quan tới nội dung khuyến mãi, và
- *     không đảm bảo tải được (mạng chậm/lỗi -> ảnh vỡ).
- *
- * Cách sửa:
- *   - Lấy ảnh thật từ `data/type-image-pools.json` (kho ảnh Wikimedia đã
- *     được verify sống: 4.371/4.371 file còn tồn tại).
- *   - Ánh xạ `type` khuyến mãi -> danh mục sản phẩm tương ứng để ảnh có
- *     ngữ nghĩa đúng (flash sale -> Laptop, voucher -> Phụ kiện...).
- *   - Phân bổ vòng tròn (round-robin) trong từng pool + theo `title` để
- *     không lặp ảnh giữa các chương trình cùng loại.
- *   - Ảnh đã là URL tuyệt đối Wikimedia, có thumbnail 960px -> nhẹ và ổn định.
- *
- * Chạy: npx tsx scripts/fix-promotion-images.ts
- */
 import { connectDB, disconnectDB } from '../src/server/db';
 import { PromotionModel } from '../src/server/models/Promotion';
 import { PromotionType } from '../src/server/constants';
@@ -26,7 +6,6 @@ import path from 'node:path';
 
 type Pools = Record<string, string[]>;
 
-/** Ánh xạ loại khuyến mãi -> danh mục sản phẩm (để chọn ảnh có ngữ nghĩa). */
 const TYPE_TO_CATEGORY: Record<string, string> = {
   [PromotionType.FLASH_SALE]: 'Laptop',
   [PromotionType.DISCOUNT_CAMPAIGN]: 'Điện thoại',
@@ -34,7 +13,6 @@ const TYPE_TO_CATEGORY: Record<string, string> = {
   [PromotionType.COMBO]: 'PC Gaming',
 };
 
-/** Bảng chuyển đổi tên danh mục trong pool -> tên trong DB (nếu lệch). */
 const POOL_ALIAS: Record<string, string> = {
   'Điện thoại': 'Điện thoại',
   Tablet: 'Tablet',
@@ -47,7 +25,6 @@ const POOL_ALIAS: Record<string, string> = {
   'Phụ kiện': 'Phụ kiện',
 };
 
-/** Băm chuỗi -> số nguyên ổn định (để phân bổ ảnh theo title). */
 function hashCode(text: string): number {
   let h = 0;
   for (let i = 0; i < text.length; i++) {
@@ -56,7 +33,6 @@ function hashCode(text: string): number {
   return h;
 }
 
-/** Tên file ảnh Wikimedia (bỏ đuôi & thư mục) — dùng để so khớp từ khoá. */
 function fileLabel(url: string): string {
   const last = url.split('/').pop() ?? '';
   return last
@@ -66,15 +42,9 @@ function fileLabel(url: string): string {
     .toLowerCase();
 }
 
-/**
- * Ảnh "vô nghĩa" — tên file không mô tả được sản phẩm
- * (ảnh minh hoạ, ảnh logo, ảnh tổng hợp...). Loại để thẻ khuyến mãi
- * luôn nhìn đúng ngữ nghĩa.
- */
 const JUNK_PATTERN =
   /image with|nested realities|unclear|unknown|untitled|illustration|drawing|logo|banner|icon\b|map\b|chart\b|graph\b|collage|montage|photo of nothing/i;
 
-/** Từ khoá ngữ nghĩa -> các mẫu tên file khớp. */
 const KEYWORD_HINTS: Record<string, RegExp> = {
   laptop: /laptop|notebook|macbook|thinkpad|pavilion|ideapad|zenbook|chromebook/i,
   iphone: /iphone|apple phone|mobile phone|smartphone/i,
@@ -94,11 +64,6 @@ const KEYWORD_HINTS: Record<string, RegExp> = {
   combo: /bundle|combo|set of/i,
 };
 
-/**
- * Từ khoá trong tiêu đề -> pool ảnh ưu tiên.
- * Thứ tự quan trọng: từ khoá cụ thể (iphone, laptop...) được ưu tiên hơn
- * từ khoá chung (apple, samsung) để "Sale iPhone 16" không nhận ảnh MacBook.
- */
 const TITLE_TO_POOL: [string, string][] = [
   ['iphone', 'Điện thoại'],
   ['ipad', 'Tablet'],
@@ -121,12 +86,6 @@ const TITLE_TO_POOL: [string, string][] = [
   ['apple', 'Điện thoại'],
 ];
 
-/**
- * Chọn ảnh phù hợp nhất cho một chương trình:
- *  1. Ảnh có từ khoá khớp tiêu đề (điểm cao nhất).
- *  2. Ảnh sạch (không phải ảnh vô nghĩa) theo phân bổ vòng tròn.
- *  3. Bất kỳ ảnh nào còn lại trong pool.
- */
 function pickImage(
   pool: string[],
   title: string,
@@ -135,7 +94,6 @@ function pickImage(
   const clean = pool.filter((u) => !JUNK_PATTERN.test(fileLabel(u)));
   const candidates = clean.length ? clean : pool;
 
-  // 1. Khớp từ khoá trong tiêu đề.
   const lower = title.toLowerCase();
   for (const [keyword, pattern] of Object.entries(KEYWORD_HINTS)) {
     if (!lower.includes(keyword)) continue;
@@ -145,7 +103,6 @@ function pickImage(
     if (match) return match;
   }
 
-  // 2. Phân bổ vòng tròn theo hash tiêu đề.
   const start = hashCode(title) % candidates.length;
   for (let i = 0; i < candidates.length; i++) {
     const candidate = candidates[(start + i) % candidates.length];
@@ -164,7 +121,6 @@ async function main() {
   );
   const pools: Pools = JSON.parse(await readFile(poolsPath, 'utf8'));
 
-  // Chuẩn hoá key pool (bỏ khoảng trắng thừa do file JSON).
   const normPools: Record<string, string[]> = {};
   for (const [k, v] of Object.entries(pools)) {
     const key = POOL_ALIAS[k.trim()] ?? k.trim();
@@ -187,7 +143,6 @@ async function main() {
     const type = String(promo.type ?? PromotionType.DISCOUNT_CAMPAIGN);
     const title = String(promo.title ?? '');
 
-    // Pool ưu tiên: từ khoá trong tiêu đề trước, không thì pool theo loại.
     let category: string | undefined;
     const lower = title.toLowerCase();
     for (const [keyword, poolName] of TITLE_TO_POOL) {
@@ -204,9 +159,6 @@ async function main() {
       continue;
     }
 
-    // Chọn ảnh phù hợp ngữ nghĩa, ưu tiên ảnh chưa dùng trong cùng pool.
-    // Dùng set theo POOL (không theo loại) để ảnh không trùng giữa các
-    // chương trình cùng danh mục dù khác loại (flash sale vs voucher).
     const usedUrls = usedUrlsByPool.get(category) ?? new Set<string>();
     const chosen = pickImage(pool, title, usedUrls);
     usedUrls.add(chosen);
@@ -220,7 +172,6 @@ async function main() {
   console.log(`[promo-img] Đã gán ảnh: ${updated} chương trình`);
   if (skipped) console.log(`[promo-img] Bỏ qua (không có pool): ${skipped}`);
 
-  // ─── Báo cáo kiểm tra lại ───────────────────────────────────────────────
   const after = await PromotionModel.find({}).lean();
   const empty = after.filter((p) => !p.image || !String(p.image).trim());
   const notWikimedia = after.filter(

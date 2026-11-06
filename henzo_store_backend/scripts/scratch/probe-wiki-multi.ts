@@ -1,9 +1,3 @@
-/**
- * DÒ ẢNH QUA WIKIPEDIA ĐA NGÔN NGỮ (list=search + pageimages).
- *
- * de.wikipedia/zh.wikipedia thường có bài riêng cho màn hình, tai nghe,
- * chuột gaming (vd "Zowie XL2546K", "UltraGear 27GR95QE").
- */
 import { writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
@@ -28,7 +22,6 @@ async function getJson(url: string): Promise<any> {
 
 const LANGS = ['de', 'zh', 'fr', 'es', 'it', 'ru', 'ja', 'ko', 'pl', 'nl', 'pt', 'sv', 'cs', 'fi', 'tr', 'uk'];
 
-/** Tìm bài theo search + lấy ảnh. */
 async function searchImg(lang: string, q: string) {
   const d = await getJson(
     `https://${lang}.wikipedia.org/w/api.php?action=query&format=json` +
@@ -43,7 +36,6 @@ async function searchImg(lang: string, q: string) {
   return out;
 }
 
-/** Tên file Commons của ảnh bài Wikipedia (dùng tên file gốc trên Commons). */
 async function commonsFiles(names: string[]): Promise<Record<string, string>> {
   const out: Record<string, string> = {};
   for (let i = 0; i < names.length; i += 20) {
@@ -62,7 +54,6 @@ async function commonsFiles(names: string[]): Promise<Record<string, string>> {
   return out;
 }
 
-/** model -> từ khoá tìm kiếm (mã model đứng trước). */
 const QUERIES: Record<string, string[]> = {
   'AOC CU34G2X 34in': ['CU34G2X'],
   'ASUS ROG Harpe Ace Aim Lab Edition': ['ROG Harpe Ace', 'Harpe Ace Aim Lab'],
@@ -106,7 +97,6 @@ const QUERIES: Record<string, string[]> = {
   'Samsung Galaxy Tab S9': ['Samsung Galaxy Tab S9'],
 };
 
-/** Mã đặc trưng để xác nhận bài viết nói đúng model. */
 const VERIFY: Record<string, RegExp> = {
   'AOC CU34G2X 34in': /CU34G2/i,
   'ASUS ROG Harpe Ace Aim Lab Edition': /harpe/i,
@@ -170,7 +160,7 @@ async function main() {
         }
         if (hits.length >= 4) break;
       }
-      // Đổi tên file sang Commons.
+
       const names = hits.map((h) => h.name).filter(Boolean) as string[];
       const cfiles = names.length ? await commonsFiles([...new Set(names)]) : {};
       for (const h of hits) if (h.name && cfiles[h.name]) h.file = h.name;

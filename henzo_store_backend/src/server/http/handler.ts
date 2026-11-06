@@ -1,7 +1,3 @@
-/**
- * Wrapper cho handler: bắt lỗi nghiệp vụ & trả về response chuẩn.
- * Giúp handler tập trung vào logic, không phải try/catch thủ công.
- */
 import { AppError } from './errors';
 import { fail } from './response';
 import { ZodError } from 'zod';
@@ -10,12 +6,6 @@ export type ApiHandler = (
   ctx: any,
 ) => Response | Promise<Response>;
 
-/**
- * Bọc handler để:
- * - AppError -> status + code tương ứng
- * - ZodError -> 422 kèm chi tiết field
- * - Lỗi không lười trước -> 500 với message thân thiện
- */
 export function withErrorHandling(handler: ApiHandler): ApiHandler {
   return async (ctx: any) => {
     try {
@@ -35,7 +25,7 @@ export function withErrorHandling(handler: ApiHandler): ApiHandler {
           })),
         );
       }
-      // Lỗi MongoDB trùng key
+
       const anyErr = err as any;
       if (anyErr?.code === 11000) {
         return fail(
@@ -46,7 +36,6 @@ export function withErrorHandling(handler: ApiHandler): ApiHandler {
         );
       }
 
-      // ObjectId không hợp lệ -> coi như "không tìm thấy" thay vì lỗi 500.
       if (
         anyErr?.name === 'BSONError' ||
         anyErr?.name === 'CastError' ||

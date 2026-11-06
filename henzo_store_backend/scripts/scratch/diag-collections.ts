@@ -43,7 +43,6 @@ import { BlogModel } from '../../src/server/models/Blog';
   console.log('=== SỐ LƯỢNG BẢN GHI ===');
   for (const [k, v] of Object.entries(counts)) console.log(`  ${k.padEnd(16)} ${v}`);
 
-  // Inventory vs products
   const [products, inv] = await Promise.all([
     ProductModel.find({}).lean(),
     InventoryModel.find({}).lean(),
@@ -59,7 +58,6 @@ import { BlogModel } from '../../src/server/models/Blog';
   console.log(`  sản phẩm KHÔNG có inventory: ${noInv.length}`);
   console.log(`  sản phẩm có >1 inventory row: ${products.filter((p) => (invByProduct.get(String(p._id)) ?? 0) > 1).length}`);
 
-  // promotions validity
   const promos = await PromotionModel.find({}).lean();
   const now = new Date();
   const expired = promos.filter((p: any) => p.endDate && new Date(p.endDate) < now);
@@ -67,7 +65,6 @@ import { BlogModel } from '../../src/server/models/Blog';
   console.log(`\n=== PROMOTIONS ===`);
   console.log(`  tổng ${promos.length} | đã hết hạn ${expired.length} | chưa bắt đầu ${notStarted.length}`);
 
-  // payments vs orders
   const orders = await OrderModel.find({}).lean();
   const payByOrder = new Map<string, number>();
   for (const p of await PaymentModel.find({}).lean()) {

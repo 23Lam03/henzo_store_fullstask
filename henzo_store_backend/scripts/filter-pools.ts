@@ -1,16 +1,9 @@
-/**
- * Lọc pool ảnh mở rộng: chỉ giữ ảnh SẢN PHẨM thật.
- *
- * Loại: ảnh người, sự kiện, bối cảnh, linh kiện rời, logo, sơ đồ...
- *
- * Chạy: npx tsx scripts/filter-pools.ts
- */
 import { readFileSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
 const REJECT = new RegExp(
   [
-    // người / sự kiện / bối cảnh
+
     'wcg', 'grand ?final', 'esport', 'tournament', 'championship', 'finals',
     'playseat', 'playset', 'booth', 'stand', 'exhibit', 'stage', 'crowd',
     'audience', 'player', 'streamer', 'caster', 'interview', 'autograph',
@@ -32,14 +25,14 @@ const REJECT = new RegExp(
     'book', 'cover', 'page', 'page ', 'volume', 'edition', 'issue',
     'box', 'package', 'packaging', 'unboxing', 'manual', 'instruction',
     'warranty', 'receipt', 'invoice', 'label', 'sticker', 'barcode',
-    // linh kiện rời / teardown
+
     'disassembl', 'teardown', 'exploded', 'schematic', 'mainboard',
     'motherboard', 'logic ?board', 'pcb', 'chipset', 'circuit', 'module',
     'stick', 'sodimm', 'dimm', 'coolant', 'pump', 'connector', 'cable',
     'port', 'button', 'wheel', 'underneath', 'bottom', 'top view', 'rear view',
     'back view', 'side view', 'inside', 'interior', 'switch', 'keycap',
     'scroll ?wheel', 'hinge', 'stand ?alone', 'feet', 'base plate',
-    // vô nghĩa / nhiễu
+
     'tokyo-game-show', 'gamescom', 'comiket', 'faceit', 'homestory', 'hwc',
     'esl', 'blast', 'esport', 'review', 'comparison', 'unboxing', 'boit',
     'destroy', 'return of', 'consair', 'church', 'fortress', 'aircraft',
@@ -57,7 +50,7 @@ const REJECT = new RegExp(
 );
 
 const KEEP_HINT = [
-  // dấu hiệu là ảnh sản phẩm
+
   'front', 'back', 'rear', 'side', 'top', 'view', 'angle', 'angled', 'oblique',
   'closeup', 'close ?up', 'product', 'device', 'model', 'series', 'version',
   'edition', 'variant', 'color', 'colour', 'black', 'white', 'silver', 'blue',
@@ -70,7 +63,6 @@ function isProduct(title: string): boolean {
   return KEEP_HINT.some((k) => new RegExp(k, 'i').test(title));
 }
 
-/** Từ khoá BẮT BUỘC phải có trong tên file (theo loại sản phẩm). */
 const TYPE_HINT: Record<string, string[]> = {
   PHONE: [
     'iphone', 'phone', 'smartphone', 'galaxy', 'pixel', 'oneplus', 'realme',
@@ -108,8 +100,7 @@ function main() {
       readFileSync(resolve(process.cwd(), 'scripts/data/expanded-pools.json'), 'utf-8'),
     );
   } catch {
-    /* ignore */
-  }
+      }
 
   const out: Record<string, string[]> = {};
   for (const [k, v] of Object.entries(expanded)) {

@@ -35,8 +35,7 @@ export const Route = createFileRoute('/api/orders/')({
   server: {
     middleware: [corsMiddleware, requireAuth],
     handlers: {
-      /** Danh sách đơn hàng của khách (có phân trang + lọc trạng thái). */
-      GET: withErrorHandling(async ({ request, context }) => {
+            GET: withErrorHandling(async ({ request, context }) => {
         await connectDB();
 
         const url = new URL(request.url);
@@ -67,8 +66,7 @@ export const Route = createFileRoute('/api/orders/')({
         );
       }),
 
-      /** Đặt hàng. */
-      POST: withErrorHandling(async ({ request, context }) => {
+            POST: withErrorHandling(async ({ request, context }) => {
         await connectDB();
         const body = await readJson(request, createOrderSchema);
         const order = await createOrder(context.auth.userId, body as any);

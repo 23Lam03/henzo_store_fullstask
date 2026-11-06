@@ -1,6 +1,3 @@
-/**
- * Model Notification — thông báo đẩy tới người dùng (khách, seller, admin).
- */
 import { Schema, type InferSchemaType } from 'mongoose';
 import { defineModel } from './registry';
 import {
@@ -12,10 +9,8 @@ import {
 
 const notificationSchema = new Schema(
   {
-    /** Người nhận — null nghĩa là gửi broadcast theo `audience`. */
-    userId: { type: Schema.Types.ObjectId, ref: 'User', index: true },
-    /** Người nhận theo role (dùng cho broadcast). */
-    audience: {
+        userId: { type: Schema.Types.ObjectId, ref: 'User', index: true },
+        audience: {
       type: String,
       enum: Object.values(NotificationAudience),
       default: NotificationAudience.ALL,
@@ -37,8 +32,7 @@ const notificationSchema = new Schema(
     message: { type: String, required: true },
     isRead: { type: Boolean, default: false, index: true },
     link: { type: String, default: '' },
-    /** Thông báo do hệ thống tự sinh (đơn hàng, thanh toán...). */
-    isSystem: { type: Boolean, default: false },
+        isSystem: { type: Boolean, default: false },
   },
   { timestamps: true },
 );

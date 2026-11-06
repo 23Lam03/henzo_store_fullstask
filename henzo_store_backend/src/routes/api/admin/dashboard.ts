@@ -11,8 +11,7 @@ export const Route = createFileRoute('/api/admin/dashboard')({
   server: {
     middleware: [corsMiddleware, requireAuth, requireAdmin],
     handlers: {
-      /** Số liệu tổng quan hệ thống cho admin dashboard. */
-      GET: withErrorHandling(async () => {
+            GET: withErrorHandling(async () => {
         await connectDB();
         const data = await getAdminDashboardStats();
         return ok(data);

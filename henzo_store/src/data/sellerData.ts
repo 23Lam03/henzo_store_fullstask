@@ -1,10 +1,3 @@
-/**
- * ⚠️  Dữ liệu mẫu (legacy) — KHÔNG dùng trực tiếp trong runtime của frontend.
- *
- * Toàn bộ ứng dụng đã chuyển sang backend TanStack (`henzo_store_backend`).
- * File này chỉ còn là **nguồn dữ liệu cho script seed** của backend:
- *   cd ../henzo_store_backend && npx tsx scripts/extract-frontend-data.ts
- */
 import type {
   SellerStore, SellerOrder, SellerPayment, SellerReview,
   SellerPromotion, SellerSupportTicket, SellerInventoryItem,
@@ -31,22 +24,11 @@ const CUSTOMER_NAMES = [
   'Phạm Quang Huy', 'Vũ Thị Kim Anh', 'Đặng Hoàng Nam', 'Bùi Minh Đức', 'Nguyễn Thị Hường',
 ];
 
-
-
-/** Danh mục sản phẩm (dùng cho sản phẩm, khuyến mãi, đơn hàng). */
 const CATEGORIES = [
   'Điện thoại', 'Laptop', 'PC Gaming', 'Màn hình',
   'Chuột', 'Bàn phím', 'Tai nghe', 'Phụ kiện',
 ];
 
-/**
- * Ảnh thật theo danh mục.
- *
- * Trước đây ảnh được sinh bằng công thức `1550000000000 + n` — tạo ra URL
- * Unsplash **không tồn tại** (HTTP 404) nên mọi sản phẩm hiển thị ô trống.
- * Mỗi ảnh dưới đây đã được kiểm tra HTTP 200 và xác minh đúng loại thiết bị
- * bằng Vision framework.
- */
 const CATEGORY_IMAGES: Record<string, string[]> = {
   'Điện thoại': [
     'https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=600',
@@ -100,7 +82,6 @@ const FALLBACK_IMAGES = [
   'https://images.unsplash.com/photo-1555680202-c86f0e12f086?w=600',
 ];
 
-
 const SHIPPING_PARTNERS = ['GHTK', 'GHN', 'Viettel Post', 'VNPost', 'Ninja Van', 'GrabExpress', 'Ahamove'];
 const CITIES = ['TP. Hồ Chí Minh', 'Hà Nội', 'Đà Nẵng', 'Cần Thơ', 'Hải Phòng', 'Biên Hòa', 'Nha Trang', 'Hải Dương'];
 
@@ -124,7 +105,6 @@ const PAYMENT_METHOD_LABELS: Record<string, string> = {
   zalopay: 'ZaloPay',
 };
 
-// ─── 50 Stores ──────────────────────────────────────────────────────────────────
 export const mockStores: SellerStore[] = Array.from({ length: 50 }, (_, i) => {
   const n = i + 1;
   const rating = +(3.5 + Math.random() * 1.5).toFixed(1);
@@ -152,28 +132,19 @@ export const mockStores: SellerStore[] = Array.from({ length: 50 }, (_, i) => {
   };
 });
 
-// Default store (shop@henzo.com)
 export const currentStore = mockStores[0];
 
-// ─── 500 Products ───────────────────────────────────────────────────────────────
 export const mockSellerProducts: Product[] = Array.from({ length: 500 }, (_, i) => {
   const n = i + 1;
   const stock = Math.floor(Math.random() * 500);
   const sold = Math.floor(Math.random() * 200);
 
-  // Tên sản phẩm chọn trước, rồi suy ra danh mục & thương hiệu **từ tên**
-  // để ảnh, danh mục và thương hiệu luôn khớp nhau.
-  //
-  // Mỗi sản phẩm là một **biến thể cấu hình khác nhau** (dung lượng / màu /
-  // kích thước) của một dòng sản phẩm thật -> 500 sản phẩm có 500 tên khác
-  // nhau, không lặp lại như trước (trước đây chỉ có 20 model lặp ~25 lần).
   const variant = PRODUCT_VARIANTS[i % PRODUCT_VARIANTS.length];
   const productName = variantName(variant);
   const category = variantCategory(variant);
   const brand = variantBrand(variant);
   const imagePool = CATEGORY_IMAGES[category] ?? FALLBACK_IMAGES;
 
-  // Giá theo danh mục (giá thị trường thực tế, không random rác).
   const PRICE_RANGE: Record<string, [number, number]> = {
     'Điện thoại': [5000000, 45000000],
     Laptop: [15000000, 90000000],
@@ -209,11 +180,10 @@ export const mockSellerProducts: Product[] = Array.from({ length: 500 }, (_, i) 
     originalPrice,
     discount,
     images: (() => {
-      // Ảnh THẬT theo model (iPhone 16 ≠ iPhone 15). Nếu model chưa có ảnh
-      // riêng -> dùng ảnh theo danh mục.
+
       const real = imagesForProduct(productName);
       if (real?.length) {
-        // Xoay vòng ảnh để các biến thể cùng model không bị trùng ảnh chính.
+
         const k = n % real.length;
         return [...real.slice(k), ...real.slice(0, k)].slice(0, 3);
       }
@@ -238,11 +208,10 @@ export const mockSellerProducts: Product[] = Array.from({ length: 500 }, (_, i) 
       brand,
     }),
     specifications: (() => {
-      // Thông số THẬT theo model (bảng `modelSpecs.ts`). Trước đây đoạn này
-      // random `CPU/RAM/SSD` -> một chiếc MacBook Pro bị gán "Intel Core i9".
+
       const { specs, missing } = specsForProduct(productName);
       if (!missing) return specs;
-      // Dự phòng: model chưa có trong bảng -> thông số tối thiểu hợp lệ.
+
       return {
         'Bộ nhớ': '512GB SSD',
         'Bảo hành': '12 tháng chính hãng',
@@ -256,7 +225,6 @@ export const mockSellerProducts: Product[] = Array.from({ length: 500 }, (_, i) 
   };
 });
 
-// ─── 1000 Orders ────────────────────────────────────────────────────────────────
 export const mockSellerOrders: SellerOrder[] = Array.from({ length: 1000 }, (_, i) => {
   const n = i + 1;
   const statuses: SellerOrder['status'][] = ['pending', 'confirmed', 'preparing', 'shipped', 'delivering', 'delivered', 'cancelled', 'returned'];
@@ -314,7 +282,6 @@ export const mockSellerOrders: SellerOrder[] = Array.from({ length: 1000 }, (_, 
   };
 });
 
-// ─── 500 Payments ───────────────────────────────────────────────────────────────
 export const mockSellerPayments: SellerPayment[] = Array.from({ length: 500 }, (_, i) => {
   const n = i + 1;
   const order = mockSellerOrders[i];
@@ -337,7 +304,6 @@ export const mockSellerPayments: SellerPayment[] = Array.from({ length: 500 }, (
   };
 });
 
-// ─── 200 Reviews ────────────────────────────────────────────────────────────────
 const REVIEW_CONTENTS = [
   'Sản phẩm tốt, đóng gói cẩn thận, giao hàng nhanh. Sẽ ủng hộ tiếp!',
   'Chất lượng tuyệt vời như mô tả. Đáng đồng tiền bát gạo!',
@@ -379,7 +345,6 @@ export const mockSellerReviews: SellerReview[] = Array.from({ length: 200 }, (_,
   };
 });
 
-// ─── 100 Promotions ─────────────────────────────────────────────────────────────
 export const mockSellerPromotions: SellerPromotion[] = [
   { id: 'prm-001', name: 'Flash Sale Cuối Năm', type: 'flash_sale', code: 'YEAREND50', discountType: 'percent', discountValue: 50, minOrderValue: 2000000, maxDiscount: 500000, startDate: '2024-12-01', endDate: '2024-12-31', status: 'active', usageLimit: 500, usedCount: 234, targetProducts: [], targetCategories: ['Điện thoại'], storeId: currentStore.id, createdAt: '2024-11-15' },
   { id: 'prm-002', name: 'Giảm 15% Laptop Gaming', type: 'discount_campaign', code: 'GAMING15', discountType: 'percent', discountValue: 15, minOrderValue: 15000000, maxDiscount: 2000000, startDate: '2024-11-01', endDate: '2025-01-31', status: 'active', usageLimit: 200, usedCount: 87, targetProducts: [], targetCategories: ['Laptop', 'PC Gaming'], storeId: currentStore.id, createdAt: '2024-10-20' },
@@ -422,7 +387,6 @@ export const mockSellerPromotions: SellerPromotion[] = [
   }),
 ];
 
-// ─── 200 Support Tickets ─────────────────────────────────────────────────────────
 export const mockSellerTickets: SellerSupportTicket[] = Array.from({ length: 200 }, (_, i) => {
   const n = i + 1;
   const categories: SellerSupportTicket['category'][] = ['order', 'payment', 'product', 'account', 'technical', 'other'];
@@ -461,7 +425,6 @@ export const mockSellerTickets: SellerSupportTicket[] = Array.from({ length: 200
   };
 });
 
-// ─── Inventory ──────────────────────────────────────────────────────────────────
 export const mockSellerInventory: SellerInventoryItem[] = mockSellerProducts.slice(0, 100).map((p) => {
   const stock = Math.floor(Math.random() * 500);
   const sold = Math.floor(Math.random() * 200);
@@ -484,7 +447,6 @@ export const mockSellerInventory: SellerInventoryItem[] = mockSellerProducts.sli
   };
 });
 
-// ─── Shipping ───────────────────────────────────────────────────────────────────
 export const mockSellerShippings: SellerShipping[] = mockSellerOrders
   .filter(o => ['shipped', 'delivering', 'delivered'].includes(o.status))
   .map((order, i) => {
@@ -516,7 +478,6 @@ export const mockSellerShippings: SellerShipping[] = mockSellerOrders
     };
   });
 
-// ─── Notifications ─────────────────────────────────────────────────────────────
 export const mockSellerNotifications: SellerNotification[] = [
   { id: 'notif-001', type: 'order', title: 'Đơn hàng mới', message: 'Bạn có đơn hàng mới ORD000001 trị giá 45,990,000đ. Vui lòng xác nhận trong 24h.', isRead: false, link: '/seller/orders', createdAt: new Date(Date.now() - 1000 * 60 * 5).toISOString(), storeId: currentStore.id },
   { id: 'notif-002', type: 'payment', title: 'Thanh toán thành công', message: 'Đơn hàng ORD000012 đã được thanh toán thành công qua VNPay. Số tiền: 12,500,000đ', isRead: false, link: '/seller/payments', createdAt: new Date(Date.now() - 1000 * 60 * 30).toISOString(), storeId: currentStore.id },
@@ -528,7 +489,6 @@ export const mockSellerNotifications: SellerNotification[] = [
   { id: 'notif-008', type: 'payment', title: 'Hoàn tiền thành công', message: 'Đơn hàng ORD000034 đã được hoàn tiền thành công. Số tiền hoàn: 8,900,000đ', isRead: true, link: '/seller/payments', createdAt: new Date(Date.now() - 1000 * 60 * 60 * 48).toISOString(), storeId: currentStore.id },
 ];
 
-// ─── Chart Data ─────────────────────────────────────────────────────────────────
 export const mockDailyRevenue: DailyRevenue[] = Array.from({ length: 30 }, (_, i) => {
   const date = new Date();
   date.setDate(date.getDate() - (29 - i));
@@ -554,7 +514,6 @@ export const mockMonthlyData: MonthlyData[] = [
   { month: 'T12', revenue: 1_050_000_000, orders: 537, customers: 436 },
 ];
 
-// ─── Helpers ────────────────────────────────────────────────────────────────────
 export const STATUS_ORDER_LABELS = STATUS_LABELS;
 export const ORDER_STATUS_COLORS_MAP = ORDER_STATUS_COLORS;
 export const PAYMENT_METHOD_LABELS_MAP = PAYMENT_METHOD_LABELS;

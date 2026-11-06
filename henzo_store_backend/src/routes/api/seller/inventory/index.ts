@@ -15,8 +15,7 @@ export const Route = createFileRoute('/api/seller/inventory/')({
   server: {
     middleware: [corsMiddleware, requireAuth, requireStoreOwner],
     handlers: {
-      /** Danh sách tồn kho của cửa hàng. */
-      GET: withErrorHandling(async ({ request, context }) => {
+            GET: withErrorHandling(async ({ request, context }) => {
         await connectDB();
         const scope = getStoreScope(context);
 
@@ -48,7 +47,7 @@ export const Route = createFileRoute('/api/seller/inventory/')({
             .limit(pageSize)
             .lean(),
           InventoryModel.countDocuments(filter),
-          // `$match` trong pipeline không tự ép chuỗi -> ObjectId.
+
           InventoryModel.aggregate([
             { $match: scope.aggMatch() },
             {

@@ -47,8 +47,7 @@ export const ShopPromotionsPage = () => {
     return true;
   });
 
-  /** Tạo khuyến mãi — gọi API thật, báo lỗi nếu thiếu trường bắt buộc. */
-  const handleSave = async () => {
+    const handleSave = async () => {
     const errors: Record<string, string> = {};
     if (!editingPromo.name.trim()) errors.name = 'Vui lòng nhập tên chương trình.';
     if (!editingPromo.code.trim()) errors.code = 'Vui lòng nhập mã giảm giá.';
@@ -85,8 +84,7 @@ export const ShopPromotionsPage = () => {
     }
   };
 
-  /** Xoá khuyến mãi — trước đây chỉ đổi status sang `ended`. */
-  const handleDelete = async (id: string) => {
+    const handleDelete = async (id: string) => {
     setIsSubmitting(true);
     try {
       await deletePromotion(id);
@@ -123,7 +121,7 @@ export const ShopPromotionsPage = () => {
         </button>
       </div>
 
-      {/* Filters */}
+      {}
       <div className="seller-promotions__filters">
         <div className="seller-filter-group">
           <label className="seller-filter-group__label">Loại:</label>
@@ -143,7 +141,7 @@ export const ShopPromotionsPage = () => {
         </div>
       </div>
 
-      {/* Stats Row */}
+      {}
       <div className="admin-stats admin-stats--4">
         {[
           { label: 'Tổng chương trình', value: promotions.length, cls: 'badge-primary' },
@@ -158,7 +156,7 @@ export const ShopPromotionsPage = () => {
         ))}
       </div>
 
-      {/* Promotions Grid */}
+      {}
       {filtered.length === 0 ? (
         <div className="admin-section">
           <div className="seller-empty" style={{ padding: 60 }}>
@@ -221,7 +219,7 @@ export const ShopPromotionsPage = () => {
         </div>
       )}
 
-      {/* Create Modal */}
+      {}
       {showModal && (
         <div className="admin-modal-overlay" onClick={() => setShowModal(false)}>
           <div className="admin-modal admin-modal--lg" onClick={e => e.stopPropagation()}>

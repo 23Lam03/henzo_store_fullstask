@@ -60,7 +60,6 @@ export const AdminDashboardPage = () => {
     weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
   });
 
-  // Hoạt động hệ thống dựng từ đơn hàng & top sản phẩm gần nhất.
   const systemActivities = useMemo(
     () =>
       recentOrders.slice(0, 5).map((o, i) => ({
@@ -92,7 +91,7 @@ export const AdminDashboardPage = () => {
         </div>
       </div>
 
-      {/* Stats */}
+      {}
       <div className="admin-stats admin-stats--5" data-reveal-stagger>
         {[
           { label: 'Tổng doanh thu', raw: stats?.totalRevenue ?? 0, format: formatCurrency, change: '+15.2%', dir: 'up', icon: 'revenue', color: '#1F5557' },
@@ -120,7 +119,7 @@ export const AdminDashboardPage = () => {
         ))}
       </div>
 
-      {/* Revenue Chart + Quick Actions */}
+      {}
       <div className="admin-dashboard__grid-2">
         <div className="admin-section">
           <div className="admin-section__header">
@@ -180,7 +179,7 @@ export const AdminDashboardPage = () => {
         </div>
       </div>
 
-      {/* Recent Orders + Top Products */}
+      {}
       <div className="admin-dashboard__grid-2">
         <div className="admin-section">
           <div className="admin-section__header">
@@ -240,7 +239,7 @@ export const AdminDashboardPage = () => {
         </div>
       </div>
 
-      {/* Quick Links */}
+      {}
       <div className="admin-dashboard__quick-links">
         {[
           { label: 'Quản lý cửa hàng', href: '/admin/stores', icon: 'stores', count: stats?.totalStores ?? 0 },

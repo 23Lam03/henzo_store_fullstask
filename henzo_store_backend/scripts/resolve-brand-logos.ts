@@ -1,17 +1,8 @@
-/**
- * Tra cứu URL logo thật của từng hãng trên Wikimedia Commons.
- *
- * Dùng API `generator=search` (namespace 6 = File) rồi lấy `imageinfo.url`
- * của file logo — tránh đoán đường dẫn (hash path) bằng tay.
- *
- * Chạy: npx tsx scripts/resolve-brand-logos.ts
- */
 import { writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
 const UA = 'henzo-store/1.0 (brand logo resolver; dev@henzo.local)';
 
-/** Hãng cần tra cứu (những hãng không có trong Simple Icons). */
 const BRANDS: Record<string, string[]> = {
   Logitech: ['Logitech logo', 'Logitech'],
   Microsoft: ['Microsoft logo', 'Microsoft'],
@@ -37,7 +28,6 @@ const BRANDS: Record<string, string[]> = {
   Microsoft_: [],
 };
 
-/** File SVG có từ khoá "logo" trong tên — ưu tiên. */
 function scoreFile(title: string, brand: string): number {
   const t = title.toLowerCase();
   let s = 0;
@@ -101,7 +91,6 @@ async function main() {
       if (best && bestScore >= 15) break;
     }
 
-    // Kiểm tra HTTP 200
     let ok = false;
     if (best) {
       const res = await fetch(best.url, {

@@ -5,12 +5,11 @@ const mi = JSON.parse(
   readFileSync(resolve(process.cwd(), 'scripts/data/model-images.json'), 'utf-8'),
 ) as Record<string, { images: string[] }>;
 
-/** Token đặc trưng của model, dùng để lọc pool ảnh. */
 function keyword(model: string): string {
   const t = model
     .replace(/^(Samsung|Apple|ASUS|MSI|Dell|Lenovo|HP|Acer|Gigabyte|Razer|Logitech|Corsair|SteelSeries|ROCCAT|Keychron|Bose|JBL|Intel|AMD|NVIDIA|G\.Skill|Western Digital|Seagate|Crucial|Amazon|Belkin|Elgato|Zowie|BenQ|ViewSonic|Philips|AOC|Apple|Microsoft|Huawei|LG|OPPO|Vivo|Xiaomi|Realme|Nokia|OnePlus|Honor|Tecno|Google|Redmi|Poco|Sony|Samsung|Cooler Master|DeepCool|MX|Acer|Solidigm|Sabrent|Teamgroup|WD|Kingston|Cougar|Redragon|Etekcity)[\s-]/i, '')
     .trim();
-  // giữ phần "số + chữ" khác biệt, ví dụ "A16", "S24 Ultra", "M32UC"
+
   return t;
 }
 

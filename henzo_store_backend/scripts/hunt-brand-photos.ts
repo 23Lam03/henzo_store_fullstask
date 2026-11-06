@@ -1,9 +1,3 @@
-/**
- * SĂN ẢNH SẢN PHẨM: intitle:"<Brand> <Type>" với limit cao + lọc theo model.
- *
- * Mục tiêu: file có tên chứa brand + loại sản phẩm (vd "HyperX headset",
- * "Corsair headset", "Zowie monitor", "UltraGear monitor").
- */
 import { writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
@@ -41,7 +35,6 @@ async function search(q: string, limit = 100): Promise<string[]> {
   return out;
 }
 
-/** Từ khoá -> cụm intitle thử. */
 const HUNT: Record<string, string[]> = {
   headset: [
     'intitle:"HyperX" intitle:headset',

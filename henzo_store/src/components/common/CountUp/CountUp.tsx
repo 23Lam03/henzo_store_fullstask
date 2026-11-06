@@ -2,21 +2,13 @@ import { useEffect, useRef, useState } from 'react';
 import { useReveal } from '../../../hooks/useReveal';
 
 interface CountUpProps {
-  /** Giá trị đích. */
-  value: number;
-  /** Định dạng số sau khi đếm xong. */
-  format?: (n: number) => string;
-  /** Thời gian đếm (ms). */
-  duration?: number;
-  /** Số chữ số thập phân. */
-  decimals?: number;
+    value: number;
+    format?: (n: number) => string;
+    duration?: number;
+    decimals?: number;
   className?: string;
 }
 
-/**
- * Số đếm tăng từ 0 lên giá trị đích khi phần tử lọt khung nhìn.
- * Dùng cho thẻ số liệu (dashboard admin/seller, thống kê trang chủ).
- */
 export const CountUp = ({
   value,
   format = (n) => Math.round(n).toLocaleString('vi-VN'),
@@ -34,7 +26,7 @@ export const CountUp = ({
     const start = performance.now();
     const tick = (now: number) => {
       const progress = Math.min((now - start) / duration, 1);
-      // easeOutExpo — chạy nhanh rồi chậm dần, mượt mắt
+
       const eased = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
       setDisplay(value * eased);
       if (progress < 1) {

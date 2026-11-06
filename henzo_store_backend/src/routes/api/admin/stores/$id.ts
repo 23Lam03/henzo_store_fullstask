@@ -36,8 +36,7 @@ export const Route = createFileRoute('/api/admin/stores/$id')({
   server: {
     middleware: [corsMiddleware, requireAuth, requireAdmin, requirePermission('Quản lý cửa hàng')],
     handlers: {
-      /** Chi tiết cửa hàng + thống kê nhanh. */
-      GET: withErrorHandling(async ({ params }) => {
+            GET: withErrorHandling(async ({ params }) => {
         await connectDB();
 
         const store = await StoreModel.findById(params.id).lean();
@@ -68,8 +67,7 @@ export const Route = createFileRoute('/api/admin/stores/$id')({
         });
       }),
 
-      /** Cập nhật thông tin cửa hàng. */
-      PATCH: withErrorHandling(async ({ request, params }) => {
+            PATCH: withErrorHandling(async ({ request, params }) => {
         await connectDB();
         const body = await readJson(request, updateSchema);
 
@@ -93,8 +91,7 @@ export const Route = createFileRoute('/api/admin/stores/$id')({
         return ok(toAdminStore(store));
       }),
 
-      /** Thao tác quản trị: xác minh / khoá / mở khoá. */
-      POST: withErrorHandling(async ({ request, params }) => {
+            POST: withErrorHandling(async ({ request, params }) => {
         await connectDB();
         const body = await readJson(request, actionSchema);
 
@@ -121,8 +118,7 @@ export const Route = createFileRoute('/api/admin/stores/$id')({
         return ok(toAdminStore(store));
       }),
 
-      /** Xoá cửa hàng (kèm sản phẩm & đơn hàng liên quan). */
-      DELETE: withErrorHandling(async ({ params }) => {
+            DELETE: withErrorHandling(async ({ params }) => {
         await connectDB();
 
         const store = await StoreModel.findById(params.id);
@@ -130,7 +126,6 @@ export const Route = createFileRoute('/api/admin/stores/$id')({
 
         const storeId = store._id;
 
-        // Chuyển sản phẩm về ẩn thay vì xoá (giữ lịch sử đơn hàng).
         await ProductModel.updateMany(
           { storeId },
           { $set: { status: 'hidden' } },

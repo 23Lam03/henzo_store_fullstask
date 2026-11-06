@@ -1,9 +1,3 @@
-/**
- * DÒ ẢNH THẬT QUA WIKIPEDIA (title trực tiếp) + WIKIDATA (P18).
- *
- * - Wikipedia: thử tên bài cụ thể (redirects) -> lấy ảnh + tên file Commons.
- * - Wikidata: wbsearchentities -> P18 (ảnh) -> Commons.
- */
 import { writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
@@ -26,7 +20,6 @@ async function getJson(url: string): Promise<any> {
   return null;
 }
 
-/** Tên bài có thể có trên Wikipedia (en + de). */
 const TITLES: Record<string, string[]> = {
   'AOC CU34G2X 34in': ['AOC CU34G2X', 'AGON CU34G2X'],
   'ASUS ROG Harpe Ace Aim Lab Edition': ['ROG Harpe Ace', 'Asus ROG Harpe Ace'],
@@ -71,7 +64,6 @@ const TITLES: Record<string, string[]> = {
 
 const WIKILANGS = ['en', 'de'];
 
-/** Tra cứu bài Wikipedia theo title, lấy ảnh + tên file Commons. */
 async function wikiByTitle(title: string, lang: string) {
   const d = await getJson(
     `https://${lang}.wikipedia.org/w/api.php?action=query&format=json` +
@@ -98,7 +90,6 @@ async function wikiByTitle(title: string, lang: string) {
   return { title: String(p.title), file, url: p.thumbnail?.source ?? null };
 }
 
-/** Wikidata: tìm entity + P18. */
 async function wikidataP18(query: string) {
   const d = await getJson(
     `https://www.wikidata.org/w/api.php?action=wbsearchentities&format=json` +

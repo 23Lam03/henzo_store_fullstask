@@ -1,6 +1,3 @@
-/**
- * Debug hàm khớp model — in kết quả cho vài tên thực tế.
- */
 import { CATEGORY_IMAGES } from '../src/server/data/product-images';
 
 const STOPWORDS = new Set([

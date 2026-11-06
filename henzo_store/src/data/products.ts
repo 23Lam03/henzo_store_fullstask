@@ -1,31 +1,13 @@
-/**
- * ⚠️  Dữ liệu mẫu (legacy) — KHÔNG dùng trực tiếp trong runtime của frontend.
- *
- * Toàn bộ ứng dụng đã chuyển sang backend TanStack (`henzo_store_backend`).
- * File này chỉ còn là **nguồn dữ liệu cho script seed** của backend:
- *   cd ../henzo_store_backend && npx tsx scripts/extract-frontend-data.ts
- *
- * Xem `src/services/api/` cho tầng API client thật.
- */
 import type { Product, Review, Brand, Blog } from '../types';
 import { imagesForProduct } from './modelImages';
 
-/**
- * Ảnh của sản phẩm: ưu tiên ảnh THẬT theo model.
- *
- * Ảnh thật được sinh tự động vào `modelImages.ts` từ Wikimedia Commons.
- * Nhờ đó iPhone 16 không bao giờ hiện ảnh iPhone 15, và các biến thể
- * cùng model được xoay vòng ảnh để không trùng nhau trên giao diện.
- */
 const productImages = (name: string, fallback: string[]): string[] => {
   const real = imagesForProduct(name);
   return real?.length ? real.slice(0, 5) : fallback;
 };
 
-// ─── 100 Real Products ────────────────────────────────────────────────────────
-
 export const MOCK_PRODUCTS: Product[] = [
-  // ── PHONES (25) ───────────────────────────────────────────────────────────
+
   {
     id: 'p001', name: 'iPhone 16 Pro Max 256GB', slug: 'iphone-16-pro-max-256gb',
     description: 'iPhone 16 Pro Max với chip A18 Pro, camera 48MP, màn hình OLED 6.9 inch ProMotion 120Hz, khung titanium grade 5. Thiết kế sang trọng, hiệu năng vượt trội.',
@@ -603,7 +585,6 @@ export const MOCK_PRODUCTS: Product[] = [
     isFeatured: false, isNew: false, isHot: false, createdAt: '2024-10-05T00:00:00Z',
   },
 
-  // ── LAPTOPS (25) ───────────────────────────────────────────────────────────
   {
     id: 'p026', name: 'MacBook Pro 16" M4 Pro 512GB', slug: 'macbook-pro-16-m4-pro-512gb',
     description: 'MacBook Pro 16 inch chip M4 Pro 12-core, 24GB RAM, GPU 20-core, màn hình Liquid Retina XDR 120Hz, pin 24 giờ.',
@@ -1143,7 +1124,6 @@ export const MOCK_PRODUCTS: Product[] = [
     isFeatured: false, isNew: false, isHot: false, createdAt: '2024-01-15T00:00:00Z',
   },
 
-  // ── PC GAMING (15) ──────────────────────────────────────────────────────────
   {
     id: 'p051', name: 'PC Gaming RTX 5090 Supreme', slug: 'pc-gaming-rtx-5090-supreme',
     description: 'PC Gaming flagship trang bị RTX 5090 24GB, Intel i9-14900KS, 64GB DDR5, 2TB SSD NVMe, tản nhiệt AIO 360mm, case Phanteks Eclipse.',
@@ -1447,7 +1427,6 @@ export const MOCK_PRODUCTS: Product[] = [
     isFeatured: true, isNew: false, isHot: false, createdAt: '2024-08-20T00:00:00Z',
   },
 
-  // ── MONITORS (15) ───────────────────────────────────────────────────────────
   {
     id: 'p066', name: 'Samsung Odyssey G8 34" QD-OLED', slug: 'samsung-odyssey-g8-34-qd-oled',
     description: 'Samsung Odyssey G8 màn hình 34 inch QD-OLED, 3440x1440, 175Hz, 0.03ms, HDR10+, hỗ trợ FreeSync Premium Pro.',
@@ -1750,7 +1729,6 @@ export const MOCK_PRODUCTS: Product[] = [
     isFeatured: false, isNew: false, isHot: false, createdAt: '2024-04-15T00:00:00Z',
   },
 
-  // ── PERIPHERALS (20) ────────────────────────────────────────────────────────
   {
     id: 'p081', name: 'Logitech G Pro X Superlight 2', slug: 'logitech-g-pro-x-superlight-2',
     description: 'Logitech G Pro X Superlight 2 chuột gaming không dây 60g, sensor HERO 2 32K DPI, 95 giờ pin, USB-C sạc nhanh.',
@@ -2175,7 +2153,6 @@ export const MOCK_PRODUCTS: Product[] = [
   },
 ];
 
-// ─── Mock Reviews ─────────────────────────────────────────────────────────────
 export const MOCK_REVIEWS: Review[] = [
   {
     id: 'r001', productId: 'p001', userId: 'user-1', userName: 'Nguyễn Văn A',
@@ -2249,14 +2226,6 @@ export const MOCK_REVIEWS: Review[] = [
   },
 ];
 
-// ─── Mock Brands ──────────────────────────────────────────────────────────────
-/**
- * Logo thương hiệu — SVG thật từ Simple Icons (https://simpleicons.org).
- *
- * Trước đây logo lấy từ Unsplash (ảnh stock ngẫu nhiên): Sony hiện con mèo,
- * SteelSeries hiện vương miện, MSI trùng ảnh với Apple — không cái nào là
- * logo thật. Giờ dùng logo vector chính xác của từng hãng.
- */
 export const MOCK_BRANDS: Brand[] = [
   { id: 'b001', name: 'Apple', slug: 'apple', logo: 'https://cdn.simpleicons.org/apple/000000', productCount: 25 },
   { id: 'b002', name: 'Samsung', slug: 'samsung', logo: 'https://cdn.simpleicons.org/samsung/1428A0', productCount: 20 },
@@ -2272,7 +2241,6 @@ export const MOCK_BRANDS: Brand[] = [
   { id: 'b012', name: 'Xiaomi', slug: 'xiaomi', logo: 'https://cdn.simpleicons.org/xiaomi/FF6900', productCount: 5 },
 ];
 
-// ─── Mock Blogs ───────────────────────────────────────────────────────────────
 export const MOCK_BLOGS: Blog[] = [
   {
     id: 'blog-001',

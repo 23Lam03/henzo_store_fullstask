@@ -1,6 +1,3 @@
-/**
- * Probe rộng theo HÃNG + LOẠI để curate ảnh sibling đúng hãng.
- */
 import { writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 

@@ -1,6 +1,3 @@
-/**
- * Probe bổ sung cho các khoảng trống còn lại.
- */
 import { writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 

@@ -5,29 +5,15 @@ type RevealDirection = 'up' | 'down' | 'left' | 'right' | 'scale' | 'blur';
 
 interface RevealProps {
   children: ReactNode;
-  /** Hướng chuyển động khi xuất hiện. */
-  direction?: RevealDirection;
-  /** Độ trễ (ms) — dùng để tạo hiệu ứng lần lượt. */
-  delay?: number;
-  /** Ngưỡng hiển thị (0–1). */
-  threshold?: number;
-  /** Chạy một lần rồi dừng. */
-  once?: boolean;
-  /** Thẻ HTML bọc ngoài. */
-  as?: ElementType;
+    direction?: RevealDirection;
+    delay?: number;
+    threshold?: number;
+    once?: boolean;
+    as?: ElementType;
   className?: string;
   style?: React.CSSProperties;
 }
 
-/**
- * Bọc nội dung để chạy hiệu ứng "reveal" khi phần tử lọt khung nhìn.
- *
- * ```tsx
- * <Reveal direction="up" delay={120}>
- *   <section>…</section>
- * </Reveal>
- * ```
- */
 export const Reveal = ({
   children,
   direction = 'up',

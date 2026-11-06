@@ -1,6 +1,3 @@
-/**
- * Model Blog — bài viết tin tức.
- */
 import { Schema, type InferSchemaType } from 'mongoose';
 import { defineModel } from './registry';
 

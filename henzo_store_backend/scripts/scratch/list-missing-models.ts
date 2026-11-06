@@ -1,8 +1,3 @@
-/**
- * Liệt kê các MODEL còn THIẾU ảnh trong `model-images.json`.
- *
- * Chạy: npx tsx scripts/list-missing-models.ts
- */
 import { readFileSync, existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { modelName } from '../lib/model-name';

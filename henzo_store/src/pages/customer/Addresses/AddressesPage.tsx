@@ -29,7 +29,6 @@ export const AddressesPage = () => {
   const [form, setForm] = useState<Omit<Address, 'id' | 'province'>>(EMPTY_FORM);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
-  // Danh sách hành chính lấy từ API (63 tỉnh + 705 huyện + 10.599 xã).
   const [provinces, setProvinces] = useState<Province[]>([]);
   const [districts, setDistricts] = useState<District[]>([]);
   const [wards, setWards] = useState<Ward[]>([]);
@@ -45,7 +44,7 @@ export const AddressesPage = () => {
       .then(list => {
         if (cancelled) return;
         setProvinces(list);
-        // Điền tỉnh đang chọn (khi sửa địa chỉ cũ).
+
         const current = form.city.trim();
         if (!current) return;
         const hit = list.find(
@@ -85,7 +84,6 @@ export const AddressesPage = () => {
     };
   }, [provinceCode]);
 
-  // Nạp phường/xã khi đổi quận/huyện.
   useEffect(() => {
     if (!districtCode) {
       setWards([]);
@@ -109,16 +107,13 @@ export const AddressesPage = () => {
     };
   }, [districtCode]);
 
-  // Khi danh sách quận/huyện nạp xong, khớp lại mã quận theo tên đang lưu
-  // (dùng khi sửa địa chỉ cũ) để nạp tiếp danh sách phường/xã.
   useEffect(() => {
     if (!form.district || districtCode) return;
     const hit = districts.find(d => d.name === form.district);
     if (hit) setDistrictCode(hit.code);
   }, [districts, form.district, districtCode]);
 
-  /** Tỉnh đang chọn (tên) — dùng để gửi lên backend. */
-  const provinceName = useMemo(
+    const provinceName = useMemo(
     () => provinces.find(p => p.code === provinceCode)?.name ?? form.city,
     [provinces, provinceCode, form.city],
   );
@@ -136,8 +131,7 @@ export const AddressesPage = () => {
     return e;
   };
 
-  /** Tải danh sách địa chỉ từ API. */
-  const loadAddresses = useCallback(async () => {
+    const loadAddresses = useCallback(async () => {
     setLoading(true);
     try {
       const res = await addressesApi.list();
@@ -163,7 +157,7 @@ export const AddressesPage = () => {
     const e2 = validate();
     if (Object.keys(e2).length > 0) { setErrors(e2); return; }
     try {
-      // Gửi TÊN tỉnh (backend lưu snapshot địa chỉ dạng chữ).
+
       const payload = { ...form, city: provinceName || form.city };
       if (editingId) {
         await addressesApi.update(editingId, payload);
@@ -200,7 +194,7 @@ export const AddressesPage = () => {
       ward: addr.ward ?? '',
       isDefault: addr.isDefault,
     });
-    // Tìm mã tỉnh tương ứng để nạp đúng danh sách quận/huyện.
+
     const hit = provinces.find(
       p =>
         p.name.toLowerCase() === (addr.city ?? '').toLowerCase() ||

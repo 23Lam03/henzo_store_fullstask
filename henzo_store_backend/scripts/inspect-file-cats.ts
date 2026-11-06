@@ -1,8 +1,3 @@
-/**
- * KIỂM TRA CATEGORY + MÔ TẢ CỦA FILE COMMONS (dùng để lọc ảnh sản phẩm).
- *
- * Chạy: npx tsx scripts/inspect-file-cats.ts <file1> <file2> ...
- */
 import { getJson } from './lib/commons-files';
 
 async function main() {

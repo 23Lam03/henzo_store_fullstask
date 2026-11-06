@@ -1,22 +1,5 @@
-/**
- * THÔNG SỐ KỸ THUẬT THẬT theo model sản phẩm — nguồn chuẩn dùng chung.
- *
- * ⚠️  Trước đây 482/582 sản phẩm trong DB có `specifications` NGẪU NHIÊN
- *     (`CPU: Intel Core i9` cho một chiếc MacBook Pro...). Bảng này thay thế
- *     hoàn toàn logic random đó.
- *
- * Key = TÊN MODEL gốc (không kèm dung lượng / màu / kích thước), đúng với
- * `base` trong `productVariants.ts` và `modelKey()` trong `modelImages.ts`.
- *
- * Placeholder `{{CAP}}` = dung lượng lấy từ tên sản phẩm (128GB, 512GB, 1TB…).
- *
- * Dùng bởi:
- *   - `henzo_store/src/data/sellerData.ts`  (sinh mock 500 sản phẩm)
- *   - `henzo_store_backend/scripts/seed.ts` (seed MongoDB)
- *   - `henzo_store_backend/scripts/refresh-products.ts` (đồng bộ DB)
- */
 
-// ─── ĐIỆN THOẠI ────────────────────────────────────────────────────────────────
+
 export const MODEL_SPECS: Record<string, Record<string, string>> = {
   'iPhone 16 Pro Max': {
     Chip: 'Apple A18 Pro', RAM: '8GB', 'Bộ nhớ': '{{CAP}}',
@@ -313,7 +296,6 @@ export const MODEL_SPECS: Record<string, Record<string, string>> = {
     'Kết nối': '5G, WiFi 7', 'Trọng lượng': '227g',
   },
 
-  // ─── TABLET ──────────────────────────────────────────────────────────────
   'iPad Pro M4': {
     Chip: 'Apple M4', RAM: '8GB', 'Bộ nhớ': '{{CAP}}',
     'Màn hình': '13" Tandem OLED 120Hz', Pin: '10290mAh',
@@ -357,7 +339,6 @@ export const MODEL_SPECS: Record<string, Record<string, string>> = {
     'Kết nối': 'WiFi 6', 'Trọng lượng': '499g',
   },
 
-  // ─── LAPTOP ──────────────────────────────────────────────────────────────
   'MacBook Pro 14" M4 Pro': {
     Chip: 'Apple M4 Pro 12-core', RAM: '24GB', 'Bộ nhớ': '{{CAP}} SSD',
     'Màn hình': '14.2" Liquid Retina XDR 120Hz', GPU: '20-core',
@@ -618,7 +599,6 @@ export const MODEL_SPECS: Record<string, Record<string, string>> = {
     'Trọng lượng': '1.35kg', 'Độ mỏng': '17.8mm',
   },
 
-  // ─── MÀN HÌNH ────────────────────────────────────────────────────────────
   'Samsung Odyssey G9': {
     'Kích thước': '34" QD-OLED', 'Độ phân giải': '3440x1440 (UWQHD)',
     'Tần số quét': '240Hz', 'Thời gian phản hồi': '0.03ms',
@@ -863,7 +843,6 @@ export const MODEL_SPECS: Record<string, Record<string, string>> = {
     'Cổng kết nối': 'USB-C 90W, HDMI 2.1, DP 1.4', 'Góc nhìn': '178/178',
   },
 
-  // ─── CHUỘT ───────────────────────────────────────────────────────────────
   'Logitech G Pro X Superlight 2': {
     Sensor: 'HERO 2 32K DPI', 'Kết nối': 'Wireless 2.4GHz + Bluetooth',
     Pin: '95 giờ', Sạc: 'USB-C', 'Trọng lượng': '60g',
@@ -949,7 +928,6 @@ export const MODEL_SPECS: Record<string, Record<string, string>> = {
     'Tương thích': 'ROG Aim Lab', 'Aim Lab': 'Tương thích đầy đủ',
   },
 
-  // ─── BÀN PHÍM ────────────────────────────────────────────────────────────
   'Logitech G915 TKL Lightspeed': {
     'Kích thước': 'TKL (Tenkeyless)', Switch: 'GL Tactile/Linear/Clicky',
     'Kết nối': 'Lightspeed 2.4GHz + Bluetooth + USB-C',
@@ -1052,7 +1030,6 @@ export const MODEL_SPECS: Record<string, Record<string, string>> = {
     'Media keys': 'Có',
   },
 
-  // ─── TAI NGHE ────────────────────────────────────────────────────────────
   'Sony WH-1000XM5': {
     Driver: '30mm Carbon Fiber', 'Kết nối': 'Bluetooth 5.2 + Multipoint',
     Pin: '30 giờ', ANC: 'Có (8 mic)', DAC: 'DSEE Extreme',
@@ -1164,7 +1141,6 @@ export const MODEL_SPECS: Record<string, Record<string, string>> = {
     'Trọng lượng': '320g', 'Tần số đáp ứng': '20Hz-40kHz', RGB: 'Có',
   },
 
-  // ─── PC GAMING (linh kiện) ───────────────────────────────────────────────
   'Intel Core i9-14900K': {
     CPU: 'Intel Core i9-14900K', RAM: 'LGA1700, DDR5 5600/7200',
     'Bộ nhớ': 'Hỗ trợ 128GB DDR5', 'Lõi CPU': '24 nhân (8P + 16E)',
@@ -1332,7 +1308,6 @@ export const MODEL_SPECS: Record<string, Record<string, string>> = {
     'Bảo hành': '3 năm',
   },
 
-  // ─── PHỤ KIỆN ────────────────────────────────────────────────────────────
   'Belkin BoostCharge 3-in-1 MagSafe': {
     'Công suất': '15W từ MagSafe', 'Cổng sạc': 'USB-C PD 3.0',
     'Tương thích': 'iPhone 12 trở lên, Apple Watch, AirPods',
@@ -1430,8 +1405,6 @@ export const MODEL_SPECS: Record<string, Record<string, string>> = {
     'Vỏ': 'Nhôm', 'Bảo hành': '1 năm',
   },
 
-  // ─── PC DỰNG SẴN (CUSTOM BUILD) ───────────────────────────────────────────
-  // Mỗi máy là một cấu hình dựng sẵn, khác nhau ở GPU / CPU / tầm giá.
   'PC Gaming RTX 5090 Supreme': {
     CPU: 'AMD Ryzen 9 9950X3D', GPU: 'NVIDIA GeForce RTX 5090 32GB',
     RAM: '64GB DDR5 6000', 'Bộ nhớ': '2TB NVMe PCIe 4.0',
@@ -1539,7 +1512,6 @@ export const MODEL_SPECS: Record<string, Record<string, string>> = {
     'Bảo hành': '3 năm',
   },
 
-  // ─── ĐIỆN THOẠI BỔ SUNG ────────────────────────────────────────────────────
   'Xiaomi Redmi Note 14 Pro 5G': {
     Chip: 'MediaTek Dimensity 7300 Ultra', RAM: '8GB',
     'Bộ nhớ': '{{CAP}}', 'Màn hình': '6.67" AMOLED 120Hz 2160p',
@@ -1549,14 +1521,6 @@ export const MODEL_SPECS: Record<string, Record<string, string>> = {
   },
 };
 
-/**
- * Tên model chuẩn từ tên sản phẩm đầy đủ (bỏ dung lượng / màu / kích thước).
- *
- * ⚠️  KHÔNG dùng regex để cắt chuỗi — dấu `"` không có word boundary nên
- *     `MacBook Pro 14" M4 Pro 512GB` bị cắt thành `MacBook Pro 14" M4 Pro 14"`
- *     (mất kích thước, giữ sót số). Cách đúng: khớp **tiền tố dài nhất**
- *     trong bảng `MODEL_SPECS`.
- */
 export function specModelKey(name: string): string {
   const trimmed = name.replace(/\s+/g, ' ').trim();
   const hit = MODEL_KEYS_BY_LENGTH.find((k) =>
@@ -1565,10 +1529,6 @@ export function specModelKey(name: string): string {
   return hit ?? fallbackModelKey(trimmed);
 }
 
-/**
- * Dự phòng khi tên không khớp model nào trong bảng: bỏ dung lượng + màu ở
- * cuối, giữ lại phần còn lại (dùng để báo cáo model chưa có spec).
- */
 function fallbackModelKey(name: string): string {
   return name
     .replace(/\s+\d+(?:\.\d+)?\s*(?:GB|TB|MB)\b/gi, ' ')
@@ -1581,18 +1541,11 @@ function fallbackModelKey(name: string): string {
     .trim();
 }
 
-/** Dung lượng lấy từ tên sản phẩm (128GB, 512GB, 1TB…). */
 export function specCapacity(name: string): string {
   const m = name.match(/\b(\d+(?:\.\d+)?\s*(?:GB|TB|MB))\b/i);
   return m ? m[1].replace(/\s+/g, ' ').toUpperCase() : '';
 }
 
-/**
- * Trả về thông số thật của sản phẩm.
- *
- * - `specs` = object thông số (đã thay `{{CAP}}` bằng dung lượng thật).
- * - `missing` = true khi không tìm được model trong bảng.
- */
 export function specsForProduct(name: string): {
   specs: Record<string, string>;
   missing: boolean;
@@ -1609,20 +1562,8 @@ export function specsForProduct(name: string): {
   return { specs, missing: false };
 }
 
-/** Danh sách model có trong bảng thông số. */
 export const SPEC_MODEL_KEYS = Object.keys(MODEL_SPECS);
 
-/**
- * Chuẩn hoá tên sản phẩm — bỏ token inch bị lặp.
- *
- * ⚠️  Do `productVariants.ts` từng gắn size vào base đã có size, nên sinh ra
- *     `MacBook Pro 14" M4 Pro 14" 512GB`. Hàm này gộp các token inch trùng
- *     lặp còn lại **một** token.
- *
- * Ví dụ:
- *   `MacBook Pro 14" M4 Pro 14" 512GB` -> `MacBook Pro 14" M4 Pro 512GB`
- *   `Samsung Galaxy Book4 Ultra 16" 16" 1TB` -> `Samsung Galaxy Book4 Ultra 16" 1TB`
- */
 export function normalizeProductName(name: string): string {
   const seenInch = new Set<string>();
   const seenCap = new Set<string>();
@@ -1648,10 +1589,6 @@ export function normalizeProductName(name: string): string {
   return out.replace(/\s+/g, ' ').trim();
 }
 
-/**
- * Model keys sắp xếp theo độ dài giảm dần — dùng để khớp **tiền tố dài nhất**
- * (ví dụ `MacBook Pro 14" M4 Pro` phải thắng `MacBook Pro 14"`).
- */
 const MODEL_KEYS_BY_LENGTH = SPEC_MODEL_KEYS.slice().sort(
   (a, b) => b.length - a.length,
 );

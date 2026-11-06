@@ -75,8 +75,7 @@ export const AdminSupportPage = () => {
   const openCount = tickets.filter(t => t.status === 'open').length;
   const pendingCount = tickets.filter(t => t.status === 'pending').length;
 
-  /** Chuyển trạng thái ticket qua API admin. */
-  const handleResolve = async (id: string) => {
+    const handleResolve = async (id: string) => {
     try {
       await updateTicketStatus(id, 'resolved');
       toast({ title: 'Đã giải quyết', message: `Ticket #${id} đã được đánh dấu giải quyết`, variant: 'success' });
@@ -89,8 +88,7 @@ export const AdminSupportPage = () => {
     }
   };
 
-  /** Gửi phản hồi của admin cho khách (trước đây chỉ hiện toast, không gửi). */
-  const handleSendReply = async () => {
+    const handleSendReply = async () => {
     if (!replying || !replyText.trim()) return;
     setIsSubmitting(true);
     try {
@@ -111,8 +109,7 @@ export const AdminSupportPage = () => {
     }
   };
 
-  /** Đóng phiếu hỗ trợ. */
-  const handleClose = async (id: string) => {
+    const handleClose = async (id: string) => {
     try {
       await adminApi.closeTicket(id);
       toast({ title: 'Đã đóng phiếu hỗ trợ', variant: 'success' });
@@ -264,7 +261,7 @@ export const AdminSupportPage = () => {
         />
       </div>
 
-      {/* Modal trả lời khách hàng */}
+      {}
       {replying && (
         <div className="admin-modal-overlay" onClick={() => setReplying(null)}>
           <div className="admin-modal" onClick={e => e.stopPropagation()}>

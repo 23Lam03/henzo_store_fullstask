@@ -1,9 +1,3 @@
-/**
- * DÒ CATEGORY THEO MÃ MODEL (namespace 14) + FILE (namespace 6) với mã cụ thể.
- *
- * Ví dụ mã: HS60, HS80, XL2546X, 27GR95QE, CU34G2X, M34WMU, R32fc, XM2we,
- *          VP3200, XG272, FireCuda, Harpe Ace, Seiren V2, 7950X3D...
- */
 import { writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
@@ -52,7 +46,6 @@ async function nsSearch(ns: 6 | 14, q: string): Promise<string[]> {
   );
 }
 
-/** model -> mã cần dò. */
 const CODES: Record<string, string[]> = {
   'AOC CU34G2X 34in': ['CU34G2X', 'CU34G2'],
   'ASUS ROG Harpe Ace Aim Lab Edition': ['Harpe Ace', 'ROG Harpe Ace'],
@@ -97,13 +90,13 @@ async function main() {
       const [model, codes] = queue.shift()!;
       const rec: any = { cats: {}, files: {} };
       for (const code of codes) {
-        // Category chứa mã.
+
         for (const cat of await nsSearch(14, code)) {
           if (rec.cats[cat]) continue;
           const files = await catFiles(cat);
           if (files.length) rec.cats[cat] = files;
         }
-        // File chứa mã trong tên.
+
         for (const f of await nsSearch(6, `intitle:${code}`)) {
           if (rec.files[f]) continue;
           rec.files[f] = true;

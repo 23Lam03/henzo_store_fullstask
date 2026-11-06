@@ -1,9 +1,3 @@
-/**
- * TÌM ẢNH SẢN PHẨM THẬT QUA OPENVERSE với truy vấn chính xác (có dấu nháy).
- *
- * Openverse lọc theo full-text nên truy vấn `"Zowie XL2546X"` sẽ trả về đúng
- * ảnh có tên chứa đúng chuỗi đó.
- */
 import { writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
@@ -34,7 +28,6 @@ async function ov(query: string, pageSize = 20): Promise<any[]> {
   return d?.results ?? [];
 }
 
-/** model -> các truy vấn chính xác. */
 const QUERIES: Record<string, string[]> = {
   'AOC CU34G2X 34in': ['"CU34G2X"', '"AOC CU34G2X"', 'AOC AGON CU34G2X'],
   'ASUS ROG Harpe Ace Aim Lab Edition': ['"ROG Harpe Ace"', '"Harpe Ace"', 'ROG Harpe Ace mouse'],

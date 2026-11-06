@@ -1,7 +1,3 @@
-/**
- * Model SupportTicket — phiếu hỗ trợ.
- * Dùng chung cho khách hàng, seller và admin; phân biệt bằng `scope`.
- */
 import { Schema, type InferSchemaType } from 'mongoose';
 import { defineModel } from './registry';
 import {
@@ -32,8 +28,7 @@ const ticketSchema = new Schema(
   {
     ticketCode: { type: String, required: true, unique: true, index: true },
 
-    /** CUSTOMER | SELLER | ADMIN */
-    scope: { type: String, default: 'CUSTOMER', index: true },
+        scope: { type: String, default: 'CUSTOMER', index: true },
 
     userId: { type: Schema.Types.ObjectId, ref: 'User', index: true },
     customerName: { type: String, default: '' },
@@ -67,8 +62,7 @@ const ticketSchema = new Schema(
     },
 
     messages: { type: [messageSchema], default: [] },
-    /** Người được admin giao xử lý. */
-    assignee: { type: String, default: '' },
+        assignee: { type: String, default: '' },
   },
   { timestamps: true },
 );
@@ -88,8 +82,7 @@ export function toCustomerTicket(ticket: any) {
     id: String(obj._id),
     ticketCode: obj.ticketCode,
     subject: obj.subject,
-    /** Nội dung phiếu — frontend `SupportTicket.message` đọc field này. */
-    message: obj.messages?.[0]?.content ?? '',
+        message: obj.messages?.[0]?.content ?? '',
     category: obj.category,
     priority: obj.priority,
     status: obj.status,
@@ -106,7 +99,6 @@ export function toCustomerTicket(ticket: any) {
   };
 }
 
-/** DTO phía seller — shape `SellerSupportTicket`. */
 export function toSellerTicket(ticket: any) {
   if (!ticket) return null;
   const obj = ticket.toObject ? ticket.toObject() : { ...ticket };
@@ -134,7 +126,6 @@ export function toSellerTicket(ticket: any) {
   };
 }
 
-/** DTO phía admin — shape `SupportTicket` của frontend. */
 export function toAdminTicket(ticket: any) {
   if (!ticket) return null;
   const obj = ticket.toObject ? ticket.toObject() : { ...ticket };

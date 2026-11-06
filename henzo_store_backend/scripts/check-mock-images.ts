@@ -1,8 +1,3 @@
-/**
- * Kiểm tra liveness của MỌI URL ảnh trong mock frontend.
- *
- * Chạy: npx tsx scripts/check-mock-images.ts
- */
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
@@ -24,7 +19,6 @@ async function checkUrl(url: string): Promise<number> {
   }
 }
 
-/** Unsplash photo id thật có 26-27 ký tự; id giả từ công thức cộng chỉ có 13. */
 function isFakeId(url: string): boolean {
   const slug = url.split('?')[0].split('/photo-')[1] ?? '';
   return slug.length < 20;
@@ -52,7 +46,6 @@ async function main() {
     if (c.banner) all.push({ url: c.banner, name: `category:${c.name}` });
   }
 
-  // Ảnh giả -> chắc chắn chết, không cần gọi mạng.
   const fake = all.filter((x) => isFakeId(x.url));
   const unique = [...new Map(all.filter((x) => !isFakeId(x.url)).map((x) => [x.url, x])).values()];
 

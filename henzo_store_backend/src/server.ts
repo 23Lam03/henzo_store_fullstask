@@ -9,8 +9,6 @@ import { startImageWarmup } from '@/server/services/image-warmup.service';
 
 const startHandler = createStartHandler(defaultStreamHandler);
 
-// Render có disk ephemeral: mỗi lần restart là mất cache ảnh tải về.
-// Warm up nền ngay khi module được nạp (không chặn request).
 startImageWarmup();
 
 function isAbortedRequest(error: unknown): boolean {

@@ -9,10 +9,6 @@ import { StoreModel } from '@/server/models/Store';
 import { notFound } from '@/server/http/errors';
 import { connectDB } from '@/server/db';
 
-/**
- * Chi tiết một sản phẩm (admin) — dùng cho trang chỉnh sửa.
- * Kèm tên cửa hàng để admin biết sản phẩm thuộc shop nào.
- */
 export const Route = createFileRoute('/api/admin/products/$id')({
   server: {
     middleware: [corsMiddleware, requireAuth, requireAdmin],

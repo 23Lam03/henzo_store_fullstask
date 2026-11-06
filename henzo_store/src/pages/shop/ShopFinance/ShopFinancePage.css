@@ -1,4 +1,3 @@
-/* Finance Page */
 .seller-finance__period-tabs { display: flex; gap: 8px; margin-bottom: 20px; }
 .seller-period-btn { padding: 10px 24px; border-radius: var(--radius-full); font-size: var(--font-size-sm); font-weight: 600; color: var(--color-text-secondary); background: var(--color-surface); border: 2px solid var(--color-border); transition: all var(--transition-fast); cursor: pointer; font-family: inherit; }
 .seller-period-btn:hover { border-color: var(--color-primary); color: var(--color-primary); }

@@ -1,9 +1,3 @@
-/**
- * TÌM ẢNH SẢN PHẨM QUA intitle: SEARCH TRÊN COMMONS.
- *
- * Tìm file có TÊN chứa tên series/model (không phải category).
- * Đồng thời thử prefix (file bắt đầu bằng tên series).
- */
 import { writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
@@ -41,7 +35,6 @@ async function search(q: string, limit = 40): Promise<string[]> {
   return out;
 }
 
-/** Tìm file bằng prefix (allpages prefixsearch). */
 async function prefix(p: string): Promise<string[]> {
   const d = await getJson(
     `https://commons.wikimedia.org/w/api.php?action=query&format=json` +
@@ -50,7 +43,6 @@ async function prefix(p: string): Promise<string[]> {
   return (d?.query?.allpages ?? []).map((p: any) => p.title.replace(/^File:/, ''));
 }
 
-/** model -> các từ khoá tìm kiếm (ưu tiên cụ thể trước). */
 const QUERIES: Record<string, string[]> = {
   'AOC CU34G2X 34in': ['intitle:"CU34G2X"', 'intitle:"AOC" intitle:"G2"', 'intitle:"AOC" intitle:"34"'],
   'ASUS ROG Harpe Ace Aim Lab Edition': ['intitle:"Harpe Ace"', 'intitle:"Harpe"', 'intitle:"ROG Harpe"'],
@@ -103,7 +95,7 @@ async function main() {
         list.push(f);
       }
     }
-    // Thêm prefix search theo từ khoá đầu.
+
     for (const q of qs) {
       const core = q.replace(/^intitle:"?/, '').replace(/"?$/, '').split('"')[0];
       for (const f of await prefix(core)) {

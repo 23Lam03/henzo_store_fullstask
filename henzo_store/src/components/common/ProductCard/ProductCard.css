@@ -1,13 +1,3 @@
-/* ═══════════════════════════════════════════════════════════════════════════
-   PRODUCT CARD — Thiết kế thống nhất cho mọi trang.
-
-   Nguyên tắc "đồng đều":
-   - Ảnh luôn vuông (1/1) và cùng kích thước ở mọi grid.
-   - Tên sản phẩm luôn chiếm đúng 2 dòng (min-height) -> các card cùng cao.
-   - Dải sao + giá + meta luôn chiếm cùng số dòng -> card cùng chiều cao.
-   - Badge xếp DỌC góc trái, không chồng lên nhau.
-══════════════════════════════════════════════════════════════════════════ */
-
 .product-card {
   --card-radius: var(--radius-md);
   --card-shadow: var(--shadow-xs);
@@ -32,11 +22,7 @@
   box-shadow: var(--card-shadow-hover);
   transform: translateY(-3px);
 }
-
-/* Ảnh phóng chậm + badge trượt ra khi rê chuột */
 .product-card:hover .product-card__image-wrap img { transform: scale(1.05); }
-
-/* ─── Ảnh ──────────────────────────────────────────────────────────────── */
 
 .product-card__image-wrap {
   position: relative;
@@ -57,8 +43,6 @@
 }
 
 .product-card:hover .product-card__image-wrap img { transform: scale(1.05); }
-
-/* ─── Badge (nhãn vuông kiểu ấn phẩm in, xếp dọc góc trái) ─────────────── */
 
 .product-card__badges {
   position: absolute;
@@ -92,16 +76,12 @@
   background: var(--color-accent);
   color: #fff;
 }
-
-/* Badge trượt nhẹ từ trái vào khi card hiện */
 .product-card__badge {
   animation: hz-slide-left 480ms var(--motion-ease) both;
 }
 
 .product-card__badge:nth-child(2) { animation-delay: 70ms; }
 .product-card__badge:nth-child(3) { animation-delay: 140ms; }
-
-/* Nhãn "Hết hàng" phủ giữa ảnh */
 .product-card__out-of-stock {
   position: absolute;
   inset: 0;
@@ -116,8 +96,6 @@
   letter-spacing: var(--tracking-wider);
   text-transform: uppercase;
 }
-
-/* ─── Overlay "Thêm vào giỏ" ───────────────────────────────────────────── */
 
 .product-card__overlay {
   position: absolute;
@@ -165,8 +143,6 @@
   transform: none;
 }
 
-/* ─── Nút yêu thích ────────────────────────────────────────────────────── */
-
 .product-card__wishlist-btn {
   position: absolute;
   top: 10px;
@@ -193,14 +169,10 @@
 .product-card__wishlist-btn.active {
   color: var(--color-danger);
 }
-
-/* Nút yêu thích nở ra khi rê chuột */
 .product-card__wishlist-btn:hover {
   background: var(--color-surface);
   box-shadow: var(--shadow-sm);
 }
-
-/* ─── Thân card ────────────────────────────────────────────────────────── */
 
 .product-card__body {
   display: flex;
@@ -220,8 +192,6 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
-
-/* Tên: LUÔN 2 dòng -> card đều nhau */
 .product-card__name {
   font-size: var(--font-size-sm);
   font-weight: 600;
@@ -237,8 +207,6 @@
 }
 
 .product-card__name:hover { color: var(--color-primary); }
-
-/* ─── Đánh giá ─────────────────────────────────────────────────────────── */
 
 .product-card__stars {
   display: flex;
@@ -263,11 +231,6 @@
   font-size: var(--font-size-2xs);
   color: var(--color-text-muted);
 }
-
-/* ─── Giá ──────────────────────────────────────────────────────────────── */
-
-/* 2 dòng cố định: dòng 1 = giá + % giảm, dòng 2 = giá gốc.
-   Nhờ vậy card có giá và card không có giá vẫn cao BẰNG NHAU. */
 .product-card__price-group {
   display: flex;
   flex-direction: column;
@@ -317,8 +280,6 @@
   white-space: nowrap;
 }
 
-/* ─── Meta (đẩy xuống đáy card) ────────────────────────────────────────── */
-
 .product-card__meta {
   display: flex;
   align-items: center;
@@ -349,8 +310,6 @@
   white-space: nowrap;
 }
 
-/* ═══ LIST VIEW ═══════════════════════════════════════════════════════════ */
-
 .product-card--list {
   flex-direction: row;
   align-items: stretch;
@@ -378,7 +337,6 @@
 
 .product-card__name--list {
   font-size: var(--font-size-md);
-  /* 2 dòng cố định -> card list đều nhau */
   min-height: 2.9em;
   -webkit-line-clamp: 2;
 }
@@ -391,7 +349,6 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
   line-height: 1.55;
-  /* 2 dòng cố định -> card list đều nhau */
   min-height: 2.9em;
 }
 
@@ -400,7 +357,6 @@
   flex-wrap: wrap;
   gap: 6px;
   margin-top: 2px;
-  /* 2 hàng tag cố định -> card list đều nhau */
   min-height: 58px;
   align-content: flex-start;
 }

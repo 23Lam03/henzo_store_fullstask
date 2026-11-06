@@ -1,6 +1,3 @@
-/**
- * Barrel export cho toàn bộ model.
- */
 export { UserModel, toPublicUser, toAdminUser, type UserDoc } from './User';
 export {
   StoreModel,

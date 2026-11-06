@@ -1,21 +1,7 @@
-/**
- * HOÀN TẤT ẢNH THẬT CHO CÁC MODEL CÒN THIẾU / SAI LOẠI / TRÙNG ẢNH.
- *
- * Wikimedia Commons không có ảnh cho một số model niche (Corsair HS60,
- * HyperX Cloud III, Gigabyte M32UC, Razer Raptor 27"...). Với các model
- * đó, ta dùng ẢNH THẬT CÙNG HÃNG + CÙNG LOẠI, hoặc ảnh sản phẩm thật
- * đúng loại từ pool đã kiểm chứng.
- *
- * Mọi file trong map đều được VERIFY tồn tại trên Commons trước khi ghi.
- *
- * Chạy: npx tsx scripts/finalize-model-images.ts
- */
 import { readFileSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { modelName } from './lib/model-name';
 import { resolveFiles } from './lib/commons-files';
-
-/* ═══════════════════════ POOL ẢNH THẬT (đã verify trên Commons) ═══════════════════════ */
 
 const HEADSET_POOL = [
   'Sound BlasterX H5 Gaming Headset.jpg',
@@ -724,11 +710,8 @@ const ACCESSORY_POOL = [
   'AirPodsEarbuds.jpg',
 ];
 
-/* ═══════════════════════ MAP MODEL → FILE COMMONS ═══════════════════════ */
-
 const MODEL_PHOTOS: Record<string, string[]> = {
-  /* ── Tai nghe ── */
-  'JBL Quantum 910 Wireless': [
+    'JBL Quantum 910 Wireless': [
     'JBL Synchros E50BT.jpg',
     'JBL LIVE 650 BTNC (Over-Ear Noise Cancelling Headphone). (51127342181).jpg',
     'JBL Endurance Peak 3 - 1.jpg',
@@ -839,8 +822,7 @@ const MODEL_PHOTOS: Record<string, string[]> = {
     ...HEADSET_POOL,
   ],
 
-  /* ── Chuột ── */
-  'Endgame Gear XM2we Wireless': MOUSE_POOL,
+    'Endgame Gear XM2we Wireless': MOUSE_POOL,
   'Corsair M75 Wireless': [
     'Corsair Katar Pro Wireless.jpg',
     'Corsair Scimitar 2 2017-01-01.jpg',
@@ -912,8 +894,7 @@ const MODEL_PHOTOS: Record<string, string[]> = {
     ...MOUSE_POOL,
   ],
 
-  /* ── Bàn phím ── */
-  'Keychron K3 Pro Low Profile': [
+    'Keychron K3 Pro Low Profile': [
     'Keychron K1 v2 TKL blue switches.jpg',
     'Keychron K1 v2 TKL side view.jpg',
     'Keychron K1 v2 TKL protocol switches.jpg',
@@ -1013,8 +994,7 @@ const MODEL_PHOTOS: Record<string, string[]> = {
     ...KEYBOARD_POOL,
   ],
 
-  /* ── Phụ kiện ── */
-  'Razer Seiren V2 Pro': MIC_POOL,
+    'Razer Seiren V2 Pro': MIC_POOL,
   'Elgato Stream Deck XL': [
     'Elgato Stream Deck +.jpg',
     'Stream Deck- Discord Edition.jpg',
@@ -1063,8 +1043,7 @@ const MODEL_PHOTOS: Record<string, string[]> = {
     'MagSafe (iPhone).png',
   ],
 
-  /* ── Màn hình ── */
-  'Razer Raptor 27in': MONITOR_POOL,
+    'Razer Raptor 27in': MONITOR_POOL,
   'Razer Raptor 27in 2K Tổng hợp': [...MONITOR_POOL].reverse(),
   'Gigabyte M27Q X 27in': [
     'Gigabyte AORUS AD27QD 20190601.jpg',
@@ -1177,8 +1156,7 @@ const MODEL_PHOTOS: Record<string, string[]> = {
   'Acer Predator XB273K 27in': ['ACER GD245HQ - 3.JPG', ...MONITOR_POOL],
   'Corsair Xeneon 27QHD240 27in': ['ACER GD245HQ - 4.jpg', ...MONITOR_POOL],
 
-  /* ── PC Gaming / linh kiện ── */
-  'ASUS TUF Gaming': [
+    'ASUS TUF Gaming': [
     'ASUS TUF Gaming X3 20190601.jpg',
     'ASUS TUF B450-PLUS GAMING 20181221.jpg',
     'AVADirect-Custom-X99-Intel-Core-i7-gaming-cpu.png',
@@ -1288,8 +1266,7 @@ const MODEL_PHOTOS: Record<string, string[]> = {
     'Intel core i5-5300u sr23x.jpg',
   ],
 
-  /* ── PC build (custom) ── */
-  'PC Gaming RTX 5090 Supreme': GPU_POOL,
+    'PC Gaming RTX 5090 Supreme': GPU_POOL,
   'PC Gaming RTX 5080 Pro Gamer': [...GPU_POOL].reverse(),
   'PC Gaming RTX 4070 Ti SUPER PowerKing': [...PC_CASE_POOL].reverse(),
   'PC Gaming RTX 4060 Ti GamingX': PC_CASE_POOL,
@@ -1310,8 +1287,7 @@ const MODEL_PHOTOS: Record<string, string[]> = {
   'PC Silent Build RTX 4070 Whisper': [...PC_CASE_POOL, ...GPU_POOL],
   'PC Streaming Pro RTX 4080 + Dual PC Setup': [...PC_CASE_POOL, ...GPU_POOL],
 
-  /* ── Tablet / Laptop ── */
-  'iPad Pro M4 13in': [
+    'iPad Pro M4 13in': [
     'About iPad Pro 13-inch (M4).jpg',
     'M4 iPad Pro series - 1.jpg',
     'M4 iPad Pro series - 2.jpg',
@@ -1514,8 +1490,7 @@ async function main() {
     console.log(`[finalize] Bỏ qua ${skipped.length}: ${skipped.join(' | ')}`);
   }
 
-  /* ── PHÂN BỔ ẢNH CHÍNH: mỗi model một ảnh chính RIÊNG ── */
-  const entries = Object.entries(db);
+    const entries = Object.entries(db);
   const used = new Set<string>();
   const usage = new Map<string, number>();
   const EXACT = new Set([

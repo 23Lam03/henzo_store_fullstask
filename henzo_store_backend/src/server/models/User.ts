@@ -1,6 +1,3 @@
-/**
- * Model User — khách hàng, người bán (SHOP) và nhân viên quản trị.
- */
 import { Schema, type InferSchemaType } from 'mongoose';
 import { defineModel } from './registry';
 import { UserRole, UserRoleValue } from '../constants';
@@ -40,26 +37,20 @@ const userSchema = new Schema(
       default: UserRole.CUSTOMER,
       index: true,
     },
-    /** Trạng thái tài khoản — admin có thể khóa. */
-    status: {
+        status: {
       type: String,
       enum: ['active', 'locked'],
       default: 'active',
       index: true,
     },
-    /** Thông tin cửa hàng (chỉ role SHOP). */
-    storeId: { type: Schema.Types.ObjectId, ref: 'Store', index: true },
-    /** Quyền hạn tuỳ chỉnh (dùng cho MODERATOR/STAFF/ADMIN). */
-    permissions: { type: [String], default: [] },
-    /** Địa chỉ mặc định dạng chuỗi (khớp trường `User.address` ở frontend). */
-    address: { type: String, trim: true },
-    /** Sổ địa chỉ đầy đủ. */
-    addresses: { type: [addressSchema], default: [] },
+        storeId: { type: Schema.Types.ObjectId, ref: 'Store', index: true },
+        permissions: { type: [String], default: [] },
+        address: { type: String, trim: true },
+        addresses: { type: [addressSchema], default: [] },
     gender: { type: String, enum: ['Nam', 'Nữ', 'Khác'], default: undefined },
     dob: { type: Date },
     bio: { type: String, default: '' },
-    /** Điểm thưởng — hiển thị ở trang Account. */
-    points: { type: Number, default: 0 },
+        points: { type: Number, default: 0 },
     lastLoginAt: { type: Date },
   },
   { timestamps: true },
@@ -71,7 +62,6 @@ export type UserDoc = InferSchemaType<typeof userSchema>;
 
 export const UserModel = defineModel('User', userSchema);
 
-/** Chuyển doc -> object public (loại bỏ password & các field nội bộ). */
 export function toPublicUser(user: any) {
   if (!user) return null;
   const obj = user.toObject ? user.toObject() : { ...user };
@@ -93,7 +83,6 @@ export function toPublicUser(user: any) {
   };
 }
 
-/** Chuyển doc -> object đầy đủ cho các màn hình quản trị. */
 export function toAdminUser(user: any) {
   if (!user) return null;
   const obj = user.toObject ? user.toObject() : { ...user };

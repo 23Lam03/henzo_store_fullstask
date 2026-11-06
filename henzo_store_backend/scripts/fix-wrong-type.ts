@@ -1,26 +1,9 @@
-/**
- * Sửa ảnh SAI LOẠI cho model còn thiếu / sai.
- *
- * Chiến lược tìm ảnh (theo thứ tự):
- *   1. Commons search với từ khoá hãng + từ khoá model.
- *   2. Commons search với từ khoá hãng + từ khoá loại sản phẩm.
- *   3. Media-list của trang Wikipedia của model/dòng sản phẩm.
- *
- * Bộ lọc ảnh (phải đạt TẤT CẢ):
- *   - là bitmap (jpeg/png/webp)
- *   - KHÔNG phải ảnh teardown / linh kiện rời / logo / sự kiện / có người
- *   - tên file hoặc MÔ TẢ phải chứa từ khoá LOẠI sản phẩm
- *   - tên file hoặc MÔ TẢ phải chứa tên HÃNG (trừ khi không có ảnh nào khác)
- *
- * Chạy: npx tsx scripts/fix-wrong-type.ts
- */
 import { readFileSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { modelName } from './lib/model-name';
 
 const UA = 'henzo-store/1.0 (model image resolver; dev@henzo.local)';
 
-/** Từ khoá bắt buộc theo LOẠI sản phẩm (tiếng Việt -> tiếng Anh). */
 const TYPE_KEYWORDS: Record<string, string[]> = {
   'Điện thoại': ['phone', 'iphone', 'galaxy', 'pixel', 'oneplus', 'oppo', 'vivo', 'xiaomi', 'redmi', 'poco', 'honor', 'realme', 'nokia', 'tecno', 'huawei', 'sony'],
   Tablet: ['ipad', 'tablet', 'matepad'],
@@ -33,11 +16,9 @@ const TYPE_KEYWORDS: Record<string, string[]> = {
   'Phụ kiện': ['charger', 'power bank', 'power adapter', 'hub', 'stream deck', 'wave', 'hd60', 'webcam', 'c920', 'brio', 'streamcam', 'cable', 'adapter', 'microphone', 'seiren', 'icue'],
 };
 
-/** Ảnh KHÔNG dùng được (teardown, linh kiện rời, sự kiện, có người, logo...). */
 const REJECT =
   /\b(disassembl|disassembled|teardown|exploded|schematic|circuit board|mainboard|main board|motherboard|logic board|pcb|chipset|module|stick|ram |sodimm|dimm\b|coolant|fan\b|cooler|heatsink|pump|rad|connector|cable close|ports?|button|scroll wheel|underneath|bottom|top view|rear view|back view|side view|inside|interior|logo|icon|diagram|chart|booth|game ?show|gamescom|comiket|esport|tournament|championship|person|people|man |woman |player |streamer|interview|autograph|crowd|audience|stage|panel|signing|museum|store |office|desk |setup|box|package|unboxing|review|comparison|teardown)/i;
 
-/** Ảnh sản phẩm phải có phần mô tả (desc) đủ dài -> tránh file vô danh. */
 interface Candidate {
   title: string;
   desc: string;
@@ -61,7 +42,6 @@ async function getJson(url: string): Promise<any> {
   return null;
 }
 
-/** Commons search -> danh sách file ứng viên (kèm desc + url). */
 async function commonsSearch(query: string, limit = 30): Promise<Candidate[]> {
   const d = await getJson(
     `https://commons.wikimedia.org/w/api.php?action=query&format=json` +
@@ -84,7 +64,6 @@ async function commonsSearch(query: string, limit = 30): Promise<Candidate[]> {
   return out;
 }
 
-/** Media-list trang Wikipedia -> ứng viên. */
 async function wikiMedia(page: string): Promise<Candidate[]> {
   const d = await getJson(
     `https://en.wikipedia.org/api/rest_v1/page/media-list/${encodeURIComponent(page)}`,
@@ -109,14 +88,13 @@ async function wikiMedia(page: string): Promise<Candidate[]> {
   return out;
 }
 
-/** Ảnh này hợp lệ cho loại sản phẩm không? */
 function isValidPhoto(c: Candidate, categoryName: string, brand: string): boolean {
   const text = `${c.title} ${c.desc}`;
   if (REJECT.test(text)) return false;
   const low = text.toLowerCase();
   const typeOk = TYPE_KEYWORDS[categoryName] ?? [];
   if (typeOk.length && !typeOk.some((k) => low.includes(k))) return false;
-  // Phải có dấu hiệu đúng hãng (bỏ qua nếu ảnh tên file đã chứa tên hãng).
+
   const brandTokens = brand
     .toLowerCase()
     .split(/[\s&]+/)
@@ -128,7 +106,6 @@ function isValidPhoto(c: Candidate, categoryName: string, brand: string): boolea
   return true;
 }
 
-/** Mô tả model -> truy vấn tìm kiếm. */
 interface Target {
   model: string;
   queries: string[];
@@ -154,7 +131,7 @@ async function resolveTarget(
   for (const p of t.wikiPages ?? []) push(await wikiMedia(p));
 
   const valid = cands.filter((c) => isValidPhoto(c, categoryName, brand));
-  // Ưu tiên ảnh có mô tả (ảnh chụp sản phẩm có nhãn).
+
   return valid.sort((a, b) => {
     const ad = a.desc.length > 10 ? 1 : 0;
     const bd = b.desc.length > 10 ? 1 : 0;
@@ -182,7 +159,7 @@ async function main() {
   }
 
   const TARGETS: Target[] = [
-    // ── Tai nghe ──
+
     { model: 'ASUS ROG Delta S Wireless', queries: ['ASUS ROG Delta S', 'ROG Delta headset', 'ASUS Delta headset'] },
     { model: 'JBL Quantum 910 Wireless', queries: ['JBL Quantum 910', 'JBL Quantum', 'JBL headset'] },
     { model: 'SteelSeries Arctis Nova 7', queries: ['SteelSeries Arctis Nova 7', 'Arctis Nova 7', 'SteelSeries Arctis'] },
@@ -196,7 +173,6 @@ async function main() {
     { model: 'Corsair HS80 RGB USB', queries: ['Corsair headset', 'Corsair Void headset', 'Corsair HS80'] },
     { model: 'Corsair HS80 RGB USB Carbon', queries: ['Corsair headset', 'Corsair Void headset', 'Corsair HS80'] },
 
-    // ── Chuột ──
     { model: 'SteelSeries Rival 650 Wireless', queries: ['SteelSeries Rival 650', 'SteelSeries Rival Wireless', 'SteelSeries Rival mouse'] },
     { model: 'Endgame Gear XM2we Wireless', queries: ['Endgame Gear XM2we', 'Endgame Gear mouse', 'XM2we'] },
     { model: 'Corsair M75 Wireless', queries: ['Corsair M75', 'Corsair mouse wireless', 'Corsair mouse'] },
@@ -204,11 +180,9 @@ async function main() {
     { model: 'Corsair Katar Pro XT Wireless', queries: ['Corsair Katar Pro XT', 'Corsair Katar', 'Corsair mouse'] },
     { model: 'Corsair Katar Pro XT Wireless Carbon', queries: ['Corsair Katar Pro XT', 'Corsair Katar', 'Corsair mouse'] },
 
-    // ── Bàn phím / Phụ kiện ──
     { model: 'Keychron K3 Pro Low Profile', queries: ['Keychron K3', 'Keychron K3 Pro', 'Keychron low profile keyboard'] },
     { model: 'Razer Seiren V2 Pro', queries: ['Razer Seiren V2', 'Razer Seiren', 'Razer microphone'] },
 
-    // ── Màn hình ──
     { model: 'Razer Raptor 27in', queries: ['Razer Raptor monitor', 'Razer Raptor', 'Razer gaming monitor'] },
     { model: 'Razer Raptor 27in 2K Tổng hợp', queries: ['Razer Raptor monitor', 'Razer Raptor', 'Razer gaming monitor'] },
     { model: 'Gigabyte M27Q X 27in', queries: ['Gigabyte M27Q X', 'Gigabyte M27Q monitor', 'M27Q X'] },
@@ -216,7 +190,6 @@ async function main() {
     { model: 'Gigabyte M32UC 32in', queries: ['Gigabyte M32UC', 'Gigabyte M32UC monitor', 'M32UC'] },
     { model: 'Gigabyte M32UC 32in 4K Curved', queries: ['Gigabyte M32UC', 'Gigabyte M32UC monitor', 'M32UC'] },
 
-    // ── PC Gaming / linh kiện ──
     { model: 'Kingston FURY Beast DDR5', queries: ['Kingston FURY Beast DDR5', 'Kingston FURY Beast', 'Kingston FURY DDR5'] },
     { model: 'Western Digital Blue SN580', queries: ['WD Blue SN580', 'Western Digital Blue SN580', 'Western Digital NVMe SSD'] },
     { model: 'G.Skill Trident Z5 RGB', queries: ['G.Skill Trident Z5 RGB', 'G.Skill Trident Z5', 'G.Skill Trident'] },

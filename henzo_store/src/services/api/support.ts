@@ -1,6 +1,3 @@
-/**
- * API địa chỉ giao hàng & phiếu hỗ trợ (phía khách).
- */
 import { API_BASE_URL, apiFetch } from './client';
 import type { SupportTicket } from '../../types';
 
@@ -61,8 +58,7 @@ export interface CreateTicketInput {
 }
 
 export const supportApi = {
-  /** Danh sách phiếu hỗ trợ của khách. */
-  list: (): Promise<SupportTicket[]> =>
+    list: (): Promise<SupportTicket[]> =>
     apiFetch<SupportTicket[]>(`${API_BASE_URL}/support/tickets`),
 
   create: (input: CreateTicketInput): Promise<SupportTicket> =>
@@ -71,8 +67,7 @@ export const supportApi = {
       body: input,
     }),
 
-  /** Cập nhật trạng thái phiếu (đóng / mở lại). */
-  update: (
+    update: (
     id: string,
     input: { status?: string; content?: string },
   ): Promise<SupportTicket> =>

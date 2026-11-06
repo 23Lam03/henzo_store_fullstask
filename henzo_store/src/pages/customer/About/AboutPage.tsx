@@ -86,7 +86,7 @@ const CORE_VALUES = [
 export const AboutPage = () => {
   return (
     <div className="about-page">
-      {/* Hero */}
+      {}
       <div className="about-hero">
         <div className="container">
           <h1 className="about-hero__title">Về HenzoStore</h1>
@@ -97,7 +97,7 @@ export const AboutPage = () => {
       </div>
 
       <div className="container">
-        {/* Stats */}
+        {}
         <div className="about-stats">
           {STATS.map((s, i) => (
             <div key={i} className="about-stat">
@@ -107,7 +107,7 @@ export const AboutPage = () => {
           ))}
         </div>
 
-        {/* Story */}
+        {}
         <div className="about-section">
           <div className="about-section__content">
             <h2 className="about-section__title">Câu chuyện của HenzoStore</h2>
@@ -126,7 +126,7 @@ export const AboutPage = () => {
           </div>
         </div>
 
-        {/* Values */}
+        {}
         <div className="about-section about-section--centered">
           <h2 className="about-section__title">Giá trị cốt lõi</h2>
           <div className="about-values-grid">
@@ -140,7 +140,7 @@ export const AboutPage = () => {
           </div>
         </div>
 
-        {/* Timeline */}
+        {}
         <div className="about-section">
           <h2 className="about-section__title">Hành trình phát triển</h2>
           <div className="about-timeline">
@@ -156,7 +156,7 @@ export const AboutPage = () => {
           </div>
         </div>
 
-        {/* Team */}
+        {}
         <div className="about-section about-section--centered">
           <h2 className="about-section__title">Đội ngũ lãnh đạo</h2>
           <div className="about-team-grid">

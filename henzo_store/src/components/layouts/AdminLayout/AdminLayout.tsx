@@ -113,7 +113,7 @@ export const AdminLayout = () => {
           </form>
 
           <div className="admin-layout__topbar-actions">
-            {/* Theme Switcher */}
+            {}
             <button
               className="admin-layout__theme-btn"
               onClick={toggleTheme}
@@ -131,7 +131,7 @@ export const AdminLayout = () => {
               )}
             </button>
 
-            {/* Notification Bell */}
+            {}
             <div className="admin-layout__notif-wrapper" ref={notifRef}>
               <button
                 className="admin-layout__notif-btn"
@@ -185,7 +185,7 @@ export const AdminLayout = () => {
               )}
             </div>
 
-            {/* User Menu */}
+            {}
             <div className="admin-layout__user-wrapper" ref={userMenuRef}>
               <div
                 className="admin-layout__user"

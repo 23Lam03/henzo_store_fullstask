@@ -1,6 +1,3 @@
-/**
- * In mô tả (ImageDescription) của các file Commons để xác nhận đúng sản phẩm.
- */
 const UA = 'henzo-store/1.0 (model image resolver; dev@henzo.local)';
 
 const FILES = [

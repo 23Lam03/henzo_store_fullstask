@@ -1,12 +1,3 @@
-/**
- * Tìm TÊN FILE THẬT trên Commons cho các file trong finalize-model-images.ts
- * mà không tồn tại (tên sai khớp chữ hoa/thương hiệu/ký hiệu).
- *
- * Chiến lược: thử chuẩn hoá tên (bỏ phần mở rộng, đổi phân biệt hoa thường),
- * tìm theo prefix, và theo model code trong tên.
- *
- * Chạy: npx tsx scripts/fix-missing-filenames.ts
- */
 import { readFileSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { getJson } from './lib/commons-files';
@@ -60,7 +51,6 @@ const MISSING = [
   'Huawei Mate 60 Pro.jpg',
 ];
 
-/** Từ khoá tìm kiếm cho mỗi file (thay vì dùng tên file nguyên bản). */
 const KEYWORDS: Record<string, string[]> = {
   'Sony WH-1000XM5.jpg': ['WH-1000XM5'],
   'WH-1000XM5.png': ['WH-1000XM5'],

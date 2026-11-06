@@ -1,12 +1,3 @@
-/**
- * PROBE: ảnh sản phẩm qua Wikipedia (pageimages) + Wikidata (P18).
- *
- * Wikimedia Commons search chỉ tìm TEXT trong nội dung file, bỏ sót nhiều
- * ảnh sản phẩm nổi tiếng. Wikipedia `pageimages` và Wikidata `P18` là các
- * nguồn bổ sung đáng tin cậy.
- *
- * Chạy: npx tsx scripts/probe-wiki.ts
- */
 import { writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { getJson } from '../lib/commons-files';

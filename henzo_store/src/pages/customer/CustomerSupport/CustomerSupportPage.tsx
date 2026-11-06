@@ -104,8 +104,7 @@ export const CustomerSupportPage = () => {
   const [replyText, setReplyText] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  /** Tải danh sách phiếu hỗ trợ từ server. */
-  const loadTickets = useCallback(async () => {
+    const loadTickets = useCallback(async () => {
     try {
       const data = await supportApi.list();
       setTickets(data as unknown as Ticket[]);
@@ -185,7 +184,7 @@ export const CustomerSupportPage = () => {
 
   return (
     <div className="customer-support">
-      {/* Header */}
+      {}
       <div className="customer-support__header">
         <div>
           <h1 className="customer-support__title">Hỗ trợ khách hàng</h1>
@@ -201,7 +200,7 @@ export const CustomerSupportPage = () => {
         </button>
       </div>
 
-      {/* Create Ticket Modal */}
+      {}
       {showCreate && (
         <div className="modal-overlay" onClick={() => setShowCreate(false)}>
           <div className="modal-box" onClick={e => e.stopPropagation()}>
@@ -264,7 +263,7 @@ export const CustomerSupportPage = () => {
         </div>
       )}
 
-      {/* Ticket Detail Modal */}
+      {}
       {selectedTicket && (
         <div className="modal-overlay" onClick={() => setSelectedTicket(null)}>
           <div className="modal-box modal-box--wide" onClick={e => e.stopPropagation()}>
@@ -336,7 +335,7 @@ export const CustomerSupportPage = () => {
         </div>
       )}
 
-      {/* Filters */}
+      {}
       <div className="customer-support__filters">
         <div className="support-tabs">
           {STATUS_TABS.map(t => (
@@ -376,7 +375,7 @@ export const CustomerSupportPage = () => {
         </div>
       </div>
 
-      {/* Ticket List */}
+      {}
       <div className="support-list">
         {filtered.length === 0 ? (
           <div className="support-empty">

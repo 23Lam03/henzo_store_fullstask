@@ -8,7 +8,6 @@ import { readPagination, toInt } from '@/server/http/request';
 import { ReviewModel, toReviewDto } from '@/server/models/Review';
 import { connectDB } from '@/server/db';
 
-/** Danh sách đánh giá của một sản phẩm + phân bố sao. */
 export const Route = createFileRoute('/api/products/$id/reviews')({
   server: {
     middleware: [corsMiddleware],
@@ -20,7 +19,6 @@ export const Route = createFileRoute('/api/products/$id/reviews')({
         const { page, pageSize } = readPagination(sp);
         const minRating = toInt(sp.get('minRating'), 0);
 
-        // `id` phải là ObjectId hợp lệ — nếu không thì trả 404 thay vì lỗi 500.
         if (!Types.ObjectId.isValid(params.id)) {
           throw notFound('Không tìm thấy sản phẩm');
         }

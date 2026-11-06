@@ -28,8 +28,7 @@ export const Route = createFileRoute('/api/admin/notifications/')({
   server: {
     middleware: [corsMiddleware, requireAuth, requireAdmin],
     handlers: {
-      /** Danh sách thông báo đã gửi. */
-      GET: withErrorHandling(async ({ request }) => {
+            GET: withErrorHandling(async ({ request }) => {
         await connectDB();
         const url = new URL(request.url);
         const sp = url.searchParams;
@@ -65,8 +64,7 @@ export const Route = createFileRoute('/api/admin/notifications/')({
         );
       }),
 
-      /** Tạo & gửi thông báo tới nhóm đối tượng. */
-      POST: withErrorHandling(async ({ request }) => {
+            POST: withErrorHandling(async ({ request }) => {
         await connectDB();
         const body = await readJson(request, createSchema);
 

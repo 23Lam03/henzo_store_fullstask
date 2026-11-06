@@ -1,19 +1,9 @@
-/**
- * PROBE Commons cho các model đang có ảnh chính SAI.
- *
- * Chiến lược: prefix (allpages) + CirrusSearch full-text + prefix dạng thương
- * hiệu (vd "XL2546" -> "BenQ XL2546").
- *
- * Chạy: npx tsx scripts/probe-wrong-primary.ts
- */
 import { getJson } from '../lib/commons-files';
 
 interface Probe {
   model: string;
-  /** Tiền tố thử trên Commons (File namespace). */
-  prefixes: string[];
-  /** Từ khoá full-text. */
-  queries: string[];
+    prefixes: string[];
+    queries: string[];
 }
 
 const PROBES: Probe[] = [

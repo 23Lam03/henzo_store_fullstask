@@ -48,7 +48,7 @@ export const ShopProfilePage = () => {
         {saved && <span className="seller-profile__saved"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="20 6 9 17 4 12"/></svg> Đã lưu!</span>}
       </div>
 
-      {/* Banner + Avatar */}
+      {}
       <div className="seller-profile__banner-section">
         <div className="seller-profile__banner">
           <img src={store.banner} alt="Banner" className="seller-profile__banner-img"
@@ -100,7 +100,7 @@ export const ShopProfilePage = () => {
         </div>
       </div>
 
-      {/* Form */}
+      {}
       <div className="seller-profile__content">
         <div className="admin-section">
           <div className="admin-section__header">
@@ -156,7 +156,7 @@ export const ShopProfilePage = () => {
           </div>
         </div>
 
-        {/* Change Password */}
+        {}
         <div className="admin-section">
           <div className="admin-section__header">
             <h3 className="admin-section__title">Đổi mật khẩu</h3>

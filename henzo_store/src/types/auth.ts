@@ -1,4 +1,4 @@
-// ─── User Roles ────────────────────────────────────────────────────────────────
+
 export type UserRole = 'GUEST' | 'CUSTOMER' | 'SHOP' | 'ADMIN';
 
 export const UserRole = {
@@ -8,7 +8,6 @@ export const UserRole = {
   ADMIN: 'ADMIN' as UserRole,
 };
 
-// ─── User ──────────────────────────────────────────────────────────────────
 export interface User {
   id: string;
   email: string;
@@ -24,7 +23,6 @@ export interface User {
   createdAt: string;
 }
 
-// ─── Auth State ────────────────────────────────────────────────────────────────
 export interface AuthState {
   user: User | null;
   isAuthenticated: boolean;
@@ -32,14 +30,12 @@ export interface AuthState {
   token: string | null;
 }
 
-// ─── Login Credentials ─────────────────────────────────────────────────────────
 export interface LoginCredentials {
   email: string;
   password: string;
   rememberMe?: boolean;
 }
 
-// ─── Register Data ───────────────────────────────────────────────────────────
 export interface RegisterData {
   name: string;
   email: string;

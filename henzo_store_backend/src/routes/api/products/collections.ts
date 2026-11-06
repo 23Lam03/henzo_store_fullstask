@@ -6,10 +6,6 @@ import { ProductModel, toProductDto } from '@/server/models/Product';
 import { ProductStatus } from '@/server/constants';
 import { connectDB } from '@/server/db';
 
-/**
- * Bộ sưu tập sản phẩm cho trang chủ.
- * Trả về nhiều nhóm cùng lúc để frontend render 1 request.
- */
 export const Route = createFileRoute('/api/products/collections')({
   server: {
     middleware: [corsMiddleware],

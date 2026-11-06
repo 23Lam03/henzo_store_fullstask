@@ -67,7 +67,7 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
   }, [refresh]);
 
   const markAsRead = useCallback(async (id: string): Promise<void> => {
-    // Cập nhật optimistically cho UI phản hồi tức thì.
+
     setNotifications(prev =>
       prev.map(n => (n.id === id ? { ...n, isRead: true } : n)),
     );

@@ -5,7 +5,6 @@ import { sellerApi } from '../../../services/api/seller';
 import { useToast } from '../../../contexts/ToastContext/ToastContext';
 import './CreateProductPage.css';
 
-/** Định dạng ảnh được phép chọn từ máy (khớp backend). */
 const ACCEPTED_IMAGE_TYPES = [
   'image/jpeg',
   'image/png',
@@ -14,7 +13,6 @@ const ACCEPTED_IMAGE_TYPES = [
   'image/avif',
 ];
 
-/** Dung lượng tối đa mỗi file — khớp `UPLOAD_MAX_SIZE` của backend (5MB). */
 const MAX_FILE_SIZE = 5 * 1024 * 1024;
 
 const CATEGORIES = ['Điện thoại', 'Laptop', 'PC Gaming', 'Màn hình', 'Chuột', 'Bàn phím', 'Tai nghe', 'Phụ kiện'];
@@ -117,7 +115,6 @@ export const CreateProductPage = () => {
     }
   };
 
-  // ─── Tải ảnh từ máy ─────────────────────────────────────────────────────
   const uploadFiles = async (fileList: FileList | File[]) => {
     const files = Array.from(fileList).filter(file => {
       if (!ACCEPTED_IMAGE_TYPES.includes(file.type)) {
@@ -187,7 +184,7 @@ export const CreateProductPage = () => {
         </div>
       </div>
 
-      {/* Tabs */}
+      {}
       <div className="create-product-tabs">
         <button className="create-product-tab create-product-tab--active">Thông tin cơ bản</button>
         <button className="create-product-tab" disabled>Giá & Kho hàng</button>
@@ -196,7 +193,7 @@ export const CreateProductPage = () => {
       </div>
 
       <div className="create-product__layout">
-        {/* Form */}
+        {}
         <div className="create-product__form">
           <div className="admin-section">
             <div className="admin-section__header">
@@ -365,7 +362,7 @@ export const CreateProductPage = () => {
             </div>
           </div>
 
-          {/* Tags */}
+          {}
           <div className="admin-section">
             <div className="admin-section__header">
               <h3 className="admin-section__title">Gắn thẻ sản phẩm</h3>
@@ -387,7 +384,7 @@ export const CreateProductPage = () => {
             </div>
           </div>
 
-          {/* Actions */}
+          {}
           <div className="create-product__actions">
             <button className="btn btn-secondary" onClick={() => handleSubmit('save')} disabled={saving}>
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
@@ -400,7 +397,7 @@ export const CreateProductPage = () => {
           </div>
         </div>
 
-        {/* Preview Panel */}
+        {}
         {preview && (
           <div className="create-product__preview">
             <div className="admin-section">

@@ -1,9 +1,3 @@
-/**
- * Chấm điểm ảnh sản phẩm: ảnh có khớp danh mục sản phẩm không.
- *
- * Input : /tmp/image-audit-list-classified.json (sinh ra bởi /tmp/vision-batch)
- * Output: báo cáo ảnh ĐÚNG / SAI theo danh mục.
- */
 import { readFileSync } from 'node:fs';
 
 interface Item {
@@ -15,7 +9,6 @@ interface Item {
   labels?: string[];
 }
 
-/** Từ khoá Vision -> danh mục sản phẩm mà nó chứng minh. */
 const LABEL_TO_CATEGORY: Record<string, string[]> = {
   computer_mouse: ['Chuột'],
   mouse: ['Chuột'],
@@ -43,7 +36,6 @@ const LABEL_TO_CATEGORY: Record<string, string[]> = {
   gpu: ['PC Gaming'],
 };
 
-/** Nhãn chắc chắn là SAI với mọi danh mục sản phẩm điện tử. */
 const DEFINITELY_WRONG = [
   'sofa', 'couch', 'bed', 'food', 'dish', 'plate', 'cup', 'beverage',
   'person', 'people', 'crowd', 'child', 'woman', 'man', 'dog', 'cat', 'bird',
@@ -64,7 +56,6 @@ function score(item: Item) {
     return { verdict: 'DEAD' as const, reason: 'tải ảnh thất bại (URL chết)' };
   }
 
-  // Nhãn sai rõ ràng (không phải linh kiện điện tử) với độ tin cậy cao.
   const wrong = labels.find(
     (l) => l.conf >= 0.4 && DEFINITELY_WRONG.includes(l.name),
   );
@@ -75,7 +66,6 @@ function score(item: Item) {
     };
   }
 
-  // Nhãn chứng minh đúng danh mục.
   const matched = labels.find((l) => {
     const cats = LABEL_TO_CATEGORY[l.name] ?? [];
     return cats.some((c) => item.categories.includes(c));
@@ -87,7 +77,6 @@ function score(item: Item) {
     };
   }
 
-  // Chỉ nhãn chung chung (consumer_electronics / machine) — không xác định được.
   const generic = labels.find(
     (l) => l.conf >= 0.5 && ['consumer_electronics', 'machine'].includes(l.name),
   );

@@ -1,6 +1,3 @@
-/**
- * Kết nối MongoDB — mongoose v9
- */
 import mongoose from 'mongoose';
 import { config } from '../config/env';
 
@@ -9,10 +6,6 @@ let cached = globalThis as unknown as {
   mongoosePromise?: Promise<typeof mongoose> | null;
 };
 
-/**
- * Trả về connection đã sẵn sàng. Dùng memo hoá để tránh tạo nhiều
- * connection trong môi trường dev (vite watch) hoặc serverless.
- */
 export async function connectDB(): Promise<typeof mongoose> {
   if (cached.mongooseConn) return cached.mongooseConn;
 
@@ -36,7 +29,6 @@ export async function connectDB(): Promise<typeof mongoose> {
   return cached.mongoosePromise;
 }
 
-/** Ngắt kết nối (dùng cho script seed). */
 export async function disconnectDB(): Promise<void> {
   await mongoose.disconnect();
   cached.mongooseConn = null;

@@ -1,6 +1,3 @@
-/**
- * Model SearchHistory — lịch sử tìm kiếm của người dùng (tối đa 10 gần nhất).
- */
 import { Schema, type InferSchemaType } from 'mongoose';
 import { defineModel } from './registry';
 

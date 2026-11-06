@@ -5,7 +5,7 @@ import { specModelKey } from '../../../henzo_store/src/data/modelSpecs';
 (async () => {
   await connectDB();
   const ps = await ProductModel.find({});
-  // Ảnh ĐẦU TIÊN của mỗi sản phẩm (thumbnail) -> model nào dùng
+
   const thumb2models = new Map<string, Set<string>>();
   const modelThumbs = new Map<string, Set<string>>();
   for (const p of ps) {

@@ -21,7 +21,7 @@ export const AdminCustomerPage = () => {
     { id: string; action: 'lock' | 'unlock' | 'delete' } | null
   >(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  // Modal chi tiết — trước đây điều hướng tới route `/admin/customers/:id`.
+
   const [detail, setDetail] = useState<User | null>(null);
 
   const filtered =
@@ -31,8 +31,7 @@ export const AdminCustomerPage = () => {
         ? customers.filter(c => c.status === 'locked')
         : customers;
 
-  /** Khoá / mở khoá / xoá tài khoản khách hàng. */
-  const handleConfirmAction = async () => {
+    const handleConfirmAction = async () => {
     if (!pendingAction) return;
     const { id, action } = pendingAction;
     setIsSubmitting(true);
@@ -167,7 +166,7 @@ export const AdminCustomerPage = () => {
         onCancel={() => setPendingAction(null)}
       />
 
-      {/* Modal chi tiết khách hàng */}
+      {}
       {detail && (
         <div className="admin-modal-overlay" onClick={() => setDetail(null)}>
           <div className="admin-modal" onClick={e => e.stopPropagation()}>

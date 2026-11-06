@@ -1,4 +1,3 @@
-/* ─── Toolbar ────────────────────────────────────────────────────────────── */
 .admin-data-table__toolbar {
   display: flex;
   align-items: center;
@@ -85,8 +84,6 @@
   color: var(--color-text-muted);
   white-space: nowrap;
 }
-
-/* ─── Table Wrapper ────────────────────────────────────────────────────── */
 .admin-data-table__wrapper {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
@@ -137,15 +134,11 @@
 .admin-data-table__table tbody tr.even { background: var(--color-surface); }
 .admin-data-table__table tbody tr.odd { background: var(--color-surface-2); }
 .admin-data-table__table tbody tr:hover { background: var(--color-primary-soft); }
-
-/* Dòng bảng hiện lần lượt — dàu mơi, không giật */
 .admin-data-table__row {
   animation: hz-fade-up 380ms var(--motion-ease) both;
 }
 
 .admin-data-table__loading-row td { padding: 14px var(--space-4); }
-
-/* ─── Actions ──────────────────────────────────────────────────────────── */
 .admin-data-table__actions {
   display: flex;
   align-items: center;
@@ -153,8 +146,6 @@
   gap: var(--space-2);
   flex-wrap: wrap;
 }
-
-/* ─── Empty State ──────────────────────────────────────────────────────── */
 .admin-data-table__empty {
   display: flex;
   flex-direction: column;
@@ -167,8 +158,6 @@
 
 .admin-data-table__empty svg { opacity: 0.4; }
 .admin-data-table__empty p { font-size: var(--font-size-base); margin: 0; }
-
-/* ─── Pagination ───────────────────────────────────────────────────────── */
 .admin-data-table__pagination {
   display: flex;
   align-items: center;
@@ -214,8 +203,6 @@
   opacity: 0.4;
   cursor: not-allowed;
 }
-
-/* ─── Responsive ───────────────────────────────────────────────────────── */
 @media (max-width: 768px) {
   .admin-data-table__toolbar { gap: var(--space-2); }
   .admin-data-table__search { max-width: 100%; }

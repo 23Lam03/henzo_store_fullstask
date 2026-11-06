@@ -1,23 +1,8 @@
-/* ═══════════════════════════════════════════════════════════════════════════
-   HENZO STORE — DESIGN SYSTEM
-   Nền tảng thống nhất cho toàn bộ giao diện (khách hàng / seller / admin).
-
-   Triết lý:
-   - Một nguồn sự thật duy nhất cho màu, bo góc, đổ bóng, khoảng cách, chữ.
-   - Mọi component dùng token, không hardcode hex.
-   - Ngôn ngữ thị giác: EDITORIAL — nền giấy ấm, mực xanh petrol, nhấn hổ phách.
-     Không dùng gradient tím rực, không bo góc "bong bóng", không đổ bóng nặng.
-   - Breakpoint thống nhất xuyên suốt: 480 / 768 / 1024 / 1280.
-═══════════════════════════════════════════════════════════════════════════ */
-
 @import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap');
 @import url('./admin-pages.css');
 @import url('./motion.css');
 
-/* ═══ 1. TOKENS ══════════════════════════════════════════════════════════ */
-
 :root {
-  /* ── Brand: xanh petrol (mực in) ────────────────────────────────────── */
   --brand-50: #EDF3F3;
   --brand-100: #D7E6E6;
   --brand-200: #AFCBCB;
@@ -33,8 +18,6 @@
   --color-primary-hover: var(--brand-700);
   --color-primary-light: var(--brand-500);
   --color-primary-soft: var(--brand-50);
-
-  /* Nhấn phụ: hổ phách nướng (dùng cho CTA nhỏ, tag, điểm nhấn) */
   --color-accent: #B4551F;
   --color-accent-soft: #FBEFE6;
 
@@ -45,8 +28,6 @@
   --color-danger: #B4322F;
   --color-danger-soft: #FBECEB;
   --color-info: #2A6A85;
-
-  /* ── Surfaces: giấy ấm ──────────────────────────────────────────────── */
   --color-background: #F6F4F0;
   --color-surface: #FFFFFF;
   --color-surface-2: #FAF8F5;
@@ -58,17 +39,12 @@
   --color-border-strong: #CFC7B9;
   --color-border-subtle: #EFEBE3;
   --color-brand-selection: rgba(31, 85, 87, 0.18);
-
-  /* ── Text ────────────────────────────────────────────────────────────── */
   --color-text-primary: #191B1A;
   --color-text-secondary: #55534D;
   --color-text-muted: #8B877D;
   --color-text-inverse: #FFFFFF;
   --color-text-link: var(--brand-600);
-  /* Alias tương thích */
   --color-text: var(--color-text-primary);
-
-  /* ── Typography ──────────────────────────────────────────────────────── */
   --font-family: 'Be Vietnam Pro', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --font-family-display: 'Fraunces', 'Be Vietnam Pro', Georgia, serif;
   --font-family-mono: 'JetBrains Mono', 'SFMono-Regular', Menlo, monospace;
@@ -95,8 +71,6 @@
   --tracking-normal: 0;
   --tracking-wide: 0.04em;
   --tracking-wider: 0.09em;
-
-  /* ── Radii: gọn, không "bong bóng" ──────────────────────────────────── */
   --radius-xs: 2px;
   --radius-sm: 4px;
   --radius-md: 7px;
@@ -104,8 +78,6 @@
   --radius-xl: 14px;
   --radius-2xl: 18px;
   --radius-full: 9999px;
-
-  /* ── Shadows: nhẹ, ấm ───────────────────────────────────────────────── */
   --shadow-xs: 0 1px 1px rgba(25, 27, 26, 0.04);
   --shadow-sm: 0 1px 2px rgba(25, 27, 26, 0.05), 0 2px 6px -2px rgba(25, 27, 26, 0.04);
   --shadow-md: 0 2px 6px -2px rgba(25, 27, 26, 0.07), 0 6px 16px -6px rgba(25, 27, 26, 0.07);
@@ -119,8 +91,6 @@
   --shadow-primary: 0 4px 12px -4px rgba(31, 85, 87, 0.4);
   --shadow-glow: 0 0 0 3px rgba(31, 85, 87, 0.12);
   --focus-ring: 0 0 0 3px rgba(31, 85, 87, 0.14);
-
-  /* ── Gradients: tiết chế, không tím rực ─────────────────────────────── */
   --gradient-primary: linear-gradient(180deg, var(--brand-600) 0%, var(--brand-700) 100%);
   --gradient-primary-hover: linear-gradient(180deg, var(--brand-500) 0%, var(--brand-600) 100%);
   --gradient-accent: linear-gradient(180deg, #C4622A 0%, var(--color-accent) 100%);
@@ -128,8 +98,6 @@
   --gradient-surface: linear-gradient(180deg, #FFFFFF 0%, #FAF8F5 100%);
   --gradient-hero: linear-gradient(160deg, #F1EDE4 0%, #E6EFEE 55%, #DCE9E8 100%);
   --gradient-shimmer: linear-gradient(90deg, #EFECE5 25%, #F6F4F0 50%, #EFECE5 75%);
-
-  /* ── Spacing ─────────────────────────────────────────────────────────── */
   --space-1: 4px;
   --space-2: 8px;
   --space-3: 12px;
@@ -142,8 +110,6 @@
   --space-12: 48px;
   --space-16: 64px;
   --space-20: 80px;
-
-  /* ── Layout ──────────────────────────────────────────────────────────── */
   --header-height: 68px;
   --header-mobile-height: 60px;
   --sidebar-width: 264px;
@@ -151,15 +117,11 @@
   --max-content-width: 1280px;
   --max-reading-width: 760px;
   --content-gutter: var(--space-6);
-
-  /* ── Motion ──────────────────────────────────────────────────────────── */
   --transition-fast: 140ms cubic-bezier(0.4, 0, 0.2, 1);
   --transition-normal: 240ms cubic-bezier(0.4, 0, 0.2, 1);
   --transition-slow: 400ms cubic-bezier(0.4, 0, 0.2, 1);
   --transition-spring: 420ms cubic-bezier(0.34, 1.4, 0.64, 1);
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
-
-  /* ── Z-Index ─────────────────────────────────────────────────────────── */
   --z-base: 1;
   --z-raised: 10;
   --z-sticky: 100;
@@ -171,8 +133,6 @@
   --z-tooltip: 700;
   --z-toast: 800;
 }
-
-/* ═══ 2. DARK MODE ════════════════════════════════════════════════════════ */
 
 [data-theme='dark'] {
   --color-background: #0E1211;
@@ -210,8 +170,6 @@
   --gradient-surface: linear-gradient(180deg, #161A19 0%, #0E1211 100%);
   --gradient-shimmer: linear-gradient(90deg, #222827 25%, #2A302E 50%, #222827 75%);
 }
-
-/* ═══ 3. RESET ═══════════════════════════════════════════════════════════ */
 
 *,
 *::before,
@@ -282,8 +240,6 @@ h6 {
   line-height: var(--line-height-tight);
   letter-spacing: var(--tracking-tight);
 }
-
-/* Tiêu đề hiển thị dùng serif — tạo cảm giác "editorial" thay vì template AI */
 h1,
 h2,
 .font-display {
@@ -305,8 +261,6 @@ h6 {
   font-family: var(--font-family-display);
   font-weight: 600;
 }
-
-/* Tiêu đề phụ có dấu 2 chấm chân — chi tiết "không phải AI" */
 .section-head__title::before {
   content: '';
   width: 3px;
@@ -335,8 +289,6 @@ h6 {
   outline-offset: 2px;
   border-radius: var(--radius-xs);
 }
-
-/* ═══ 4. TYPOGRAPHY HELPERS ══════════════════════════════════════════════ */
 
 h1 { font-size: var(--font-size-4xl); font-weight: 700; }
 h2 { font-size: var(--font-size-3xl); font-weight: 700; }
@@ -390,8 +342,6 @@ h6 { font-size: var(--font-size-md); font-weight: 600; }
 .clamp-2 { -webkit-line-clamp: 2; }
 .clamp-3 { -webkit-line-clamp: 3; }
 
-/* ═══ 5. LAYOUT UTILITIES ═════════════════════════════════════════════════ */
-
 .container {
   width: 100%;
   max-width: var(--max-content-width);
@@ -417,8 +367,6 @@ h6 { font-size: var(--font-size-md); font-weight: 600; }
 @media (max-width: 768px) {
   .section { padding: var(--space-10) 0; }
 }
-
-/* Tiêu đề section dùng chung cho mọi trang */
 .section-head {
   display: flex;
   align-items: flex-end;
@@ -430,8 +378,6 @@ h6 { font-size: var(--font-size-md); font-weight: 600; }
   border-bottom: 1px solid var(--color-border);
   animation: hz-fade-up 520ms var(--motion-ease) both;
 }
-
-/* Cột trái: số thứ tự + tiêu đề + mô tả xếp dọc */
 .section-head__main {
   display: flex;
   align-items: flex-start;
@@ -483,8 +429,6 @@ h6 { font-size: var(--font-size-md); font-weight: 600; }
 }
 
 .section-head__link:hover { gap: var(--space-2); }
-
-/* Tiêu đề trang (dùng chung) */
 .page-header {
   padding: var(--space-8) 0 var(--space-6);
   background: var(--color-surface-2);
@@ -506,8 +450,6 @@ h6 { font-size: var(--font-size-md); font-weight: 600; }
   color: var(--color-text-muted);
   margin-top: var(--space-2);
 }
-
-/* ═══ 6. BUTTONS ══════════════════════════════════════════════════════════ */
 
 .btn {
   display: inline-flex;
@@ -617,8 +559,6 @@ h6 { font-size: var(--font-size-md); font-weight: 600; }
 .btn-block { width: 100%; }
 .btn-full { width: 100%; }
 
-/* ═══ 7. SURFACES / CARDS ════════════════════════════════════════════════ */
-
 .card {
   background: var(--color-surface);
   border: 1px solid var(--color-border);
@@ -664,10 +604,6 @@ h6 { font-size: var(--font-size-md); font-weight: 600; }
   border-top: 1px solid var(--color-border-subtle);
   background: var(--color-surface-2);
 }
-
-/* ═══ 8. BADGES / TAGS ═══════════════════════════════════════════════════ */
-
-/* Nhãn dạng "chữ in" — vuông nhẹ, viền hairline, KHÔNG bo tròn pill */
 .badge {
   display: inline-flex;
   align-items: center;
@@ -712,8 +648,6 @@ h6 { font-size: var(--font-size-md); font-weight: 600; }
   color: var(--color-text-inverse);
   border: 1px solid transparent;
 }
-
-/* Biến thể nền đặc — dùng khi cần nổi trên nền sáng */
 .badge-solid-primary { background: var(--color-primary); color: #fff; border-color: transparent; }
 .badge-solid-danger { background: var(--color-danger); color: #fff; border-color: transparent; }
 .badge-solid-accent { background: var(--color-accent); color: #fff; border-color: transparent; }
@@ -759,8 +693,6 @@ h6 { font-size: var(--font-size-md); font-weight: 600; }
 .tag-new { background: var(--color-success-soft); color: var(--color-success); border-color: transparent; }
 .tag-sale { background: var(--color-warning-soft); color: var(--color-warning); border-color: transparent; }
 
-/* ═══ 9. FORMS ═══════════════════════════════════════════════════════════ */
-
 .field {
   display: flex;
   flex-direction: column;
@@ -789,8 +721,6 @@ h6 { font-size: var(--font-size-md); font-weight: 600; }
   align-items: center;
   gap: var(--space-1);
 }
-
-/* Alias giữ tương thích với các page cũ (input-group / input-label / input-error) */
 .input-group {
   display: flex;
   flex-direction: column;
@@ -822,8 +752,6 @@ h6 { font-size: var(--font-size-md); font-weight: 600; }
   align-items: center;
   gap: var(--space-1);
 }
-
-/* Checkbox tùy biến — dùng chung cho form (login, đăng ký, admin…) */
 .checkbox-label {
   display: flex;
   align-items: center;
@@ -861,8 +789,6 @@ h6 { font-size: var(--font-size-md); font-weight: 600; }
   height: 10px;
   background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E") center/contain no-repeat;
 }
-
-/* Grid 2 cột cho form */
 .form-row-2 {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -946,8 +872,6 @@ h6 { font-size: var(--font-size-md); font-weight: 600; }
   gap: var(--space-2);
 }
 
-/* ═══ 10. AVATAR / RATING / SKELETON ═════════════════════════════════════ */
-
 .avatar {
   width: 40px;
   height: 40px;
@@ -999,8 +923,6 @@ h6 { font-size: var(--font-size-md); font-weight: 600; }
   100% { background-position: -200% 0; }
 }
 
-/* ═══ 11. PRICE ═══════════════════════════════════════════════════════════ */
-
 .price-wrapper {
   display: flex;
   align-items: baseline;
@@ -1029,8 +951,6 @@ h6 { font-size: var(--font-size-md); font-weight: 600; }
   padding: 2px 6px;
   border-radius: var(--radius-xs);
 }
-
-/* ═══ 12. EMPTY STATE ════════════════════════════════════════════════════ */
 
 .empty-state {
   display: flex;
@@ -1075,8 +995,6 @@ h6 { font-size: var(--font-size-md); font-weight: 600; }
   justify-content: center;
 }
 
-/* ═══ 13. DIVIDER / OVERLAY ═══════════════════════════════════════════════ */
-
 .divider {
   height: 1px;
   background: var(--color-border);
@@ -1097,8 +1015,6 @@ h6 { font-size: var(--font-size-md); font-weight: 600; }
   z-index: var(--z-modal-backdrop);
   animation: fade-in var(--transition-fast) ease;
 }
-
-/* ═══ 14. ANIMATIONS ══════════════════════════════════════════════════════ */
 
 @keyframes fade-in {
   from { opacity: 0; }
@@ -1156,8 +1072,6 @@ h6 { font-size: var(--font-size-md); font-weight: 600; }
 .animate-spin { animation: spin 1s linear infinite; }
 .animate-bounce { animation: bounce 1s ease infinite; }
 
-/* ═══ 15. SPINNER ═════════════════════════════════════════════════════════ */
-
 .spinner {
   width: 24px;
   height: 24px;
@@ -1170,8 +1084,6 @@ h6 { font-size: var(--font-size-md); font-weight: 600; }
 
 .spinner-sm { width: 16px; height: 16px; border-width: 2px; }
 .spinner-lg { width: 40px; height: 40px; border-width: 3px; }
-
-/* ═══ 16. SCROLLBAR ══════════════════════════════════════════════════════ */
 
 ::-webkit-scrollbar {
   width: 9px;
@@ -1198,8 +1110,6 @@ h6 { font-size: var(--font-size-md); font-weight: 600; }
   background: var(--color-brand-selection);
   color: var(--color-text-primary);
 }
-
-/* ═══ 17. RESPONSIVE UTILITIES ════════════════════════════════════════════ */
 
 @media (max-width: 480px) {
   .hide-mobile { display: none !important; }
@@ -1238,8 +1148,6 @@ h6 { font-size: var(--font-size-md); font-weight: 600; }
 @media (min-width: 1024px) {
   .grid-cols-4 { grid-template-columns: repeat(4, 1fr); }
 }
-
-/* ═══ 18. REDUCE MOTION ═══════════════════════════════════════════════════ */
 
 @media (prefers-reduced-motion: reduce) {
   *,

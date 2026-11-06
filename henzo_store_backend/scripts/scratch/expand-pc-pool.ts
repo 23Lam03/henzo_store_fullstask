@@ -1,9 +1,3 @@
-/**
- * Bổ sung pool ảnh PC/case thật (không phải Raspberry Pi) bằng search
- * Commons theo tên hãng case + dòng sản phẩm.
- *
- * Chạy: npx tsx scripts/expand-pc-pool.ts
- */
 import { readFileSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { getJson } from '../lib/commons-files';

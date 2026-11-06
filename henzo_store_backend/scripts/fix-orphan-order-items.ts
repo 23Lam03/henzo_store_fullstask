@@ -1,36 +1,10 @@
-/**
- * SỬA ĐƠN HÀNG TRỎ TỚI SẢN PHẨM KHÔNG TỒN TẠI.
- *
- * Vấn đề phát hiện khi audit mở rộng:
- *   876/2006 item trong đơn hàng trỏ `productId` tới sản phẩm ĐÃ BỊ XOÁ
- *   (đợt seed lại sinh 582 sản phẩm mới với ObjectId mới, nhưng đơn hàng
- *   cũ vẫn giữ id cũ) -> trang "Đơn hàng của tôi" và trang quản lý đơn
- *   hiển thị sản phẩm rỗng / không bấm được vào trang chi tiết.
- *
- * Cách sửa (giữ nguyên lịch sử giao dịch):
- *   - `productName` / `productImage` / `unitPrice` / `sku` là SNAPSHOT tại
- *     thời điểm mua -> GIỮ NGUYÊN (đúng nghiệp vụ đơn hàng).
- *   - Chỉ remap `productId` (khoá ngoại) sang sản phẩm hiện có gần nhất,
- *     để UI vẫn liên kết được tới trang chi tiết sản phẩm.
- *
- * Thuật toán khớp (theo thứ tự ưu tiên):
- *   1. Khớp chính xác theo tên.
- *   2. Khớp theo "model key" (bỏ dung lượng/màu/kích thước) — dùng cùng
- *      bảng chuẩn `modelSpecs.ts` mà backend dùng để gán thông số.
- *   3. Khớp mờ theo token (Jaccard/bao phủ) — xử lý các tên cũ đã đổi.
- *   4. Cùng thương hiệu + cùng danh mục, chọn biến thể có giá gần nhất.
- *
- * Chạy: npx tsx scripts/fix-orphan-order-items.ts
- */
 import { connectDB, disconnectDB } from '../src/server/db';
 import { ProductModel } from '../src/server/models/Product';
 import { OrderModel } from '../src/server/models/Order';
 import { specModelKey } from '../../henzo_store/src/data/modelSpecs';
 
-/** Token không mang thông tin phân biệt sản phẩm. */
 const STOP = new Set(['gb', 'tb', 'mb', 'ssd', 'inch', 'in', 'p', 'e']);
 
-/** Chuẩn hoá tên -> mảng token. */
 function tokens(name: string): string[] {
   return name
     .toLowerCase()
@@ -84,12 +58,6 @@ async function main() {
   let skipped = 0;
   const unresolved = new Map<string, number>();
 
-  // ─── Chuẩn hoá paymentMethod (enum chỉ nhận chữ thường) ─────────────
-  //
-  // 200 đơn cũ lưu `paymentMethod: 'COD'` — không nằm trong enum
-  // ('cod' | 'banking' | 'vnpay' | 'momo' | 'zalopay' | 'installment')
-  // -> mọi lần `order.save()` sau đó đều ném ValidationError, và UI
-  // hiển thị sai phương thức thanh toán.
   const METHOD_MAP: Record<string, string> = {
     COD: 'cod',
     BANKING: 'banking',
@@ -113,7 +81,6 @@ async function main() {
   for (const order of orders) {
     let changed = false;
 
-    // ─── items (mảng phẳng phía khách) ─────────────────────────────────
     for (const it of (order.items ?? []) as any[]) {
       const pid = String(it.productId ?? '');
       if (pid && alive.has(pid)) continue;
@@ -130,7 +97,6 @@ async function main() {
       changed = true;
     }
 
-    // ─── subOrders[].items (mảng phía seller) ──────────────────────────
     for (const sub of (order.subOrders ?? []) as any[]) {
       for (const it of (sub.items ?? []) as any[]) {
         const pid = String(it.productId ?? '');
@@ -155,7 +121,6 @@ async function main() {
     }
   }
 
-
   console.log(`[fix-orders] Đã remap ${fixedItems} item trong ${fixedOrders} đơn hàng`);
   if (skipped) {
     console.log(`[fix-orders] Không khớp được: ${skipped} item (${unresolved.size} tên)`);
@@ -164,7 +129,6 @@ async function main() {
     }
   }
 
-  // ─── Kiểm tra lại ────────────────────────────────────────────────────
   const after = await OrderModel.find({}).lean();
   let remaining = 0;
   for (const o of after) {
@@ -182,9 +146,6 @@ async function main() {
   await disconnectDB();
 }
 
-/**
- * Tìm sản phẩm tương ứng cho 1 item bị "mồ côi".
- */
 function resolve(
   item: any,
   byName: Map<string, any>,
@@ -194,7 +155,6 @@ function resolve(
   const name = String(item.productName ?? '').trim();
   if (!name) return null;
 
-  // 1. Khớp chính xác theo tên.
   const exact = byName.get(name);
   if (exact) {
     return {
@@ -208,14 +168,12 @@ function resolve(
     };
   }
 
-  // 2. Khớp theo model key (bỏ dung lượng/màu).
   const modelKey = specModelKey(name);
   const modelCands = byModel.get(modelKey);
   if (modelCands?.length) {
     return pickByPrice(modelCands, Number(item.unitPrice ?? 0));
   }
 
-  // 3. Khớp mờ theo token.
   const cleaned = name.replace(/\s+\d{1,3}$/, '').trim();
   const ct = new Set(tokens(cleaned));
   if (ct.size) {
@@ -240,7 +198,6 @@ function resolve(
     if (best && bestCoverage >= 0.6) return best;
   }
 
-  // 4. Cùng thương hiệu + cùng danh mục, chọn giá gần nhất.
   const brand = String(item.productName ?? '')
     .split(' ')[0];
   const sameBrand = infos.filter((i) => i.brand === brand);
@@ -251,7 +208,6 @@ function resolve(
   return null;
 }
 
-/** Chọn biến thể có giá gần `target` nhất (ưu tiên khớp tuyệt đối). */
 function pickByPrice(cands: ProdInfo[], target: number): ProdInfo {
   let best = cands[0];
   let bestDiff = Infinity;

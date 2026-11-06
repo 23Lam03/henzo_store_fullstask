@@ -13,8 +13,7 @@ export const Route = createFileRoute('/api/seller/notifications/')({
   server: {
     middleware: [corsMiddleware, requireAuth, requireStoreOwner],
     handlers: {
-      /** Thông báo của cửa hàng. */
-      GET: withErrorHandling(async ({ request, context }) => {
+            GET: withErrorHandling(async ({ request, context }) => {
         await connectDB();
         const scope = getStoreScope(context);
 
@@ -22,7 +21,6 @@ export const Route = createFileRoute('/api/seller/notifications/')({
         const sp = url.searchParams;
         const { page, pageSize } = readPagination(sp);
 
-        // Chỉ lấy thông báo thuộc cửa hàng (bỏ qua thông báo gửi cho khách).
         const filter: Record<string, any> = scope.storeOnlyFilter();
         if (sp.get('unread') === '1') filter.isRead = false;
 
@@ -50,10 +48,9 @@ export const Route = createFileRoute('/api/seller/notifications/')({
         );
       }),
 
-      /** Đánh dấu đã đọc. */
-      PATCH: withErrorHandling(async ({ request, context }) => {
+            PATCH: withErrorHandling(async ({ request, context }) => {
         await connectDB();
-        // Đánh dấu đã đọc là thao tác ghi -> bắt buộc có một cửa hàng cụ thể.
+
         const storeId = getStoreScope(context).require();
         const url = new URL(request.url);
         const sp = url.searchParams;
@@ -76,10 +73,9 @@ export const Route = createFileRoute('/api/seller/notifications/')({
         return ok({ id, isRead: true });
       }),
 
-      /** Xoá thông báo. */
-      DELETE: withErrorHandling(async ({ request, context }) => {
+            DELETE: withErrorHandling(async ({ request, context }) => {
         await connectDB();
-        // Xoá thông báo là thao tác ghi -> bắt buộc có một cửa hàng cụ thể.
+
         const storeId = getStoreScope(context).require();
         const url = new URL(request.url);
         const id = url.searchParams.get('id');

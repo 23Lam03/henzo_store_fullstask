@@ -1,6 +1,3 @@
-/**
- * Probe bù cho các model còn lại + verify các file dự kiến dùng.
- */
 import { writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 

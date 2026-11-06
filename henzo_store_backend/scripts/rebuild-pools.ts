@@ -1,13 +1,3 @@
-/**
- * GỘP TOÀN BỘ FILE COMMONS ĐÃ THU THẬP + XÂY POOL (HÃNG × LOẠI) CHẶT CHẼN.
- *
- * Nguồn:
- *   - image-pools / expanded-pools / curated-model-files / type-category-files
- *   - brand-tree (cây category theo hãng) / prefix-harvest / strategy-probe
- *   - fulltext-probe / intitle-model-probe / code-model-probe
- *
- * Xuất: scripts/data/universe.json  +  scripts/data/brand-type-pools.json
- */
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
@@ -52,7 +42,6 @@ for (const f of [
   addAll(readJson(f, {}));
 }
 
-// Các probe mới: danh sách file phẳng.
 for (const f of ['brand-tree.json', 'prefix-harvest.json']) {
   const d = readJson<any>(f, {});
   if (Array.isArray(d.files)) d.files.forEach((x: string) => universe.add(x));
@@ -65,7 +54,7 @@ for (const f of ['strategy-probe.json', 'fulltext-probe.json', 'intitle-model-pr
     if (Array.isArray(rec)) rec.forEach((x: string) => universe.add(x));
   }
 }
-// code-model-probe: rec.files là object map.
+
 {
   const d = readJson<any>('code-model-probe.json', {});
   for (const rec of Object.values<any>(d)) {
@@ -82,7 +71,6 @@ for (const f of ['strategy-probe.json', 'fulltext-probe.json', 'intitle-model-pr
 
 const allFiles = [...universe].filter((f) => /\.(jpe?g|png|webp)$/i.test(f));
 
-/** Nhiễu — loại bỏ (sự kiện, người, phương tiện, tranh, teardown, logo...). */
 const NOISE = new RegExp(
   [
     'wcg', 'grand ?final', 'esport', 'tournament', 'championship',
@@ -117,7 +105,7 @@ const NOISE = new RegExp(
     '\\bpackage\\b', '\\bmanual\\b', '\\bwarranty\\b', '\\bserial\\b',
     '\\bsticker\\b', '\\blabel\\b', '\\bbarcode\\b', '\\bprice\\b',
     '\\bmodel\\b.*\\bnotebook\\b', 'screenshot', 'app ?icon',
-    // nhiễu mới phát hiện:
+
     'rolls royce', 'silver cloud', 'cloud alpha', 'cloud iii', 'cloud ii',
     '\\bom ?ii\\b', 'good omens', 'bad omens', 'xbox ?360', 'raptor ?27',
     'renegade fury', 'gp950 batteries', 'm34d-', 'm34s-', 'm34-', 'm340',
@@ -129,9 +117,6 @@ const NOISE = new RegExp(
   'i',
 );
 
-/**
- * Loại sản phẩm: cặp (từ khóa bắt buộc, từ khóá phụ trợ).
- */
 const TYPE_RULES: Array<{ type: string; must: RegExp; also?: RegExp }> = [
   { type: 'HEADSET', must: /headset|headphone|earphone|earbuds|head ?band/i },
   { type: 'MONITOR', must: /\bmonitor\b|lcd ?monitor|flat ?panel/i },
@@ -167,7 +152,6 @@ const TYPE_RULES: Array<{ type: string; must: RegExp; also?: RegExp }> = [
   { type: 'ACCESSORY', must: /\bhub\b|adapter|charger|dock|\bcable\b|mouse ?pad/i },
 ];
 
-/** Hãng. */
 const BRANDS = [
   'Apple', 'Samsung', 'Xiaomi', 'Huawei', 'Honor', 'Oppo', 'Vivo', 'OnePlus',
   'Google', 'Realme', 'Poco', 'Nokia', 'Motorola', 'Dell', 'HP', 'Asus', 'Acer',

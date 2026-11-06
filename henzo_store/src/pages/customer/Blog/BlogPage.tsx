@@ -28,8 +28,7 @@ export const BlogPage = () => {
     };
   }, []);
 
-  /** Danh mục lấy động từ dữ liệu blog trả về. */
-  const categories = useMemo(
+    const categories = useMemo(
     () => ['Tất cả', ...Array.from(new Set(posts.map(p => p.category).filter(Boolean)))],
     [posts],
   );

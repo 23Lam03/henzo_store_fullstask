@@ -26,7 +26,6 @@ interface AuthContextValue {
 
 const AuthContext = createContext<AuthContextValue | null>(null);
 
-/** Cache user để UI không nhấp nháy khi reload (không chứa mật khẩu). */
 const STORAGE_USER = 'henzo_auth_user';
 
 const readCachedUser = (): User | null => {
@@ -42,9 +41,8 @@ const readCachedUser = (): User | null => {
 const writeCachedUser = (user: User): void => {
   try {
     localStorage.setItem(STORAGE_USER, JSON.stringify(user));
-  } catch {
-    /* ignore */
-  }
+  } catch {void 0; 
+      }
 };
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
@@ -52,7 +50,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [token, setToken] = useState<string | null>(() => tokenStore.get());
   const [isLoading, setIsLoading] = useState(true);
 
-  // Khởi tạo: gọi /auth/me để xác thực token (có tự refresh khi hết hạn).
   useEffect(() => {
     let cancelled = false;
 
@@ -88,7 +85,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     };
   }, []);
 
-  // Token hết hạn vĩnh viễn -> backend báo 401 -> api client báo cho ta để logout.
   useEffect(() => {
     return onAuthFailure(() => {
       setUser(null);
@@ -165,15 +161,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     });
   }, []);
 
-  /** Tải lại hồ sơ từ server (sau khi cập nhật profile). */
-  const refreshUser = useCallback(async () => {
+    const refreshUser = useCallback(async () => {
     try {
       const me = await authApi.me();
       setUser(me);
       writeCachedUser(me);
-    } catch {
-      /* giữ nguyên user hiện tại nếu lỗi mạng */
-    }
+    } catch {void 0; 
+          }
   }, []);
 
   const role: string = user?.role || 'GUEST';

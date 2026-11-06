@@ -1,7 +1,6 @@
 import { connectDB, disconnectDB } from '../src/server/db';
 import { ProductModel } from '../src/server/models/Product';
 
-/** Bỏ dung lượng (giữ số trong tên model). */
 function modelName(name: string): string {
   return name
     .replace(/\s+\d+(?:\.\d+)?\s*(?:GB|TB|MB)\b/gi, ' ')

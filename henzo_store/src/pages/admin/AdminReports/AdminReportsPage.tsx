@@ -67,7 +67,7 @@ export const AdminReportsPage = () => {
         </div>
       </div>
 
-      {/* KPI Stats */}
+      {}
       <div className="admin-stats admin-stats--4">
         {[
           { label: 'Tổng doanh thu', value: formatNumber(stats.totalRevenue) + 'đ', change: '+15.2%', dir: 'up', icon: 'revenue', color: '#1F5557' },
@@ -91,7 +91,7 @@ export const AdminReportsPage = () => {
         ))}
       </div>
 
-      {/* Revenue Chart */}
+      {}
       <div className="admin-section">
         <div className="admin-section__header">
           <h3 className="admin-section__title">Doanh thu theo tháng (VNĐ)</h3>
@@ -121,7 +121,7 @@ export const AdminReportsPage = () => {
         </div>
       </div>
 
-      {/* Orders + Revenue Table */}
+      {}
       <div className="admin-section">
         <div className="admin-section__header">
           <h3 className="admin-section__title">Thống kê đơn hàng theo tháng</h3>
@@ -150,7 +150,7 @@ export const AdminReportsPage = () => {
         </div>
       </div>
 
-      {/* Top Products + Stores */}
+      {}
       <div className="admin-reports-grid">
         <div className="admin-section">
           <div className="admin-section__header">

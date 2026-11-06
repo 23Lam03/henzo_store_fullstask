@@ -1,12 +1,3 @@
-/**
- * In bản đồ ASCII phân loại MÀU (không chỉ độ sáng) để đọc bố cục ảnh.
- *
- * Ký tự:
- *   # = xanh dương (primary)      B = xanh biển sẫm
- *   @ = xám rất đậm (chữ)          x = xám đậm
- *   o = xám vừa                    . = xám nhạt
- *   ' ' = trắng                    ~ = viền/nét mảnh đậm
- */
 import { readFileSync } from 'node:fs';
 
 const file = process.argv[2];
@@ -36,8 +27,8 @@ const lum = ([r, g, b]: [number, number, number]) => 0.299 * r + 0.587 * g + 0.1
 function ch(c: [number, number, number]): string {
   const [r, g, b] = c;
   const l = lum(c);
-  if (b > 130 && b - r > 60 && b - g > 50) return '#'; // xanh primary
-  if (b > 100 && b - r > 40) return 'B'; // xanh khác
+  if (b > 130 && b - r > 60 && b - g > 50) return '#';
+  if (b > 100 && b - r > 40) return 'B';
   if (r > 240 && g > 240 && b > 240) return ' ';
   if (l > 235) return '.';
   if (l > 200) return ',';

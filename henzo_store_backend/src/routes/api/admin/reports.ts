@@ -11,8 +11,7 @@ export const Route = createFileRoute('/api/admin/reports')({
   server: {
     middleware: [corsMiddleware, requireAuth, requireAdmin],
     handlers: {
-      /** Báo cáo tổng hợp: doanh thu theo tháng, top sản phẩm, top cửa hàng. */
-      GET: withErrorHandling(async () => {
+            GET: withErrorHandling(async () => {
         await connectDB();
         const data = await getAdminReports();
         return ok(data);

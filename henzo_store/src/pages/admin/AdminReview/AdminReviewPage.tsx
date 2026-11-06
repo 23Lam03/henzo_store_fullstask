@@ -28,7 +28,7 @@ export const AdminReviewPage = () => {
   const [filter, setFilter] = useState('all');
   const [pendingDelete, setPendingDelete] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  // Modal chi tiết — trước đây điều hướng tới route `/admin/reviews/:id` không tồn tại.
+
   const [detail, setDetail] = useState<(Review & { isHidden: boolean }) | null>(null);
 
   const enrichedReviews = useMemo(
@@ -182,7 +182,7 @@ export const AdminReviewPage = () => {
           onCancel={() => setPendingDelete(null)}
         />
 
-        {/* Modal chi tiết đánh giá */}
+        {}
         {detail && (
           <div className="admin-modal-overlay" onClick={() => setDetail(null)}>
             <div className="admin-modal" onClick={e => e.stopPropagation()}>

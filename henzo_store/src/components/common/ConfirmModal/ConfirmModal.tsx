@@ -8,8 +8,7 @@ interface ConfirmModalProps {
   confirmLabel?: string;
   cancelLabel?: string;
   variant?: 'danger' | 'primary';
-  /** Đang xử lý -> disable nút xác nhận để tránh gọi API nhiều lần. */
-  loading?: boolean;
+    loading?: boolean;
   onConfirm: () => void;
   onCancel: () => void;
 }

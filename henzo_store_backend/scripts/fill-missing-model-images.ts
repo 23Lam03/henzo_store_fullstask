@@ -1,26 +1,9 @@
-/**
- * BỔ SUNG ẢNH THẬT cho model còn thiếu / ảnh sai loại.
- *
- * Nguồn: Wikimedia Commons (ảnh thật, giấy phép tự do).
- *
- * Quy tắc bộ lọc NGHIÊM NGẶT (chỉ dựa trên TÊN FILE — mô tả Commons
- * thường nhiễu, VD "Xbox One gamepads, gaming keyboard and mouse.jpg" mô tả
- * có "mouse" nhưng là ảnh bàn phím):
- *   1. Bitmap (jpeg/png/webp).
- *   2. Tên file KHÔNG chứa từ cấm (teardown, linh kiện rời, logo, sự kiện,
- *      người, bối cảnh).
- *   3. Tên file PHẢI chứa từ khoá đúng LOẠI sản phẩm.
- *   4. Tên file PHẢI chứa tên HÃNG (trừ khi hãng không có ảnh nào).
- *
- * Chạy: npx tsx scripts/fill-missing-model-images.ts
- */
 import { readFileSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { modelName } from './lib/model-name';
 
 const UA = 'henzo-store/1.0 (model image resolver; dev@henzo.local)';
 
-/** Từ khoá bắt buộc theo LOẠI sản phẩm. */
 const TYPE_KEYWORDS: Record<string, string[]> = {
   'Điện thoại': ['iphone', 'galaxy', 'pixel', 'oneplus', 'oppo', 'vivo', 'xiaomi', 'redmi', 'poco', 'honor', 'realme', 'nokia', 'tecno', 'huawei', 'sony'],
   Tablet: ['ipad', 'tablet', 'matepad'],
@@ -33,11 +16,9 @@ const TYPE_KEYWORDS: Record<string, string[]> = {
   'Phụ kiện': ['charger', 'power bank', 'power adapter', 'hub', 'stream deck', 'wave', 'hd60', 'webcam', 'c920', 'brio', 'streamcam', 'cable', 'adapter', 'microphone', 'seiren', 'icue link'],
 };
 
-/** Từ cấm trong tên file (ảnh không phải sản phẩm). */
 const REJECT_TITLE =
   /\b(disassembl|disassembled|teardown|exploded|schematic|circuit|mainboard|motherboard|logic board|pcb|chipset|module|stick|sodimm|dimm|coolant|pump|connector|cable|port|button|wheel|underneath|bottom|top view|rear view|back view|side view|inside|interior|logo|icon|diagram|chart|booth|game ?show|gamescom|comiket|esport|tournament|championship|person|people|man|woman|player|streamer|interview|autograph|crowd|audience|stage|panel|signing|museum|store|office|desk|setup|box|package|unboxing|review|comparison|boit|booth|tokyo-game-show|faceit|homestory|hwc|esl|blast)\b/i;
 
-/** Ảnh tên file chứa từ khóa bối cảnh (không phải sản phẩm chính). */
 const REJECT_CONTEXT =
   /(with|and|&|plus|in the|on the|at the|during|vs|comparison|setup|desk|gamepad|keyboard and mouse|mouse and keyboard)/i;
 
@@ -63,7 +44,6 @@ async function getJson(url: string): Promise<any> {
   return null;
 }
 
-/** Commons search -> file bitmap ứng viên. */
 async function commonsSearch(query: string, limit = 40): Promise<Candidate[]> {
   const d = await getJson(
     `https://commons.wikimedia.org/w/api.php?action=query&format=json` +
@@ -82,7 +62,6 @@ async function commonsSearch(query: string, limit = 40): Promise<Candidate[]> {
   return out;
 }
 
-/** Media-list trang Wikipedia -> ứng viên. */
 async function wikiMedia(page: string): Promise<Candidate[]> {
   const d = await getJson(
     `https://en.wikipedia.org/api/rest_v1/page/media-list/${encodeURIComponent(page)}`,
@@ -106,7 +85,6 @@ async function wikiMedia(page: string): Promise<Candidate[]> {
   return out;
 }
 
-/** Ảnh hợp lệ cho model không? */
 function isValid(
   c: Candidate,
   categoryName: string,
@@ -131,7 +109,6 @@ function isValid(
   return true;
 }
 
-/** Chuẩn hoá tên file bỏ phần tiền tố năm / số thứ tự. */
 function normalizeTitle(title: string): string {
   return title
     .replace(/\.(jpe?g|png|webp)$/i, '')
@@ -144,8 +121,7 @@ interface Target {
   model: string;
   queries: string[];
   wikiPages?: string[];
-  /** Bỏ yêu cầu tên hãng trong tên file (dùng cho hãng không có ảnh). */
-  anyBrand?: boolean;
+    anyBrand?: boolean;
 }
 
 async function main() {
@@ -167,7 +143,7 @@ async function main() {
   }
 
   const TARGETS: Target[] = [
-    // ── Tai nghe ──
+
     { model: 'ASUS ROG Delta S Wireless', queries: ['ASUS ROG Delta', 'ROG Delta headset', 'ASUS Delta headset'] },
     { model: 'JBL Quantum 910 Wireless', queries: ['JBL Quantum', 'JBL headset'] },
     { model: 'SteelSeries Arctis Nova 7', queries: ['SteelSeries Arctis Nova', 'Arctis Nova', 'SteelSeries Arctis'] },
@@ -185,7 +161,6 @@ async function main() {
     { model: 'AirPods Max', queries: ['AirPods Max'] },
     { model: 'AirPods 4 ANC', queries: ['AirPods 4', 'AirPods 4 ANC'] },
 
-    // ── Chuột ──
     { model: 'SteelSeries Rival 650 Wireless', queries: ['SteelSeries Rival', 'SteelSeries mouse'] },
     { model: 'Endgame Gear XM2we Wireless', queries: ['Endgame Gear mouse', 'XM2we mouse'], anyBrand: true },
     { model: 'Corsair M75 Wireless', queries: ['Corsair M75', 'Corsair mouse'] },
@@ -197,7 +172,6 @@ async function main() {
     { model: 'Logitech G502 X Plus Lightspeed', queries: ['Logitech G502 X Plus', 'Logitech G502 X'] },
     { model: 'Logitech MX Master 3S', queries: ['Logitech MX Master 3S', 'Logitech MX Master'] },
 
-    // ── Bàn phím / Phụ kiện ──
     { model: 'Keychron K3 Pro Low Profile', queries: ['Keychron K3', 'Keychron low profile'] },
     { model: 'Lenovo ThinkPad TrackPoint Keyboard II', queries: ['ThinkPad TrackPoint Keyboard'] },
     { model: 'Razer Seiren V2 Pro', queries: ['Razer Seiren', 'Razer microphone'] },
@@ -205,7 +179,6 @@ async function main() {
     { model: 'Anker 737 Power Bank 24K', queries: ['Anker 737 Power Bank', 'Anker Power Bank'] },
     { model: 'Corsair iCUE LINK System Hub', queries: ['Corsair iCUE LINK', 'iCUE LINK System Hub'] },
 
-    // ── Màn hình ──
     { model: 'Razer Raptor 27in', queries: ['Razer Raptor monitor', 'Razer Raptor'] },
     { model: 'Razer Raptor 27in 2K Tổng hợp', queries: ['Razer Raptor monitor', 'Razer Raptor'] },
     { model: 'Gigabyte M27Q X 27in', queries: ['Gigabyte M27Q', 'M27Q X monitor'] },
@@ -216,7 +189,6 @@ async function main() {
     { model: 'AOC AGON PRO AG274QZM 27in Mini LED', queries: ['AOC AGON PRO AG274QZM', 'AGON AG274QZM'] },
     { model: 'AOC CU34G2X 34in', queries: ['AOC CU34G2X', 'CU34G2X'] },
 
-    // ── PC Gaming / linh kiện ──
     { model: 'ASUS TUF Gaming', queries: ['ASUS TUF Gaming desktop', 'ASUS TUF gaming computer'] },
     { model: 'Kingston FURY Beast DDR5', queries: ['Kingston FURY Beast', 'Kingston FURY DDR5'] },
     { model: 'Kingston FURY Renegade', queries: ['Kingston FURY Renegade', 'Kingston FURY'] },
@@ -241,7 +213,6 @@ async function main() {
     { model: 'Intel Core i7-14700K', queries: ['Intel Core i7-14700K', 'Core i7-14700K'] },
     { model: 'Intel Core i5-14600K', queries: ['Intel Core i5-14600K', 'Core i5-14600K'] },
 
-    // ── Tablet (đang xếp nhầm vào "Điện thoại") ──
     { model: 'iPad Pro M4 13in', queries: ['iPad Pro 13-inch M4', 'iPad Pro M4'] },
     { model: 'iPad 10th Generation 13in', queries: ['iPad 10th generation', 'IPad 10'] },
     { model: 'iPad Air M3 13in', queries: ['iPad Air M3', 'IPad Air 11-inch M3'] },
@@ -266,9 +237,8 @@ async function main() {
     for (const q of t.queries) push(await commonsSearch(q));
     for (const p of t.wikiPages ?? []) push(await wikiMedia(p));
 
-    // Pass 1: yêu cầu tên hãng trong tên file.
     let valid = cands.filter((c) => isValid(c, meta.categoryName, meta.brand, true));
-    // Pass 2: nếu hãng không có ảnh nào -> cho phép ảnh đúng loại của hãng khác.
+
     if (!valid.length && !t.anyBrand) {
       valid = cands.filter((c) => isValid(c, meta.categoryName, meta.brand, false));
     }

@@ -1,7 +1,3 @@
-/**
- * Tìm các vùng màu "xanh primary" trong ảnh BMP và in bounding box theo dải dòng.
- * Dùng: npx tsx scripts/bmp-blue.ts <file.bmp> [yStart] [yEnd]
- */
 import { readFileSync } from 'node:fs';
 
 const file = process.argv[2];
@@ -26,7 +22,7 @@ const px = (x: number, y: number): [number, number, number] => {
 const isBlue = ([r, g, b]: [number, number, number]) => b > 130 && b - r > 60 && b - g > 50;
 
 for (let y = yStart; y < Math.min(yEnd, H); y++) {
-  // Tìm các đoạn liên tiếp của pixel xanh.
+
   const runs: string[] = [];
   let start = -1;
   for (let x = 0; x < width; x++) {

@@ -1,4 +1,3 @@
-/* Create Product Page */
 .create-product-tabs { display: flex; gap: 4px; margin-bottom: 24px; border-bottom: 2px solid var(--color-border); }
 .create-product-tab { padding: 12px 24px; font-size: var(--font-size-sm); font-weight: 600; color: var(--color-text-muted); background: transparent; border: none; border-bottom: 3px solid transparent; cursor: pointer; transition: all var(--transition-fast); margin-bottom: -2px; white-space: nowrap; font-family: inherit; border-radius: var(--radius-md) var(--radius-md) 0 0; }
 .create-product-tab:not(:disabled):hover { color: var(--color-primary); }

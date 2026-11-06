@@ -1,4 +1,3 @@
-/** Liệt kê toàn bộ file trong các Category Commons cụ thể (dùng cm=category). */
 import { writeFileSync } from 'node:fs';
 
 const UA = 'henzo-store/1.0 (model image resolver; dev@henzo.local)';

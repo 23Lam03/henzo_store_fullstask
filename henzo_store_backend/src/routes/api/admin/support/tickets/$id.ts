@@ -31,16 +31,14 @@ export const Route = createFileRoute('/api/admin/support/tickets/$id')({
   server: {
     middleware: [corsMiddleware, requireAuth, requireAdmin],
     handlers: {
-      /** Chi tiết phiếu hỗ trợ. */
-      GET: withErrorHandling(async ({ params }) => {
+            GET: withErrorHandling(async ({ params }) => {
         await connectDB();
         const ticket = await TicketModel.findById(params.id).lean();
         if (!ticket) throw notFound('Không tìm thấy phiếu hỗ trợ');
         return ok(toAdminTicket(ticket));
       }),
 
-      /** Cập nhật trạng thái / ưu tiên / gán nhân sự xử lý. */
-      PATCH: withErrorHandling(async ({ request, params }) => {
+            PATCH: withErrorHandling(async ({ request, params }) => {
         await connectDB();
         const body = await readJson(request, updateSchema);
 
@@ -55,8 +53,7 @@ export const Route = createFileRoute('/api/admin/support/tickets/$id')({
         return ok(toAdminTicket(ticket));
       }),
 
-      /** Admin trả lời phiếu hỗ trợ. */
-      POST: withErrorHandling(async ({ request, params, context }) => {
+            POST: withErrorHandling(async ({ request, params, context }) => {
         await connectDB();
         const body = await readJson(request, replySchema);
 
@@ -73,14 +70,12 @@ export const Route = createFileRoute('/api/admin/support/tickets/$id')({
           createdAt: new Date(),
         } as any);
 
-        // Khi admin phản hồi, ticket chuyển sang "đang xử lý".
         if (ticket.status === AdminTicketStatus.OPEN) {
           ticket.status = AdminTicketStatus.PENDING;
         }
 
         await ticket.save();
 
-        // Thông báo cho người gửi ticket.
         if (ticket.userId) {
           await NotificationModel.create({
             userId: ticket.userId,
@@ -95,8 +90,7 @@ export const Route = createFileRoute('/api/admin/support/tickets/$id')({
         return ok(toAdminTicket(ticket));
       }),
 
-      /** Đóng phiếu hỗ trợ. */
-      DELETE: withErrorHandling(async ({ params }) => {
+            DELETE: withErrorHandling(async ({ params }) => {
         await connectDB();
         const ticket = await TicketModel.findById(params.id);
         if (!ticket) throw notFound('Không tìm thấy phiếu hỗ trợ');

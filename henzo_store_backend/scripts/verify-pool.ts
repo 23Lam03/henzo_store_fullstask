@@ -1,6 +1,3 @@
-/**
- * Verify danh sách file Commons mở rộng (dùng cho pool ảnh thật).
- */
 const UA = 'henzo-store/1.0 (model image resolver; dev@henzo.local)';
 
 async function getJson(url: string): Promise<any> {
@@ -21,7 +18,7 @@ async function getJson(url: string): Promise<any> {
 }
 
 const FILES = [
-  // ── Màn hình ──
+
   'ASUS ROG Strix XG32VQR monitor.jpg',
   'Asus ProArt PA246Q monitor 1.JPG',
   'Asus ProArt PA246Q monitor 2.JPG',
@@ -52,7 +49,7 @@ const FILES = [
   'LG 19M36A-B.jpg',
   'Computer monitor.jpg',
   'Computer monitor samsung.jpg',
-  // ── Case / custom PC ──
+
   'AVADirect-Custom-X99-Intel-Core-i7-gaming-cpu.png',
   'Custom Computer (25062202444).jpg',
   'Custom built computer from 2016.jpg',
@@ -66,7 +63,7 @@ const FILES = [
   'Falcon Northwest custom PCs.jpg',
   'ATX computer case - left - 2018-05-18.jpg',
   'ATX computer case - right - 2018-05-12.jpg',
-  // ── GPU ──
+
   'Palit GeForce RTX 5090 Gamerock 20250530 HOF3864 RAW-Export.png',
   'Palit GeForce RTX 5090 Gamerock 20250530 HOF3866 RAW-Export.png',
   'Palit GeForce RTX 5090 Gamerock 20250530 HOF3870 RAW-Export cens.png',
@@ -81,7 +78,7 @@ const FILES = [
   'Palit GeForce RTX 5090 Gamerock 20250530 HOF4015 RAW-Export.png',
   'Palit GeForce RTX 5090 Gamerock 20250530 HOF4045 RAW-Export.png',
   'Palit GeForce RTX 5090 Gamerock 20250530 HOF4166 RAW-Export.png',
-  // ── SSD ──
+
   '2023 Dysk SSD Kingston NV2 2TB.jpg',
   'Corsair MP400 20211221 01.png',
   'Corsair MP400 20211221 02.png',
@@ -92,14 +89,14 @@ const FILES = [
   'Western Digital SN850X NVME solid state drive 8TB front side.jpg',
   'Western Digital SN850X NVME solid state drive 8TB back side.jpg',
   'Kingston HyperX Predator 480GB sample at Guang Hua Digital Plaza 6F 20151212.jpg',
-  // ── PSU ──
+
   'Corsair CX430.JPG',
   'Corsair CX 430 1 2018-09-19.jpg',
   'Corsair CX 430 2 2018-09-19.jpg',
   'Corsair CX 500 1 2018-09-19.jpg',
   'Computer power supply units 5399.jpg',
   'ATX Computer power supply unit.jpg',
-  // ── RAM ──
+
   'Tridentz red RAM.JPG',
   'G.Skill RipjawsX DDR3 memory modules.JPG',
   'DDR-SDRAM-Module.jpg',
@@ -109,7 +106,7 @@ const FILES = [
   'HX318C10FB-8 rear 20160503.jpg',
   'Kingston KHX8500D2K2-4G 20141010.jpg',
   'A pair of Kingston KHX6400D2K2-2G 20131124.jpg',
-  // ── Cooler ──
+
   'Cooler Master V8.jpg',
   'Cooler Master Hyper 212 EVO - CPU Cooler with 120mm PWM Fan (RR-212E-20PK-R2).jpg',
   'Cooler Master Hyper EVO 212 1 2019-05-15.jpg',
@@ -123,7 +120,7 @@ const FILES = [
   'DeepCool AK400 1.jpg',
   'DeepCool AK400 2.jpg',
   'Deepcool cooler.png',
-  // ── Tai nghe ──
+
   'ST100VoidPro.jpg',
   "Casques d'écoute de podcast.jpg",
   'Sound BlasterX H5 Gaming Headset.jpg',
@@ -146,7 +143,7 @@ const FILES = [
   '2023 Słuchawki JBL TL0846 (3).jpg',
   'ASUS ROG Delta GUNDAM EDITION 20210131a.jpg',
   'Asus ROG Delta headphone (52416987042).jpg',
-  // ── Chuột ──
+
   'Corsair Katar Pro Wireless.jpg',
   'Corsair Scimitar 2 2017-01-01.jpg',
   'Roccat Kova.png',
@@ -184,7 +181,7 @@ const FILES = [
   'Logitech-g502 (13971851940).jpg',
   'Logitech-g502 (13971832969).jpg',
   'Logitech-g502 (14135316586).jpg',
-  // ── Bàn phím ──
+
   'Corsair K65 1 2017-01-01.jpg',
   'Corsair K60.jpg',
   'SteelSeries Apex 5.jpg',
@@ -210,7 +207,7 @@ const FILES = [
   'Beautiful Mechanical Keyboard.jpg',
   'Lenovo ThinkPad USB TrackPoint keyboard.jpg',
   'ThinkPad TrackPoint Keyboard II.jpg',
-  // ── Mic / Webcam / Phụ kiện ──
+
   'Blue Snowflake USB microphone.jpg',
   'Blue Yeti Blackout USB microphone (51844234538).jpg',
   'Blue Yeti Blackout.jpg',
@@ -239,7 +236,7 @@ const FILES = [
   'Anker power bank lit.jpg',
   'モバイルバッテリー ANKER Power Bank 4,500mAh (9720039628).jpg',
   'Samsung ATADM10ESE.JPG',
-  // ── Tablet / Laptop ──
+
   'About iPad Pro 13-inch (M4).jpg',
   'IPad Air 11-inch (M3).jpg',
   'IPad Air 11-inch (M3) backside.jpg',

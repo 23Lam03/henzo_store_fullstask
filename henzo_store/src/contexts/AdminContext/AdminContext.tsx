@@ -32,7 +32,7 @@ const EMPTY_STATS: AdminStats = {
 };
 
 interface AdminContextValue {
-  // Data
+
   stores: Store[];
   customers: User[];
   orders: Order[];
@@ -44,40 +44,33 @@ interface AdminContextValue {
   isLoading: boolean;
   error: string | null;
 
-  // Store actions
   addStore: (store: Partial<Store>) => Promise<void>;
   updateStore: (id: string, data: Partial<Store>) => Promise<void>;
   deleteStore: (id: string) => Promise<void>;
   lockStore: (id: string) => Promise<void>;
   unlockStore: (id: string) => Promise<void>;
 
-  // Customer actions
   updateCustomer: (id: string, data: Partial<User>) => Promise<void>;
   lockCustomer: (id: string) => Promise<void>;
   unlockCustomer: (id: string) => Promise<void>;
   deleteCustomer: (id: string) => Promise<void>;
 
-  // Order actions
   updateOrderStatus: (id: string, status: Order['status']) => Promise<void>;
 
-  // Review actions
   approveReview: (id: string) => Promise<void>;
   hideReview: (id: string) => Promise<void>;
   deleteReview: (id: string) => Promise<void>;
 
-  // Promotion actions
   addPromotion: (promo: Partial<Promotion>) => Promise<void>;
   updatePromotion: (id: string, data: Partial<Promotion>) => Promise<void>;
   deletePromotion: (id: string) => Promise<void>;
 
-  // Ticket actions
   updateTicketStatus: (id: string, status: SupportTicket['status']) => Promise<void>;
   assignTicket: (id: string, assignee: string) => Promise<void>;
 
   refresh: () => Promise<void>;
 }
 
-// ─── Context ───────────────────────────────────────────────────────────────────
 const AdminContext = createContext<AdminContextValue | null>(null);
 
 export const useAdmin = () => {
@@ -86,7 +79,6 @@ export const useAdmin = () => {
   return ctx;
 };
 
-// ─── Provider ─────────────────────────────────────────────────────────────────
 export const AdminProvider = ({ children }: { children: ReactNode }) => {
   const { isAuthenticated, userRole } = useAuth();
   const [stores, setStores] = useState<Store[]>([]);
@@ -148,7 +140,6 @@ export const AdminProvider = ({ children }: { children: ReactNode }) => {
     };
   }, [refresh]);
 
-  // ─── Stores ───────────────────────────────────────────────────────────────
   const addStore = useCallback(async (store: Partial<Store>) => {
     const created = await adminApi.createStore(store as Record<string, unknown>);
     setStores(prev => [created as unknown as Store, ...prev]);
@@ -173,7 +164,7 @@ export const AdminProvider = ({ children }: { children: ReactNode }) => {
     const updated = await adminApi.storeAction(id, 'unlock');
     setStores(prev => prev.map(s => (s.id === id ? { ...s, ...updated } : s)));
   }, []);
-  // ─── Customers ────────────────────────────────────────────────────────────
+
   const updateCustomer = useCallback(async (id: string, data: Partial<User>) => {
     const updated = await adminApi.updateCustomer(id, data as Record<string, unknown>);
     setCustomers(prev => prev.map(c => (c.id === id ? (updated as unknown as User) : c)));
@@ -194,13 +185,11 @@ export const AdminProvider = ({ children }: { children: ReactNode }) => {
     setCustomers(prev => prev.filter(c => c.id !== id));
   }, []);
 
-  // ─── Orders ───────────────────────────────────────────────────────────────
   const updateOrderStatus = useCallback(async (id: string, status: Order['status']) => {
     const updated = await adminApi.updateOrderStatus(id, status);
     setOrders(prev => prev.map(o => (o.id === id ? updated : o)));
   }, []);
 
-  // ─── Reviews ──────────────────────────────────────────────────────────────
   const approveReview = useCallback(async (id: string) => {
     const updated = await adminApi.reviewAction(id, 'approve');
     setReviews(prev => prev.map(r => (r.id === id ? { ...r, ...updated } : r)));
@@ -216,7 +205,6 @@ export const AdminProvider = ({ children }: { children: ReactNode }) => {
     setReviews(prev => prev.filter(r => r.id !== id));
   }, []);
 
-  // ─── Promotions ───────────────────────────────────────────────────────────
   const addPromotion = useCallback(async (promo: Partial<Promotion>) => {
     const created = await adminApi.createPromotion(promo as Record<string, unknown>);
     setPromotions(prev => [created, ...prev]);
@@ -232,7 +220,6 @@ export const AdminProvider = ({ children }: { children: ReactNode }) => {
     setPromotions(prev => prev.filter(p => p.id !== id));
   }, []);
 
-  // ─── Tickets ──────────────────────────────────────────────────────────────
   const updateTicketStatus = useCallback(async (id: string, status: SupportTicket['status']) => {
     const updated = await adminApi.ticketAction(id, { status });
     setTickets(prev => prev.map(t => (t.id === id ? (updated as unknown as SupportTicket) : t)));

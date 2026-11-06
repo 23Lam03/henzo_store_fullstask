@@ -1,13 +1,3 @@
-/**
- * GÁN ẢNH FALLBACK ĐÚNG HÃNG + ĐÚNG LOẠI CHO MODEL CHƯA CÓ ẢNH RIÊNG.
- *
- * Nhiều model ra mắt năm 2024-2026 chưa có ảnh riêng trên Wikimedia
- * Commons. Với những model đó, dùng ảnh ĐÚNG HÃNG + ĐÚNG LOẠI (ví dụ
- * "Corsair HS60" -> ảnh tai nghe Corsair) — đúng nghiệp vụ hơn nhiều so
- * với ảnh của hãng khác hoặc ảnh generic (màn hình, bàn phím...).
- *
- * Nguồn: scripts/data/type-brand-pools.json (tên file Commons đã kiểm chứng).
- */
 import { connectDB, disconnectDB } from '../../src/server/db';
 import { ProductModel } from '../../src/server/models/Product';
 import { modelName } from '../../lib/model-name';
@@ -19,7 +9,6 @@ const pools = JSON.parse(
   readFileSync(resolve(process.cwd(), 'scripts/data/type-brand-pools.json'), 'utf-8'),
 ) as Record<string, Record<string, string[]>>;
 
-/** Loại sản phẩm từ tên danh mục -> khoá pool. */
 const TYPE_BY_CATEGORY: Record<string, string> = {
   'Điện thoại': 'PHONE',
   'Tablet': 'TABLET',
@@ -63,7 +52,6 @@ const hasModelToken = (model: string, url: string): boolean => {
 await connectDB();
 const products = await ProductModel.find({}).select('name images brand categoryName').lean();
 
-// Gom theo model.
 const groups = new Map<string, { ids: string[]; brand: string; categoryName: string }>();
 for (const p of products) {
   const imgs = (p.images ?? []).map(String);
@@ -82,14 +70,13 @@ for (const p of products) {
 
 console.log(`Model chưa có ảnh riêng: ${groups.size}`);
 
-// Gom tất cả file cần resolve theo brand+type.
 const wanted = new Set<string>();
 const plan = new Map<string, { ids: string[]; files: string[] }>();
 
 for (const [model, g] of groups) {
   const typeKey =
     TYPE_BY_CATEGORY[g.categoryName] ??
-    // Suy loại từ tên model khi danh mục không có trong bảng.
+
     (/headset|headphone|tai nghe/i.test(model)
       ? 'HEADSET'
       : /mouse|chuột/i.test(model)
@@ -121,7 +108,6 @@ if (!wanted.size) {
 
 const urlMap = await resolveFiles([...wanted]);
 
-/** Chuẩn hoá tên file để so khớp (pool dùng dấu cách, Commons trả dấu gạch). */
 const normKey = (s: string): string =>
   decodeURIComponent(s)
     .replace(/^\d+px-/, '')

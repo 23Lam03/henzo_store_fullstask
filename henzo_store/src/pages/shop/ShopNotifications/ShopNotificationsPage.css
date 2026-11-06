@@ -1,12 +1,9 @@
-/* Notifications Page */
 .seller-notifications__groups { display: flex; flex-direction: column; gap: 24px; }
 
 .seller-notif-group__header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
 .seller-notif-group__icon { width: 36px; height: 36px; border-radius: var(--radius-xs); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 .seller-notif-group__label { font-size: var(--font-size-md); font-weight: 700; color: var(--color-text-primary); }
 .seller-notif-group__count { font-size: var(--font-size-xs); font-weight: 700; color: var(--color-text-muted); background: var(--color-background); padding: 2px 8px; border-radius: var(--radius-xs); }
-
-/* Type colors */
 .seller-notif--order { background: var(--color-primary-soft); color: var(--color-primary); }
 .seller-notif--product { background: rgba(139,92,246,0.1); color: #8B5CF6; }
 .seller-notif--payment { background: var(--color-success-soft); color: var(--color-success); }

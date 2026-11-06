@@ -57,12 +57,6 @@
   z-index: 1;
   box-shadow: var(--shadow-sm);
 }
-
-/*
- * Logo thương hiệu là SVG (Simple Icons / Wikimedia) — cần nền trắng và
- * `object-fit: contain` để không bị méo/crop. Trước đây logo là ảnh Unsplash
- * ngẫu nhiên nên `object-fit: cover` cắt mất logo.
- */
 .brand-card__logo {
   width: 46px;
   height: 46px;

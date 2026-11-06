@@ -1,9 +1,3 @@
-/**
- * Chuẩn response thống nhất — khớp `ApiEnvelope` trong frontend
- * (`henzo_store/src/services/api.ts`).
- *
- *   { success, data, meta?: { page, pageSize, total, totalPages }, error?: { code, message, details } }
- */
 
 export interface ApiMeta {
   page: number;
@@ -25,14 +19,12 @@ export interface ApiEnvelope<T> {
   error?: ApiErrorPayload;
 }
 
-/** Trả về response thành công (200). */
 export function ok<T>(data: T, meta?: ApiMeta, status = 200): Response {
   const body: ApiEnvelope<T> = { success: true, data };
   if (meta) body.meta = meta;
   return Response.json(body, { status });
 }
 
-/** Trả về response thành công kèm header (vd: Set-Cookie refresh token). */
 export function okWithHeaders<T>(
   data: T,
   headers: HeadersInit,
@@ -44,7 +36,6 @@ export function okWithHeaders<T>(
   return Response.json(body, { status, headers });
 }
 
-/** Trả về response lỗi. */
 export function fail(
   message: string,
   status = 400,
@@ -59,7 +50,6 @@ export function fail(
   return Response.json(body, { status });
 }
 
-/** Response phân trang chuẩn. */
 export function paginated<T>(
   items: T[],
   meta: ApiMeta,

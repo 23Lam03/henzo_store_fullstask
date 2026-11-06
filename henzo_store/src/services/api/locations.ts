@@ -1,13 +1,3 @@
-/**
- * API đơn vị hành chính Việt Nam (tỉnh/thành → quận/huyện → phường/xã).
- *
- * Nguồn: backend TanStack Start `GET /api/locations/provinces`,
- * `GET /api/locations/provinces/:code/districts`,
- * `GET /api/locations/provinces/:code/wards`.
- *
- * Trước đây form checkout dùng mảng hardcode chỉ có 8 tỉnh và 2 tỉnh có
- * quận/huyện -> khách ở ngoài Hà Nội/TP.HCM không chọn được quận.
- */
 import { API_BASE_URL, apiFetch } from './client';
 
 export interface Province {
@@ -37,15 +27,13 @@ export interface Ward {
   provinceName: string;
 }
 
-/** Cache trong bộ nhớ — dữ liệu hành chính tĩnh, không đổi trong phiên. */
 let provincesCache: Province[] | null = null;
 const districtsCache = new Map<string, District[]>();
 const wardsCache = new Map<string, Ward[]>();
 const districtWardsCache = new Map<string, Ward[]>();
 
 export const locationsApi = {
-  /** Danh sách 63 tỉnh/thành phố. */
-  async provinces(): Promise<Province[]> {
+    async provinces(): Promise<Province[]> {
     if (provincesCache) return provincesCache;
     const data = await apiFetch<Province[]>(
       `${API_BASE_URL}/locations/provinces`,
@@ -54,8 +42,7 @@ export const locationsApi = {
     return provincesCache;
   },
 
-  /** Quận/huyện thuộc một tỉnh (mã tỉnh, ví dụ `79` cho TP.HCM). */
-  async districts(provinceCode: string): Promise<District[]> {
+    async districts(provinceCode: string): Promise<District[]> {
     if (!provinceCode) return [];
     const cached = districtsCache.get(provinceCode);
     if (cached) return cached;
@@ -67,8 +54,7 @@ export const locationsApi = {
     return list;
   },
 
-  /** Phường/xã thuộc một tỉnh (gộp toàn bộ xã của các huyện). */
-  async wards(provinceCode: string): Promise<Ward[]> {
+    async wards(provinceCode: string): Promise<Ward[]> {
     if (!provinceCode) return [];
     const cached = wardsCache.get(provinceCode);
     if (cached) return cached;
@@ -80,8 +66,7 @@ export const locationsApi = {
     return list;
   },
 
-  /** Phường/xã thuộc một quận/huyện cụ thể. */
-  async wardsOfDistrict(districtCode: string): Promise<Ward[]> {
+    async wardsOfDistrict(districtCode: string): Promise<Ward[]> {
     if (!districtCode) return [];
     const cached = districtWardsCache.get(districtCode);
     if (cached) return cached;
@@ -94,7 +79,6 @@ export const locationsApi = {
   },
 };
 
-/** Bỏ dấu + hạ chữ thường — dùng để so khớp tên địa chỉ cũ. */
 export function normalizeLocationName(text: string): string {
   return (text ?? '')
     .normalize('NFD')
@@ -106,10 +90,6 @@ export function normalizeLocationName(text: string): string {
     .trim();
 }
 
-/**
- * Tìm tỉnh theo tên (không phân biệt hoa thường, bỏ dấu).
- * Dùng để điền tỉnh từ địa chỉ đã lưu trong hồ sơ khách hàng.
- */
 export function findProvinceByName(
   provinces: Province[],
   name: string,
@@ -122,7 +102,6 @@ export function findProvinceByName(
   );
 }
 
-/** Tìm huyện theo tên trong một tỉnh. */
 export function findDistrictByName(
   districts: District[],
   name: string,

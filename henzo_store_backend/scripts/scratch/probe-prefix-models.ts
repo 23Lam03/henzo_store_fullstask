@@ -1,9 +1,3 @@
-/**
- * TÌM FILE COMMONS THEO PREFIX (allpages) + insource.
- *
- * Prefix search rất nhanh và chính xác cho tên file dạng
- * "<ModelCode> ..." hoặc "<Brand> <Model> ...".
- */
 import { writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
@@ -41,7 +35,6 @@ async function prefix(p: string): Promise<string[]> {
   return out;
 }
 
-/** Tìm file bằng insource (nội dung mô tả/trang chứa từ khoá). */
 async function insource(q: string): Promise<string[]> {
   const d = await getJson(
     `https://commons.wikimedia.org/w/api.php?action=query&format=json` +
@@ -55,7 +48,6 @@ async function insource(q: string): Promise<string[]> {
   return out;
 }
 
-/** model -> prefix thử. */
 const PREFIXES: Record<string, string[]> = {
   'AOC CU34G2X 34in': ['CU34G2X', 'AOC CU34G2X', 'CU34G2'],
   'ASUS ROG Harpe Ace Aim Lab Edition': ['ROG Harpe Ace', 'Harpe Ace', 'ROG Harpe'],

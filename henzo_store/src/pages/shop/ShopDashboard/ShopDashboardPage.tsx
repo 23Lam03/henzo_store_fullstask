@@ -8,11 +8,9 @@ const formatNum = (n: number) => new Intl.NumberFormat('vi-VN').format(n);
 
 export const ShopDashboardPage = () => {
   const { store, stats, orders, dailyRevenue, monthlyData } = useSeller();
-  
-  // Top 5 selling products from orders
+
   const [recentOrders] = useState(() => orders.slice(0, 8));
-  
-  // Compute top products from order products
+
   const productSales: Record<string, { name: string; image: string; sold: number; revenue: number }> = {};
   orders.forEach(o => {
     o.products.forEach(p => {
@@ -105,13 +103,12 @@ export const ShopDashboardPage = () => {
     returned: { label: 'Hoàn trả', cls: 'badge-danger' },
   };
 
-  // Revenue chart (last 14 days from dailyRevenue)
   const chartData = dailyRevenue.slice(-14);
   const maxRevenue = Math.max(...chartData.map(d => d.revenue), 1);
 
   return (
     <div className="seller-dashboard">
-      {/* Page Header */}
+      {}
       <div className="seller-dashboard__header">
         <div>
           <h1 className="seller-dashboard__title">Tổng quan cửa hàng</h1>
@@ -131,7 +128,7 @@ export const ShopDashboardPage = () => {
         </div>
       </div>
 
-      {/* Stats Grid */}
+      {}
       <div className="admin-stats admin-stats--4" data-reveal-stagger>
         {statCards.map((card, i) => (
           <div key={i} className="seller-stat-card">
@@ -151,9 +148,9 @@ export const ShopDashboardPage = () => {
         ))}
       </div>
 
-      {/* Charts Row */}
+      {}
       <div className="seller-dashboard__charts">
-        {/* Revenue Chart */}
+        {}
         <div className="seller-chart-card">
           <div className="seller-chart-card__header">
             <h3 className="seller-chart-card__title">Doanh thu 14 ngày gần nhất</h3>
@@ -175,7 +172,7 @@ export const ShopDashboardPage = () => {
           </div>
         </div>
 
-        {/* Monthly Revenue Chart */}
+        {}
         <div className="seller-chart-card">
           <div className="seller-chart-card__header">
             <h3 className="seller-chart-card__title">Doanh thu theo tháng (12 tháng)</h3>
@@ -201,9 +198,9 @@ export const ShopDashboardPage = () => {
         </div>
       </div>
 
-      {/* Bottom Row */}
+      {}
       <div className="seller-dashboard__bottom">
-        {/* Recent Orders */}
+        {}
         <div className="admin-section seller-orders-section">
           <div className="admin-section__header">
             <h3 className="admin-section__title">Đơn hàng gần đây</h3>
@@ -243,7 +240,7 @@ export const ShopDashboardPage = () => {
           </div>
         </div>
 
-        {/* Top Products */}
+        {}
         <div className="admin-section seller-top-products-section">
           <div className="admin-section__header">
             <h3 className="admin-section__title">Top sản phẩm bán chạy</h3>
@@ -266,7 +263,7 @@ export const ShopDashboardPage = () => {
         </div>
       </div>
 
-      {/* Quick Stats Bar */}
+      {}
       <div className="seller-dashboard__quick-bar">
         <div className="seller-quick-stat">
           <span className="seller-quick-stat__label">Đánh giá trung bình</span>

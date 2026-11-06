@@ -21,8 +21,7 @@ interface CreateReviewInput {
 }
 
 interface ReviewContextValue {
-  /** Đánh giá của sản phẩm đang xem (cache theo productId). */
-  reviews: Review[];
+    reviews: Review[];
   createReview: (input: CreateReviewInput) => Promise<Review>;
   getProductReviews: (productId: string) => Review[];
   hasReviewedProduct: (orderId: string, productId: string) => boolean;
@@ -35,14 +34,12 @@ const ReviewContext = createContext<ReviewContextValue | null>(null);
 
 export const ReviewProvider = ({ children }: { children: ReactNode }) => {
   const { isAuthenticated } = useAuth();
-  /** Cache đánh giá theo productId — tránh gọi lại API mỗi lần render. */
-  const [cache, setCache] = useState<Record<string, Review[]>>({});
+    const [cache, setCache] = useState<Record<string, Review[]>>({});
   const [reviewedKeys, setReviewedKeys] = useState<Set<string>>(new Set());
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  /** Tải đánh giá của một sản phẩm từ server. */
-  const loadProductReviews = useCallback(async (productId: string) => {
+    const loadProductReviews = useCallback(async (productId: string) => {
     if (!productId) return;
     setIsLoading(true);
     try {
@@ -57,7 +54,6 @@ export const ReviewProvider = ({ children }: { children: ReactNode }) => {
     }
   }, []);
 
-  // Đánh giá đã tạo của chính user -> dùng để disable nút "Đánh giá".
   useEffect(() => {
     if (!isAuthenticated) {
       setReviewedKeys(new Set());
@@ -66,7 +62,7 @@ export const ReviewProvider = ({ children }: { children: ReactNode }) => {
     let cancelled = false;
     const loadOwnReviews = async () => {
       try {
-        // Duyệt các sản phẩm đã mua để biết sản phẩm nào đã đánh giá.
+
         const { orders } = await ordersApi.list({ pageSize: 100 });
         if (cancelled) return;
 
@@ -97,7 +93,6 @@ export const ReviewProvider = ({ children }: { children: ReactNode }) => {
         orderId: input.orderId,
       });
 
-      // Cập nhật cache của sản phẩm để UI phản ánh ngay.
       setCache(prev => ({
         ...prev,
         [input.productId]: [review, ...(prev[input.productId] ?? [])],
@@ -125,8 +120,7 @@ export const ReviewProvider = ({ children }: { children: ReactNode }) => {
     [reviewedKeys],
   );
 
-  /** Danh sách đánh giá của sản phẩm đầu tiên trong context (dùng cho tab). */
-  const reviews = useMemo(() => {
+    const reviews = useMemo(() => {
     const first = Object.values(cache)[0];
     return first ?? [];
   }, [cache]);

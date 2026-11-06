@@ -18,8 +18,7 @@ export const Route = createFileRoute('/api/admin/reviews/')({
   server: {
     middleware: [corsMiddleware, requireAuth, requireAdmin],
     handlers: {
-      /** Danh sách đánh giá toàn hệ thống (lọc theo trạng thái hiển thị). */
-      GET: withErrorHandling(async ({ request }) => {
+            GET: withErrorHandling(async ({ request }) => {
         await connectDB();
         const url = new URL(request.url);
         const sp = url.searchParams;
@@ -67,8 +66,7 @@ export const Route = createFileRoute('/api/admin/reviews/')({
         );
       }),
 
-      /** Duyệt / ẩn / xoá đánh giá. */
-      POST: withErrorHandling(async ({ request }) => {
+            POST: withErrorHandling(async ({ request }) => {
         await connectDB();
         const body = await readJson(request, actionSchema);
 
@@ -110,7 +108,6 @@ export const Route = createFileRoute('/api/admin/reviews/')({
   },
 });
 
-/** Escape regex để tìm kiếm an toàn. */
 function escapeRegex(text: string): string {
   return text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }

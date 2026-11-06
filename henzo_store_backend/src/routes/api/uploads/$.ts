@@ -4,15 +4,6 @@ import { withErrorHandling } from '@/server/http/handler';
 import { fail } from '@/server/http/response';
 import { readUploadedImage } from '@/server/services/upload.service';
 
-/**
- * Phục vụ file ảnh đã tải lên.
- *
- * Đường dẫn: `/api/uploads/<tên-file>` → trả về binary với đúng
- * `Content-Type` để trình duyệt hiển thị đúng (JPEG/PNG/WEBP…).
- *
- * Nguồn dữ liệu: MongoDB (`UploadedImage`) trước, đĩa sau — để ảnh không
- * mất khi Render restart (disk là ephemeral).
- */
 export const Route = createFileRoute('/api/uploads/$')({
   server: {
     middleware: [corsMiddleware],

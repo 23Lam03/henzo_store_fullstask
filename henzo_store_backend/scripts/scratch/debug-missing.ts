@@ -1,8 +1,3 @@
-/**
- * Debug: tại sao 1 model KHÔNG tìm được ảnh trên Commons.
- *
- * Chạy: npx tsx scripts/debug-missing.ts "Corsair HS60 Wireless"
- */
 import { modelName } from '../lib/model-name';
 
 const UA = 'henzo-store/1.0 (model image resolver; dev@henzo.local)';

@@ -1,6 +1,3 @@
-/**
- * Model Category — cây danh mục (hỗ trợ cha/con).
- */
 import { Schema, type InferSchemaType } from 'mongoose';
 import { defineModel } from './registry';
 
@@ -12,8 +9,7 @@ const categorySchema = new Schema(
     image: { type: String, default: '' },
     banner: { type: String, default: '' },
     description: { type: String, default: '' },
-    /** Danh mục cha — null cho cấp 1. */
-    parentId: {
+        parentId: {
       type: Schema.Types.ObjectId,
       ref: 'Category',
       default: null,

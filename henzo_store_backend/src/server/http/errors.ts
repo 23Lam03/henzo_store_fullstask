@@ -1,6 +1,3 @@
-/**
- * Lỗi nghiệp vụ có mã — handler bắt và trả về response chuẩn.
- */
 
 export class AppError extends Error {
   readonly status: number;

@@ -1,10 +1,3 @@
-/**
- * PROBE đa ngôn ngữ: tìm ảnh sản phẩm qua các bản Wikipedia khác
- * (de/es/fr/it/ru/ja/pt/pl/nl) — nhiều bài viết về tai nghe không có
- * trang tiếng Anh nhưng VẪN dùng ảnh Commons.
- *
- * Chạy: npx tsx scripts/probe-multilang.ts
- */
 import { writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { getJson } from '../lib/commons-files';

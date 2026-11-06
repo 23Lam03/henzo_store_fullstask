@@ -37,8 +37,7 @@ export const Route = createFileRoute('/api/admin/products/')({
   server: {
     middleware: [corsMiddleware, requireAuth, requireAdmin, requirePermission('Quản lý sản phẩm')],
     handlers: {
-      /** Danh sách sản phẩm toàn hệ thống (lọc theo trạng thái, cửa hàng). */
-      GET: withErrorHandling(async ({ request }) => {
+            GET: withErrorHandling(async ({ request }) => {
         await connectDB();
         const url = new URL(request.url);
         const sp = url.searchParams;
@@ -92,8 +91,7 @@ export const Route = createFileRoute('/api/admin/products/')({
         );
       }),
 
-      /** Cập nhật sản phẩm (admin kiểm duyệt nội dung). */
-      PATCH: withErrorHandling(async ({ request }) => {
+            PATCH: withErrorHandling(async ({ request }) => {
         await connectDB();
         const body = await readJson(request, updateSchema);
 
@@ -132,7 +130,6 @@ export const Route = createFileRoute('/api/admin/products/')({
           product.set('specifications', body.specifications);
         }
 
-        // Giá gốc luôn >= giá bán; % giảm được tính lại tự động.
         if (body.price !== undefined || body.originalPrice !== undefined) {
           if (!product.originalPrice || product.originalPrice < product.price) {
             product.originalPrice = product.price;
@@ -144,8 +141,7 @@ export const Route = createFileRoute('/api/admin/products/')({
         return ok(toProductDto(product));
       }),
 
-      /** Xoá sản phẩm vi phạm. */
-      DELETE: withErrorHandling(async ({ request }) => {
+            DELETE: withErrorHandling(async ({ request }) => {
         await connectDB();
         const id = new URL(request.url).searchParams.get('id');
         if (!id) throw badRequest('Thiếu mã sản phẩm.');
@@ -160,7 +156,6 @@ export const Route = createFileRoute('/api/admin/products/')({
   },
 });
 
-/** Escape regex để tìm kiếm an toàn. */
 function escapeRegex(text: string): string {
   return text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }

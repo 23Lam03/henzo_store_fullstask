@@ -1,12 +1,3 @@
-/**
- * TÌM ẢNH FALLBACK CHO MODEL CHƯA CÓ ẢNH RIÊNG — DÙNG METADATA COMMONS.
- *
- * Với các model 2024-2026 chưa có ảnh riêng trên Commons, ta tìm ảnh CÙNG
- * HÃNG + CÙNG LOẠI. Để chắc chắn ảnh đúng hãng/đúng dòng sản phẩm (vì tên
- * file Commons thường không chứa tên hãng, vd "ST100VoidPro" là tai nghe
- * Corsair), ta đọc thêm `extmetadata` (ImageDescription/Categories) rồi
- * chấm điểm theo nội dung đó.
- */
 import { getJson } from '../lib/commons-files';
 import { normalizeFileTitle, tokenize } from '../lib/image-match';
 
@@ -19,14 +10,9 @@ export interface MetaCandidate {
   matched: string[];
 }
 
-/** Ảnh không dùng được làm ảnh sản phẩm. */
 const BAD =
   /\b(shop|store|mall|market|street|banner|poster|logo|chart|graph|diagram|map|comparison|versus|people|person|hand|hands|woman|man\b|boy|girl|protest|meeting|conference|booth|package|unboxing|manual|instruction|advertis|crowd|panorama|landscape|building|room|office|workshop|repairer|technician|todd|child|model\b|fashion|modeling|actress|actor|politician|president)\b/i;
 
-/**
- * Tên file chứa từ không liên quan tới sản phẩm (người, địa danh, sự kiện).
- * Commons có rất nhiều ảnh "Con người tên là Corsair/Logitech/Acer" — loại hết.
- */
 const NAME_SUSPECT =
   /\b(todd|person|woman|man|girl|boy|child|people|crowd|street|paseo|cahul|pascua|nagoya|shenzhen|mongkok|zai|nie|grand|opening|mall|stand|booth|assembly|ceremony|parade|protest|fashion|runway|model|modeling|promo|price|bangladesh|sales|discount|deal|shop sign)\b/i;
 
@@ -37,7 +23,6 @@ const stripHtml = (s: string): string =>
     .replace(/\s+/g, ' ')
     .trim();
 
-/** Trích xuất text mô tả từ extmetadata của Commons. */
 function describe(page: any): string {
   const meta = page?.imageinfo?.[0]?.extmetadata ?? {};
   const parts = [
@@ -49,13 +34,6 @@ function describe(page: any): string {
   return parts.join(' ').toLowerCase();
 }
 
-/**
- * Chấm điểm ứng viên theo:
- *  - brand phải xuất hiện trong TÊN FILE (bắt buộc) — tránh ảnh của người
- *    trùng tên hãng (vd "Thelma Todd in Corsair").
- *  - các token định danh của model xuất hiện -> ảnh đúng dòng.
- *  - tên file gọn (ảnh sản phẩm chụp riêng).
- */
 export function scoreMeta(
   title: string,
   description: string,
@@ -66,7 +44,6 @@ export function scoreMeta(
   const t = normalizeFileTitle(title);
   const d = description;
 
-  // BẮT BUỘC: brand nằm trong tên file.
   const brandLower = brand.toLowerCase().trim();
   const brandTokens = tokenize(brand);
   const hasBrandInTitle =
@@ -76,7 +53,6 @@ export function scoreMeta(
   let score = 8;
   const matched: string[] = [];
 
-  // Token định danh của model xuất hiện -> ảnh đúng dòng.
   for (const tok of modelTokens) {
     if (tok.length < 3) continue;
     if (t.includes(tok)) {
@@ -88,7 +64,6 @@ export function scoreMeta(
     }
   }
 
-  // Tên file gọn -> nhiều khả năng là ảnh chụp sản phẩm.
   const words = t.split(' ').filter(Boolean).length;
   if (words <= 5) score += 4;
   else if (words > 12) score -= 4;
@@ -96,7 +71,6 @@ export function scoreMeta(
   return { score, matched };
 }
 
-/** Tìm ứng viên theo truy vấn từ khoá, có đọc extmetadata. */
 export async function searchWithMeta(
   query: string,
   limit = 12,

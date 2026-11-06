@@ -18,7 +18,7 @@ async function main() {
     e.n++; bases.set(b, e);
   }
   console.log('=== Số dòng cơ sở:', bases.size);
-  // catalog base
+
   const catBases = new Set<string>();
   for (const p of mock.products as any[]) catBases.add(stripTail(p.name));
   let covered=0; const need: string[]=[];

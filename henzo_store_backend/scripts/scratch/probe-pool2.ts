@@ -1,6 +1,3 @@
-/**
- * Probe thêm ảnh màn hình / bàn phím / chuột / case PC thật (nhiều hãng).
- */
 import { writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 

@@ -35,7 +35,6 @@ export const SearchProvider = ({ children }: { children: ReactNode }) => {
   const [history, setHistory] = useState<SearchHistory[]>([]);
   const [error, setError] = useState<string | null>(null);
 
-  // Lịch sử tìm kiếm lưu trên server (yêu cầu đăng nhập).
   const refreshHistory = useCallback(async () => {
     if (!isAuthenticated) {
       setHistory([]);
@@ -80,7 +79,6 @@ export const SearchProvider = ({ children }: { children: ReactNode }) => {
     if (!q || !q.trim()) return;
     if (!isAuthenticated) return;
 
-    // Cập nhật optimistically.
     setHistory(prev => {
       const filtered = prev.filter(h => h.query.toLowerCase() !== q.toLowerCase());
       return [

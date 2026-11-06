@@ -31,8 +31,7 @@ export const Route = createFileRoute('/api/seller/support/tickets/$id')({
   server: {
     middleware: [corsMiddleware, requireAuth, requireStoreOwner],
     handlers: {
-      /** Chi tiết phiếu hỗ trợ. */
-      GET: withErrorHandling(async ({ params, context }) => {
+            GET: withErrorHandling(async ({ params, context }) => {
         await connectDB();
         const scope = getStoreScope(context);
 
@@ -46,8 +45,7 @@ export const Route = createFileRoute('/api/seller/support/tickets/$id')({
         return ok(toSellerTicket(ticket));
       }),
 
-      /** Trả lời phiếu hỗ trợ. */
-      POST: withErrorHandling(async ({ request, params, context }) => {
+            POST: withErrorHandling(async ({ request, params, context }) => {
         await connectDB();
         const scope = getStoreScope(context);
         const body = await readJson(request, replySchema);
@@ -55,7 +53,6 @@ export const Route = createFileRoute('/api/seller/support/tickets/$id')({
         const ticket = await TicketModel.findById(params.id);
         if (!ticket) throw notFound('Không tìm thấy phiếu hỗ trợ');
 
-        // Ticket có storeId = cửa hàng cụ thể, hoặc ticket chung do admin tạo.
         if (ticket.storeId && String(ticket.storeId) !== String(scope.storeId)) {
           throw forbidden('Phiếu hỗ trợ không thuộc cửa hàng của bạn');
         }
@@ -73,11 +70,7 @@ export const Route = createFileRoute('/api/seller/support/tickets/$id')({
         return ok(toSellerTicket(ticket));
       }),
 
-      /**
-       * Cập nhật trạng thái phiếu hỗ trợ.
-       * Đồng thời hỗ trợ gửi nội dung trả lời (`content`) cho tiện.
-       */
-      PATCH: withErrorHandling(async ({ request, params, context }) => {
+            PATCH: withErrorHandling(async ({ request, params, context }) => {
         await connectDB();
         const scope = getStoreScope(context);
         const body = await readJson(request, patchSchema);
@@ -97,8 +90,6 @@ export const Route = createFileRoute('/api/seller/support/tickets/$id')({
             attachments: body.attachments ?? [],
           } as any);
 
-          // Trả lời -> trạng thái chuyển sang `replied` (trừ khi người dùng
-          // chỉ định trạng thái khác rõ ràng).
           if (!body.status) ticket.status = SellerTicketStatus.REPLIED as any;
         }
 

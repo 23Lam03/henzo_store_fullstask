@@ -13,8 +13,7 @@ export const Route = createFileRoute('/api/admin/orders/')({
   server: {
     middleware: [corsMiddleware, requireAuth, requireAdmin],
     handlers: {
-      /** Danh sách toàn bộ đơn hàng trên hệ thống. */
-      GET: withErrorHandling(async ({ request }) => {
+            GET: withErrorHandling(async ({ request }) => {
         await connectDB();
         const url = new URL(request.url);
         const sp = url.searchParams;
@@ -73,7 +72,6 @@ export const Route = createFileRoute('/api/admin/orders/')({
   },
 });
 
-/** Escape regex để tìm kiếm an toàn. */
 function escapeRegex(text: string): string {
   return text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }

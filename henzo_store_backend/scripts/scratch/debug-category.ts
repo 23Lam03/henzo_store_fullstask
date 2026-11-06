@@ -1,8 +1,3 @@
-/**
- * Liệt kê ảnh trong CATEGORY Commons (để tìm ảnh dòng sản phẩm).
- *
- * Chạy: npx tsx scripts/debug-category.ts "Corsair headsets"
- */
 import { modelName } from '../lib/model-name';
 
 const UA = 'henzo-store/1.0 (model image resolver; dev@henzo.local)';
@@ -35,7 +30,6 @@ async function main() {
   m.forEach((t: string) => console.log('  ', t));
   console.log(`(${m.length} file)`);
 
-  // Tìm các category liên quan.
   const q = cat.split(' ')[0];
   const d = await getJson(
     `https://commons.wikimedia.org/w/api.php?action=query&format=json` +

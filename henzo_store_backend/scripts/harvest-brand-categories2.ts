@@ -1,7 +1,3 @@
-/**
- * Thử nhiều tên category Commons đoán (hyperX, zowie, ultragear, odyssey...).
- * Cũng dùng search namespace 14 với từ khoá "Category:<từ>".
- */
 import { writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 

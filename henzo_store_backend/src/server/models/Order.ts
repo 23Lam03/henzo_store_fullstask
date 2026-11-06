@@ -1,10 +1,3 @@
-/**
- * Model Order — đơn hàng.
- *
- * Mô hình marketplace: một đơn có thể chứa sản phẩm của nhiều cửa hàng.
- * Mỗi nhóm sản phẩm theo store tạo ra một "sub-order" với trạng thái riêng,
- * vì mỗi seller xử lý đơn của họ độc lập (đúng nghiệp vụ sàn thương mại).
- */
 import { Schema, type InferSchemaType } from 'mongoose';
 import { defineModel } from './registry';
 import {
@@ -14,7 +7,6 @@ import {
   SellerOrderStatus,
 } from '../constants';
 
-// ─── Sub-order: nhóm sản phẩm theo từng cửa hàng ──────────────────────────────
 const subOrderItemSchema = new Schema(
   {
     productId: { type: Schema.Types.ObjectId, ref: 'Product', required: true },
@@ -49,8 +41,7 @@ const subOrderSchema = new Schema(
     shippingPartner: { type: String, default: '' },
     estimatedDelivery: { type: Date },
     deliveredAt: { type: Date },
-    /** Thời điểm mỗi lần chuyển trạng thái (dùng dựng timeline). */
-    statusHistory: {
+        statusHistory: {
       type: [
         new Schema(
           {
@@ -67,7 +58,6 @@ const subOrderSchema = new Schema(
   { _id: true },
 );
 
-// ─── Vận chuyển ───────────────────────────────────────────────────────────────
 const shippingUpdateSchema = new Schema(
   {
     status: { type: String, required: true },
@@ -82,26 +72,20 @@ const orderSchema = new Schema(
   {
     orderNumber: { type: String, required: true, unique: true, index: true },
 
-    // ─── Khách hàng ────────────────────────────────────────────────────────
     customerId: { type: Schema.Types.ObjectId, ref: 'User', index: true },
     customerName: { type: String, required: true },
     customerPhone: { type: String, required: true },
     customerAvatar: { type: String, default: '' },
 
-    // ─── Sản phẩm ──────────────────────────────────────────────────────────
     items: { type: [subOrderItemSchema], default: [] },
-    /** Nhóm theo cửa hàng — dùng cho màn hình seller. */
-    subOrders: { type: [subOrderSchema], default: [] },
+        subOrders: { type: [subOrderSchema], default: [] },
 
-    // ─── Tiền (luôn tính lại ở server, không tin client) ────────────────────
     subtotal: { type: Number, default: 0, min: 0 },
     shippingFee: { type: Number, default: 0, min: 0 },
     discount: { type: Number, default: 0, min: 0 },
     totalPrice: { type: Number, default: 0, min: 0 },
 
-    // ─── Trạng thái ────────────────────────────────────────────────────────
-    /** Trạng thái tổng hợp phía khách. */
-    status: {
+        status: {
       type: String,
       enum: Object.values(CustomerOrderStatus),
       default: CustomerOrderStatus.PENDING,
@@ -126,7 +110,6 @@ const orderSchema = new Schema(
       default: 'cod',
     },
 
-    // ─── Giao hàng ─────────────────────────────────────────────────────────
     shippingName: { type: String, default: '' },
     shippingPhone: { type: String, default: '' },
     shippingAddress: { type: String, default: '' },
@@ -136,15 +119,12 @@ const orderSchema = new Schema(
     note: { type: String, default: '' },
     shippingUpdates: { type: [shippingUpdateSchema], default: [] },
 
-    // ─── Voucher ───────────────────────────────────────────────────────────
     voucherCode: { type: String, default: '' },
     voucherId: { type: Schema.Types.ObjectId, ref: 'Voucher' },
 
-    /** Lý do huỷ (nếu có). */
-    cancelReason: { type: String, default: '' },
+        cancelReason: { type: String, default: '' },
     cancelledAt: { type: Date },
-    /** Đơn đã bị hủy trong 1 giờ? Dùng cho nghiệp vụ huỷ đơn. */
-  },
+      },
   { timestamps: true },
 );
 
@@ -163,7 +143,6 @@ function mapToObject(value: Record<string, string> | Map<string, string>) {
   return { ...value };
 }
 
-/** DTO phía khách — đúng shape `Order` của frontend. */
 export function toCustomerOrder(order: any) {
   if (!order) return null;
   const obj = order.toObject ? order.toObject() : { ...order };
@@ -218,11 +197,7 @@ export function toCustomerOrder(order: any) {
     voucherCode: obj.voucherCode ?? '',
     trackingNumber: obj.subOrders?.[0]?.trackingNumber ?? '',
     shippingPartner: obj.subOrders?.[0]?.shippingPartner ?? '',
-    /**
-     * Sub-order theo từng cửa hàng — nghiệp vụ multi-vendor: mỗi seller xử lý
-     * đơn của họ độc lập nên khách cần biết trạng thái giao hàng của từng shop.
-     */
-    subOrders: (obj.subOrders ?? []).map((s: any) => ({
+        subOrders: (obj.subOrders ?? []).map((s: any) => ({
       id: String(s._id),
       storeId: String(s.storeId),
       storeName: s.storeName ?? '',
@@ -255,7 +230,6 @@ export function toCustomerOrder(order: any) {
   };
 }
 
-/** DTO phía seller — đúng shape `SellerOrder` của frontend. */
 export function toSellerOrder(order: any, storeId?: string) {
   if (!order) return null;
   const obj = order.toObject ? order.toObject() : { ...order };
@@ -312,7 +286,6 @@ export function toSellerOrder(order: any, storeId?: string) {
   };
 }
 
-/** DTO phía admin — đủ thông tin cho bảng quản lý. */
 export function toAdminOrder(order: any) {
   if (!order) return null;
   const obj = order.toObject ? order.toObject() : { ...order };

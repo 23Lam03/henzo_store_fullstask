@@ -1,11 +1,3 @@
-/**
- * Trích xuất dữ liệu mock từ frontend (`henzo_store/src/data`) ra JSON.
- *
- * Chạy:  npx tsx scripts/extract-frontend-data.ts
- * Kết quả: scripts/data/frontend-mock.json
- *
- * Script seed chỉ đọc file JSON này nên không phụ thuộc vào code frontend.
- */
 import { writeFileSync, mkdirSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';

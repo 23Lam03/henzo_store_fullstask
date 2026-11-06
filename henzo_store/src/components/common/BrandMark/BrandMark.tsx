@@ -2,16 +2,10 @@ import './BrandMark.css';
 
 type BrandMarkProps = {
   size?: number;
-  /** 'light' = trên nền sáng, 'dark' = trên nền tối */
-  tone?: 'light' | 'dark';
+    tone?: 'light' | 'dark';
   className?: string;
 };
 
-/**
- * Nhãn hiệu Henzo — chữ H hình học góc vuông trong khung hairline.
- * Dùng `currentColor` nên tự đảo màu theo nền (sáng/tối) mà không cần SVG riêng.
- * Chủ đích: không gradient, không bo tròn "bong bóng" — cảm giác ấn phẩm in.
- */
 export const BrandMark = ({ size = 34, tone = 'light', className = '' }: BrandMarkProps) => (
   <svg
     width={size}

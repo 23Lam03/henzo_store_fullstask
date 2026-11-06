@@ -1,8 +1,3 @@
-/**
- * Liệt kê file trong các Commons category để tìm ảnh SẢN PHẨM THẬT.
- *
- * Chạy: npx tsx scripts/probe-categories.ts
- */
 import { getJson } from '../lib/commons-files';
 
 const CATS = [

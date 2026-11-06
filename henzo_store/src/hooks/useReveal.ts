@@ -1,27 +1,12 @@
 import { useEffect, useRef, useState, type RefObject } from 'react';
 
 type RevealOptions = {
-  /** Ngưỡng hiển thị (0–1). 0.15 = phần tử hiện khi 15% đã lọt khung nhìn. */
-  threshold?: number;
-  /** Khoảng cách gốc viewport (px) — dùng để kích hoạt sớm hơn. */
-  rootMargin?: string;
-  /** Chạy hiệu ứng một lần rồi dừng. */
-  once?: boolean;
-  /** Trì hoãn (ms) trước khi hiệu ứng chạy. */
-  delay?: number;
+    threshold?: number;
+    rootMargin?: string;
+    once?: boolean;
+    delay?: number;
 };
 
-/**
- * Hook theo dõi phần tử có xuất hiện trong khung nhìn để chạy hiệu ứng "reveal".
- *
- * Cơ chế kép để nội dung KHÔNG BAO GIỜ bị ẩn vĩnh viễn:
- *  1. IntersectionObserver — cách chính, nhẹ và chính xác.
- *  2. Kiểm tra theo vị trí scroll (fallback) — dùng khi observer không phát
- *     tín hiệu (tab nền, trình duyệt nhúng, thiết bị cũ).
- *
- * Ngoài ra nếu người dùng tắt animation (prefers-reduced-motion) thì hiện
- * nội dung ngay lập tức.
- */
 export function useReveal<T extends HTMLElement = HTMLElement>(
   options: RevealOptions = {}
 ): { ref: RefObject<T | null>; revealed: boolean } {
@@ -35,7 +20,6 @@ export function useReveal<T extends HTMLElement = HTMLElement>(
     const el = ref.current;
     if (!el) return;
 
-    // Người dùng tắt animation → hiện luôn, không cần quan sát.
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       setRevealed(true);
       doneRef.current = true;
@@ -58,8 +42,7 @@ export function useReveal<T extends HTMLElement = HTMLElement>(
       timer = window.setTimeout(show, delay);
     };
 
-    /* 1. IntersectionObserver — cách chính */
-    let observer: IntersectionObserver | undefined;
+        let observer: IntersectionObserver | undefined;
     if (typeof IntersectionObserver !== 'undefined') {
       observer = new IntersectionObserver(
         entries => {
@@ -74,13 +57,12 @@ export function useReveal<T extends HTMLElement = HTMLElement>(
       observer.observe(el);
     }
 
-    /* 2. Fallback theo vị trí scroll — bảo đảm nội dung luôn xuất hiện */
-    const checkPosition = () => {
+        const checkPosition = () => {
       frame = 0;
       if (doneRef.current) return;
       const rect = el.getBoundingClientRect();
       const vh = window.innerHeight || document.documentElement.clientHeight;
-      // Đã lọt khung nhìn (tính cả phần đã cuộn qua) → hiện.
+
       if (rect.top < vh * 0.92 && rect.bottom > 0) {
         show();
       }

@@ -1,26 +1,3 @@
-/**
- * SỬA ẢNH CHÍNH SAI LOẠI SẢN PHẨM.
- *
- * Vấn đề phát hiện khi audit mở rộng:
- *   29 sản phẩm có ảnh chính KHÔNG đúng loại:
- *     - "ASUS ROG Phone 9 Pro"  -> ảnh laptop Vivobook
- *     - "ASUS ZenBook 14 OLED"  -> ảnh case máy tính Amstrad NC100
- *     - "LG Gram 14"           -> ảnh panel mở máy
- *     - "ASUS ROG Delta S"     -> ảnh Zenbook
- *     - "JBL Quantum 910"     -> ảnh JBL Free (tai nghe in-ear, khác dòng)
- *     - "AirPods 4 ANC"        -> ảnh AirPods Max
- *     - "Samsung 990 PRO"      -> ảnh SSD (đúng, nhưng danh mục PC Gaming
- *                                  khiến bộ lọc ảnh loại nhầm)
- *
- * Cách sửa:
- *   1. Ảnh RIÊNG của model (model-images.json / curated-model-files.json)
- *      — luôn ưu tiên cao nhất.
- *   2. Ảnh theo LOẠI sản phẩm (type-image-pools.json) — đúng loại, khác
- *      model. Dùng cho sản phẩm không có ảnh riêng.
- *   3. Giữ nguyên ảnh hiện tại nếu không tìm được ảnh nào đúng hơn.
- *
- * Chạy: npx tsx scripts/fix-wrong-type-images.ts
- */
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { connectDB, disconnectDB } from '../src/server/db';
@@ -28,13 +5,6 @@ import { ProductModel } from '../src/server/models/Product';
 import { modelType } from './lib/model-type';
 import { modelName } from './lib/model-name';
 
-/**
- * Token đặc trưng cho loại sản phẩm — dùng để phát hiện ảnh SAI LOẠI.
- *
- * Mỗi token là một "dấu hiệu" chắc chắn không thuộc loại sản phẩm đó.
- * Ảnh chính chỉ bị coi là sai khi KHÔNG có token của loại mình VÀ có
- * token của loại khác.
- */
 const TYPE_MARKERS: Record<string, string[]> = {
   'Điện thoại': ['iphone', 'galaxy', 'pixel', 'phone', 'smartphone', 'redmi', 'oneplus', 'nothing'],
   Tablet: ['ipad', 'galaxy tab', 'tablet'],
@@ -47,10 +17,6 @@ const TYPE_MARKERS: Record<string, string[]> = {
   'Phụ kiện': ['adapter', 'cable', 'hub', 'dock', 'charger', 'sạc'],
 };
 
-/**
- * Token của CÁC LOẠI KHÁC — nếu ảnh chính chỉ toàn token thuộc loại khác
- * mà không có token của loại hiện tại -> ảnh sai loại.
- */
 const OTHER_MARKERS = Object.entries(TYPE_MARKERS)
   .filter(([c]) => c !== 'Điện thoại')
   .flatMap(([, t]) => t);
@@ -60,7 +26,6 @@ function hits(url: string, tokens: string[]): string[] {
   return tokens.filter((t) => u.includes(t));
 }
 
-/** Kiểm tra ảnh có đúng loại sản phẩm không. */
 function isWrongType(url: string, type: string): boolean {
   const own = hits(url, TYPE_MARKERS[type] ?? []);
   const other = hits(url, OTHER_MARKERS);
@@ -85,7 +50,6 @@ async function main() {
 
   console.log(`[fix-images] ${products.length} sản phẩm`);
 
-  // Ảnh chính đã dùng -> không cho dùng lại cho sản phẩm khác.
   const usedMain = new Map<string, string>();
   for (const p of products) {
     const main = String((p.images ?? [])[0] ?? '');
@@ -106,12 +70,10 @@ async function main() {
 
     const model = modelName(String(p.name));
 
-    // 1. Ảnh riêng của model
     const own = (modelImages[model]?.images ?? []).filter(
       (u) => u !== main && !isWrongType(u, type),
     );
 
-    // 2. Ảnh theo loại sản phẩm
     const typePool = (typePools[type] ?? []).filter(
       (u) => u !== main && !isWrongType(u, type),
     );
@@ -136,7 +98,7 @@ async function main() {
     }
 
     if (!replacement) {
-      // Không có ảnh nào đúng hơn -> giữ nguyên, chỉ ghi nhận.
+
       unchanged++;
       detail.push(
         `  ⚠ ${p.name} [${type}] — không có ảnh thay thế đúng loại ` +
@@ -145,7 +107,6 @@ async function main() {
       continue;
     }
 
-    // Giữ nguyên ảnh phụ, chỉ thay ảnh chính.
     const extras = images.slice(1).filter((u) => u !== replacement);
     await ProductModel.updateOne(
       { _id: p._id },
@@ -163,7 +124,6 @@ async function main() {
   console.log(`[fix-images] Đã sửa ${fixed} sản phẩm, giữ nguyên ${unchanged}`);
   for (const d of detail) console.log(d);
 
-  // ─── Kiểm tra lại ────────────────────────────────────────────────────
   const after = await ProductModel.find({})
     .select('name images categoryName')
     .lean();

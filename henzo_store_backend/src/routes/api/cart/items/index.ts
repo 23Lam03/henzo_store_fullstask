@@ -17,8 +17,7 @@ export const Route = createFileRoute('/api/cart/items/')({
   server: {
     middleware: [corsMiddleware, requireAuth],
     handlers: {
-      /** Thêm sản phẩm vào giỏ (tự cộng dồn nếu đã tồn tại). */
-      POST: withErrorHandling(async ({ request, context }) => {
+            POST: withErrorHandling(async ({ request, context }) => {
         await connectDB();
         const body = await readJson(request, addSchema);
         return ok(

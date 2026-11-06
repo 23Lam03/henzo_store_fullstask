@@ -1,8 +1,3 @@
-/**
- * KIỂM TRA TOÀN BỘ URL ảnh trong model-images.json (HEAD request).
- *
- * Chạy: npx tsx scripts/verify-model-image-urls.ts
- */
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
@@ -32,7 +27,6 @@ async function main() {
     readFileSync(resolve(process.cwd(), 'scripts/data/model-images.json'), 'utf-8'),
   ) as Record<string, { images: string[] }>;
 
-  // Kiểm tra ảnh chính của mọi model + toàn bộ ảnh phụ (giới hạn 8/model).
   const jobs: Array<{ model: string; url: string; primary: boolean }> = [];
   for (const [model, v] of Object.entries(db)) {
     v.images.slice(0, 8).forEach((u, i) =>

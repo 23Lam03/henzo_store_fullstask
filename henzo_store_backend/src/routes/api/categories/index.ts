@@ -5,10 +5,6 @@ import { ok } from '@/server/http/response';
 import { CategoryModel, toCategoryDto } from '@/server/models/Category';
 import { connectDB } from '@/server/db';
 
-/**
- * Cây danh mục — trả về cấp 1 kèm `children` (cấp 2).
- * Khớp shape `ProductCategory` của frontend: { id, name, slug, icon, children?, featured? }
- */
 export const Route = createFileRoute('/api/categories/')({
   server: {
     middleware: [corsMiddleware],

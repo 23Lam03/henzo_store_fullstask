@@ -1,8 +1,3 @@
-/**
- * Tìm ảnh Commons bằng full-text search với cụm từ đặc thù (có dấu nháy).
- * Cũng thử search trên nhiều wiki (de, zh, ja, fr) rồi lấy file Commons
- * được dùng trong bài viết đó.
- */
 import { writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
@@ -25,7 +20,6 @@ async function getJson(url: string): Promise<any> {
   return null;
 }
 
-/** Commons fulltext, namespace 6, từ khoá có dấu nháy. */
 async function commonsPhrase(q: string): Promise<string[]> {
   const d = await getJson(
     `https://commons.wikimedia.org/w/api.php?action=query&format=json` +
@@ -34,7 +28,6 @@ async function commonsPhrase(q: string): Promise<string[]> {
   return (d?.query?.search ?? []).map((s: any) => s.title.replace(/^File:/, ''));
 }
 
-/** Commons fulltext, namespace 14 (category). */
 async function commonsCatPhrase(q: string): Promise<string[]> {
   const d = await getJson(
     `https://commons.wikimedia.org/w/api.php?action=query&format=json` +
@@ -43,7 +36,6 @@ async function commonsCatPhrase(q: string): Promise<string[]> {
   return (d?.query?.search ?? []).map((s: any) => s.title.replace(/^Category:/, ''));
 }
 
-/** File Commons dùng trong bài viết của wiki khác. */
 async function wikiFiles(lang: string, title: string): Promise<string[]> {
   const d = await getJson(
     `https://${lang}.wikipedia.org/w/api.php?action=query&format=json&titles=${encodeURIComponent(title)}` +

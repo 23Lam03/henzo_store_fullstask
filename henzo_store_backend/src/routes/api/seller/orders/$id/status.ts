@@ -28,13 +28,9 @@ export const Route = createFileRoute('/api/seller/orders/$id/status')({
   server: {
     middleware: [corsMiddleware, requireAuth, requireStoreOwner],
     handlers: {
-      /**
-       * Seller cập nhật trạng thái sub-order của cửa hàng mình.
-       * Sơ đồ trạng thái được kiểm tra trong `order-workflow.service`.
-       */
-      PATCH: withErrorHandling(async ({ request, params, context }) => {
+            PATCH: withErrorHandling(async ({ request, params, context }) => {
         await connectDB();
-        // Đổi trạng thái là thao tác ghi -> bắt buộc có một cửa hàng cụ thể.
+
         const storeId = getStoreScope(context).require();
         const body = await readJson(request, statusSchema);
 

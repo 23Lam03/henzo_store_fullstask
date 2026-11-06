@@ -1,12 +1,7 @@
 import { isProductPhoto, isMatch, isIntitleMatch } from '../resolve-model-images';
 
-/**
- * [tiêu đề ảnh, brand, model, kỳ vọng]
- *  expected = true  -> ảnh PHẢI được chấp nhận
- *  expected = false -> ảnh PHẢI bị loại
- */
 const CASES: Array<[string, string, string, boolean]> = [
-  // ── Ảnh KHÔNG phải sản phẩm ───────────────────────────────────────────
+
   ['File:IPhone 15 机型价格 & 性能数据对比图.png', 'Apple', 'iPhone 15', false],
   ['File:Air Scoop - 2015 BMW M3 (15383974204).jpg', 'Apple', 'iPad Air M3 13in', false],
   ['File:Deepwater Horizon oil spill - May 24, 2010.jpg', 'BenQ', 'Zowie XL2546X 24.5in', false],
@@ -27,31 +22,28 @@ const CASES: Array<[string, string, string, boolean]> = [
   ['File:Back of iPhone 16 Plus.jpg', 'Apple', 'iPhone 16', false],
   ['File:Sony Ericsson G502 (Premium Black) - Front.jpg', 'Logitech', 'Logitech G502 Hero', false],
 
-  // ── Ảnh ĐÚNG model ───────────────────────────────────────────────────
   ['File:Back of iPhone 16 Pro Max Gold model.jpg', 'Apple', 'iPhone 16 Pro Max', true],
   ['File:Logitech MX Master 3S HS03.jpg', 'Logitech', 'Logitech MX Master 3S Graphite', true],
   ['File:Logitech MX Keys YR0073 Wireless Keyboard.jpg', 'Logitech', 'Logitech MX Keys S', true],
   ['File:MacBook Pro (16-inch, M4 Pro, Silver).jpg', 'Apple', 'MacBook Pro 16in M4 Pro', true],
 ];
 
-// Ảnh tìm được qua lớp `intitle:` — chỉ cần qua bộ lọc ảnh sản phẩm.
 const INTITLE_OK: Array<[string, string, string]> = [
   ['File:G502 Hero.jpg', 'Logitech', 'Logitech G502 Hero'],
   ['File:2026 G502 X PLUS (side view).jpg', 'Logitech', 'Logitech G502 X Plus Lightspeed'],
 ];
 
-// Ảnh KHÔNG được chấp nhận qua lớp `intitle:` (trùng mã nhưng sai sản phẩm).
 const INTITLE_BAD: Array<[string, string, string]> = [
   ['File:Taj Mahal, Agra, Uttar Pradesh s-60.jpg', 'Corsair', 'Corsair HS60 Wireless'],
   ['File:Board of G915 (20210625091622).jpg', 'Logitech', 'Logitech G915 TKL Lightspeed'],
   ['File:Shuinanzhuang level crossing when G915 passing (20210922094301).jpg', 'Logitech', 'Logitech G915 TKL Lightspeed'],
   ['File:Air Scoop - 2015 BMW M3 (15383974204).jpg', 'Apple', 'iPad Air M3 13in'],
   ['File:Sony Ericsson G502 (Premium Black) - Front.jpg', 'Logitech', 'Logitech G502 Hero'],
-  // ẢNH của hãng KHÁC -> phải loại.
+
   ['File:2023 Gigabyte GeForce RTX 4070 Aero OC 12GB (3).jpg', 'NVIDIA', 'NVIDIA GeForce RTX 4070 Ti SUPER Founders Edition'],
   ['File:Wireless mouse logi.jpg', 'Corsair', 'Corsair Katar Pro XT Wireless'],
   ['File:Wireless mouse logi.jpg', 'Endgame Gear', 'Endgame Gear XM2we Wireless'],
-  // Khác BẬC sau mã model -> phải loại.
+
   ['File:NVIDIA GeForce RTX 4070 Founders Edition.jpg', 'NVIDIA', 'NVIDIA GeForce RTX 4070 Ti SUPER Founders Edition'],
 ];
 
@@ -70,7 +62,6 @@ for (const [title, brand, model, expected] of CASES) {
 }
 console.log(`\n${pass} pass, ${fail} fail`);
 
-// Lớp intitle: chỉ cần bộ lọc ảnh sản phẩm (không dùng isMatch).
 for (const [title, brand, model] of INTITLE_OK) {
   const got = isIntitleMatch(title, brand, model);
   console.log(

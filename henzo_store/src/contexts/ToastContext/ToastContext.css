@@ -24,8 +24,6 @@
   border-left: 4px solid transparent;
   overflow: hidden;
 }
-
-/* Vòng sáng lan ra từ icon khi toast xuất hiện */
 .toast__icon {
   animation: toastIconIn 420ms var(--motion-ease) both 80ms;
 }

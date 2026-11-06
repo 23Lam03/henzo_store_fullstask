@@ -8,7 +8,6 @@ import { z } from 'zod';
 import { SearchHistoryModel } from '@/server/models/SearchHistory';
 import { connectDB } from '@/server/db';
 
-/** Số lượng lượt tìm kiếm được giữ lại cho mỗi người dùng. */
 const MAX_HISTORY = 10;
 
 const recordSchema = z.object({
@@ -19,8 +18,7 @@ export const Route = createFileRoute('/api/search-history/')({
   server: {
     middleware: [corsMiddleware, requireAuth],
     handlers: {
-      /** Lịch sử tìm kiếm gần đây (tối đa 10 lượt). */
-      GET: withErrorHandling(async ({ context }) => {
+            GET: withErrorHandling(async ({ context }) => {
         await connectDB();
         const docs = await SearchHistoryModel.find({
           userId: context.auth.userId,
@@ -38,19 +36,16 @@ export const Route = createFileRoute('/api/search-history/')({
         );
       }),
 
-      /** Ghi lại một lượt tìm kiếm (ghi đè trùng, chỉ giữ 10 lượt gần nhất). */
-      POST: withErrorHandling(async ({ request, context }) => {
+            POST: withErrorHandling(async ({ request, context }) => {
         await connectDB();
         const body = await readJson(request, recordSchema);
 
-        // Trùng từ khoá -> cập nhật thời điểm, không tạo bản ghi mới.
         await SearchHistoryModel.findOneAndUpdate(
           { userId: context.auth.userId, query: body.query },
           { $set: { timestamp: new Date() } },
           { upsert: true, new: true },
         );
 
-        // Cắt bỏ các lượt cũ ngoài 10 lượt gần nhất.
         const stale = await SearchHistoryModel.find({
           userId: context.auth.userId,
         })
@@ -68,8 +63,7 @@ export const Route = createFileRoute('/api/search-history/')({
         return ok({ query: body.query }, undefined, 201);
       }),
 
-      /** Xoá toàn bộ lịch sử tìm kiếm. */
-      DELETE: withErrorHandling(async ({ context }) => {
+            DELETE: withErrorHandling(async ({ context }) => {
         await connectDB();
         const result = await SearchHistoryModel.deleteMany({
           userId: context.auth.userId,

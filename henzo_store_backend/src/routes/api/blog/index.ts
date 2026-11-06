@@ -10,8 +10,7 @@ export const Route = createFileRoute('/api/blog/')({
   server: {
     middleware: [corsMiddleware],
     handlers: {
-      /** Danh sách bài viết (public). */
-      GET: withErrorHandling(async ({ request }) => {
+            GET: withErrorHandling(async ({ request }) => {
         await connectDB();
         const url = new URL(request.url);
         const sp = url.searchParams;

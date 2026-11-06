@@ -11,8 +11,7 @@ export const Route = createFileRoute('/api/admin/finance')({
   server: {
     middleware: [corsMiddleware, requireAuth, requireAdmin, requirePermission('Tài chính')],
     handlers: {
-      /** Tổng hợp tài chính nền tảng: doanh thu, hoa hồng, số dư khả dụng. */
-      GET: withErrorHandling(async () => {
+            GET: withErrorHandling(async () => {
         await connectDB();
         const data = await getAdminFinanceSummary();
         return ok(data);

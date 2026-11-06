@@ -1,19 +1,4 @@
-/**
- * Sinh 500 sản phẩm với 500 MODEL KHÁC NHAU.
- *
- * Vấn đề gốc: `mockSellerProducts` trước đây xoay vòng 20 tên cố định -> 500
- * sản phẩm chỉ có **20 model duy nhất**, mỗi model lặp ~25 lần. Hậu quả
- * trên giao diện: danh sách sản phẩm hiển thị hàng chục dòng giống hệt
- * nhau (cùng tên, cùng ảnh) -> người dùng báo "ảnh bị trùng lặp".
- *
- * Cách sửa: mỗi sản phẩm là một **biến thể cấu hình thật** của một dòng
- * sản phẩm (dung lượng, màu, kích thước) -> tên khác nhau, ảnh khác nhau,
- * tồn kho & giá độc lập.
- *
- * Mỗi biến thể có **đúng một tên duy nhất** trong toàn bộ 500 sản phẩm.
- */
 
-/** Dung lượng thực tế theo loại sản phẩm. */
 const CAPACITY_BY_KIND: Record<string, string[]> = {
   phone: ['128GB', '256GB', '512GB'],
   laptop: ['512GB', '1TB', '2TB'],
@@ -22,7 +7,6 @@ const CAPACITY_BY_KIND: Record<string, string[]> = {
   accessory: ['1TB', '2TB', '4TB'],
 };
 
-/** Màu thực tế theo dòng sản phẩm (Apple/Samsung dùng tên màu chính thức). */
 const COLOR_BY_BRAND: Record<string, string[]> = {
   Apple: ['Titanium Gray', 'Natural Titanium', 'Deep Blue', 'Black', 'White'],
   Samsung: ['Titanium Gray', 'Titanium Black', 'Silver Shadow', 'Cobalt Violet'],
@@ -55,41 +39,23 @@ const SIZE_27 = '27"';
 const SIZE_32 = '32"';
 const SIZE_34 = '34"';
 
-/**
- * Kích thước hiển thị cho tên sản phẩm.
- *
- * ⚠️  Nhiều base đã chứa sẵn kích thước (`MacBook Pro 14" M4 Pro`,
- *     `LG UltraWide 34"`, `Samsung Galaxy Book4 Ultra 16"`) — nếu gắn thêm
- *     size lần nữa sẽ ra `MacBook Pro 14" M4 Pro 14" 512GB`.
- *     Hàm này chỉ trả về size khi base CHƯA chứa size.
- */
 function sizeSuffix(base: string, size: string): string {
   return /\d{1,2}(?:\.\d+)?\s*(?:"|inch)/i.test(base) ? '' : size;
 }
 
 export interface Variant {
   base: string;
-  /** Tiền tố hãng. */
-  brand: string;
-  /** Loại sản phẩm — quyết định bộ dung lượng/màu phù hợp. */
-  kind: 'phone' | 'laptop' | 'tablet' | 'audio' | 'accessory';
-  /** Danh mục hiển thị. */
-  category: string;
-  /** Dung lượng / kích thước gắn thêm. */
-  suffix?: string;
+    brand: string;
+    kind: 'phone' | 'laptop' | 'tablet' | 'audio' | 'accessory';
+    category: string;
+    suffix?: string;
 }
 
-/**
- * 500 biến thể — mỗi dòng sản phẩm được mở rộng thành nhiều biến thể cấu
- * hình thực tế (dung lượng x màu x kích thước). Tổng đúng 500, tên đôi một
- * khác nhau.
- */
 export const PRODUCT_VARIANTS: Variant[] = buildVariants();
 
 function buildVariants(): Variant[] {
   const out: Variant[] = [];
 
-  // ─── Điện thoại (135 = 45 model x 3 dung lượng) ───────────────────────
   const phones: Array<[string, string]> = [
     ['Apple', 'iPhone 16 Pro Max'],
     ['Apple', 'iPhone 16 Pro'],
@@ -141,7 +107,6 @@ function buildVariants(): Variant[] {
     }
   }
 
-  // ─── Tablet (18 = 6 model x 3 dung lượng) ─────────────────────────────
   const tablets: Array<[string, string]> = [
     ['Apple', 'iPad Pro M4'],
     ['Apple', 'iPad Air M3'],
@@ -162,7 +127,6 @@ function buildVariants(): Variant[] {
     }
   }
 
-  // ─── Laptop (132 = 44 model x 3 dung lượng) ───────────────────────────
   const laptops: Array<[string, string, string]> = [
     ['Apple', 'MacBook Pro 14" M4 Pro', SIZE_14],
     ['Apple', 'MacBook Pro 16" M4 Pro', SIZE_16],
@@ -220,7 +184,6 @@ function buildVariants(): Variant[] {
     }
   }
 
-  // ─── Màn hình (40 model) ──────────────────────────────────────────────
   const monitors: Array<[string, string, string]> = [
     ['Samsung', 'Samsung Odyssey G9', SIZE_34],
     ['Samsung', 'Samsung Odyssey G8', SIZE_32],
@@ -272,7 +235,6 @@ function buildVariants(): Variant[] {
     });
   }
 
-  // ─── Chuột (42 = 14 model x 3 màu) ────────────────────────────────────
   const mice: Array<[string, string]> = [
     ['Logitech', 'Logitech MX Master 3S'],
     ['Logitech', 'Logitech G Pro X Superlight 2'],
@@ -295,7 +257,6 @@ function buildVariants(): Variant[] {
     }
   }
 
-  // ─── Bàn phím (45 = 15 model x 3 màu) ─────────────────────────────────
   const keyboards: Array<[string, string]> = [
     ['Keychron', 'Keychron Q1 Pro'],
     ['Keychron', 'Keychron Q1 Max'],
@@ -319,7 +280,6 @@ function buildVariants(): Variant[] {
     }
   }
 
-  // ─── Tai nghe (48 = 16 model x 3 màu) ─────────────────────────────────
   const headsets: Array<[string, string]> = [
     ['Sony', 'Sony WH-1000XM5'],
     ['Sony', 'Sony WF-1000XM5'],
@@ -344,7 +304,6 @@ function buildVariants(): Variant[] {
     }
   }
 
-  // ─── Linh kiện PC (30) ────────────────────────────────────────────────
   const pcParts: Array<[string, string]> = [
     ['NVIDIA', 'NVIDIA GeForce RTX 4090 Founders Edition'],
     ['NVIDIA', 'NVIDIA GeForce RTX 4080 SUPER Founders Edition'],
@@ -388,7 +347,6 @@ function buildVariants(): Variant[] {
     });
   }
 
-  // ─── Phụ kiện (14) ────────────────────────────────────────────────────
   const accessories: Array<[string, string]> = [
     ['Belkin', 'Belkin BoostCharge 3-in-1 MagSafe'],
     ['Anker', 'Anker 737 Power Bank 24K'],
@@ -412,20 +370,15 @@ function buildVariants(): Variant[] {
   return out;
 }
 
-/**
- * Tên đầy đủ của 1 biến thể — luôn khác nhau giữa các sản phẩm.
- */
 export function variantName(v: Variant): string {
   const suffix = v.suffix ? ` ${v.suffix}` : '';
   return `${v.base}${suffix}`;
 }
 
-/** Suy ra danh mục từ biến thể. */
 export function variantCategory(v: Variant): string {
   return v.category;
 }
 
-/** Suy ra thương hiệu từ biến thể. */
 export function variantBrand(v: Variant): string {
   return v.brand;
 }

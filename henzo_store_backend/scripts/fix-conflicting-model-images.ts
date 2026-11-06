@@ -1,18 +1,3 @@
-/**
- * TÌM ẢNH RIÊNG cho các model đang DÙNG CHUNG ảnh với model khác.
- *
- * Vấn đề: vài model có pool ảnh quá ít (1-3 ảnh) hoặc pool rỗng -> 2 model
- * khác nhau bị gán cùng 1 ảnh chính -> người dùng thấy "ảnh trùng lặp" trên
- * danh sách sản phẩm.
- *
- * Script này:
- *   1. Quét DB, phát hiện ảnh chính bị NHIỀU model dùng chung.
- *   2. Tìm ảnh mới trên Wikimedia Commons cho từng model còn thiếu
- *      (lọc nghiêm theo tên file: đúng loại sản phẩm + đúng hãng).
- *   3. Ghi kết quả vào `scripts/data/model-images.json` (KHÔNG ghi DB).
- *
- * Chạy: npx tsx scripts/fix-conflicting-model-images.ts
- */
 import { readFileSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { connectDB, disconnectDB } from '../src/server/db';
@@ -22,7 +7,6 @@ import { modelName } from './lib/model-name';
 const UA = 'henzo-store/1.0 (model image resolver; dev@henzo.local)';
 const DEST = resolve(process.cwd(), 'scripts/data/model-images.json');
 
-/** Từ khoá bắt buộc theo LOẠI sản phẩm (giống fill-missing-model-images). */
 const TYPE_KEYWORDS: Record<string, string[]> = {
   'Điện thoại': ['iphone', 'galaxy', 'pixel', 'oneplus', 'oppo', 'vivo', 'xiaomi', 'redmi', 'poco', 'honor', 'realme', 'nokia', 'tecno', 'huawei', 'sony'],
   Tablet: ['ipad', 'tablet', 'matepad'],
@@ -105,7 +89,6 @@ function isValid(
   return true;
 }
 
-/** Trích token đặc trưng của model để tìm ảnh chính xác hơn. */
 function modelTokens(model: string): string[] {
   const m = model.replace(/\s*\d{1,2}(?:\.\d+)?in$/i, '');
   return m
@@ -140,7 +123,6 @@ async function main() {
     }
   }
 
-  // Model nào đang bị chia sẻ ảnh chính với model khác.
   const conflicting = new Set<string>();
   for (const [, models] of thumbModels) {
     if (models.size > 1) for (const m of models) conflicting.add(m);
@@ -155,26 +137,25 @@ async function main() {
   >;
 
   let fixed = 0;
-  // URL đã cấp cho 1 model trong lượt này -> model khác KHÔNG được dùng lại.
+
   const reserved = new Set<string>();
   for (const model of conflicting) {
     const info = modelInfo.get(model);
     if (!info) continue;
 
-    // Ảnh đang dùng -> loại khỏi ứng viên mới (tránh lấy lại ảnh cũ).
     const used = new Set<string>();
     for (const [url, models] of thumbModels) {
       if (models.has(model)) used.add(url);
     }
-    // Ảnh đã cấp cho model khác trong lượt sửa này.
+
     for (const url of reserved) used.add(url);
 
     const queries = [
       model,
       ...modelTokens(model).map((t) => `${t} ${info.brand}`.trim()),
-      // Query rộng: "<brand> <loại sản phẩm>" — tìm được ảnh gần đúng dòng.
+
       `${info.brand} ${info.categoryName === 'Bàn phím' ? 'keyboard' : info.categoryName === 'Tai nghe' ? 'headset' : info.categoryName === 'Màn hình' ? 'monitor' : info.categoryName === 'Chuột' ? 'mouse' : 'product'}`,
-      // Query theo mã model rút gọn: "K100", "M34WMU", "HS80".
+
       ...modelTokens(model)
         .filter((t) => /\d/i.test(t))
         .map((t) => `${info.brand} ${t}`),
@@ -195,7 +176,6 @@ async function main() {
       );
     }
 
-    // Ưu tiên ảnh có tên file chứa token đặc trưng của model.
     const tokens = modelTokens(model).map((t) => t.toLowerCase());
     const scored = valid
       .map((c) => {
@@ -207,8 +187,7 @@ async function main() {
       .sort((a, b) => b.hits - a.hits);
 
     const fresh = scored.map((x) => x.c).filter((c) => !used.has(c.url));
-    // Dự phòng: nếu không có ảnh nào chứa token model, dùng ảnh hợp lệ
-    // theo loại + hãng (vẫn đúng dòng sản phẩm hơn là dùng chung ảnh).
+
     const fallback = valid.filter((c) => !used.has(c.url) && !fresh.includes(c));
 
     if (!fresh.length && !fallback.length) {

@@ -70,7 +70,7 @@ export const ShopSupportPage = () => {
         </div>
       </div>
 
-      {/* Tabs */}
+      {}
       <div className="seller-tabs">
         {STATUS_TABS.map(t => (
           <button key={t.key} className={`seller-tab ${tab === t.key ? 'seller-tab--active' : ''}`} onClick={() => { setTab(t.key); setPage(1); }}>
@@ -80,13 +80,13 @@ export const ShopSupportPage = () => {
         ))}
       </div>
 
-      {/* Search */}
+      {}
       <div className="seller-support__search">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
         <input type="text" placeholder="Tìm theo mã ticket, chủ đề, khách hàng..." value={search} onChange={e => { setSearch(e.target.value); setPage(1); }} className="seller-support__search-input" />
       </div>
 
-      {/* Tickets List */}
+      {}
       <div className="seller-tickets-list">
         {paginated.length === 0 ? (
           <div className="admin-section">
@@ -129,7 +129,7 @@ export const ShopSupportPage = () => {
         })}
       </div>
 
-      {/* Pagination */}
+      {}
       {filtered.length > perPage && (
         <div className="seller-pagination" style={{ justifyContent: 'center' }}>
           <div className="seller-pagination__buttons">
@@ -144,7 +144,7 @@ export const ShopSupportPage = () => {
         </div>
       )}
 
-      {/* Ticket Detail Panel */}
+      {}
       {selectedTicket && (
         <>
           <div className="admin-detail-panel-overlay" onClick={() => setSelectedTicket(null)} />
@@ -159,7 +159,7 @@ export const ShopSupportPage = () => {
               </button>
             </div>
             <div className="admin-detail-panel__body">
-              {/* Info */}
+              {}
               <div className="admin-detail-section">
                 <h4 className="admin-detail-section__title">Thông tin</h4>
                 <div className="admin-detail-row">
@@ -184,7 +184,7 @@ export const ShopSupportPage = () => {
                 </div>
               </div>
 
-              {/* Messages */}
+              {}
               <div className="admin-detail-section">
                 <h4 className="admin-detail-section__title">Tin nhắn ({selectedTicket.messages.length})</h4>
                 <div className="seller-ticket-messages-list">
@@ -200,7 +200,7 @@ export const ShopSupportPage = () => {
                 </div>
               </div>
 
-              {/* Reply */}
+              {}
               {selectedTicket.status !== 'closed' && selectedTicket.status !== 'resolved' && (
                 <div className="seller-ticket-reply">
                   <textarea

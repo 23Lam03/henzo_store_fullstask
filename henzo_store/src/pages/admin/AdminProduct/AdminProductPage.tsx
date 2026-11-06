@@ -29,7 +29,6 @@ export const AdminProductPage = () => {
   const toast = useToast();
   void loading;
 
-  // Sản phẩm lấy từ API admin (kèm số lượt đánh giá từ context).
   useEffect(() => {
     let cancelled = false;
     const load = async () => {
@@ -68,8 +67,7 @@ export const AdminProductPage = () => {
     filter === 'hot' ? productsWithReviewCount.filter(p => p.isHot) :
     productsWithReviewCount.filter(p => p.isNew);
 
-  /** Xoá sản phẩm (admin kiểm duyệt nội dung). */
-  const handleDelete = async (id: string) => {
+    const handleDelete = async (id: string) => {
     setIsSubmitting(true);
     try {
       await adminApi.deleteProduct(id);

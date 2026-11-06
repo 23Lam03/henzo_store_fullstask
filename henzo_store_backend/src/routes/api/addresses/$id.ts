@@ -29,8 +29,7 @@ export const Route = createFileRoute('/api/addresses/$id')({
   server: {
     middleware: [corsMiddleware, requireAuth],
     handlers: {
-      /** Cập nhật địa chỉ. */
-      PATCH: withErrorHandling(async ({ request, params, context }) => {
+            PATCH: withErrorHandling(async ({ request, params, context }) => {
         await connectDB();
         const body = await readJson(request, updateSchema);
 
@@ -40,7 +39,6 @@ export const Route = createFileRoute('/api/addresses/$id')({
         });
         if (!address) throw notFound('Không tìm thấy địa chỉ');
 
-        // Đặt mặc định -> bỏ mặc định các địa chỉ khác.
         if (body.isDefault) {
           await AddressModel.updateMany(
             { userId: context.auth.userId, _id: { $ne: address._id } },
@@ -56,8 +54,7 @@ export const Route = createFileRoute('/api/addresses/$id')({
         return ok(toAddressDto(address));
       }),
 
-      /** Xoá địa chỉ. */
-      DELETE: withErrorHandling(async ({ params, context }) => {
+            DELETE: withErrorHandling(async ({ params, context }) => {
         await connectDB();
 
         const address = await AddressModel.findOne({
@@ -69,7 +66,6 @@ export const Route = createFileRoute('/api/addresses/$id')({
         const wasDefault = address.isDefault;
         await address.deleteOne();
 
-        // Xoá địa chỉ mặc định -> chuyển mặc định cho địa chỉ còn lại đầu tiên.
         if (wasDefault) {
           const next = await AddressModel.findOne({
             userId: context.auth.userId,

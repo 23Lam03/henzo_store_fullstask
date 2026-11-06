@@ -1,8 +1,3 @@
-/**
- * Kiểm chứng logic phân bổ tiền (nhóm 1 + nhóm 3).
- *
- * Chạy: npx tsx scripts/verify-groups.ts
- */
 import {
   distributeEvenly,
   distributeByWeight,
@@ -58,7 +53,7 @@ console.log('\n── canRestoreSubOrder (quy tắc hoàn tồn kho) ──');
   check('shipped -> KHÔNG hoàn', !canRestoreSubOrder('shipped'));
   check('delivering -> KHÔNG hoàn', !canRestoreSubOrder('delivering'));
   check('delivered -> KHÔNG hoàn', !canRestoreSubOrder('delivered'));
-  // Idempotent: đã hủy rồi thì hủy lần 2 không được hoàn thêm.
+
   check('cancelled -> KHÔNG hoàn (idempotent)', !canRestoreSubOrder('cancelled'));
   check('returned -> KHÔNG hoàn', !canRestoreSubOrder('returned'));
 }

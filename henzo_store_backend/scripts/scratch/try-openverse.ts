@@ -1,8 +1,3 @@
-/**
- * Thử Openverse API cho 1 model.
- *
- * Chạy: npx tsx scripts/try-openverse.ts "Corsair HS60"
- */
 const UA = 'henzo-store/1.0 (model image resolver; dev@henzo.local)';
 
 async function main() {

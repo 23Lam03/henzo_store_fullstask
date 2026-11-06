@@ -7,12 +7,6 @@ import { ok } from '@/server/http/response';
 import { badRequest } from '@/server/http/errors';
 import { saveUploadedImage } from '@/server/services/upload.service';
 
-/**
- * Tải ảnh sản phẩm lên (phía cửa hàng).
- *
- * Nhận `multipart/form-data` với field `file`. Kết quả trả về URL public
- * để shop gắn vào `images` của sản phẩm.
- */
 export const Route = createFileRoute('/api/seller/uploads')({
   server: {
     middleware: [corsMiddleware, requireAuth, requireStoreOwner],

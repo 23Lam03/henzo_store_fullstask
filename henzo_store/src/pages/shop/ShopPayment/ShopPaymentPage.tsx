@@ -61,7 +61,7 @@ export const ShopPaymentPage = () => {
         </div>
       </div>
 
-      {/* Summary Cards */}
+      {}
       <div className="admin-stats admin-stats--4">
         <div className="seller-payment-stat">
           <div className="seller-payment-stat__icon" style={{ background: 'rgba(31,85,87,0.1)', color: '#1F5557' }}>
@@ -101,7 +101,7 @@ export const ShopPaymentPage = () => {
         </div>
       </div>
 
-      {/* Filters */}
+      {}
       <div className="seller-payment__toolbar">
         <div className="seller-tabs" style={{ borderBottom: 'none', marginBottom: 0 }}>
           {STATUS_FILTERS.map(f => (
@@ -119,7 +119,7 @@ export const ShopPaymentPage = () => {
         </div>
       </div>
 
-      {/* Table */}
+      {}
       <div className="admin-section">
         <div className="seller-table-wrap">
           <table className="seller-table">

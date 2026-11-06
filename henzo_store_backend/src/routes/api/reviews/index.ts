@@ -22,13 +22,11 @@ const createSchema = z.object({
   orderId: z.string().optional(),
 });
 
-/** Đánh giá sản phẩm. */
 export const Route = createFileRoute('/api/reviews/')({
   server: {
     middleware: [corsMiddleware, requireAuth],
     handlers: {
-      /** Đánh giá sản phẩm. */
-      POST: withErrorHandling(async ({ request, context }) => {
+            POST: withErrorHandling(async ({ request, context }) => {
         await connectDB();
         const body = await readJson(request, createSchema);
 
@@ -39,7 +37,6 @@ export const Route = createFileRoute('/api/reviews/')({
         const product = await ProductModel.findById(body.productId).lean();
         if (!product) throw notFound('Không tìm thấy sản phẩm');
 
-        // Một sản phẩm chỉ được đánh giá 1 lần bởi 1 khách.
         const existing = await ReviewModel.findOne({
           productId: product._id,
           userId: context.auth.userId,
@@ -48,7 +45,6 @@ export const Route = createFileRoute('/api/reviews/')({
           throw conflict('Bạn đã đánh giá sản phẩm này rồi');
         }
 
-        // Kiểm tra đã mua hàng chưa -> đánh dấu "đã mua hàng thật".
         let orderId: Types.ObjectId | undefined;
         if (body.orderId && Types.ObjectId.isValid(body.orderId)) {
           const order = await OrderModel.findById(body.orderId).lean();
@@ -89,7 +85,6 @@ export const Route = createFileRoute('/api/reviews/')({
           hasResponse: false,
         });
 
-        // Cập nhật điểm trung bình của sản phẩm.
         await ProductModel.updateOne(
           { _id: product._id },
           {
@@ -98,7 +93,6 @@ export const Route = createFileRoute('/api/reviews/')({
           },
         );
 
-        // Thông báo cho cửa hàng.
         if (product.storeId) {
           await NotificationModel.create({
             storeId: product.storeId,
@@ -117,13 +111,11 @@ export const Route = createFileRoute('/api/reviews/')({
   },
 });
 
-/** Lấy avatar của user (helper nội bộ). */
 async function getUserAvatar(userId: string): Promise<string> {
   const user = await UserModel.findById(userId).select('avatar').lean();
   return user?.avatar ?? '';
 }
 
-/** Tính lại điểm trung bình của sản phẩm. */
 async function calcProductRating(productId: Types.ObjectId): Promise<number> {
   const result = await ReviewModel.aggregate([
     { $match: { productId, isHidden: false } },

@@ -1,8 +1,3 @@
-/**
- * Xuất JSON phục vụ trang audit ảnh (public/audit-images.html).
- *
- * Chạy: npx tsx scripts/export-audit-json.ts
- */
 import { readFileSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { connectDB, disconnectDB } from '../src/server/db';
@@ -34,8 +29,6 @@ async function main() {
   );
   writeFileSync(out, JSON.stringify({ products }, null, 2), 'utf-8');
 
-  // Nhúng dữ liệu thẳng vào HTML để không phụ thuộc fetch (dev server có
-  // thể chặn request .json từ static).
   const htmlPath = resolve(
     process.cwd(),
     '../henzo_store/public/audit-images.html',

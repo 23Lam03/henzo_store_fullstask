@@ -1,7 +1,3 @@
-/**
- * Kiểm tra RBAC end-to-end: customer / seller / admin trên các API then chốt.
- * Chạy: npx tsx scripts/scratch/rbac-check.ts
- */
 const BASE = 'http://localhost:4000';
 
 async function login(email: string, password: string) {

@@ -1,9 +1,3 @@
-/**
- * So sánh hình học header giữa 2 ảnh BMP: tìm các vùng xanh (nút primary,
- * logo) và in bounding box của chúng.
- *
- * Dùng: npx tsx scripts/bmp-blue-box.ts <file.bmp> [y0] [y1]
- */
 import { readFileSync } from 'node:fs';
 
 function load(file: string) {
@@ -30,7 +24,6 @@ const y1 = Number(process.argv[4] ?? 10000);
 const { width, H, px } = load(file);
 const isBlue = ([r, g, b]: [number, number, number]) => b > 130 && b - r > 60 && b - g > 50;
 
-// Gom pixel xanh thành hình chữ nhật (đơn giản: dòng quét + gộp cột).
 const cols = new Map<number, number[]>();
 for (let y = y0; y < Math.min(y1, H); y++) {
   for (let x = 0; x < width; x++) {
@@ -41,7 +34,6 @@ for (let y = y0; y < Math.min(y1, H); y++) {
   }
 }
 
-// Gom cột liên tiếp thành vùng.
 const regions: { x0: number; x1: number; y0: number; y1: number; n: number }[] = [];
 let cur: typeof regions[number] | null = null;
 for (const x of [...cols.keys()].sort((a, b) => a - b)) {

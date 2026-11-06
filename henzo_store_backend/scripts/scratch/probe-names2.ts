@@ -1,4 +1,3 @@
-/** Tìm tên file Commons chính xác cho các dòng còn thiếu ảnh riêng. */
 import { writeFileSync } from 'node:fs';
 import { getJson } from '../lib/commons-files';
 

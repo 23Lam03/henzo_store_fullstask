@@ -1,5 +1,3 @@
-/* Chỉ báo tải trang — dạng gạch ngang chạy ngược chiều. */
-
 .route-loader {
   display: flex;
   flex-direction: column;

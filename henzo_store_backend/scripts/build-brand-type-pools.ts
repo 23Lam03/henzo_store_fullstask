@@ -1,12 +1,3 @@
-/**
- * XÂY DỰNG POOL ẢNH THEO (HÃNG × LOẠI SẢN PHẨM) — bản chặt chẽn.
- *
- * Quy tắc:
- *   - Loại sản phẩm phải được nhận diện bằng TỪ KHÓA RIÊNG (không dùng
- *     "screen"/"display" vì quá chung -> gây sai loại).
- *   - File phải chứa tên hãng.
- *   - Loại bỏ: khung cảnh, người, sự kiện, linh kiện rời, ảnh vỡ.
- */
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
@@ -62,7 +53,6 @@ for (const f of ['code-model-probe.json', 'prefix-model-probe.json']) {
 }
 const allFiles = [...universe].filter((f) => /\.(jpe?g|png|webp)$/i.test(f));
 
-/** Bối cảnh / nhiễu — loại bỏ dù có đúng tên hãng. */
 const NOISE = new RegExp(
   [
     'wcg', 'grand ?final', 'esport', 'tournament', 'championship',
@@ -101,10 +91,6 @@ const NOISE = new RegExp(
   'i',
 );
 
-/**
- * Loại sản phẩm: cặp (từ khóa bắt buộc, từ khóa phụ trợ).
- * File khớp từ khóa bắt buộc -> thuộc loại đó (ưu tiên loại khớp dài nhất).
- */
 const TYPE_RULES: Array<{ type: string; must: RegExp; also?: RegExp }> = [
   { type: 'HEADSET', must: /headset|headphone|earphone|earbuds|head ?band/i },
   { type: 'MONITOR', must: /\bmonitor\b|lcd ?monitor|flat ?panel/i },
@@ -143,7 +129,6 @@ const TYPE_RULES: Array<{ type: string; must: RegExp; also?: RegExp }> = [
   { type: 'ACCESSORY', must: /\bhub\b|adapter|charger|dock|\bcable\b|mouse ?pad/i },
 ];
 
-/** Hãng (chữ hoa chữ thường không quan trọng). */
 const BRANDS = [
   'Apple', 'Samsung', 'Xiaomi', 'Huawei', 'Honor', 'Oppo', 'Vivo', 'OnePlus',
   'Google', 'Realme', 'Poco', 'Nokia', 'Motorola', 'Dell', 'HP', 'Asus', 'Acer',

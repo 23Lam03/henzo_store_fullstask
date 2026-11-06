@@ -22,16 +22,12 @@ export const Route = createFileRoute('/api/admin/access/roles')({
   server: {
     middleware: [corsMiddleware, requireAuth, requireAdmin, requirePermission('Phân quyền')],
     handlers: {
-      /**
-       * Ma trận quyền hạn — khớp `ROLE_PERMS` & `ALL_PERMISSIONS` ở frontend.
-       */
-      GET: withErrorHandling(async () => {
+            GET: withErrorHandling(async () => {
         await connectDB();
         return ok(await getPermissionMatrix());
       }),
 
-      /** Cập nhật bộ quyền của một vai trò. */
-      PUT: withErrorHandling(async ({ request }) => {
+            PUT: withErrorHandling(async ({ request }) => {
         await connectDB();
         const body = await readJson(request, roleSchema);
 
@@ -40,7 +36,6 @@ export const Route = createFileRoute('/api/admin/access/roles')({
           body.permissions,
         );
 
-        // Đồng bộ cho các user đang dùng vai trò này mà chưa có quyền tuỳ chỉnh.
         await UserModel.updateMany(
           {
             role: body.role.toUpperCase() as never,

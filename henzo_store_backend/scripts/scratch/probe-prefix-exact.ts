@@ -1,8 +1,3 @@
-/**
- * PROBE prefix chính xác cho các model còn thiếu ảnh.
- *
- * Chạy: npx tsx scripts/probe-prefix-exact.ts
- */
 import { getJson } from '../lib/commons-files';
 
 const PREFIXES = [

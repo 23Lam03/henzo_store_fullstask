@@ -1,8 +1,3 @@
-/**
- * Liệt kê ảnh trong media-list của trang Wikipedia.
- *
- * Chạy: npx tsx scripts/debug-wiki-page.ts "Corsair Gaming"
- */
 const UA = 'henzo-store/1.0 (model image resolver; dev@henzo.local)';
 
 async function getJson(url: string): Promise<any> {
@@ -31,7 +26,6 @@ async function main() {
     console.log(`(${(d.items ?? []).length} item)`);
   }
 
-  // Tìm trang wiki liên quan.
   const s = await getJson(
     `https://en.wikipedia.org/w/api.php?action=query&format=json&list=search` +
       `&srsearch=${encodeURIComponent(page)}&srlimit=10`,

@@ -24,8 +24,7 @@ export const Route = createFileRoute('/api/cart/items/$productId')({
   server: {
     middleware: [corsMiddleware, requireAuth],
     handlers: {
-      /** Cập nhật số lượng (quantity = 0 => xoá khỏi giỏ). */
-      PATCH: withErrorHandling(async ({ request, params, context }) => {
+            PATCH: withErrorHandling(async ({ request, params, context }) => {
         await connectDB();
         const body = await readJson(request, updateSchema);
         return ok(
@@ -33,8 +32,7 @@ export const Route = createFileRoute('/api/cart/items/$productId')({
         );
       }),
 
-      /** Chọn / bỏ chọn một mục trong giỏ. */
-      PUT: withErrorHandling(async ({ request, params, context }) => {
+            PUT: withErrorHandling(async ({ request, params, context }) => {
         await connectDB();
         const body = await readJson(request, toggleSchema);
         return ok(
@@ -42,8 +40,7 @@ export const Route = createFileRoute('/api/cart/items/$productId')({
         );
       }),
 
-      /** Xoá một mục khỏi giỏ. */
-      DELETE: withErrorHandling(async ({ params, context }) => {
+            DELETE: withErrorHandling(async ({ params, context }) => {
         await connectDB();
         return ok(await removeCartItem(context.auth.userId, params.productId));
       }),

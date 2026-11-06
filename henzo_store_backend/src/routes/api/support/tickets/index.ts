@@ -18,11 +18,7 @@ import { connectDB } from '@/server/db';
 const createSchema = z
   .object({
     subject: z.string().trim().min(1, 'Vui lòng nhập tiêu đề.').max(200),
-    /**
-     * Nội dung phiếu. Frontend dùng `message`, admin/seller dùng `content` —
-     * chấp nhận cả hai để không phụ thuộc tên field.
-     */
-    message: z.string().trim().min(1, 'Vui lòng nhập nội dung.').max(5000).optional(),
+        message: z.string().trim().min(1, 'Vui lòng nhập nội dung.').max(5000).optional(),
     content: z.string().trim().min(1, 'Vui lòng nhập nội dung.').max(5000).optional(),
     category: z
       .string()
@@ -49,8 +45,7 @@ export const Route = createFileRoute('/api/support/tickets/')({
   server: {
     middleware: [corsMiddleware, requireAuth],
     handlers: {
-      /** Danh sách phiếu hỗ trợ của khách. */
-      GET: withErrorHandling(async ({ request, context }) => {
+            GET: withErrorHandling(async ({ request, context }) => {
         await connectDB();
         const url = new URL(request.url);
         const sp = url.searchParams;
@@ -69,12 +64,10 @@ export const Route = createFileRoute('/api/support/tickets/')({
         return ok(list.map(toCustomerTicket));
       }),
 
-      /** Tạo phiếu hỗ trợ mới. */
-      POST: withErrorHandling(async ({ request, context }) => {
+            POST: withErrorHandling(async ({ request, context }) => {
         await connectDB();
         const body = await readJson(request, createSchema);
 
-        // Sinh mã ticket tăng dần.
         const count = await TicketModel.countDocuments();
         const ticketCode = buildTicketCode(count + 1);
 

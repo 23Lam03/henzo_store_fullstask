@@ -1,10 +1,3 @@
-/**
- * CÀY CÂY CATEGORY THEO THƯƠNG HIỆU (đệ quy sâu) để tìm subcategory
- * mang TÊN MODEL (vd "Category:Corsair HS60", "Category:Zowie XL2546X").
- *
- * Dùng `list=categorymembers&cmtype=subcat` + `cmtype=file`.
- * Có delay giữa các request để không bị Commons rate-limit (429).
- */
 import { writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
@@ -34,7 +27,6 @@ async function getJson(url: string): Promise<any> {
   return null;
 }
 
-/** Subcategory của 1 category. */
 async function subCats(cat: string): Promise<string[]> {
   const d = await getJson(
     `https://commons.wikimedia.org/w/api.php?action=query&format=json` +
@@ -46,7 +38,6 @@ async function subCats(cat: string): Promise<string[]> {
   );
 }
 
-/** File trong 1 category (có phân trang). */
 async function catFiles(cat: string, limit = 200): Promise<string[]> {
   const out: string[] = [];
   let cont: string | undefined;
@@ -68,7 +59,6 @@ async function catFiles(cat: string, limit = 200): Promise<string[]> {
   return out;
 }
 
-/** Gốc category theo thương hiệu. */
 const ROOTS = [
   'Zowie', 'BenQ', 'LG', 'Samsung Electronics', 'Samsung Odyssey',
   'ViewSonic', 'Seagate', 'Corsair', 'HyperX', 'AOC', 'Gigabyte',
@@ -83,7 +73,6 @@ const ROOTS = [
   'Roccat', 'Trust (company)', 'Keychron', 'M-Audio', 'Blue (company)',
 ];
 
-/** Category cha -> danh sách file + subcategory đã duyệt. */
 async function crawl(root: string, maxDepth = 3) {
   const files = new Set<string>();
   const cats = new Set<string>();

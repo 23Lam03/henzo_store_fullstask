@@ -1,4 +1,3 @@
-/** Tải ảnh về /tmp/verify để kiểm tra bằng mắt. */
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { resolveFiles } from './lib/commons-files';
 

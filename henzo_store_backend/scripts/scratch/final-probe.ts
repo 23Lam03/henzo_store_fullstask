@@ -1,8 +1,3 @@
-/**
- * Probe cuối: thử MỌI biến thể truy vấn cho các model còn thiếu.
- *
- * Chạy: npx tsx scripts/final-probe.ts
- */
 const UA = 'henzo-store/1.0 (model image resolver; dev@henzo.local)';
 
 async function getJson(url: string): Promise<any> {
@@ -58,7 +53,6 @@ async function main() {
     { model: 'HyperX Cloud III Wireless', brand: 'HyperX', type: 'headset' },
   ];
 
-  // Category Commons theo loại — nguồn ảnh "anh em cùng dòng".
   const TYPE_CATS: Record<string, string[]> = {
     headset: ['Corsair headsets', 'HyperX headsets', 'Gaming headsets', 'Headsets'],
     mouse: ['Corsair mice', 'Computer mice', 'Gaming mice', 'Video gaming mice'],

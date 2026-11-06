@@ -43,8 +43,7 @@ export const AdminNotificationPage = () => {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
-  /** Tải thông báo từ API admin. */
-  const loadNotifications = async () => {
+    const loadNotifications = async () => {
     setLoading(true);
     try {
       const res = await adminApi.notifications({ pageSize: 100 });

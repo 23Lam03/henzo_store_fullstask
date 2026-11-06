@@ -1,17 +1,3 @@
-/**
- * TÌM LẠI ẢNH ĐÚNG cho model có pool ảnh SAI (sai loại / ảnh rác).
- *
- * Ví dụ đã phát hiện:
- *   - "ASUS ROG Harpe Ace" (chuột)  -> pool chứa ảnh "ROG ALLY" (máy cầm tay)
- *   - "HyperX Cloud III Wireless"    -> pool chứa "RebornLive.jpg" (ảnh rác)
- *   - "Razer Seiren V2 Pro" (micro)  -> pool chứa ảnh chuột Razer
- *
- * Script này tìm ảnh mới trên Wikimedia Commons cho các model đó, lọc
- * nghiêm theo LOẠI sản phẩm + tên hãng, rồi ghi vào
- * `scripts/data/model-images.json`.
- *
- * Chạy: npx tsx scripts/refetch-bad-model-image-pools.ts
- */
 import { readFileSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { connectDB, disconnectDB } from '../src/server/db';
@@ -21,7 +7,6 @@ import { modelName } from './lib/model-name';
 const UA = 'henzo-store/1.0 (model image resolver; dev@henzo.local)';
 const DEST = resolve(process.cwd(), 'scripts/data/model-images.json');
 
-/** Từ khoá bắt buộc theo LOẠI sản phẩm. */
 const TYPE_KEYWORDS: Record<string, string[]> = {
   'Điện thoại': ['iphone', 'galaxy', 'pixel', 'oneplus', 'oppo', 'vivo', 'xiaomi', 'redmi', 'poco', 'honor', 'realme', 'nokia', 'tecno', 'huawei', 'sony', 'mate 60'],
   Tablet: ['ipad', 'tablet', 'matepad', 'galaxy tab', 'tab s', 'xiaomi pad'],
@@ -45,7 +30,6 @@ interface Candidate {
   url: string;
 }
 
-/** Loại sản phẩm suy từ tên model. */
 function inferType(model: string, categoryName: string): string {
   const m = model.toLowerCase();
   if (/ipad|galaxy tab|tablet|matepad|xiaomi pad/.test(m)) return 'Tablet';
@@ -107,7 +91,6 @@ function fileName(url: string): string {
   return parts[parts.length - 1] ?? '';
 }
 
-/** File -> loại sản phẩm (từ tên file). */
 function typeOfFile(fname: string): string | null {
   const t = fname.toLowerCase();
   if (/headset|headphone|earphone|airpod|casque/.test(t)) return 'Tai nghe';
@@ -142,7 +125,6 @@ function isValid(c: Candidate, type: string, brand: string): boolean {
   return true;
 }
 
-/** Token then chốt của model (mã model có số). */
 function keyTokens(model: string): string[] {
   const cleaned = model
     .replace(/\s*\d{1,2}(?:\.\d+)?in$/i, '')
@@ -178,7 +160,6 @@ async function main() {
     { images: string[]; source: string; title: string }
   >;
 
-  // Model nào pool KHÔNG có ảnh nào đúng loại sản phẩm -> cần tìm lại.
   const bad: string[] = [];
   for (const [model, entry] of Object.entries(db)) {
     const type = info.get(model)?.type ?? inferType(model, '');

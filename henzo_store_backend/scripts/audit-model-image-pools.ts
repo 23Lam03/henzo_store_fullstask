@@ -1,21 +1,6 @@
-/**
- * KIỂM TRA & LÀM SẠCH POOL ẢNH THEO MODEL.
- *
- * Phát hiện 2 lỗi:
- *   1. Ảnh SAI LOẠI sản phẩm — VD tai nghe Corsair HS80 có pool chứa ảnh
- *      chuột `ST100VoidPro.jpg`, màn hình có ảnh laptop. Người dùng thấy
- *      ảnh hoàn toàn không liên quan tới sản phẩm.
- *   2. Ảnh trùng giữa 2 model khác nhau (đã xử lý ở apply-real-images).
- *
- * Script này CHỈ ĐỌC + BÁO CÁO (không sửa DB), ghi kết quả ra
- * `scripts/data/model-pool-audit.json`.
- *
- * Chạy: npx tsx scripts/audit-model-image-pools.ts
- */
 import { readFileSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
-/** Từ khoá bắt buộc theo LOẠI sản phẩm. */
 const TYPE_KEYWORDS: Record<string, string[]> = {
   'Điện thoại': ['iphone', 'galaxy', 'pixel', 'oneplus', 'oppo', 'vivo', 'xiaomi', 'redmi', 'poco', 'honor', 'realme', 'nokia', 'tecno', 'huawei', 'sony'],
   Tablet: ['ipad', 'tablet', 'matepad'],
@@ -28,11 +13,9 @@ const TYPE_KEYWORDS: Record<string, string[]> = {
   'Phụ kiện': ['charger', 'power bank', 'power adapter', 'hub', 'stream deck', 'wave', 'hd60', 'webcam', 'c920', 'brio', 'streamcam', 'cable', 'adapter', 'microphone', 'seiren', 'icue link'],
 };
 
-/** Từ cấm: ảnh chắc chắn không phải sản phẩm chính. */
 const REJECT =
   /\b(disassembl|teardown|exploded|schematic|circuit|mainboard|motherboard|logic board|pcb|chipset|module|stick|sodimm|dimm|coolant|pump|connector|cable|port|button|wheel|underneath|bottom|top view|rear view|back view|side view|inside|interior|logo|icon|diagram|chart|booth|game ?show|gamescom|comiket|esport|tournament|championship|person|people|man|woman|player|streamer|interview|autograph|crowd|audience|stage|panel|signing|museum|store|office|desk|setup|box|package|unboxing|review|comparison|boit|tokyo-game-show|faceit|homestory|hwc|esl|blast|key\.jpg|keyboard|headset|headphone|mouse|monitor|laptop|smartphone)\b/i;
 
-/** Model -> loại sản phẩm (suy từ tên + bảng spec). */
 function inferType(model: string): string {
   const m = model.toLowerCase();
   if (/iphone|galaxy|pixel|oneplus|oppo|vivo|xiaomi|redmi|poco|honor|realme|nokia|tecno|iphone/.test(m)) {
@@ -63,7 +46,6 @@ function inferType(model: string): string {
   return 'Phụ kiện';
 }
 
-/** File ảnh -> "loại" suy ra từ tên file, dùng để so khớp. */
 function typeOfFile(filename: string): string | null {
   const t = filename.toLowerCase();
   if (/headset|headphone|earphone|airpod|headset|headsets|casque/.test(t)) return 'Tai nghe';

@@ -27,7 +27,7 @@ const METHOD_LABELS: Record<string, string> = {
 const STATUS_LABELS: Record<string, string> = {
   pending: 'Đang chờ',
   completed: 'Hoàn thành',
-  // Backend trả 'success' cho giao dịch của khách, 'completed' cho bảng admin.
+
   success: 'Hoàn thành',
   failed: 'Thất bại',
   refunded: 'Đã hoàn tiền',
@@ -39,11 +39,10 @@ export const AdminPaymentPage = () => {
   const [filter, setFilter] = useState('all');
   const [pendingRefund, setPendingRefund] = useState<Payment | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  // Modal chi tiết — trước đây điều hướng tới route `/admin/payments/:id` không tồn tại.
+
   const [detail, setDetail] = useState<Payment | null>(null);
 
-  /** Hoàn tiền — trước đây chỉ hiện toast "đang xử lý" mà không gọi API. */
-  const handleRefund = async (payment: Payment) => {
+    const handleRefund = async (payment: Payment) => {
     setIsSubmitting(true);
     try {
       await adminApi.refundPayment(payment.id);
@@ -179,7 +178,7 @@ export const AdminPaymentPage = () => {
           onCancel={() => setPendingRefund(null)}
         />
 
-        {/* Modal chi tiết giao dịch */}
+        {}
         {detail && (
           <div className="admin-modal-overlay" onClick={() => setDetail(null)}>
             <div className="admin-modal" onClick={e => e.stopPropagation()}>

@@ -5,7 +5,6 @@ import { ok } from '@/server/http/response';
 import { badRequest } from '@/server/http/errors';
 import { listWards, findDistrict } from '@/server/services/location.service';
 
-/** Phường/xã thuộc một quận/huyện. */
 export const Route = createFileRoute('/api/locations/districts/$code/wards')({
   server: {
     middleware: [corsMiddleware],

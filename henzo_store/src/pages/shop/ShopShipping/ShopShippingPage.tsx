@@ -61,7 +61,7 @@ export const ShopShippingPage = () => {
         </div>
       </div>
 
-      {/* Summary */}
+      {}
       <div className="admin-stats admin-stats--4">
         {STATUS_TABS.slice(1, 5).map(t => (
           <div key={t.key} className="seller-shipping-stat">
@@ -71,7 +71,7 @@ export const ShopShippingPage = () => {
         ))}
       </div>
 
-      {/* Tabs */}
+      {}
       <div className="seller-tabs">
         {STATUS_TABS.map(t => (
           <button key={t.key} className={`seller-tab ${tab === t.key ? 'seller-tab--active' : ''}`} onClick={() => { setTab(t.key); setPage(1); }}>
@@ -81,13 +81,13 @@ export const ShopShippingPage = () => {
         ))}
       </div>
 
-      {/* Search */}
+      {}
       <div className="seller-orders__search">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
         <input type="text" placeholder="Tìm mã vận đơn, mã đơn, tên người nhận..." value={search} onChange={e => { setSearch(e.target.value); setPage(1); }} className="seller-orders__search-input" />
       </div>
 
-      {/* Table */}
+      {}
       <div className="admin-section">
         <div className="seller-table-wrap">
           <table className="seller-table">

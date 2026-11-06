@@ -20,12 +20,7 @@ export const Route = createFileRoute('/api/orders/$id/status')({
   server: {
     middleware: [corsMiddleware, requireAuth],
     handlers: {
-      /**
-       * Cập nhật trạng thái đơn.
-       * - Seller cập nhật sub-order của cửa hàng mình.
-       * - Admin cập nhật toàn bộ đơn.
-       */
-      PATCH: withErrorHandling(async ({ request, params, context }) => {
+            PATCH: withErrorHandling(async ({ request, params, context }) => {
         await connectDB();
         const body = await readJson(request, statusSchema);
 

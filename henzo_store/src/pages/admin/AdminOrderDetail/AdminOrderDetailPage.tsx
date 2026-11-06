@@ -16,7 +16,6 @@ const STATUS_LABELS: Record<string, string> = {
   cancelled: 'Đã hủy',
 };
 
-/** Trạng thái admin được phép đặt (khớp `CustomerOrderStatus` backend). */
 const STATUS_OPTIONS: { value: string; label: string }[] = [
   { value: 'pending', label: 'Chờ xác nhận' },
   { value: 'confirmed', label: 'Đã xác nhận' },
@@ -37,7 +36,6 @@ export const AdminOrderDetailPage = () => {
   const [pendingStatus, setPendingStatus] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Tải chi tiết đơn từ API (danh sách trong context chỉ có 100 bản ghi đầu).
   useEffect(() => {
     if (!id) return;
     let cancelled = false;
@@ -64,8 +62,7 @@ export const AdminOrderDetailPage = () => {
     };
   }, [id]);
 
-  /** Admin cập nhật trạng thái đơn (áp dụng cho toàn bộ sub-order). */
-  const handleChangeStatus = async (status: string) => {
+    const handleChangeStatus = async (status: string) => {
     if (!order) return;
     setIsSubmitting(true);
     try {
@@ -195,7 +192,7 @@ export const AdminOrderDetailPage = () => {
         </div>
       </div>
 
-      {/* Giao dịch thanh toán của đơn */}
+      {}
       {payments.length > 0 && (
         <div className="admin-section">
           <h3 className="admin-section__title">Giao dịch thanh toán</h3>

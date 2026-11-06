@@ -1,14 +1,3 @@
-/**
- * GÁN ẢNH COMMONS KHỚP CHÍNH XÁC CHO SẢN PHẨM CÒN SAI.
- *
- * Quy trình:
- *  1. Gom sản phẩm theo model (cùng model = cùng thiết bị, chỉ khác cấu hình).
- *  2. Tìm ứng viên ảnh trên Commons bằng `intitle:"<model>"`.
- *  3. Chấm điểm + loại ảnh không phù hợp (logo, packaging, so sánh, sơ đồ).
- *  4. Gán ảnh tốt nhất cho TẤT CẢ sản phẩm của model đó.
- *
- * Ảnh cũ được giữ lại làm ảnh phụ (để không mất ảnh đẹp đã có).
- */
 import { connectDB, disconnectDB } from '../../src/server/db';
 import { ProductModel } from '../../src/server/models/Product';
 import { modelName } from '../../lib/model-name';
@@ -46,7 +35,6 @@ const hasModelToken = (model: string, url: string): boolean => {
   return tokenize(model).some((t) => t.length >= 3 && fTokens.has(t));
 };
 
-/** Ảnh này không dùng làm ảnh chính được (logo, hộp, sơ đồ, ảnh ghép). */
 const isUnusable = (title: string): boolean =>
   /\b(logo|packaging|box|diagram|chart|map|flag|screenshot|poster|drawing|svg|icon|specs?|label|tag|sticker|banner|comparison|compare|graph|infographic|cover|back cover)\b/i.test(
     title,
@@ -55,7 +43,6 @@ const isUnusable = (title: string): boolean =>
 await connectDB();
 const products = await ProductModel.find({}).select('name images').lean();
 
-// Gom theo model.
 const groups = new Map<string, { ids: string[]; main: string }>();
 for (const p of products) {
   const imgs = (p.images ?? []).map(String);
@@ -84,7 +71,6 @@ for (let i = 0; i < modelList.length; i++) {
   let cands = await findCandidates(model, 12);
   cands = cands.filter((c) => !isUnusable(c.title));
 
-  // Ưu tiên ảnh có tên file gọn & sạch (ít token lạ) — ảnh sản phẩm thật.
   const best = cands[0];
 
   if (!best || best.score < SCORE_MIN || best.coverage < COVERAGE_MIN) {

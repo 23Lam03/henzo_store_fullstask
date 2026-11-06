@@ -1,6 +1,3 @@
-/**
- * Probe Openverse (Flickr/Wikimedia) cho các model còn thiếu.
- */
 const UA = 'Mozilla/5.0 (compatible; henzo-store/1.0; +https://henzo.local)';
 
 async function openverse(q: string) {

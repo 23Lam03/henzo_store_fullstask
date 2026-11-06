@@ -11,11 +11,7 @@ export const Route = createFileRoute('/api/payments/')({
   server: {
     middleware: [corsMiddleware, requireAuth],
     handlers: {
-      /**
-       * Lịch sử giao dịch của khách hàng.
-       * Chỉ trả về giao dịch thuộc đơn hàng của chính người đang đăng nhập.
-       */
-      GET: withErrorHandling(async ({ request, context }) => {
+            GET: withErrorHandling(async ({ request, context }) => {
         await connectDB();
         const url = new URL(request.url);
         const sp = url.searchParams;

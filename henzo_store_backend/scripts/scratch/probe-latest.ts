@@ -1,4 +1,3 @@
-/** Probe Commons search for more real photos per category. */
 import { writeFileSync } from 'node:fs';
 
 const UA = 'henzo-store/1.0 (model image resolver; dev@henzo.local)';

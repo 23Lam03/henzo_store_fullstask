@@ -1,8 +1,3 @@
-/**
- * Tra cứu thông tin 1 file Commons (mô tả, category, nguồn).
- *
- * Chạy: npx tsx scripts/commons-file.ts "ST100VoidPro.jpg"
- */
 const UA = 'henzo-store/1.0 (model image resolver; dev@henzo.local)';
 
 async function getJson(url: string): Promise<any> {

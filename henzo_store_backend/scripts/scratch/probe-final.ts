@@ -1,6 +1,3 @@
-/**
- * Probe cuối: tìm đúng category Commons cho các model còn thiếu.
- */
 import { writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
@@ -23,7 +20,6 @@ async function getJson(url: string): Promise<any> {
   return null;
 }
 
-/** Tìm category có tên chứa từ khoá. */
 async function findCats(keyword: string, limit = 12): Promise<string[]> {
   const d = await getJson(
     `https://commons.wikimedia.org/w/api.php?action=query&format=json` +

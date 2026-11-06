@@ -38,8 +38,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  /** Tải giỏ từ server (server là nguồn sự thật cho giá & tồn kho). */
-  const refresh = useCallback(async () => {
+    const refresh = useCallback(async () => {
     if (!isAuthenticated) {
       setItems([]);
       return;
@@ -57,12 +56,10 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     }
   }, [isAuthenticated]);
 
-  // Tải lại giỏ khi trạng thái đăng nhập thay đổi.
   useEffect(() => {
     void refresh();
   }, [refresh]);
 
-  // Đồng bộ giữa các tab (đăng nhập/đăng xuất ở tab khác).
   useEffect(() => {
     const handleAuthChange = () => {
       void refresh();
@@ -84,8 +81,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     .reduce((sum, item) => sum + item.product.originalPrice * item.quantity, 0);
   const savings = totalOriginalPrice - totalPrice;
 
-  /** Phí ship do server quyết định (miễn phí từ 500k). */
-  const shippingFee = totalPrice >= 500000 ? 0 : 30000;
+    const shippingFee = totalPrice >= 500000 ? 0 : 30000;
 
   const addItem = useCallback(
     async (product: Product, quantity = 1): Promise<boolean> => {
@@ -117,7 +113,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   const updateQuantity = useCallback(
     async (productId: string, quantity: number): Promise<void> => {
       try {
-        // quantity <= 0 => backend xoá luôn khỏi giỏ.
+
         const cart = await cartApi.updateItem(productId, Math.max(0, quantity));
         setItems(cart.items ?? []);
       } catch (err) {

@@ -1,9 +1,3 @@
-/**
- * DÒ CỰC KỲ CHÍNH XÁC: full-text search trên Commons (ns=6) + category (ns=14).
- *
- * Full-text (không phải intitle) tìm cả trong phần mô tả file -> nhiều file
- * Commons không có mã trong tên nhưng lại ghi mã trong caption.
- */
 import { writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
@@ -26,7 +20,6 @@ async function getJson(url: string): Promise<any> {
   return null;
 }
 
-/** Full-text search trong không gian tên (6 = File, 14 = Category). */
 async function srsearch(q: string, ns: 6 | 14, limit = 50): Promise<string[]> {
   const d = await getJson(
     `https://commons.wikimedia.org/w/api.php?action=query&format=json` +
@@ -35,7 +28,6 @@ async function srsearch(q: string, ns: 6 | 14, limit = 50): Promise<string[]> {
   return (d?.query?.search ?? []).map((s: any) => String(s.title));
 }
 
-/** File trong category. */
 async function catFiles(cat: string): Promise<string[]> {
   const d = await getJson(
     `https://commons.wikimedia.org/w/api.php?action=query&format=json` +
@@ -51,7 +43,6 @@ async function catFiles(cat: string): Promise<string[]> {
   return out;
 }
 
-/** Mã cần dò (full-text search sẽ tự động lọc theo mã). */
 const CODES: Record<string, string[]> = {
   'AOC CU34G2X 34in': ['CU34G2X'],
   'ASUS ROG Harpe Ace Aim Lab Edition': ['"Harpe Ace"', 'Harpe Ace Aim Lab'],
@@ -95,7 +86,6 @@ const CODES: Record<string, string[]> = {
   'Samsung Galaxy Tab S9': ['"Galaxy Tab S9"'],
 };
 
-/** Bộ lọc nhiễu: tên file phải chứa mã (không phải chỉ nội dung mô tả). */
 const STRICT: Record<string, RegExp> = {
   'AOC CU34G2X 34in': /CU34G2/i,
   'ASUS ROG Harpe Ace Aim Lab Edition': /Harpe/i,
@@ -156,7 +146,7 @@ async function main() {
           cats.add(t.replace(/^Category:/, ''));
         }
       }
-      // Mở rộng: file trong category liên quan, lọc lại bằng STRICT.
+
       for (const c of [...cats].slice(0, 8)) {
         for (const f of await catFiles(c)) {
           if (STRICT[model]?.test(f)) files.add(f);

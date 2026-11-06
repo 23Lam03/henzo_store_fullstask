@@ -7,7 +7,6 @@ import { useToast } from '../../../contexts/ToastContext/ToastContext';
 import type { Product, ProductCategory } from '../../../types';
 import './AdminProductEditPage.css';
 
-/** Định dạng ảnh được phép chọn từ máy (khớp backend). */
 const ACCEPTED_IMAGE_TYPES = [
   'image/jpeg',
   'image/png',
@@ -16,7 +15,6 @@ const ACCEPTED_IMAGE_TYPES = [
   'image/avif',
 ];
 
-/** Dung lượng tối đa mỗi file — khớp `UPLOAD_MAX_SIZE` của backend (5MB). */
 const MAX_FILE_SIZE = 5 * 1024 * 1024;
 
 interface ProductForm {
@@ -80,7 +78,6 @@ export const AdminProductEditPage = () => {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // ─── Tải dữ liệu ────────────────────────────────────────────────────────
   useEffect(() => {
     let cancelled = false;
 
@@ -147,7 +144,6 @@ export const AdminProductEditPage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
-  // ─── Helpers ────────────────────────────────────────────────────────────
   const set = <K extends keyof ProductForm>(
     key: K,
     value: ProductForm[K],
@@ -188,7 +184,6 @@ export const AdminProductEditPage = () => {
     return Object.keys(e).length === 0;
   };
 
-  // ─── Hành động ──────────────────────────────────────────────────────────
   const handleSave = async (status?: ProductForm['status']) => {
     if (!validate()) {
       toast({ title: 'Dữ liệu chưa hợp lệ', variant: 'warning' });
@@ -267,9 +262,7 @@ export const AdminProductEditPage = () => {
     setImageInput('');
   };
 
-  // ─── Tải ảnh từ máy ─────────────────────────────────────────────────────
-  /** Kiểm tra file trước khi gửi — báo lỗi ngay, không tốn băng thông. */
-  const validateFiles = (files: File[]): File[] => {
+    const validateFiles = (files: File[]): File[] => {
     const valid: File[] = [];
 
     for (const file of files) {
@@ -297,8 +290,7 @@ export const AdminProductEditPage = () => {
     return valid;
   };
 
-  /** Gửi ảnh lên server rồi thêm URL vào danh sách. */
-  const uploadFiles = async (fileList: FileList | File[]) => {
+    const uploadFiles = async (fileList: FileList | File[]) => {
     const files = validateFiles(Array.from(fileList));
     if (files.length === 0) return;
 
@@ -325,11 +317,9 @@ export const AdminProductEditPage = () => {
     }
   };
 
-  /** Mở hộp thoại chọn file từ máy. */
-  const openFilePicker = () => fileInputRef.current?.click();
+    const openFilePicker = () => fileInputRef.current?.click();
 
-  /** Xử lý khi người dùng thả ảnh vào vùng kéo-thả. */
-  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     setDragging(false);
     if (e.dataTransfer?.files?.length) void uploadFiles(e.dataTransfer.files);
@@ -347,7 +337,6 @@ export const AdminProductEditPage = () => {
   const removeSpec = (index: number) =>
     set('specs', form.specs.filter((_, i) => i !== index));
 
-  // ─── Render ─────────────────────────────────────────────────────────────
   if (loading) {
     return (
       <div className="admin-page">
@@ -411,7 +400,7 @@ export const AdminProductEditPage = () => {
       </div>
 
       <div className="admin-product-edit__layout">
-        {/* ─── Cột chính ─────────────────────────────────────────────────── */}
+        {}
         <div className="admin-product-edit__main">
           <div className="admin-section">
             <div className="admin-section__header">
@@ -612,7 +601,7 @@ export const AdminProductEditPage = () => {
               </span>
             </div>
             <div className="admin-section__body">
-              {/* ─── Tải ảnh từ máy ─────────────────────────────────────── */}
+              {}
               <div
                 className={`admin-product-edit__dropzone ${dragging ? 'admin-product-edit__dropzone--active' : ''}`}
                 onDragOver={e => {
@@ -662,7 +651,7 @@ export const AdminProductEditPage = () => {
                 )}
               </div>
 
-              {/* ─── Thêm bằng URL ───────────────────────────────────────── */}
+              {}
               <div className="admin-form-group admin-product-edit__url-group">
                 <label className="admin-form-label">Hoặc thêm bằng URL</label>
                 <div className="admin-product-edit__image-add">
@@ -815,7 +804,7 @@ export const AdminProductEditPage = () => {
           </div>
         </div>
 
-        {/* ─── Cột xem trước ────────────────────────────────────────────── */}
+        {}
         <aside className="admin-product-edit__aside">
           <div className="admin-section">
             <div className="admin-section__header">

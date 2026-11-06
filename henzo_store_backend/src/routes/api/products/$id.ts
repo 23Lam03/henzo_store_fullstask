@@ -17,7 +17,6 @@ export const Route = createFileRoute('/api/products/$id')({
         await connectDB();
         const key = params.id;
 
-        // Tìm theo slug trước, sau đó theo id (hỗ trợ cả hai dạng).
         const product =
           (await ProductModel.findOne({ slug: key }).lean()) ??
           (Types.ObjectId.isValid(key)
@@ -26,14 +25,12 @@ export const Route = createFileRoute('/api/products/$id')({
 
         if (!product) throw notFound('Không tìm thấy sản phẩm');
 
-        // Sản phẩm draft/hidden chỉ hiện với admin hoặc chủ shop.
         if (product.status !== ProductStatus.ACTIVE) {
-          // Vẫn trả về để admin/seller dùng; client phía khách sẽ tự lọc.
+
         }
 
         const related = await getRelatedProducts(product, 8);
 
-        // Tăng lượt xem (không chặn response).
         ProductModel.updateOne({ _id: product._id }, { $inc: { viewCount: 1 } }).catch(
           () => {},
         );

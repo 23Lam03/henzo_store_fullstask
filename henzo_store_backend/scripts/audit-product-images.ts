@@ -1,24 +1,16 @@
-/**
- * Kiểm tra ảnh & dữ liệu sản phẩm trong DB.
- *
- * Chạy: npx tsx scripts/audit-product-images.ts
- */
 import { connectDB, disconnectDB } from '../src/server/db';
 import { ProductModel } from '../src/server/models/Product';
 
-/** Unsplash photo id thật có 26-27 ký tự; id giả từ công thức cộng chỉ có 13. */
 function isFakeId(url: string): boolean {
   const base = url.split('?')[0];
   const slug = base.split('/photo-')[1] ?? '';
   return slug.length < 20;
 }
 
-/** Tên sản phẩm bị lặp do seed sinh hậu tố số (vd "iPhone 15 Pro 1"). */
 function hasNumericSuffix(name: string): boolean {
   return /\s\d+$/.test(name);
 }
 
-/** Chuẩn hoá chuỗi để so khớp tên (bỏ dấu, lowercase, bỏ ký tự đặc biệt). */
 function norm(s: string): string {
   return s
     .toLowerCase()
@@ -92,14 +84,12 @@ async function main() {
     }
   }
 
-  // Tên trùng
   const dupNames = [...nameCount.entries()].filter(([, c]) => c > 1);
   const dupSlugs = [...slugCount.entries()].filter(([, c]) => c > 1);
   for (const [name, c] of dupNames.slice(0, 8)) {
     dupNameSamples.push({ name, count: c });
   }
 
-  // Nhóm sản phẩm trùng tên gốc (bỏ hậu tố số)
   const baseGroups = new Map<string, string[]>();
   for (const d of docs as any[]) {
     const base = String(d.name ?? '').replace(/\s\d+$/, '');
@@ -141,11 +131,10 @@ async function main() {
   console.log('\n════════ ẢNH THẬT (mẫu) ════════');
   console.log(JSON.stringify(realSamples, null, 1));
 
-  // Kiểm tra slug có khớp tên không
   const slugMismatch = (docs as any[]).filter((d) => {
     const n = norm(String(d.name ?? '')).replace(/\s\d+$/, '');
     const s = norm(String(d.slug ?? ''));
-    // slug thường là dạng rút gọn, chỉ báo nếu không có từ nào chung
+
     const words = n.split(' ').filter((w) => w.length > 2);
     if (!words.length) return false;
     return !words.some((w) => s.includes(w));

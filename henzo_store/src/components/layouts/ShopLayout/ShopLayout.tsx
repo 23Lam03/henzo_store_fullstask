@@ -15,18 +15,14 @@ export const ShopLayout = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const { tickets, reviews, orderStatusCounts } = useSeller();
 
-  /**
-   * Badge sidebar lấy số liệu từ server (`statusCounts`) để phản ánh đúng toàn
-   * bộ đơn của cửa hàng, không chỉ 100 bản ghi đã tải về.
-   */
-  const pendingOrders = ['pending', 'confirmed', 'preparing']
+    const pendingOrders = ['pending', 'confirmed', 'preparing']
     .reduce((sum, s) => sum + (orderStatusCounts[s] ?? 0), 0);
   const unreadReviews = reviews.filter(r => !r.isHidden).length;
   const openTickets = tickets.filter(t => ['new', 'in_progress', 'replied'].includes(t.status)).length;
 
   return (
     <div className="shop-layout">
-      {/* Sidebar */}
+      {}
       <aside className={`shop-layout__sidebar ${collapsed ? 'shop-layout__sidebar--collapsed' : ''} ${mobileOpen ? 'shop-layout__sidebar--mobile-open' : ''}`}>
         <div className="shop-layout__sidebar-header">
           <Link to="/seller" className="shop-layout__logo">
@@ -62,12 +58,12 @@ export const ShopLayout = () => {
         />
       </aside>
 
-      {/* Mobile Overlay */}
+      {}
       {mobileOpen && (
         <div className="shop-layout__mobile-overlay" onClick={() => setMobileOpen(false)} />
       )}
 
-      {/* Main Content */}
+      {}
       <div className={`shop-layout__main ${collapsed ? 'shop-layout__main--collapsed' : ''}`}>
         <SellerHeader onMenuToggle={() => setMobileOpen(true)} />
         <div className="shop-layout__content">

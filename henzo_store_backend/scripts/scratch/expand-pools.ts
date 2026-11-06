@@ -1,15 +1,7 @@
-/**
- * Mở rộng pool ảnh thực cho các loại sản phẩm còn thiếu số lượng.
- *
- * Dùng search API để tìm TÊN CATEGORY hợp lệ, rồi lấy file trong đó.
- *
- * Chạy: npx tsx scripts/expand-pools.ts
- */
 import { writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { getJson } from '../lib/commons-files';
 
-/** Từ khoá -> danh sách category tìm được. */
 const TARGETS: Record<string, string[]> = {
   PHONE: [
     'Samsung Galaxy smartphones', 'iPhone', 'smartphones', 'Google Pixel',
@@ -26,7 +18,6 @@ const TARGETS: Record<string, string[]> = {
 const REJECT =
   /\b(disassembl|teardown|exploded|schematic|circuit|mainboard|motherboard|logic ?board|pcb|chipset|logo|icon|diagram|chart|booth|gamescom|comiket|esl|blast|person|people|man|woman|player|streamer|interview|autograph|crowd|audience|stage|signing|museum|store|office|desk|setup|box|package|unboxing|review|comparison|boit|tokyo-game-show|faceit|homestory|hwc|poster|banner|advert|swatch|book|cover|map|screenshot|interface|menu|wallpaper|blueprint|patent|drawing|holding|hand|hands)\b/i;
 
-/** Tìm các category con khớp từ khoá. */
 async function findCats(q: string): Promise<string[]> {
   const d = await getJson(
     `https://commons.wikimedia.org/w/api.php?action=query&format=json&list=search` +
@@ -40,7 +31,6 @@ async function findCats(q: string): Promise<string[]> {
     });
 }
 
-/** Lấy file trong category (kể cả subcategory 1 cấp). */
 async function catFiles(c: string, depth = 0): Promise<string[]> {
   const d = await getJson(
     `https://commons.wikimedia.org/w/api.php?action=query&format=json` +

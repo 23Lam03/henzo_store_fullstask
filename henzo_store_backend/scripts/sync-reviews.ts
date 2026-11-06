@@ -1,26 +1,3 @@
-/**
- * SINH ĐÁNH GIÁ THẬT & ĐỒNG BỘ reviewCount / rating.
- *
- * Vấn đề phát hiện khi audit mở rộng:
- *   - UI hiển thị tổng 61.741 đánh giá trên 582 sản phẩm, nhưng collection
- *     `reviews` chỉ có 40 bản ghi thật (10 sản phẩm).
- *   - 570/582 sản phẩm hiển thị `reviewCount > 0` + điểm sao nhưng khi
- *     mở trang chi tiết KHÔNG có đánh giá nào -> dữ liệu mâu thuẫn.
- *   - Nguyên nhân: `reviewCount`/`rating` được đổ cứng từ mock frontend
- *     (`products.ts`) lúc seed, không đồng bộ với collection `reviews`.
- *
- * Cách sửa (đúng nghiệp vụ marketplace):
- *   1. Sinh đánh giá thật cho từng sản phẩm: số lượng đánh giá tỉ lệ với
- *      `sold` (đã bán nhiều -> nhiều đánh giá), nhưng có trần hợp lý để
- *      không phình dữ liệu quá lớn.
- *   2. Mỗi đánh giá gắn `userId` của một khách hàng thật, `orderId` của
- *      một đơn hàng thật (nếu có) -> `isVerified = true` chỉ khi thực sự
- *      đã mua hàng (đúng logic route `POST /api/reviews`).
- *   3. Nội dung đánh giá theo ngữ cảnh thật của từng nhóm sản phẩm.
- *   4. Đồng bộ `reviewCount` + `rating` của sản phẩm theo collection.
- *
- * Chạy: npx tsx scripts/sync-reviews.ts
- */
 import { connectDB, disconnectDB } from '../src/server/db';
 import { ProductModel } from '../src/server/models/Product';
 import { ReviewModel } from '../src/server/models/Review';
@@ -28,12 +5,9 @@ import { OrderModel } from '../src/server/models/Order';
 import { UserModel } from '../src/server/models/User';
 import { UserRole } from '../src/server/constants';
 
-/** Số đánh giá tối đa sinh cho 1 sản phẩm (tránh phình dữ liệu). */
 const MAX_REVIEWS_PER_PRODUCT = 8;
-/** Số đánh giá tối thiểu (để sản phẩm mới vẫn có phản hồi). */
 const MIN_REVIEWS_PER_PRODUCT = 1;
 
-/** Nhận xét theo nhóm sản phẩm — mỗi nhóm có giọng văn riêng. */
 const COMMENTS: Record<string, string[]> = {
   'Điện thoại': [
     'Máy chạy mượt, pin dùng cả ngày thoải mái. Camera chụp đẹp trong điều kiện ánh sáng bình thường.',
@@ -102,14 +76,12 @@ const COMMENTS: Record<string, string[]> = {
   ],
 };
 
-/** Phản hồi của cửa hàng cho một số đánh giá. */
 const SELLER_REPLIES = [
   'Cảm ơn quý khách đã đánh giá! Chúng tôi rất vui khi sản phẩm đáp ứng được nhu cầu. Rất mong được đón tiếp quý khách trở lại ạ.',
   'Cảm ơn phản hồi của quý khách. Đội ngũ Henzo Store sẽ cố gắng phục vụ tốt hơn nữa. Chúc quý khách sử dụng sản phẩm hài lòng ạ.',
   'Cảm ơn quý khách đã ủng hộ! Chúng tôi ghi nhận góp ý và sẽ cải thiện chất lượng phục vụ trong thời gian tới.',
 ];
 
-/** Hàm băm chuỗi -> số nguyên ổn định (không random). */
 function hash(s: string): number {
   let h = 0;
   for (let i = 0; i < s.length; i++) {
@@ -140,7 +112,6 @@ async function main() {
     return;
   }
 
-  // Index đơn hàng theo sản phẩm để tìm đơn "đã mua thật".
   const ordersByProduct = new Map<string, any[]>();
   for (const o of orders) {
     for (const it of (o.items ?? [])) {
@@ -150,7 +121,6 @@ async function main() {
     }
   }
 
-  // Xoá review cũ để sinh lại cho nhất quán (idempotent).
   const deleted = await ReviewModel.deleteMany({});
   console.log(`[reviews] Xoá ${deleted.deletedCount} đánh giá cũ`);
 
@@ -160,8 +130,7 @@ async function main() {
     const sold = Number(p.sold ?? 0);
     const seed = hash(String(p._id));
 
-    // Số đánh giá tỉ lệ với số lượng đã bán, có trần.
-    const ratio = 0.04 + ((seed % 7) / 100); // 4% – 10%
+    const ratio = 0.04 + ((seed % 7) / 100);
     let count = Math.round(sold * ratio);
     count = Math.max(MIN_REVIEWS_PER_PRODUCT, Math.min(MAX_REVIEWS_PER_PRODUCT, count));
 
@@ -173,15 +142,13 @@ async function main() {
       const s = seed + i * 37;
       const customer = customers[s % customers.length];
 
-      // Chọn đơn hàng thật của sản phẩm này (nếu có) -> đánh giá "đã mua hàng".
       const realOrder = productOrders.length
         ? productOrders[(s >> 3) % productOrders.length]
         : null;
 
-      // Đánh giá đã mua hàng -> 4–5 sao; chưa mua -> 3–5 sao.
       const rating = realOrder
-        ? 4 + (s % 2) // 4 hoặc 5
-        : 3 + (s % 3); // 3, 4 hoặc 5
+        ? 4 + (s % 2)
+        : 3 + (s % 3);
 
       const comment = pool[s % pool.length];
       const hasReply = s % 3 === 0;
@@ -218,7 +185,6 @@ async function main() {
   }
   console.log(`[reviews] Đã tạo ${reviewDocs.length} đánh giá`);
 
-  // ─── Đồng bộ reviewCount / rating của sản phẩm ────────────────────────
   const agg = await ReviewModel.aggregate([
     { $match: { isHidden: false } },
     {
@@ -251,7 +217,6 @@ async function main() {
   }
   console.log(`[reviews] Đồng bộ reviewCount/rating cho ${fixed} sản phẩm`);
 
-  // ─── Báo cáo ──────────────────────────────────────────────────────────
   const totalReviews = await ReviewModel.countDocuments({});
   const totalShown = products.reduce((s, p) => s + Number(p.reviewCount ?? 0), 0);
   const verified = await ReviewModel.countDocuments({ isVerified: true });

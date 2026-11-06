@@ -1,8 +1,3 @@
-/**
- * PROBE các trường hợp khó: tìm ảnh đúng model khi intitle search không ra.
- *
- * Chạy: npx tsx scripts/probe-hard.ts
- */
 import { getJson } from '../lib/commons-files';
 
 const TERMS = [

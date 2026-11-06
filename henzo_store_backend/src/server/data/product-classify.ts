@@ -1,11 +1,4 @@
-/**
- * Suy ra danh mục & thương hiệu từ TÊN sản phẩm.
- *
- * Dùng để gán ảnh đúng với tên: ảnh được chọn theo danh mục suy ra từ tên,
- * không phải theo `categoryName` có sẵn (vốn bị random khi seed).
- */
 
-/** Từ khoá trong tên -> danh mục. */
 const CATEGORY_RULES: Array<{ category: string; keywords: string[] }> = [
   {
     category: 'Điện thoại',
@@ -76,12 +69,6 @@ const CATEGORY_RULES: Array<{ category: string; keywords: string[] }> = [
   },
 ];
 
-/**
- * Mã model trong tên -> danh mục.
- *
- * So khớp bằng **substring** (không cần ranh giới từ) vì mã model thường
- * bị dính liền chữ/số: "AW3225QF", "R32fc-30", "27E2N7900".
- */
 const CATEGORY_MODEL_CODES: Array<{ category: string; codes: string[] }> = [
   {
     category: 'Màn hình',
@@ -139,12 +126,6 @@ const CATEGORY_MODEL_CODES: Array<{ category: string; codes: string[] }> = [
   },
 ];
 
-/**
- * Từ khoá thương hiệu -> thương hiệu.
- *
- * Thứ tự quan trọng: từ khoá dài hơn phải đứng trước (vd "core i9" trước
- * "intel" không cần, nhưng "galaxy book" trước "galaxy").
- */
 const BRAND_RULES: Array<[string, string]> = [
   ['alienware', 'Dell'],
   ['surface', 'Microsoft'],
@@ -221,7 +202,6 @@ const BRAND_RULES: Array<[string, string]> = [
   ['custom', 'Custom'],
 ];
 
-/** Chuẩn hoá chuỗi: bỏ dấu, lowercase, gộp khoảng trắng. */
 function norm(s: string): string {
   return s
     .toLowerCase()
@@ -232,29 +212,18 @@ function norm(s: string): string {
     .trim();
 }
 
-/** Kiểm tra từ khoá có khớp ranh giới từ trong chuỗi đã chuẩn hoá. */
 function hasWord(normalized: string, keyword: string): boolean {
   const k = norm(keyword);
   if (!k) return false;
   return new RegExp(`(^| )${k}( |$)`).test(normalized);
 }
 
-/**
- * Suy ra danh mục từ tên sản phẩm.
- *
- * Dùng **chấm điểm** (số từ khoá khớp) thay vì thứ tự ưu tiên — tránh
- * trường hợp "Samsung Galaxy Book4 Ultra" bị tính là điện thoại chỉ vì
- * từ khoá "galaxy" xuất hiện trước "book4".
- *
- * @returns Danh mục, hoặc `null` nếu không nhận diện được.
- */
 export function inferCategory(name: string): string | null {
   const n = norm(name);
   if (!n) return null;
 
   let best: { category: string; score: number } | null = null;
 
-  // 1) Mã model (khớp substring) — tính điểm cao vì rất đặc trưng.
   for (const rule of CATEGORY_MODEL_CODES) {
     for (const code of rule.codes) {
       if (n.includes(code)) {
@@ -266,7 +235,6 @@ export function inferCategory(name: string): string | null {
     }
   }
 
-  // 2) Từ khoá (khớp ranh giới từ).
   for (const rule of CATEGORY_RULES) {
     let score = 0;
     for (const kw of rule.keywords) {
@@ -280,13 +248,6 @@ export function inferCategory(name: string): string | null {
   return best?.category ?? null;
 }
 
-/**
- * Suy ra thương hiệu từ tên sản phẩm.
- *
- * Ưu tiên từ khoá dài hơn (vd "core i9" hơn "core").
- *
- * @returns Thương hiệu, hoặc `null` nếu không nhận diện được.
- */
 export function inferBrand(name: string): string | null {
   const n = norm(name);
   if (!n) return null;

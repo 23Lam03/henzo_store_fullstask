@@ -1,4 +1,3 @@
-/** Tìm tên file Commons CHÍNH XÁC cho các model (dùng prefix listing). */
 import { writeFileSync } from 'node:fs';
 import { getJson } from '../lib/commons-files';
 

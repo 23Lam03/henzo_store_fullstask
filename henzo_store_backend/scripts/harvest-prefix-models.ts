@@ -1,10 +1,3 @@
-/**
- * THU THẬP FILE COMMONS THEO PREFIX TÊN + LỌC MÃ MODEL CỤC BỘ.
- *
- * `list=allpages&apnamespace=6&apprefix=<Brand>` trả về MỌI file bắt đầu bằng
- * tên thương hiệu (phân trang). Lọc local bằng mã model -> tìm được ảnh thật
- * của đúng model mà không bị nhiễu từ full-text search.
- */
 import { writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
@@ -27,7 +20,6 @@ async function getJson(url: string): Promise<any> {
   return null;
 }
 
-/** Thu thập mọi file Commons bắt đầu bằng prefix (có phân trang). */
 export async function harvestPrefix(prefix: string, max = 900): Promise<string[]> {
   const out: string[] = [];
   let cont: string | undefined;
@@ -45,7 +37,6 @@ export async function harvestPrefix(prefix: string, max = 900): Promise<string[]
   return out;
 }
 
-/** File trong 1 category (đệ quy 1 cấp subcategory). */
 export async function harvestCategory(cat: string, deep = false): Promise<string[]> {
   const out: string[] = [];
   const subs: string[] = [];
@@ -73,7 +64,6 @@ export async function harvestCategory(cat: string, deep = false): Promise<string
   return out;
 }
 
-/** Từ khoá cần có trong tên file (không phân biệt hoa thường). */
 const WANT: Record<string, string[]> = {
   'AOC CU34G2X 34in': ['CU34G2X', 'CU34G2'],
   'ASUS ROG Harpe Ace Aim Lab Edition': ['Harpe Ace', 'ROG Harpe', 'Harpe'],
@@ -117,7 +107,6 @@ const WANT: Record<string, string[]> = {
   'HyperX Cloud III Sumi USB': ['Cloud III'],
 };
 
-/** Prefix thương hiệu cần quét. */
 const PREFIXES = [
   'AOC ', 'AOC-', 'AOC_', 'AGON ',
   'ROG ', 'ROG-', 'ASUS ROG ',
@@ -142,7 +131,6 @@ const PREFIXES = [
   'Galaxy Tab',
 ];
 
-/** Category Commons liên quan (có thể chứa đúng ảnh model). */
 const CATEGORIES = [
   'AMD Ryzen 9 7950X3D',
   'AMD Ryzen 9',

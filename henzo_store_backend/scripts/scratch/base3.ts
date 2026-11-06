@@ -20,9 +20,9 @@ async function main() {
     e.n++; bases.set(b, e);
   }
   const cat = (mock.products as any[]).map(p=>({base: strip(p.name), name:p.name, specs:p.specifications, desc:p.description}));
-  // exact
+
   const exact = new Map(cat.map(c=>[c.base,c]));
-  // prefix index: for each catalog item, all prefixes of its base
+
   const prefix = new Map<string,any>();
   for (const c of cat) {
     const words = c.base.split(' ');

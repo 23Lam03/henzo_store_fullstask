@@ -1,4 +1,3 @@
-/* Reports Page */
 .seller-reports__export { display: flex; gap: 8px; }
 
 .seller-report-stat { display: flex; flex-direction: column; gap: 8px; padding: 20px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-sm); }

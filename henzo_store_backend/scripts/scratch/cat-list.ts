@@ -1,8 +1,3 @@
-/**
- * Liệt kê ảnh trong 1 category Commons (tên + mô tả).
- *
- * Chạy: npx tsx scripts/cat-list.ts "Computer mice with white background" "Video gaming mice"
- */
 const UA = 'henzo-store/1.0 (model image resolver; dev@henzo.local)';
 
 async function getJson(url: string): Promise<any> {

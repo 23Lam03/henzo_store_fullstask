@@ -7,18 +7,11 @@ interface EmptyStateProps {
   icon?: IconName;
   title: string;
   description?: string;
-  /** Nút chính. */
-  action?: { label: string; to: string };
-  /** Nút phụ. */
-  secondaryAction?: { label: string; to: string };
-  /** Nội dung tuỳ chọn hiển thị dưới các nút. */
-  children?: ReactNode;
+    action?: { label: string; to: string };
+    secondaryAction?: { label: string; to: string };
+    children?: ReactNode;
 }
 
-/**
- * Trạng thái rỗng dùng chung cho toàn bộ trang.
- * Thay thế các block "trống" tự viết rời rạc để giao diện đồng nhất.
- */
 export const EmptyState = ({
   icon = 'package',
   title,

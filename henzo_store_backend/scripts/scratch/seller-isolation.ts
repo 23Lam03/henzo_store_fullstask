@@ -1,7 +1,3 @@
-/**
- * Kiểm tra seller KHÔNG sửa/xoá được sản phẩm của cửa hàng khác.
- * Chạy: npx tsx scripts/scratch/seller-isolation.ts
- */
 import { connectDB } from '../../src/server/db';
 import { ProductModel } from '../../src/server/models/Product';
 import { StoreModel } from '../../src/server/models/Store';
@@ -17,13 +13,11 @@ async function main() {
   const myStore = await StoreModel.findOne({ ownerId: seller._id }).lean();
   console.log('seller store:', myStore?.name, '| id:', myStore?._id);
 
-  // Tìm sản phẩm của store khác (không phải của seller này).
   const otherProduct = await ProductModel.findOne({
     storeId: { $nin: [myStore?._id] },
   }).lean();
   console.log('sản phẩm của store khác:', otherProduct?.name, '| storeId:', otherProduct?.storeId);
 
-  // Sản phẩm của chính seller.
   const ownProduct = await ProductModel.findOne({ storeId: myStore?._id }).lean();
   console.log('sản phẩm của seller:', ownProduct?.name);
 

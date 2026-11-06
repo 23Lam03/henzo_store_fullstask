@@ -29,8 +29,7 @@ export const ShopProductListPage = () => {
   const [pendingDelete, setPendingDelete] = useState<string | null>(null);
   const perPage = 12;
 
-  /** Tải sản phẩm của cửa hàng từ API. */
-  const loadProducts = useMemo(() => async () => {
+    const loadProducts = useMemo(() => async () => {
     setLoading(true);
     try {
       const res = await sellerApi.products({ pageSize: 200 });
@@ -72,7 +71,7 @@ export const ShopProductListPage = () => {
 
   return (
     <div className="seller-product-list admin-page">
-      {/* Header */}
+      {}
       <div className="admin-page__header">
         <div>
           <h1 className="admin-page__title">Quản lý sản phẩm</h1>
@@ -86,7 +85,7 @@ export const ShopProductListPage = () => {
         </Link>
       </div>
 
-      {/* Filters */}
+      {}
       <div className="seller-product-list__toolbar">
         <div className="seller-product-list__search">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
@@ -116,7 +115,7 @@ export const ShopProductListPage = () => {
         </div>
       </div>
 
-      {/* Product Table */}
+      {}
       <div className="admin-section">
         <div className="seller-table-wrap">
           <table className="seller-table seller-product-table">
@@ -209,7 +208,7 @@ export const ShopProductListPage = () => {
           </table>
         </div>
 
-        {/* Pagination */}
+        {}
         {filtered.length > perPage && (
           <div className="seller-pagination">
             <span className="seller-pagination__info">

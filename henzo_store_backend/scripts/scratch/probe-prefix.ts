@@ -1,4 +1,3 @@
-/** Liệt kê TOÀN BỘ file Commons bắt đầu bằng prefix (allpages, ns=6). */
 import { writeFileSync } from 'node:fs';
 
 const UA = 'henzo-store/1.0 (model image resolver; dev@henzo.local)';

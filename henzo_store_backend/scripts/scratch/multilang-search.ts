@@ -1,8 +1,3 @@
-/**
- * Tìm ảnh qua Wikipedia đa ngôn ngữ + ảnh "anh em cùng dòng".
- *
- * Chạy: npx tsx scripts/multilang-search.ts "Corsair HS60 Wireless"
- */
 const UA = 'henzo-store/1.0 (model image resolver; dev@henzo.local)';
 const LANGS = ['en', 'de', 'fr', 'es', 'it', 'pl', 'ru', 'ja', 'zh', 'pt', 'nl', 'sv'];
 
@@ -23,7 +18,6 @@ async function getJson(url: string): Promise<any> {
   return null;
 }
 
-/** Tìm trang wiki ở mọi ngôn ngữ + ảnh trong media-list. */
 async function multiLang(model: string) {
   const out: string[] = [];
   for (const lang of LANGS) {
@@ -48,7 +42,6 @@ async function multiLang(model: string) {
   return out;
 }
 
-/** Commons: tìm file có chứa MÃ model cụ thể (intitle). */
 async function commonsIntitle(code: string) {
   const d = await getJson(
     `https://commons.wikimedia.org/w/api.php?action=query&format=json` +
@@ -72,11 +65,10 @@ async function main() {
   ml.forEach((x) => console.log('   ', x));
   if (!ml.length) console.log('    (không có)');
 
-  // Mã model và các biến thể mã khác của cùng dòng.
   const codes = new Set<string>();
   const m = model.match(/[A-Za-z]{1,4}[-]?\d{1,4}[A-Za-z]*/g) ?? [];
   m.forEach((c) => codes.add(c));
-  // Bỏ mã yếu 1-2 ký tự.
+
   const strong = [...codes].filter((c) => c.length >= 3);
   console.log('\n--- Commons intitle:');
   for (const c of strong) {

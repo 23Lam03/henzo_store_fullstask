@@ -1,8 +1,3 @@
-/**
- * Model Address — sổ địa chỉ của khách hàng.
- * Được tách riêng khỏi `User.addresses` để hỗ trợ thao tác cập nhật/xoá
- * và quy tắc "chỉ có 1 địa chỉ mặc định" một cách an toàn.
- */
 import { Schema, type InferSchemaType } from 'mongoose';
 import { defineModel } from './registry';
 
@@ -12,8 +7,7 @@ const addressSchema = new Schema(
     label: { type: String, default: 'Nhà riêng' },
     name: { type: String, required: true },
     phone: { type: String, required: true },
-    /** Số nhà, đường, phường/xã */
-    address: { type: String, default: '' },
+        address: { type: String, default: '' },
     ward: { type: String, default: '' },
     city: { type: String, default: '' },
     district: { type: String, default: '' },

@@ -10,7 +10,6 @@ import { specModelKey } from '../../../henzo_store/src/data/modelSpecs';
     OrderModel.find({}).lean(),
   ]);
 
-  // Index theo model key
   const byModel = new Map<string, any[]>();
   for (const p of products) {
     const k = specModelKey(String(p.name));

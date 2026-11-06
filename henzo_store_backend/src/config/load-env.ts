@@ -1,10 +1,3 @@
-/**
- * Nạp biến môi trường từ file `.env` (không phụ thuộc thư viện ngoài).
- *
- * - Tự động tạo file `.env` từ `.env.example` nếu chưa có.
- * - Giá trị đã có trong `process.env` luôn được ưu tiên (để chạy CI/Docker).
- * - Vite đã nạp `.env` khi chạy dev/build, nên hàm này sẽ là no-op.
- */
 import { existsSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { PROJECT_ROOT } from './paths';
@@ -24,25 +17,13 @@ function parseEnvFile(content: string): Record<string, string> {
     ) {
       value = value.slice(1, -1);
     }
-    // Dòng có giá trị rỗng (vd `UPLOAD_STORE=`) nghĩa là "chưa đặt" ->
-    // KHÔNG đưa vào `process.env`, để zod dùng giá trị mặc định.
-    // Nếu đưa vào, giá trị rỗng sẽ fail validate enum và server không
-    // khởi động được.
+
     if (!key || value === '') continue;
     result[key] = value;
   }
   return result;
 }
 
-/**
- * Có đang chạy ở môi trường production (Paas) không?
- *
- * - `NODE_ENV=production` — cách chuẩn.
- * - `process.env.RENDER` — Render tự set biến này cho mọi service.
- *   Cần thiết vì nếu service được tạo thủ công và quên set `NODE_ENV`,
- *   code sẽ tưởng đang ở dev và đọc nhầm file `.env.example` (template)
- *   như cấu hình thật -> giá trị rỗng trong template làm fail validate.
- */
 function isProduction(): boolean {
   return (
     process.env.NODE_ENV === 'production' ||
@@ -51,10 +32,8 @@ function isProduction(): boolean {
   );
 }
 
-/** Đọc `.env` tại gốc dự án (hoặc `.env.local`, `.env.development`). */
 export function loadEnvFiles(rootDir?: string): void {
-  // `PROJECT_ROOT` được dò từ vị trí file để không phụ thuộc `process.cwd()`
-  // (trên Render cwd có thể là `/opt/render/project/src`).
+
   const here = rootDir ?? PROJECT_ROOT;
 
   const candidates = [
@@ -63,10 +42,6 @@ export function loadEnvFiles(rootDir?: string): void {
     '.env',
   ];
 
-  // `.env.example` CHỈ dùng làm fallback khi đang dev và chưa có file `.env`
-  // nào. Ở production (Render) tuyệt đối không nạp file mẫu — nếu không,
-  // các giá trị mặc định trong ví dụ (vd `NODE_ENV=development`,
-  // `COOKIE_SAME_SITE=Lax`) có thể lọt vào config thật.
   if (!isProduction()) {
     candidates.push('.env.example');
   }
@@ -78,7 +53,7 @@ export function loadEnvFiles(rootDir?: string): void {
     for (const [key, value] of Object.entries(parsed)) {
       if (process.env[key] === undefined) process.env[key] = value;
     }
-    // `.env` đã tồn tại → dừng, không cần fallback sang `.env.example`.
+
     if (name !== '.env.example') break;
   }
 }

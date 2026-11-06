@@ -1,8 +1,3 @@
-/**
- * THU THẬP THÊM ẢNH SẢN PHẨM từ category Commons theo loại (đệ quy 2 cấp).
- *
- * Bổ sung pool để mỗi model có nhiều lựa chọn cùng hãng + cùng loại.
- */
 import { writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
@@ -67,7 +62,6 @@ const ROOTS = [
   'Tablet computers', 'Portable chargers', 'Power banks',
 ];
 
-/** Category con bỏ qua (quá rộng). */
 const SKIP = /^(Graphics|Movies|Music|Timetables|Trains|Books|Ships|Cars|Aircraft|Flora|Fauna|Maps|Flags|Bridges|Streets|Churches)/i;
 
 async function main() {
@@ -84,7 +78,6 @@ async function main() {
   }
   console.log(`[l1] ${level1.length} subcategory`);
 
-  // Đệ quy 1 cấp.
   for (const c of level1) {
     if (seenCats.has(c)) continue;
     seenCats.add(c);

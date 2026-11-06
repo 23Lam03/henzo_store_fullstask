@@ -1,21 +1,3 @@
-/**
- * Đồng bộ THÔNG SỐ THẬT + MÔ TẢ + THẺ vào MongoDB.
- *
- * ⚠️  Vấn đề gốc đã được sửa:
- *   - 482/582 sản phẩm có `specifications` random `CPU/RAM/SSD` (một chiếc
- *     MacBook Pro bị gán "Intel Core i9", "AMD Ryzen 9"...).
- *   - 482/582 mô tả đều giống nhau: "Mô tả chi tiết {tên}...".
- *   - 582/582 tags rỗng.
- *   - 24 nhóm tên sản phẩm trùng nhau trong cùng cửa hàng.
- *
- * Script này:
- *   1. Gán `specifications` thật theo model (bảng `henzo_store/src/data/modelSpecs.ts`).
- *   2. Sinh lại `description` + `tags` từ thông số (không random).
- *   3. Đổi tên/slug cho các sản phẩm trùng tên trong cùng store.
- *
- * Chạy:
- *   cd henzo_store_backend && npx tsx scripts/apply-real-specs.ts
- */
 import { resolve } from 'path';
 import { connectDB, disconnectDB } from '../src/server/db';
 import { ProductModel } from '../src/server/models/Product';
@@ -33,7 +15,6 @@ const BRAND_BY_CATEGORY: Record<string, string> = {
   'Phụ kiện': 'Belkin',
 };
 
-/** Suy ra "kind" từ tên + danh mục để sinh tags đúng. */
 function inferKind(name: string, categoryName: string): string {
   const n = name.toLowerCase();
   if (categoryName === 'Điện thoại') {
@@ -45,10 +26,6 @@ function inferKind(name: string, categoryName: string): string {
   return 'accessory';
 }
 
-/**
- * Tên model gốc (không kèm dung lượng / màu / kích thước).
- * Dùng CÙNG quy tắc với `specModelKey` trong `modelSpecs.ts`.
- */
 function baseModel(name: string): string {
   return name
     .replace(/\s+\d+(?:\.\d+)?\s*(?:GB|TB|MB)\b/gi, ' ')
@@ -82,7 +59,7 @@ async function main() {
   let renameFixed = 0;
   const unresolved = new Set<string>();
   const usedSlugs = new Set<string>();
-  // Đếm số lần tên trùng trong cùng store để đánh số hậu tố.
+
   const nameCount = new Map<string, number>();
 
   for (const p of products) {
@@ -91,10 +68,9 @@ async function main() {
     const brand = String(p.brand || BRAND_BY_CATEGORY[categoryName] || 'Henzotech');
     const base = baseModel(name);
 
-    // ─── 1. Thông số thật ────────────────────────────────────────────────
     const { specs, missing } = specsForProduct(name);
     if (!missing && Object.keys(specs).length) {
-      // Schema khai báo `specifications` là Map -> so sánh & ghi dạng Map.
+
       const current = p.specifications;
       const currentObj =
         current instanceof Map
@@ -108,7 +84,6 @@ async function main() {
       unresolved.add(`${categoryName} | ${name}`);
     }
 
-    // ─── 2. Mô tả ────────────────────────────────────────────────────────
     const desc = productDescription({
       productName: name,
       base,
@@ -122,7 +97,6 @@ async function main() {
     }
     p.shortDescription = desc.slice(0, 160);
 
-    // ─── 3. Thẻ ──────────────────────────────────────────────────────────
     const tags = productTags({
       productName: name,
       base,
@@ -135,7 +109,6 @@ async function main() {
       tagFixed++;
     }
 
-    // ─── 4. Trùng tên -> đổi tên + slug ─────────────────────────────────
     const scope = `${p.storeId}|${name}`;
     const seen = (nameCount.get(scope) ?? 0) + 1;
     nameCount.set(scope, seen);
@@ -143,16 +116,15 @@ async function main() {
     let finalName = name;
     let finalSlug = slugify(name);
     if (seen > 1) {
-      // Tên đã chuẩn hoá bị trùng -> gắn hậu tố số để phân biệt.
+
       finalName = `${name} (${seen})`;
       finalSlug = slugify(finalName);
       renameFixed++;
     } else if (finalSlug !== String(p.slug)) {
-      // Tên đã được chuẩn hoá (bỏ size/dung lượng lặp) -> slug phải theo kịp.
+
       renameFixed++;
     }
 
-    // Đảm bảo slug duy nhất toàn hệ thống.
     if (usedSlugs.has(finalSlug)) {
       let i = 2;
       while (usedSlugs.has(`${finalSlug}-${i}`)) i++;

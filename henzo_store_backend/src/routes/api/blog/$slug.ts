@@ -10,8 +10,7 @@ export const Route = createFileRoute('/api/blog/$slug')({
   server: {
     middleware: [corsMiddleware],
     handlers: {
-      /** Chi tiết bài viết theo slug. */
-      GET: withErrorHandling(async ({ params }) => {
+            GET: withErrorHandling(async ({ params }) => {
         await connectDB();
         const key = params.slug;
 
@@ -21,12 +20,10 @@ export const Route = createFileRoute('/api/blog/$slug')({
 
         if (!post) throw notFound('Không tìm thấy bài viết');
 
-        // Tăng lượt xem (không chặn response).
         BlogModel.updateOne({ _id: post._id }, { $inc: { views: 1 } }).catch(
           () => {},
         );
 
-        // Bài viết liên quan: cùng chuyên mục, tối đa 5.
         const related = await BlogModel.find({
           _id: { $ne: post._id },
           ...(post.category ? { category: post.category } : {}),

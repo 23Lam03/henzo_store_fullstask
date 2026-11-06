@@ -1,8 +1,3 @@
-/**
- * Kiểm kê ảnh SẢN PHẨM THẬT theo category Commons (dùng cho fallback).
- *
- * Chạy: npx tsx scripts/pool-by-category.ts
- */
 const UA = 'henzo-store/1.0 (model image resolver; dev@henzo.local)';
 
 async function getJson(url: string): Promise<any> {
@@ -22,7 +17,6 @@ async function getJson(url: string): Promise<any> {
   return null;
 }
 
-/** Loại ảnh có người / sự kiện / bàn phím-monitor cùng lúc. */
 const PEOPLE_RE =
   /\b(booth|game show|gamescom|tokyo-game|comiket|person|man |woman |player|pro player|team |esport|streamer|interview|tournament|championship|expo|messe|fair|signing|meet|autograph|fan |crowd|stage|panel|sitting|wearing|worn|player|esports)/i;
 const BAD_RE =

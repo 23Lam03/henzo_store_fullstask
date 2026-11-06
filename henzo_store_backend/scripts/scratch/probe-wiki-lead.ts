@@ -1,15 +1,3 @@
-/**
- * LẤY ẢNH CHÍNH SẢN PHẨM TỪ WIKIPEDIA/WIKIDATA (P18).
- *
- * Chiến lược: ảnh chính trên Wikipedia (lead image) là ảnh SẢN PHẨM chụp
- * riêng, chính xác nhất — tốt hơn nhiều so với ảnh trong Category (toàn ảnh
- * người dùng / sự kiện).
- *
- *   1. Wikidata: wbsearchentities -> entity -> P18 (image) -> P373/P935.
- *   2. Wikipedia (en/de/fr/es/it/ja/zh): search -> pageimages -> thumbnail.
- *
- * Chạy: npx tsx scripts/probe-wiki-lead.ts [từ khóa...]
- */
 import { getJson } from '../lib/commons-files';
 import { readFileSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
@@ -71,7 +59,6 @@ async function wikipediaLead(q: string): Promise<{ title: string; url: string }[
   return out;
 }
 
-/** Model cần probe (mặc định: toàn bộ model đang có ảnh chính sai). */
 async function main() {
   const args = process.argv.slice(2).filter((a) => !a.startsWith('--'));
   let models: string[] = args;

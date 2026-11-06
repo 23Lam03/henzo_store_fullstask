@@ -114,7 +114,7 @@ export const SellerHeader = ({ onMenuToggle }: SellerHeaderProps) => {
 
   return (
     <header className="seller-header">
-      {/* Left: Logo + Search */}
+      {}
       <div className="seller-header__left">
         {onMenuToggle && (
           <button className="seller-header__mobile-toggle" onClick={onMenuToggle} aria-label="Mở menu">
@@ -131,9 +131,9 @@ export const SellerHeader = ({ onMenuToggle }: SellerHeaderProps) => {
         </div>
       </div>
 
-      {/* Right: Actions */}
+      {}
       <div className="seller-header__right">
-        {/* Store badge */}
+        {}
         <Link to="/seller/profile" className="seller-header__store-badge">
           <img src={store.avatar || FALLBACK_AVATAR} alt={store.name} className="seller-header__store-avatar" />
           <div className="seller-header__store-info">
@@ -150,7 +150,7 @@ export const SellerHeader = ({ onMenuToggle }: SellerHeaderProps) => {
           </div>
         </Link>
 
-        {/* Notifications */}
+        {}
         <div className="seller-header__notif-wrapper" ref={notifRef}>
           <button
             className="seller-header__icon-btn"
@@ -217,7 +217,7 @@ export const SellerHeader = ({ onMenuToggle }: SellerHeaderProps) => {
           )}
         </div>
 
-        {/* Profile dropdown */}
+        {}
         <div className="seller-header__profile-wrapper" ref={profileRef}>
           <button
             className="seller-header__profile-btn"

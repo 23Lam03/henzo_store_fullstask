@@ -1,9 +1,3 @@
-/**
- * TÌM ẢNH THẬT QUA OPENVERSE (chạy song song, nhanh).
- *
- * Openverse index ảnh CC từ Flickr/Wikimedia/milksource... Ảnh review sản
- * phẩm trên Flickr thường có tên đúng model (vd "Zowie XL2546X").
- */
 import { writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
@@ -134,7 +128,7 @@ async function probe(model: string): Promise<any[]> {
 
 async function main() {
   const out: Record<string, any[]> = {};
-  // Song song 5 model mỗi lượt để không bị rate-limit.
+
   const queue = [...MODELS];
   const workers = Array.from({ length: 5 }, async () => {
     while (queue.length) {

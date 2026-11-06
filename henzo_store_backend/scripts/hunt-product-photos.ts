@@ -1,8 +1,3 @@
-/**
- * Tìm ảnh sản phẩm thật cho các hãng còn thiếu model-specific.
- *
- * Chạy: npx tsx scripts/hunt-product-photos.ts
- */
 const UA = 'henzo-store/1.0 (model image resolver; dev@henzo.local)';
 
 async function getJson(url: string): Promise<any> {

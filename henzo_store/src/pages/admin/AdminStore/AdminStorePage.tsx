@@ -14,7 +14,6 @@ const STATUS_OPTIONS = [
   { label: 'Chưa xác minh', value: 'unverified' },
 ];
 
-/** Form cửa hàng (dùng cho cả tạo mới và chỉnh sửa). */
 interface StoreForm {
   name: string;
   email: string;
@@ -39,14 +38,12 @@ export const AdminStorePage = () => {
   const [pendingConfirm, setPendingConfirm] = useState<{ id: string; action: 'verify' | 'unverify' | 'delete' } | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Modal tạo / sửa cửa hàng (trước đây điều hướng tới route không tồn tại).
   const [showForm, setShowForm] = useState(false);
   const [editingStore, setEditingStore] = useState<Store | null>(null);
   const [form, setForm] = useState<StoreForm>(EMPTY_STORE_FORM);
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
 
-  /** Mở modal tạo (store = null) hoặc sửa (store có id). */
-  const openForm = (store: Store | null) => {
+    const openForm = (store: Store | null) => {
     setEditingStore(store);
     setForm(
       store
@@ -63,8 +60,7 @@ export const AdminStorePage = () => {
     setShowForm(true);
   };
 
-  /** Lưu cửa hàng (tạo mới hoặc cập nhật). */
-  const handleSubmitForm = async () => {
+    const handleSubmitForm = async () => {
     const errors: Record<string, string> = {};
     if (!form.name.trim()) errors.name = 'Vui lòng nhập tên cửa hàng.';
     if (!form.email.trim()) errors.email = 'Vui lòng nhập email.';
@@ -100,12 +96,7 @@ export const AdminStorePage = () => {
     }
   };
 
-  /**
-   * Thực thi hành động đã xác nhận (xoá / xác minh / huỷ xác minh).
-   * Trước đây nút "Xóa cửa hàng" chỉ hiện toast mà không gọi API nên
-   * cửa hàng không bao giờ thực sự bị xoá.
-   */
-  const handleConfirmAction = async () => {
+    const handleConfirmAction = async () => {
     if (!pendingConfirm) return;
     const { id, action } = pendingConfirm;
     setIsSubmitting(true);
@@ -311,7 +302,7 @@ export const AdminStorePage = () => {
         onCancel={() => setPendingConfirm(null)}
       />
 
-      {/* Modal tạo / sửa cửa hàng */}
+      {}
       {showForm && (
         <div className="admin-modal-overlay" onClick={() => setShowForm(false)}>
           <div className="admin-modal" onClick={e => e.stopPropagation()}>

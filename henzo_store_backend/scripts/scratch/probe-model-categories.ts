@@ -1,26 +1,21 @@
-/**
- * PROBE CATEGORY CON CỤ THỂ cho các brand còn thiếu ảnh sản phẩm.
- *
- * Chạy: npx tsx scripts/probe-model-categories.ts
- */
 import { getJson } from '../lib/commons-files';
 
 const QUERIES = [
-  // HyperX
+
   'HyperX Cloud II',
   'HyperX Cloud Alpha',
   'HyperX Cloud III',
   'HyperX Cloud',
   'HyperX',
   'HyperX headsets',
-  // Corsair
+
   'Corsair VOID',
   'Corsair HS60',
   'Corsair HS80',
   'Corsair headset',
   'Corsair ST100',
   'Corsair',
-  // Gigabyte
+
   'M27Q',
   'M32UC',
   'M34WMU',
@@ -29,28 +24,28 @@ const QUERIES = [
   'AORUS',
   'Gigabyte Aorus',
   'AORUS laptops',
-  // Razer
+
   'Razer monitor',
   'Razer Raptor',
   'Razer',
-  // Samsung
+
   'Samsung 870 EVO',
   'Samsung 870',
   'Samsung 990 PRO',
   'Samsung NVMe',
-  // Endgame
+
   'Endgame Gear mouse',
   'Endgame',
-  // ASUS
+
   'ASUS ROG Harpe',
   'ROG Harpe',
   'ROG mouse',
   'ASUS mice',
-  // G.Skill
+
   'G.Skill',
   'G.Skill Trident',
   'G.Skill Ripjaws',
-  // LG / Philips / ViewSonic / HP
+
   'UltraGear',
   'LG UltraGear',
   'Philips monitor',
@@ -59,18 +54,18 @@ const QUERIES = [
   'XG272',
   'HP Omen monitor',
   'OMEN 27',
-  // SteelSeries / Logitech
+
   'Arctis',
   'SteelSeries Arctis Nova',
   'Logitech G Pro X',
   'Logitech G Pro',
   'Logitech headset',
-  // Zowie / BenQ
+
   'Zowie XL2546',
   'Zowie XL2566',
   'BenQ Zowie',
   'Zowie',
-  // MSI / Dell / Acer
+
   'MSI MAG',
   'MSI MPG',
   'Dell Alienware',

@@ -1,8 +1,3 @@
-/**
- * Khôi phục dữ liệu sản phẩm từ backup (scripts/data/products-backup.json).
- *
- * Chạy: npx tsx scripts/restore-products.ts
- */
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { connectDB, disconnectDB } from '../src/server/db';

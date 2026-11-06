@@ -1,11 +1,3 @@
-/**
- * Tìm ảnh sản phẩm THẬT theo tên từ Wikipedia (pageimages).
- *
- * Wikipedia có ảnh chính xác của từng model sản phẩm (iPhone 16 Pro Max,
- * MacBook Pro, Corsair RM850x...) — khác với ảnh stock Unsplash dùng chung.
- *
- * Chạy: npx tsx scripts/fetch-wikipedia-images.ts
- */
 import { readFileSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
@@ -18,7 +10,6 @@ interface Candidate {
   images: string[];
 }
 
-/** Chuẩn hoá tên để dò trên Wikipedia. */
 function wikiTitle(name: string): string {
   return name
     .replace(/\s+/g, ' ')
@@ -26,21 +17,13 @@ function wikiTitle(name: string): string {
     .trim();
 }
 
-/**
- * Tạo các biến thể tên để dò trên Wikipedia.
- *
- * Tên sản phẩm có dung lượng ("iPhone 16 Pro Max 256GB") hiếm khi tồn tại
- * trên Wikipedia — cần thử bản không dung lượng trước.
- */
 function titleVariants(name: string): string[] {
   const base = wikiTitle(name);
   const variants = [base];
 
-  // Bỏ dung lượng: "256GB", "512GB", "1TB", "16GB"...
   const noCapacity = base.replace(/\s+\d+(?:\.\d+)?\s*(?:GB|TB|MB)\b/gi, '').trim();
   if (noCapacity && noCapacity !== base) variants.push(noCapacity);
 
-  // Bỏ mã model phía sau: "G614JIR", "14VIG", "FW-0003"
   const noModel = noCapacity
     .replace(/\s+[A-Z]{2,5}[-]?\d{2,}[A-Z0-9]*\b/g, '')
     .trim();
@@ -49,7 +32,6 @@ function titleVariants(name: string): string[] {
   return variants.filter(Boolean);
 }
 
-/** Tìm ảnh chính qua API pageimages (có redirect). */
 async function fetchThumb(title: string): Promise<string | null> {
   const url =
     `https://en.wikipedia.org/w/api.php?action=query&format=json&prop=pageimages` +
@@ -64,7 +46,6 @@ async function fetchThumb(title: string): Promise<string | null> {
   return null;
 }
 
-/** Tìm ảnh qua search + pageimages (khi tên khóa không trùng chính xác). */
 async function searchAndFetch(name: string): Promise<string | null> {
   const searchUrl =
     `https://en.wikipedia.org/w/api.php?action=query&format=json&list=search` +

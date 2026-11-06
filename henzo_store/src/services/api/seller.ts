@@ -1,7 +1,3 @@
-/**
- * API phía seller (shop) — dashboard, đơn hàng, sản phẩm, tồn kho,
- * đánh giá, khuyến mãi, vận chuyển, thanh toán, hỗ trợ.
- */
 import { API_BASE_URL, API_ORIGIN, apiFetch, apiFetchWithMeta, apiUpload, qs, type QueryValue, type UploadedFileInfo } from './client';
 import type {
   DailyRevenue,
@@ -56,41 +52,29 @@ export interface SellerInventoryResult {
   total: number;
 }
 
-/**
- * Phạm vi cửa hàng đang xem.
- *
- * - Tài khoản `SHOP` không cần tham số này — backend tự lấy `storeId` của user.
- * - Tài khoản `ADMIN` có thể chọn một cửa hàng cụ thể; khi đó mọi request
- *   seller sẽ kèm `?storeId=...` để backend scope đúng.
- */
 let activeStoreId: string | undefined;
 
-/** Đặt cửa hàng đang xem (chỉ dùng cho role ADMIN). */
 export function setSellerStoreScope(storeId?: string): void {
   activeStoreId = storeId?.trim() || undefined;
 }
 
-/** Cửa hàng đang xem hiện tại. */
 export function getSellerStoreScope(): string | undefined {
   return activeStoreId;
 }
 
-/** Gắn `storeId` vào query string nếu đang có phạm vi cửa hàng. */
 function scopeQs(params?: Record<string, QueryValue>): string {
   if (!activeStoreId) return qs(params);
   return qs({ ...(params ?? {}), storeId: activeStoreId });
 }
 
 export const sellerApi = {
-  /** Dashboard tổng quan của cửa hàng. */
-  dashboard: (
+    dashboard: (
     period: 'today' | 'week' | 'month' | 'year' = 'month',
   ): Promise<SellerDashboardResponse> =>
     apiFetch<SellerDashboardResponse>(
       `${API_BASE_URL}/seller/dashboard${scopeQs({ period })}`,
     ),
 
-  // ─── Đơn hàng ─────────────────────────────────────────────────────────────
   async orders(
     params: {
       page?: number;
@@ -115,8 +99,7 @@ export const sellerApi = {
       `${API_BASE_URL}/seller/orders/${encodeURIComponent(id)}`,
     ),
 
-  /** Cập nhật trạng thái sub-order (sơ đồ trạng thái do backend kiểm tra). */
-  updateOrderStatus: (
+    updateOrderStatus: (
     id: string,
     status: string,
     extra?: {
@@ -130,7 +113,6 @@ export const sellerApi = {
       { method: 'PATCH', body: { status, ...(extra ?? {}) } },
     ),
 
-  // ─── Sản phẩm ─────────────────────────────────────────────────────────────
   async products(
     params: {
       page?: number;
@@ -150,8 +132,7 @@ export const sellerApi = {
     return { products: data ?? [], total: meta?.total ?? 0 };
   },
 
-  /** Xoá sản phẩm của cửa hàng. */
-  deleteProduct: (id: string): Promise<{ id: string; deleted: boolean }> =>
+    deleteProduct: (id: string): Promise<{ id: string; deleted: boolean }> =>
     apiFetch<{ id: string; deleted: boolean }>(
       `${API_BASE_URL}/seller/products/${encodeURIComponent(id)}`,
       { method: 'DELETE' },
@@ -169,8 +150,7 @@ export const sellerApi = {
       body: input,
     }),
 
-  /** Tải ảnh sản phẩm lên từ máy — trả về URL public dùng cho `images`. */
-  uploadImages: async (files: File[] | File): Promise<{ files: UploadedFileInfo[] }> => {
+    uploadImages: async (files: File[] | File): Promise<{ files: UploadedFileInfo[] }> => {
     const res = await apiUpload<{ files: UploadedFileInfo[] }>(
       `${API_BASE_URL}/seller/uploads`,
       files,
@@ -183,7 +163,6 @@ export const sellerApi = {
     };
   },
 
-  // ─── Tồn kho ─────────────────────────────────────────────────────────────
   async inventory(
     params: {
       page?: number;
@@ -203,8 +182,7 @@ export const sellerApi = {
     };
   },
 
-  /** Cập nhật tồn kho theo SKU. */
-  updateInventoryStock: (
+    updateInventoryStock: (
     sku: string,
     stock: number,
   ): Promise<SellerInventoryItem> =>
@@ -213,7 +191,6 @@ export const sellerApi = {
       { method: 'PATCH', body: { stock } },
     ),
 
-  // ─── Đánh giá ─────────────────────────────────────────────────────────────
   async reviews(
     params: {
       page?: number;
@@ -234,8 +211,7 @@ export const sellerApi = {
     };
   },
 
-  /** Ẩn / bỏ ẩn / phản hồi đánh giá. */
-  updateReview: (
+    updateReview: (
     id: string,
     action: 'hide' | 'unhide' | 'respond',
     response?: string,
@@ -245,7 +221,6 @@ export const sellerApi = {
       { method: 'PATCH', body: { action, ...(response ? { response } : {}) } },
     ),
 
-  // ─── Khuyến mãi ───────────────────────────────────────────────────────────
   async promotions(
     params: { page?: number; pageSize?: number; status?: string } = {},
   ): Promise<{ promotions: SellerPromotion[]; total: number }> {
@@ -276,7 +251,6 @@ export const sellerApi = {
       { method: 'DELETE' },
     ),
 
-  // ─── Vận chuyển ───────────────────────────────────────────────────────────
   async shipping(
     params: { page?: number; pageSize?: number; status?: string } = {},
   ): Promise<{ shippings: SellerShipping[]; total: number }> {
@@ -303,7 +277,6 @@ export const sellerApi = {
       body: input,
     }),
 
-  // ─── Thanh toán ───────────────────────────────────────────────────────────
   async payments(
     params: { page?: number; pageSize?: number; status?: string } = {},
   ): Promise<{
@@ -337,7 +310,6 @@ export const sellerApi = {
     };
   },
 
-  // ─── Hỗ trợ ───────────────────────────────────────────────────────────────
   async tickets(
     params: { page?: number; pageSize?: number; status?: string } = {},
   ): Promise<{ tickets: SellerSupportTicket[]; total: number }> {
@@ -347,8 +319,7 @@ export const sellerApi = {
     return { tickets: data ?? [], total: meta?.total ?? 0 };
   },
 
-  /** Trả lời phiếu hỗ trợ — backend tự chuyển trạng thái sang `replied`. */
-  replyTicket: (id: string, content: string): Promise<SellerSupportTicket> =>
+    replyTicket: (id: string, content: string): Promise<SellerSupportTicket> =>
     apiFetch<SellerSupportTicket>(
       `${API_BASE_URL}/seller/support/tickets/${encodeURIComponent(id)}`,
       { method: 'PATCH', body: { content } },
@@ -364,7 +335,6 @@ export const sellerApi = {
     ),
 };
 
-/** Thông báo của seller. */
 export const sellerNotificationApi = {
   async list(
     params: { page?: number; pageSize?: number; unread?: boolean } = {},

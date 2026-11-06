@@ -43,7 +43,7 @@ export const ShopFinancePage = () => {
         </div>
       </div>
 
-      {/* Period Tabs */}
+      {}
       <div className="seller-finance__period-tabs">
         {(['today', 'week', 'month', 'year'] as Period[]).map(p => (
           <button key={p} className={`seller-period-btn ${period === p ? 'seller-period-btn--active' : ''}`} onClick={() => setPeriod(p)}>
@@ -52,7 +52,7 @@ export const ShopFinancePage = () => {
         ))}
       </div>
 
-      {/* Finance Stats */}
+      {}
       <div className="admin-stats admin-stats--3">
         <div className="seller-finance-stat seller-finance-stat--primary">
           <div className="seller-finance-stat__icon">
@@ -113,7 +113,7 @@ export const ShopFinancePage = () => {
         </div>
       </div>
 
-      {/* Chart */}
+      {}
       <div className="admin-section seller-finance__chart-section">
         <div className="seller-finance-chart">
           <div className="seller-finance-chart__header">
@@ -139,7 +139,7 @@ export const ShopFinancePage = () => {
         </div>
       </div>
 
-      {/* Monthly Breakdown */}
+      {}
       <div className="admin-section">
         <div className="admin-section__header">
           <h3 className="admin-section__title">Báo cáo chi tiết theo tháng</h3>

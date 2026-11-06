@@ -48,8 +48,7 @@ export const Header = () => {
   const isMobile = width < 768;
   const isTransparent = scrollY < 50;
 
-  /* Badge số lượng nhảy khi giá trị thay đổi */
-  const [bumped, setBumped] = useState<'cart' | 'wish' | 'notif' | null>(null);
+    const [bumped, setBumped] = useState<'cart' | 'wish' | 'notif' | null>(null);
   const bumpTimer = useRef<number | undefined>(undefined);
 
   useEffect(() => {
@@ -98,7 +97,7 @@ export const Header = () => {
       <header
         className={`header ${isScrolled ? 'header--scrolled' : ''} ${isTransparent && !isScrolled ? 'header--transparent' : ''}`}
       >
-        {/* Dải tiêu đề kiểu báo chí — biến mất khi cuộn xuống */}
+        {}
         <div className="header__masthead">
           <div className="header__masthead-inner">
             <span className="header__masthead-issue">Số 12 · Mùa Tết 2026</span>
@@ -126,12 +125,7 @@ export const Header = () => {
                 onMouseEnter={() => setShowMegaMenu(true)}
                 onMouseLeave={() => setShowMegaMenu(false)}
               >
-                {/* <button className="header__nav-link header__nav-link--dropdown">
-                  Danh Mục
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                    <polyline points="6 9 12 15 18 9"/>
-                  </svg>
-                </button> */}
+                {}
                 {showMegaMenu && (
                   <MegaMenu
                     categories={CATEGORIES.map(c => ({ ...c, children: c.children?.map(ch => ({ ...ch })) }))}

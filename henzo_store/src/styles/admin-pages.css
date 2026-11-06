@@ -1,16 +1,9 @@
-/* ═══════════════════════════════════════════════════════════════════════════
-   ADMIN PAGES — Shared Styles
-═══════════════════════════════════════════════════════════════════════════ */
-
-/* ─── Admin Page Container ─────────────────────────────────────────────── */
 .admin-page {
   display: flex;
   flex-direction: column;
   gap: var(--space-6);
   animation: fade-up 0.3s ease;
 }
-
-/* ─── Page Header ────────────────────────────────────────────────────── */
 .admin-page__header {
   display: flex;
   align-items: flex-start;
@@ -41,8 +34,6 @@
   font-size: var(--font-size-sm);
   color: var(--color-text-muted);
 }
-
-/* ─── Stats Grid ─────────────────────────────────────────────────────── */
 .admin-stats {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
@@ -125,8 +116,6 @@
   background: transparent;
   border: 1px solid currentColor;
 }
-
-/* ─── Status Badge Helper ─────────────────────────────────────────────── */
 .admin-status {
   display: inline-flex;
   align-items: center;
@@ -167,8 +156,6 @@
   color: var(--color-text-muted);
   background: var(--color-surface-sunken);
 }
-
-/* ─── Detail Panel (Drawer style) ────────────────────────────────────── */
 .admin-detail-panel {
   position: fixed;
   top: 0;
@@ -259,8 +246,6 @@
   font-weight: 500;
   text-align: right;
 }
-
-/* ─── Create / Edit Form Modal ─────────────────────────────────────────── */
 .admin-modal-overlay {
   position: fixed;
   inset: 0;
@@ -337,8 +322,6 @@
   background: var(--color-background);
   flex-shrink: 0;
 }
-
-/* ─── Form ─────────────────────────────────────────────────────────────── */
 .admin-form { display: flex; flex-direction: column; gap: var(--space-4); }
 
 .admin-form-group { display: flex; flex-direction: column; gap: var(--space-2); }
@@ -385,8 +368,6 @@
   grid-template-columns: 1fr 1fr;
   gap: var(--space-4);
 }
-
-/* ─── Dropzone tải ảnh (dùng chung admin & shop) ───────────────────── */
 .admin-product-edit__dropzone {
   display: flex;
   flex-direction: column;
@@ -439,8 +420,6 @@
     transform: rotate(360deg);
   }
 }
-
-/* ─── Confirm Dialog ──────────────────────────────────────────────────── */
 .admin-confirm-dialog {
   background: var(--color-surface);
   border: 1px solid var(--color-border);
@@ -488,8 +467,6 @@
   gap: var(--space-3);
   justify-content: center;
 }
-
-/* ─── Section Card ────────────────────────────────────────────────────── */
 .admin-section {
   background: var(--color-surface);
   border: 1px solid var(--color-border);
@@ -514,10 +491,6 @@
 }
 
 .admin-section__body { padding: var(--space-5); }
-
-/* ─── Chart Area ──────────────────────────────────────────────────────── */
-
-/* Khung biểu đồ — có đường lưới ngang mảnh để đọc giá trị */
 .admin-chart {
   position: relative;
   display: flex;
@@ -526,8 +499,6 @@
   height: 220px;
   padding: var(--space-6) 0 var(--space-4);
 }
-
-/* Đường lưới ngang (4 mức) */
 .admin-chart::before {
   content: '';
   position: absolute;
@@ -570,8 +541,6 @@
   position: relative;
   min-height: 4px;
 }
-
-/* Cột đổi sắc đậm và sáng lên khi rê chuột */
 .admin-chart__bar-group:hover .admin-chart__bar {
   filter: saturate(1.25) brightness(1.08);
 }
@@ -592,14 +561,10 @@
   color: var(--color-text-muted);
   font-weight: 600;
 }
-
-/* Giá trị 0 hiện mờ để không chói mắt */
 .admin-chart__bar-value--zero {
   color: var(--color-text-muted);
   font-weight: 500;
 }
-
-/* ─── Avatar ──────────────────────────────────────────────────────────── */
 .admin-avatar {
   width: 40px;
   height: 40px;
@@ -611,8 +576,6 @@
 
 .admin-avatar--sm { width: 32px; height: 32px; }
 .admin-avatar--lg { width: 56px; height: 56px; }
-
-/* ─── Rating Stars ────────────────────────────────────────────────────── */
 .admin-stars {
   display: flex;
   align-items: center;
@@ -620,8 +583,6 @@
   font-size: var(--font-size-sm);
   color: var(--color-warning);
 }
-
-/* ─── Responsive ───────────────────────────────────────────────────────── */
 @media (max-width: 1200px) {
   .admin-stats { grid-template-columns: repeat(3, 1fr); }
 }

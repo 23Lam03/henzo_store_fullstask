@@ -1,17 +1,9 @@
-/* ═══════════════════════════════════════════════════════════════════════════
-   ADMIN LAYOUT — Enterprise Dashboard CSS
-   Inspired by: Shopify Admin, Amazon Seller, Salesforce Dashboard
-═══════════════════════════════════════════════════════════════════════════ */
-
-/* ─── Layout Root ─────────────────────────────────────────────────────────── */
 .admin-layout {
   display: flex;
   height: 100vh;
   background: var(--color-background);
   overflow: hidden;
 }
-
-/* ─── Sidebar ──────────────────────────────────────────────────────────── */
 .admin-layout__sidebar {
   width: var(--sidebar-width);
   background: var(--color-surface);
@@ -30,8 +22,6 @@
 .admin-layout__sidebar--collapsed {
   width: var(--sidebar-collapsed);
 }
-
-/* ─── Sidebar Header ─────────────────────────────────────────────────── */
 .admin-layout__sidebar-header {
   display: flex;
   align-items: center;
@@ -83,8 +73,6 @@
   background: var(--color-primary-soft);
   color: var(--color-primary);
 }
-
-/* ─── Main Content Area ──────────────────────────────────────────────── */
 .admin-layout__main {
   flex: 1;
   display: flex;
@@ -92,8 +80,6 @@
   min-width: 0;
   overflow: hidden;
 }
-
-/* ─── Top Bar ───────────────────────────────────────────────────────── */
 .admin-layout__topbar {
   height: 64px;
   background: var(--color-surface);
@@ -144,8 +130,6 @@
   background: var(--color-primary-soft);
   color: var(--color-primary);
 }
-
-/* ─── User Info ─────────────────────────────────────────────────────── */
 .admin-layout__user {
   display: flex;
   align-items: center;
@@ -175,8 +159,6 @@
   color: var(--color-text-primary);
   white-space: nowrap;
 }
-
-/* User Dropdown */
 .admin-layout__user-dropdown {
   position: absolute;
   top: calc(100% + 8px);
@@ -218,8 +200,6 @@
   background: var(--color-border);
   margin: var(--space-2) 0;
 }
-
-/* Notification badge in topbar */
 .admin-layout__notif-btn {
   position: relative;
 }
@@ -234,8 +214,6 @@
   border-radius: var(--radius-full);
   border: 2px solid var(--color-surface);
 }
-
-/* ─── Content Area ─────────────────────────────────────────────────── */
 .admin-layout__content {
   flex: 1;
   overflow-y: auto;
@@ -243,8 +221,6 @@
   padding: var(--space-6);
   background: var(--color-background);
 }
-
-/* ─── Mobile Overlay ──────────────────────────────────────────────── */
 .admin-layout__mobile-overlay {
   position: fixed;
   inset: 0;
@@ -253,8 +229,6 @@
   z-index: calc(var(--z-modal) - 1);
   animation: fade-in var(--transition-fast) ease;
 }
-
-/* ─── Notification Wrapper ──────────────────────────────────────────────── */
 .admin-layout__notif-wrapper { position: relative; }
 
 .admin-layout__notif-btn {
@@ -301,8 +275,6 @@
   flex-shrink: 0;
   margin-left: var(--space-2);
 }
-
-/* ─── Notification Panel ──────────────────────────────────────────── */
 .admin-layout__notif-panel {
   position: absolute;
   top: calc(100% + 8px);
@@ -401,8 +373,6 @@
   color: var(--color-text-muted);
   white-space: nowrap;
 }
-
-/* ─── User Wrapper ──────────────────────────────────────────────────── */
 .admin-layout__user-wrapper { position: relative; }
 
 .admin-layout__user {
@@ -435,8 +405,6 @@
   color: var(--color-text-primary);
   white-space: nowrap;
 }
-
-/* User Dropdown */
 .admin-layout__user-dropdown {
   position: absolute;
   top: calc(100% + 8px);
@@ -515,8 +483,6 @@
   background: var(--color-danger-soft);
   color: var(--color-danger);
 }
-
-/* ─── Theme Switcher ─────────────────────────────────────────────── */
 .admin-layout__theme-btn {
   display: flex;
   align-items: center;
@@ -533,8 +499,6 @@
   background: var(--color-primary-soft);
   color: var(--color-primary);
 }
-
-/* ─── Topbar Search ─────────────────────────────────────────────────── */
 .admin-layout__topbar-search {
   display: flex;
   align-items: center;
@@ -565,8 +529,6 @@
 }
 
 .admin-layout__topbar-search input::placeholder { color: var(--color-text-muted); }
-
-/* ─── Responsive ──────────────────────────────────────────────────── */
 @media (max-width: 1024px) {
   .admin-layout__sidebar {
     position: fixed;

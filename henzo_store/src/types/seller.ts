@@ -45,14 +45,14 @@ export interface SellerOrder {
 }
 
 export type OrderStatus =
-  | 'pending'      // Chờ xác nhận
-  | 'confirmed'    // Đã xác nhận
-  | 'preparing'    // Đang chuẩn bị
-  | 'shipped'      // Đã giao cho đơn vị vận chuyển
-  | 'delivering'   // Đang vận chuyển
-  | 'delivered'    // Giao thành công
-  | 'cancelled'   // Đã hủy
-  | 'returned';    // Hoàn trả
+  | 'pending'
+  | 'confirmed'
+  | 'preparing'
+  | 'shipped'
+  | 'delivering'
+  | 'delivered'
+  | 'cancelled'
+  | 'returned';
 
 export type PaymentStatus = 'unpaid' | 'paid' | 'refunded' | 'failed';
 
@@ -115,8 +115,7 @@ export interface SellerPromotion {
   usedCount: number;
   targetProducts: string[];
   targetCategories: string[];
-  /** `storeId` do backend tự gán theo scope của seller đang đăng nhập. */
-  storeId?: string;
+    storeId?: string;
   createdAt: string;
 }
 
@@ -160,7 +159,6 @@ export interface SellerInventoryItem {
   storeId: string;
 }
 
-/** Sản phẩm của cửa hàng (shape `Product` từ backend). */
 export interface SellerProduct {
   id: string;
   name: string;

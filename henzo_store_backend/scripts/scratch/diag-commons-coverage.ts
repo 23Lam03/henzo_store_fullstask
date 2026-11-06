@@ -1,7 +1,3 @@
-/**
- * KIỂM TRA: Commons thực sự có model này không? (totalhits + tiêu đề gần đúng)
- * + Thử thêm biến thể từ khoá.
- */
 const UA = 'henzo-store/1.0 (model image resolver; dev@henzo.local)';
 
 async function getJson(url: string): Promise<any> {

@@ -65,7 +65,7 @@ export const WishlistProvider = ({ children }: { children: ReactNode }) => {
     if (!isAuthenticated) return;
     try {
       await wishlistApi.add(product.id);
-      // Tải lại để có đầy đủ thông tin sản phẩm & thời điểm thêm.
+
       await refresh();
     } catch (err) {
       console.error('Add to wishlist failed:', err);
@@ -96,7 +96,7 @@ export const WishlistProvider = ({ children }: { children: ReactNode }) => {
 
   const clearWishlist = useCallback(async (): Promise<void> => {
     if (!items.length) return;
-    // Xoá tuần tự để backend kiểm tra quyền theo từng sản phẩm.
+
     await Promise.all(items.map(i => wishlistApi.remove(i.product.id)));
     setItems([]);
   }, [items]);

@@ -18,7 +18,7 @@ export const Route = createFileRoute('/api/stores/')({
         const { page, pageSize } = readPagination(sp);
 
         const filter: Record<string, any> = {};
-        // Cửa hàng không hoạt động/suspended không hiện với khách.
+
         filter.status = sp.get('status') ?? StoreStatus.ACTIVE;
 
         if (toBool(sp.get('verified'))) filter.isVerified = true;

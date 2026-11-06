@@ -25,8 +25,7 @@ export const Route = createFileRoute('/api/cart/')({
         return ok(await getCart(context.auth.userId));
       }),
 
-      /** Chọn / bỏ chọn tất cả mục trong giỏ. */
-      PATCH: withErrorHandling(async ({ request, context }) => {
+            PATCH: withErrorHandling(async ({ request, context }) => {
         await connectDB();
         const body = await readJson(request, selectAllSchema);
         return ok(

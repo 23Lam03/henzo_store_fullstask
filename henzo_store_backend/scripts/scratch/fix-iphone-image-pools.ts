@@ -1,23 +1,3 @@
-/**
- * LÀM SẠCH POOL ẢNH IPHONE (backend + DB).
- *
- * Vấn đề: pool ảnh iPhone bị "bôi" 130+ URL gộp từ nhiều nguồn, trong đó
- * rất nhiều ảnh SAI hoàn toàn:
- *   - ảnh linh kiện iPhone 4/5/5s/6s (main board, front panel, camera...)
- *   - ảnh iPhone X / XS / SE / 5c / 12 Pro
- *   - ảnh AirPods, iPad, Apple Watch
- *   - ảnh HONOR Magic7 / Magic V3 (đối thủ, không phải iPhone)
- *   - ảnh iPhone 16 Pro Max / iPhone 17 Pro Max (khác đời)
- *
- * Hệ quả: sản phẩm "iPhone 15 Pro Max 256GB" hiển thị ảnh góc cạnh mờ
- * (`Side_of_iPhone_15_Pro_Max_-_3.jpg`) làm ảnh chính, hoặc ảnh của đời
- * khác.
- *
- * Cách sửa: mỗi model iPhone có bộ ảnh riêng, đúng đời, lấy từ ảnh chính
- * thức trên Wikimedia Commons.
- *
- * Chạy: npx tsx scripts/tmp/fix-iphone-image-pools.ts
- */
 import { readFileSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { connectDB, disconnectDB } from '../../src/server/db';
@@ -28,9 +8,8 @@ const B = 'https://thumb.wikimedia.org/wikipedia/commons/thumb';
 const Q =
   '?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail';
 
-/** File gốc trên Commons. */
 const F = {
-  // ── iPhone 15 Pro Max ──
+
   m15pm_a: 'c/c2/IPhone_15_Pro_Max_20240225.jpg',
   m15pm_b: '9/99/IPhone_15_Pro_Max.jpg',
   m15pm_c: 'f/f3/IPhone_15_Pro_Max.jpeg',
@@ -41,7 +20,6 @@ const F = {
   m15pm_front: '4/42/Front_of_iPhone_15_Pro_Max.jpg',
   m15pm_cam: '1/1d/IPhone_15_Pro_Max_Camera.jpg',
 
-  // ── iPhone 15 Pro ──
   m15p_a: '3/3e/IPhone_15_Pro_20240225.jpg',
   m15p_b: '4/43/IPhone_15_Pro.jpg',
   m15p_c: '6/61/IPhone_15_Pro.jpeg',
@@ -49,13 +27,11 @@ const F = {
   m15p_e: '1/19/Apple_iPhone_15_Pro.jpg',
   m15p_pair: 'c/ca/IPhone_15_Pro_%26_iPhone_15_Pro_Max.jpg',
 
-  // ── iPhone 15 ──
   m15_a: '6/6c/Apple_iPhone_15.jpeg',
   m15_b: '4/48/Apple_iPhone_15.jpg',
   m15_c: '5/5d/Apple_iPhone_15.png',
   m15_pink: '5/5c/Apple_iPhone_15_Pink_%28November_1%2C_2024%29.jpg',
 
-  // ── iPhone 16 Pro Max ──
   m16pm_a: 'a/ad/About_iPhone_16_Pro_Max_Natural_Titanium.jpg',
   m16pm_b: 'b/bd/IPhone_16_Pro_Max_White_256g.jpg',
   m16pm_c: 'e/e2/IPhone_16_Pro_Max_Desert_Titanium_Rear.png',
@@ -65,20 +41,17 @@ const F = {
   m16pm_g: '6/60/IPhone_16_Pro_Max_%2854252176424%29.jpg',
   m16pm_case: '6/6f/IPhone_16_Pro_Max_in_a_Glossy_Clear_Case.jpg',
 
-  // ── iPhone 16 Pro ──
   m16p_a: '2/2f/IPhone_16_Pro_-_black.jpg',
   m16p_b: '8/87/IPhone_16_Pro_%2854251031592%29.jpg',
   m16p_c: '8/84/IPhone_16_Pro_%2854251031612%29.jpg',
   m16p_d: '0/03/IPhone_16_Pro_%2854252352825%29.jpg',
   m16p_series: 'f/f8/IPhone_16_Pro_series.jpg',
 
-  // ── iPhone 16 ──
   m16_a: 'e/e8/IPhone_16_%2854251031797%29.jpg',
   m16_b: 'e/e2/IPhone_16_%2854251926561%29.jpg',
   m16_c: '7/7f/IPhone_16_%2854251926606%29.jpg',
   m16_rear: 'a/a0/IPhone_16_Ultramarine_Rear.png',
 
-  // ── iPhone 16e ──
   m16e_a: '6/67/IPhone_16e_black_front_view.jpg',
   m16e_b: '3/3e/IPhone_16e_black_rear_view.jpg',
   m16e_c: 'b/bb/IPhone_16e_-_1.jpg',
@@ -86,12 +59,10 @@ const F = {
   m16e_e: '6/68/IPhone_16e_back_side.jpg',
   m16e_f: 'e/ef/IPhone_16e_%28Black%29_-_1.jpg',
 
-  // ── iPhone 16 Plus (dùng chung chassis iPhone 16) ──
   m16plus_a: 'e/e8/IPhone_16_%2854251031797%29.jpg',
   m16plus_b: '7/7f/IPhone_16_%2854251926606%29.jpg',
   m16plus_c: 'a/a0/IPhone_16_Ultramarine_Rear.png',
 
-  // ── iPad Pro 13" ──
   ipadpro_a: '7/7c/IPad_Pro_%2813-inch%2C_M5%2C_Space_Black%29_-_Backside.jpg',
   ipadpro_b: '7/75/IPad_Pro_13-inch_backside.jpg',
   ipadpro_c: '5/5a/IPad_Pro_%2811-inch%2C_M5%2C_Silver%29_-_Backside.jpg',
@@ -99,19 +70,16 @@ const F = {
   ipadpro_e: '8/8e/IPad_Pro_11-inch_%282nd_generation%29_back_side_%2820250525_154809%29.jpg',
   ipadpro_m2: '1/1d/IPad_Pro_M2_%2812.9_inch%29_6th_Generation_2024.jpg',
 
-  // ── iPad Air 11" M3 ──
   ipadair_a: '3/3e/IPad_Air_11-inch_%28M3%29_backside.jpg',
   ipadair_b: '7/74/IPad_Air_11-inch_%28M3%29.jpg',
   ipadair_c: 'e/e6/IPad_Air_11-inch_%28M2%29_back_side_%2820250525_154602%29.jpg',
   ipadair_d: '2/22/IPad_Air_%284th_generation%29_and_Magic_Keyboard_-_1.jpg',
 
-  // ── iPad 10th Gen ──
   ipad10_a: '5/53/IPad_10th_Generation_2024.jpg',
   ipad10_b: '0/0f/IPad_10.png',
   ipad10_c: 'a/a0/IPad_10_Original_No_Crop_Version.png',
 } as const;
 
-/** Pool ảnh mới cho từng model. Ảnh ĐẦU là ảnh chính. */
 const POOLS: Record<string, string[]> = {
   'iPhone 15 Pro Max': [
     F.m15pm_a,
@@ -177,7 +145,7 @@ function buildPool(files: string[]): string[] {
 }
 
 async function main() {
-  // ─── 1. Cập nhật scripts/data/model-images.json ──────────────────────────
+
   const dbPath = resolve(process.cwd(), 'scripts/data/model-images.json');
   const db = JSON.parse(readFileSync(dbPath, 'utf-8')) as Record<
     string,
@@ -200,7 +168,6 @@ async function main() {
   }
   writeFileSync(dbPath, JSON.stringify(db, null, 2) + '\n');
 
-  // ─── 2. Áp ảnh mới vào DB ───────────────────────────────────────────────
   await connectDB();
 
   const products = (await ProductModel.find({})

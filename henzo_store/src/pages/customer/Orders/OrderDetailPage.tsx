@@ -67,8 +67,7 @@ export const OrderDetailPage = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const order = id ? getOrderById(id) : undefined;
 
-  /** Huỷ đơn — chỉ áp dụng khi đơn còn ở trạng thái chờ xác nhận. */
-  const handleCancelOrder = async () => {
+    const handleCancelOrder = async () => {
     if (!order) return;
     setIsSubmitting(true);
     try {

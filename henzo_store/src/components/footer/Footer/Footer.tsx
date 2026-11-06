@@ -66,7 +66,7 @@ export const Footer = () => {
     <footer className="footer">
       <div className="container">
         <div className="footer__grid" data-reveal-stagger>
-          {/* Brand */}
+          {}
           <div className="footer__brand">
             <Link to="/" className="footer__logo">
               <BrandMark size={36} tone="dark" />
@@ -91,7 +91,7 @@ export const Footer = () => {
             </div>
           </div>
 
-          {/* About */}
+          {}
           <div className="footer__column">
             <h3 className="footer__column-title">Giới thiệu</h3>
             <ul className="footer__links">
@@ -103,7 +103,7 @@ export const Footer = () => {
             </ul>
           </div>
 
-          {/* Policies */}
+          {}
           <div className="footer__column">
             <h3 className="footer__column-title">Chính sách</h3>
             <ul className="footer__links">
@@ -115,7 +115,7 @@ export const Footer = () => {
             </ul>
           </div>
 
-          {/* Support */}
+          {}
           <div className="footer__column">
             <h3 className="footer__column-title">Hỗ trợ</h3>
             <ul className="footer__links">
@@ -127,7 +127,7 @@ export const Footer = () => {
             </ul>
           </div>
 
-          {/* Contact */}
+          {}
           <div className="footer__column footer__column--contact">
             <h3 className="footer__column-title">Liên hệ</h3>
             <div className="footer__contact">
@@ -156,7 +156,7 @@ export const Footer = () => {
           </div>
         </div>
 
-        {/* Bottom */}
+        {}
         <div className="footer__bottom">
           <p className="footer__copyright">
             &copy; {new Date().getFullYear()} {COMPANY_INFO.name}. Tất cả quyền được bảo lưu. Mã số thuế: {COMPANY_INFO.taxId}

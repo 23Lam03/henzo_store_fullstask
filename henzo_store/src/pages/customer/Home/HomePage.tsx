@@ -8,7 +8,6 @@ import { bannerUrl } from '../../../utils/assets';
 import type { Product, ProductCategory, Brand } from '../../../types';
 import './HomePage.css';
 
-/** Icon SVG theo slug danh mục — thay cho emoji. */
 const ICON_BY_SLUG: Record<string, IconName> = {
   'dien-thoai': 'phone',
   laptop: 'laptop',
@@ -20,12 +19,6 @@ const ICON_BY_SLUG: Record<string, IconName> = {
   'phu-kien': 'plug',
 };
 
-/**
- * Banner trang chủ — ảnh THẬT của đúng sản phẩm (không phải ảnh stock).
- *
- * Ảnh tải về từ Wikimedia Commons và lưu local trong `public/images/banners/`
- * nên không phụ thuộc CDN ngoài và luôn hiển thị đúng.
- */
 const BANNERS = [
   {
     image: bannerUrl('iphone16-pro-max.jpg'),
@@ -68,7 +61,7 @@ export const HomePage = () => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        // Collections chỉ trả về nhóm sản phẩm; danh mục & thương hiệu gọi riêng.
+
         const [collections, catList, brandList] = await Promise.all([
           catalogApi.collections(),
           catalogApi.categories().catch(() => []),
@@ -88,8 +81,7 @@ export const HomePage = () => {
     void fetchData();
   }, []);
 
-  /* Hero tự đổi banner — dừng lại khi người dùng rê chuột vào hero. */
-  useEffect(() => {
+    useEffect(() => {
     bannerTimer.current = window.setInterval(() => {
       setBannerIdx(i => (i + 1) % BANNERS.length);
     }, 6000);
@@ -98,8 +90,7 @@ export const HomePage = () => {
     };
   }, []);
 
-  /* Đồng hồ đếm ngược Flash Sale */
-  useEffect(() => {
+    useEffect(() => {
     const timer = window.setInterval(() => {
       setFlashLeft(s => (s > 0 ? s - 1 : 12 * 3600));
     }, 1000);
@@ -124,7 +115,7 @@ export const HomePage = () => {
 
   return (
     <div className="home-page">
-      {/* ── Hero: bìa tạp chí — nội dung trái, ảnh phải ── */}
+      {}
       <section className="hero" onMouseEnter={() => {
         if (bannerTimer.current) window.clearInterval(bannerTimer.current);
       }}>
@@ -178,7 +169,7 @@ export const HomePage = () => {
         </div>
       </section>
 
-      {/* ── Dải cam kết ── */}
+      {}
       <RevealGroup as="section" className="trust-strip">
         <div className="trust-strip__item">
           <Icon name="shield" size={20} />
@@ -210,7 +201,7 @@ export const HomePage = () => {
         </div>
       </RevealGroup>
 
-      {/* ── Dải tuyên ngôn: câu dẫn kiểu ấn phẩm ── */}
+      {}
       <section className="manifesto">
         <Reveal direction="left" className="manifesto__body">
           <span className="manifesto__mark">&ldquo;</span>
@@ -244,7 +235,7 @@ export const HomePage = () => {
         </RevealGroup>
       </section>
 
-      {/* ── Danh mục ── */}
+      {}
       <Reveal as="section" direction="up" className="section-categories">
         <div className="section-head">
           <div className="section-head__main">
@@ -276,7 +267,7 @@ export const HomePage = () => {
         </RevealGroup>
       </Reveal>
 
-      {/* ── Flash Sale ── */}
+      {}
       <Reveal as="section" direction="up" className="section-flash-sale">
         <div className="section-head">
           <div className="section-head__main">
@@ -303,7 +294,7 @@ export const HomePage = () => {
         </div>
       </Reveal>
 
-      {/* ── Sản phẩm nổi bật ── */}
+      {}
       <Reveal as="section" direction="up" className="section-featured">
         <div className="section-head">
           <div className="section-head__main">
@@ -323,7 +314,7 @@ export const HomePage = () => {
         </RevealGroup>
       </Reveal>
 
-      {/* ── Banner khuyến mãi ── */}
+      {}
       <Reveal as="section" direction="scale" className="section-banner-promo">
         <div className="promo-banner">
           <img src={bannerUrl('rog-strix-g16.jpg')} alt="Khuyến mãi cuối tuần" />
@@ -339,7 +330,7 @@ export const HomePage = () => {
         </div>
       </Reveal>
 
-      {/* ── Sản phẩm bán chạy ── */}
+      {}
       <Reveal as="section" direction="up" className="section-hot">
         <div className="section-head">
           <div className="section-head__main">
@@ -359,7 +350,7 @@ export const HomePage = () => {
         </RevealGroup>
       </Reveal>
 
-      {/* ── Thương hiệu ── */}
+      {}
       <Reveal as="section" direction="up" className="section-brands">
         <div className="section-head">
           <div className="section-head__main">
@@ -374,7 +365,7 @@ export const HomePage = () => {
             <Icon name="arrow-right" size={16} />
           </Link>
         </div>
-        {/* Dải thương hiệu chạy ngang, dừng khi rê chuột */}
+        {}
         <div className="hz-marquee brands-marquee">
           <div className="hz-marquee__track">
             {[...brands.slice(0, 10), ...brands.slice(0, 10)].map((brand, i) => (
@@ -396,7 +387,7 @@ export const HomePage = () => {
         </div>
       </Reveal>
 
-      {/* ── App CTA ── */}
+      {}
       <Reveal as="section" direction="up" className="section-app-cta">
         <div className="app-cta">
           <div className="app-cta__content">

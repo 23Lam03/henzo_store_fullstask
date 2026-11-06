@@ -12,8 +12,7 @@ export const Route = createFileRoute('/api/notifications/')({
   server: {
     middleware: [corsMiddleware, requireAuth],
     handlers: {
-      /** Danh sách thông báo của người dùng. */
-      GET: withErrorHandling(async ({ request, context }) => {
+            GET: withErrorHandling(async ({ request, context }) => {
         await connectDB();
         const url = new URL(request.url);
         const sp = url.searchParams;
@@ -47,8 +46,7 @@ export const Route = createFileRoute('/api/notifications/')({
         );
       }),
 
-      /** Đánh dấu đã đọc (một thông báo hoặc tất cả). */
-      PATCH: withErrorHandling(async ({ request, context }) => {
+            PATCH: withErrorHandling(async ({ request, context }) => {
         await connectDB();
         const url = new URL(request.url);
         const sp = url.searchParams;
@@ -74,8 +72,7 @@ export const Route = createFileRoute('/api/notifications/')({
         return ok({ id, isRead: true });
       }),
 
-      /** Xoá thông báo. */
-      DELETE: withErrorHandling(async ({ request, context }) => {
+            DELETE: withErrorHandling(async ({ request, context }) => {
         await connectDB();
         const url = new URL(request.url);
         const id = url.searchParams.get('id');
@@ -88,7 +85,6 @@ export const Route = createFileRoute('/api/notifications/')({
           return ok({ id, deleted: true });
         }
 
-        // Không có id -> xoá tất cả đã đọc.
         const result = await NotificationModel.deleteMany({
           userId: context.auth.userId,
           isRead: true,

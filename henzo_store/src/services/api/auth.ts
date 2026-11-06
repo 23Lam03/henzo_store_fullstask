@@ -1,6 +1,3 @@
-/**
- * API xác thực — đăng nhập / đăng ký / hồ sơ / mật khẩu.
- */
 import { API_BASE_URL, apiFetch, tokenStore, clearSession } from './client';
 import type { User } from '../../types/auth';
 
@@ -28,8 +25,7 @@ export interface UpdateProfileInput {
 }
 
 export const authApi = {
-  /** Đăng nhập — lưu access token vào localStorage (hoặc sessionStorage). */
-  async login(
+    async login(
     email: string,
     password: string,
     remember = true,
@@ -43,8 +39,7 @@ export const authApi = {
     return data;
   },
 
-  /** Đăng ký — backend trả luôn access token + set cookie refresh. */
-  async register(input: RegisterInput, remember = true): Promise<AuthResult> {
+    async register(input: RegisterInput, remember = true): Promise<AuthResult> {
     const data = await apiFetch<AuthResult>(`${API_BASE_URL}/auth/register`, {
       method: 'POST',
       body: input,
@@ -54,11 +49,9 @@ export const authApi = {
     return data;
   },
 
-  /** Thông tin user hiện tại (dùng token trong header). */
-  me: (): Promise<User> => apiFetch<User>(`${API_BASE_URL}/auth/me`),
+    me: (): Promise<User> => apiFetch<User>(`${API_BASE_URL}/auth/me`),
 
-  /** Refresh access token bằng cookie httpOnly. */
-  async refresh(): Promise<string | null> {
+    async refresh(): Promise<string | null> {
     const data = await apiFetch<{ accessToken: string | null }>(
       `${API_BASE_URL}/auth/refresh`,
       { method: 'POST', auth: false },
@@ -67,13 +60,11 @@ export const authApi = {
     return data.accessToken;
   },
 
-  /** Đăng xuất — xoá cookie refresh phía server + token cục bộ. */
-  async logout(): Promise<void> {
+    async logout(): Promise<void> {
     try {
       await apiFetch(`${API_BASE_URL}/auth/logout`, { method: 'POST', auth: false });
-    } catch {
-      /* server có thể đã hết phiên — vẫn xoá local */
-    } finally {
+    } catch {void 0; 
+          } finally {
       clearSession();
     }
   },

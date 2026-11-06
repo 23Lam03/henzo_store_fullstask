@@ -1,4 +1,3 @@
-/** Probe Commons cho các dòng điện thoại còn thiếu ảnh riêng. */
 import { writeFileSync } from 'node:fs';
 
 const UA = 'henzo-store/1.0 (model image resolver; dev@henzo.local)';

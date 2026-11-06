@@ -1,6 +1,3 @@
-/**
- * Probe dùng CirrusSearch intitle: — chính xác hơn nhiều so với search chung.
- */
 import { writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 

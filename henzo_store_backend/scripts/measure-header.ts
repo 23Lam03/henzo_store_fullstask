@@ -1,9 +1,3 @@
-/**
- * Đo layout header ở nhiều chiều rộng bằng IFRAME (media query trong iframe
- * phản ứng theo bề rộng của iframe).
- *
- * Chạy: npx tsx scripts/measure-header.ts
- */
 import { getJson } from './lib/commons-files';
 
 const WIDTHS = [360, 414, 480, 600, 768, 814, 900, 1024, 1180, 1280, 1440];
@@ -16,7 +10,7 @@ window.addEventListener('message', e => { document.title = 'DONE'; });
 </script></body></html>`;
 
 async function main() {
-  // Gửi message từ trong iframe? Không cần — dùng CDP trực tiếp thay vì script này.
+
   void HTML;
   void getJson;
   void WIDTHS;

@@ -1,6 +1,3 @@
-/**
- * Probe ảnh Wikipedia (infobox sản phẩm) + Commons theo tên khác cho model thiếu.
- */
 import { writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 

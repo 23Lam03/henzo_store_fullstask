@@ -1,6 +1,3 @@
-/**
- * Model Brand — thương hiệu.
- */
 import { Schema, type InferSchemaType } from 'mongoose';
 import { defineModel } from './registry';
 

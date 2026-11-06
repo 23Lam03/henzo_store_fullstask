@@ -1,8 +1,3 @@
-/**
- * Verify danh sách file Commons có tồn tại thật không (1 request cho nhiều title).
- *
- * Chạy: npx tsx scripts/verify-commons-files.ts
- */
 import { writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
@@ -52,7 +47,7 @@ export async function verifyFiles(
 }
 
 const FILES = [
-  // Tai nghe
+
   'JBL Synchros E50BT.jpg',
   'JBL LIVE 650 BTNC (Over-Ear Noise Cancelling Headphone). (51127342181).jpg',
   'JBL Endurance Peak 3 - 1.jpg',
@@ -68,7 +63,7 @@ const FILES = [
   'Tritton.jpg',
   'ST100VoidPro.jpg',
   "Casques d'écoute de podcast.jpg",
-  // Chuột
+
   'Corsair Katar Pro Wireless.jpg',
   'Corsair Scimitar 2 2017-01-01.jpg',
   'Roccat Kova.png',
@@ -92,7 +87,7 @@ const FILES = [
   'Logitech MX518 Gaming Mouse (4777334208).jpg',
   'Computer.mouse.750pix.jpg',
   'Silver computer mouse with neoprene case.jpg',
-  // Bàn phím
+
   'Corsair K65 1 2017-01-01.jpg',
   'Corsair K60.jpg',
   'SteelSeries Apex 5.jpg',
@@ -115,7 +110,7 @@ const FILES = [
   'Beautiful Mechanical Keyboard.jpg',
   'Lenovo ThinkPad USB TrackPoint keyboard.jpg',
   'ThinkPad TrackPoint Keyboard II.jpg',
-  // Màn hình
+
   'AOC 27B2H LCD MONITOR.jpg',
   'Monitores led de aoc .jpg',
   'Gigabyte AORUS AD27QD 20190601.jpg',
@@ -125,7 +120,7 @@ const FILES = [
   'Computer monitor samsung.jpg',
   'Samsung Odyssey G9.jpg',
   'MSI Gaming Laptop on wood floor.jpg',
-  // PC Gaming / linh kiện
+
   'Corsair CX430.JPG',
   'Corsair CX 430 1 2018-09-19.jpg',
   'Corsair CX 430 2 2018-09-19.jpg',
@@ -160,7 +155,7 @@ const FILES = [
   'ASUS TUF Gaming motherboards 20190601.jpg',
   'Asus tuf x299 mk2 IMGP5930 smial wp.jpg',
   'Asus tuf x299 mk2 IMGP5935 smial wp.jpg',
-  // Phụ kiện
+
   'Elgato Stream Deck +.jpg',
   'Stream Deck- Discord Edition.jpg',
   'Elgato Wave-3.jpg',
@@ -174,7 +169,7 @@ const FILES = [
   '2023 Corsair iCUE LC100.jpg',
   'Anker power bank lit.jpg',
   'モバイルバッテリー ANKER Power Bank 4,500mAh (9720039628).jpg',
-  // Laptop / tablet / phone
+
   'About iPad Pro 13-inch (M4).jpg',
   'IPad Air 11-inch (M3).jpg',
   'IPad Air 11-inch (M3) backside.jpg',
@@ -202,12 +197,12 @@ const FILES = [
   'Vivo X200 Pro blue.png',
   'Honor Magic 7 Pro (May 1, 2025).jpg',
   'Honor Magic7 Series (May 1, 2025).jpg',
-  // AirPods
+
   'AirPods_4_ANC_and_case.jpg',
   'Airpods 4.jpg',
   'AirPods Pro.jpg',
   'Apple airpods max 1.jpg',
-  // Mouse/keyboard exact model
+
   'Logitech MX Master 3S HS01.jpg',
   'Logitech MX Master 3S HS03.jpg',
   'Logitech MX Master 3S HS05.jpg',

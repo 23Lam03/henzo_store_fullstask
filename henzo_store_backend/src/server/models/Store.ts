@@ -1,7 +1,3 @@
-/**
- * Model Store — cửa hàng / người bán.
- * Gộp cả `Store` (admin) và `SellerStore` (seller) của frontend vào một entity.
- */
 import { Schema, type InferSchemaType } from 'mongoose';
 import { defineModel } from './registry';
 import { StoreStatus } from '../constants';
@@ -17,8 +13,7 @@ const storeSchema = new Schema(
     banner: { type: String, default: '' },
     description: { type: String, default: '' },
     tagline: { type: String, default: '' },
-    /** Xác minh bởi admin — hiển thị badge "Đã xác minh". */
-    isVerified: { type: Boolean, default: false },
+        isVerified: { type: Boolean, default: false },
     status: {
       type: String,
       enum: Object.values(StoreStatus),
@@ -30,12 +25,10 @@ const storeSchema = new Schema(
     productCount: { type: Number, default: 0 },
     orderCount: { type: Number, default: 0 },
     followerCount: { type: Number, default: 0 },
-    /** Thông tin pháp lý & thanh toán. */
-    taxId: { type: String, default: '' },
+        taxId: { type: String, default: '' },
     bankAccount: { type: String, default: '' },
     bankName: { type: String, default: '' },
-    /** Chủ cửa hàng (user role SHOP). */
-    ownerId: { type: Schema.Types.ObjectId, ref: 'User', index: true },
+        ownerId: { type: Schema.Types.ObjectId, ref: 'User', index: true },
   },
   { timestamps: true },
 );
@@ -47,7 +40,6 @@ export type StoreDoc = InferSchemaType<typeof storeSchema>;
 
 export const StoreModel = defineModel('Store', storeSchema);
 
-/** DTO cho trang admin quản lý cửa hàng. */
 export function toAdminStore(store: any) {
   if (!store) return null;
   const obj = store.toObject ? store.toObject() : { ...store };
@@ -76,7 +68,6 @@ export function toAdminStore(store: any) {
   };
 }
 
-/** DTO rút gọn cho trang danh sách cửa hàng phía khách. */
 export function toPublicStore(store: any) {
   if (!store) return null;
   const admin = toAdminStore(store);

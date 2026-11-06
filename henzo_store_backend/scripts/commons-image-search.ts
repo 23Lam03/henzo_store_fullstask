@@ -1,17 +1,8 @@
-/**
- * Tìm ảnh sản phẩm thật trên Wikimedia Commons theo tên.
- *
- * Commons có ảnh chụp **đúng model sản phẩm** (vd "Logitech MX Master 3S"),
- * giấy phép tự do — thay cho ảnh stock dùng chung.
- *
- * Chạy: npx tsx scripts/commons-image-search.ts
- */
 import { readFileSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
 const UA = 'henzo-store/1.0 (product image resolver; dev@henzo.local)';
 
-/** Bỏ dung lượng / mã model để dò trên Commons. */
 function variants(name: string): string[] {
   const base = name.replace(/\s+/g, ' ').replace(/"/g, '').trim();
   const out = [base];

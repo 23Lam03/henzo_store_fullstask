@@ -1,27 +1,11 @@
-/**
- * Mô tả & thẻ sản phẩm — sinh từ thông số THẬT của model.
- *
- * Dùng chung cho:
- *   - `henzo_store/src/data/sellerData.ts`  (sinh mock 500 sản phẩm)
- *   - `henzo_store_backend/scripts/apply-real-specs.ts` (đồng bộ DB)
- *
- * Trước đây mọi sản phẩm đều có mô tả giống nhau:
- *   "Mô tả chi tiết {tên}. Sản phẩm chất lượng cao, bảo hành chính hãng 12 tháng."
- * và tags rỗng — đó là lý do trang chi tiết sản phẩm thiếu tiêu chí.
- */
 import { specsForProduct } from './modelSpecs';
 
 export interface ProductCopyInput {
-  /** Tên sản phẩm đầy đủ (vd: "iPhone 16 Pro Max 256GB"). */
-  productName: string;
-  /** Tên model gốc (vd: "iPhone 16 Pro Max"). */
-  base: string;
-  /** Loại: phone | laptop | tablet | audio | accessory. */
-  kind: string;
-  /** Danh mục hiển thị. */
-  category: string;
-  /** Thương hiệu. */
-  brand: string;
+    productName: string;
+    base: string;
+    kind: string;
+    category: string;
+    brand: string;
 }
 
 const CATEGORY_NOTE: Record<string, string> = {
@@ -35,9 +19,6 @@ const CATEGORY_NOTE: Record<string, string> = {
   'Phụ kiện': 'Phụ kiện chính hãng, tương thích tốt với thiết bị của bạn.',
 };
 
-/**
- * Mô tả sản phẩm 2-3 câu, gồm thông số nổi bật + cam kết bảo hành.
- */
 export function productDescription(input: ProductCopyInput): string {
   const { productName, base, category, brand } = input;
   const { specs } = specsForProduct(productName);
@@ -77,11 +58,6 @@ export function productDescription(input: ProductCopyInput): string {
   );
 }
 
-/**
- * Thẻ sản phẩm theo model + danh mục (KHÔNG random rỗng).
- *
- * @param seed số ngẫu nhiên đã cố định (để seed script cho kết quả ổn định).
- */
 export function productTags(input: ProductCopyInput, seed?: number): string[] {
   const { base, kind, category, brand } = input;
   const tags = new Set<string>();
@@ -98,8 +74,6 @@ export function productTags(input: ProductCopyInput, seed?: number): string[] {
   if (kind === 'audio') tags.add('audio');
   if (kind === 'accessory') tags.add('phu-kien');
 
-  // Nhãn bán chạy / mới — gắn theo chỉ số bán hàng, không random rỗng.
-  // `seed` cho phép script backend tái lập đúng kết quả.
   const rnd = () => (seed === undefined ? Math.random() : ((seed * 9301 + 49297) % 233280) / 233280);
   if (rnd() > 0.72) tags.add('hot');
   if (rnd() > 0.78) tags.add('new');

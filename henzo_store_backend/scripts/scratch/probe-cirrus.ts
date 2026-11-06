@@ -1,14 +1,3 @@
-/**
- * CIRRUSSEARCH — tìm file theo nhiều tiêu chí kết hợp.
- *
- * Commons search hỗ trợ:
- *   - insource / intitle
- *   - haswbstatement:P18=<QID>
- *   - incategory:"<Category>"
- *   - filetype:bitmap
- *
- * Chạy: npx tsx scripts/probe-cirrus.ts
- */
 import { getJson } from '../lib/commons-files';
 
 const QUERIES = [

@@ -5,7 +5,6 @@ import { catalogApi } from '../../../services/api/catalog';
 import type { Brand } from '../../../types';
 import './BrandsPage.css';
 
-/** Fallback khi API lỗi — giữ trang không trống. */
 const FALLBACK_BRANDS: Brand[] = [
   { id: 'apple', name: 'Apple', slug: 'apple', logo: '', productCount: 0, color: '#1d1d1f' },
   { id: 'samsung', name: 'Samsung', slug: 'samsung', logo: '', productCount: 0, color: '#1428A0' },

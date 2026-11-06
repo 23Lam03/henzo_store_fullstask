@@ -1,7 +1,3 @@
-/**
- * Model Promotion — chương trình khuyến mãi (admin quản lý).
- * Model Voucher — mã giảm giá áp dụng khi checkout (seller/admin quản lý).
- */
 import { Schema, type InferSchemaType } from 'mongoose';
 import { defineModel } from './registry';
 import {
@@ -11,7 +7,6 @@ import {
   SellerPromotionStatus,
 } from '../constants';
 
-// ─── Promotion ────────────────────────────────────────────────────────────────
 const promotionSchema = new Schema(
   {
     title: { type: String, required: true, trim: true },
@@ -34,7 +29,6 @@ const promotionSchema = new Schema(
     },
     storeId: { type: Schema.Types.ObjectId, ref: 'Store', index: true },
 
-    // ─── Cấu hình chi tiết (dùng cho voucher của seller) ───────────────────
     discountType: {
       type: String,
       enum: Object.values(DiscountType),
@@ -57,7 +51,6 @@ export type PromotionDoc = InferSchemaType<typeof promotionSchema>;
 
 export const PromotionModel = defineModel('Promotion', promotionSchema);
 
-/** Trạng thái hiển thị suy ra từ ngày bắt đầu/kết thúc (khớp `getPromoStatus`). */
 export function promotionStatus(promo: {
   startDate?: Date | string;
   endDate?: Date | string;
@@ -92,7 +85,6 @@ export function toPromotionDto(promo: any) {
   };
 }
 
-/** DTO phía seller — shape `SellerPromotion`. */
 export function toSellerPromotion(promo: any) {
   if (!promo) return null;
   const obj = promo.toObject ? promo.toObject() : { ...promo };
@@ -118,7 +110,6 @@ export function toSellerPromotion(promo: any) {
   };
 }
 
-// ─── Voucher ──────────────────────────────────────────────────────────────────
 const voucherSchema = new Schema(
   {
     code: { type: String, required: true, unique: true, uppercase: true, trim: true, index: true },

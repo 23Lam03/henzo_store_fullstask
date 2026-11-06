@@ -1,9 +1,3 @@
-/**
- * Decode PNG (RGBA/RGB, 8-bit, no interlace) bằng zlib thuần và in
- * một "bản đồ" dạng chữ để phân tích bố cục trong ảnh chụp màn hình.
- *
- * Dùng: npx tsx scripts/png-ascii.ts <file.png> [x0] [y0] [w] [h]
- */
 import { readFileSync } from 'node:fs';
 import { inflateSync } from 'node:zlib';
 

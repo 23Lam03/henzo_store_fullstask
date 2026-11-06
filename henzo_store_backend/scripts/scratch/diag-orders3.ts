@@ -11,7 +11,6 @@ import { OrderModel } from '../../src/server/models/Order';
 
   const alive = new Set(products.map((p) => String(p._id)));
 
-  // Bỏ các hậu tố số ở cuối tên (kiểu cũ "AirPods Pro 2 12", "Dell XPS 15 26")
   const stripIdx = (n: string) => n.replace(/\s+\d{1,3}$/, '').trim();
 
   const byName = new Map(products.map((p) => [String(p.name), p]));
@@ -32,9 +31,9 @@ import { OrderModel } from '../../src/server/models/Order';
       if (alive.has(pid)) continue;
       dead++;
       const name = String(it.productName ?? '');
-      // 1) khớp chính xác theo tên
+
       let cand = byName.get(name);
-      // 2) khớp theo tên đã bỏ hậu tố số
+
       if (!cand) {
         const cands = byPrefix.get(stripIdx(name).toLowerCase()) ?? [];
         if (cands.length === 1) cand = cands[0];

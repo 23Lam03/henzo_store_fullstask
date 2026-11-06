@@ -34,7 +34,7 @@ import { specModelKey } from '../../../henzo_store/src/data/modelSpecs';
         misses.set(String(it.productName ?? '?'), (misses.get(String(it.productName ?? '?')) ?? 0) + 1);
         continue;
       }
-      // chọn biến thể có giá gần nhất với unitPrice đã ghi trong đơn
+
       const target = Number(it.unitPrice ?? 0);
       let best = cands[0]; let bestDiff = Infinity; let exact = false;
       for (const c of cands) {

@@ -1,18 +1,10 @@
-/**
- * Service catalog — truy vấn sản phẩm với đầy đủ bộ lọc/sắp xếp/phân trang
- * mà frontend sử dụng (`ProductListPage` + `mockApi.getProducts`).
- *
- * Nguyên tắc: mọi tham số từ client đều được chuẩn hoá & kiểm tra ở server.
- */
 import { ProductModel, toProductDto } from '../models/Product';import { CategoryModel } from '../models/Category';
 import { BrandModel } from '../models/Brand';
 import { ProductStatus } from '../constants';
 import { buildMeta, normalizeSearch, splitCsv } from '../http/request';
 
-/** mongoose v9 không export `FilterQuery` — dùng alias nội bộ. */
 type FilterQuery = Record<string, any>;
 
-/** Mapping sort của frontend sang sort của MongoDB. */
 export type ProductSort =
   | 'bestseller'
   | 'newest'
@@ -39,13 +31,12 @@ const SORT_MAP: Record<
 function resolveSort(sort?: string, order?: string): Record<string, 1 | -1> {
   const key = (sort ?? 'bestseller').toLowerCase();
 
-  // `price` + `order` là dạng legacy của mockApi.
   if (key === 'price') {
     return { price: order === 'desc' ? -1 : 1 };
   }
 
   const mapped = SORT_MAP[key] ?? SORT_MAP.bestseller;
-  // Cho phép `order` ghi đè chiều sắp xếp khi sort là giá.
+
   if (order === 'asc' || order === 'desc') {
     if (key === 'price-asc' || key === 'price-desc' || key === 'price') {
       return { price: order === 'desc' ? -1 : 1 };
@@ -76,10 +67,6 @@ export interface ProductQueryParams {
   status?: string;
 }
 
-/**
- * Phân giải danh sách slug danh mục (kể cả danh mục con) thành mảng id.
- * Chọn danh mục cha sẽ bao gồm cả sản phẩm của danh mục con.
- */
 export async function resolveCategoryIds(slugs: string[]): Promise<string[]> {
   if (!slugs.length) return [];
 
@@ -97,16 +84,13 @@ export async function resolveCategoryIds(slugs: string[]): Promise<string[]> {
   return [...ids, ...children.map((c) => String(c._id))];
 }
 
-/** Tạo Mongo filter từ tham số query. */
 export async function buildProductFilter(
   params: ProductQueryParams,
 ): Promise<FilterQuery> {
   const filter: FilterQuery = {};
 
-  // Chỉ hiện sản phẩm đang bán cho người dùng công khai.
   filter.status = params.status ?? ProductStatus.ACTIVE;
 
-  // Mỗi nhóm điều kiện độc lập nằm trong $and để không đè lên nhau.
   const and: FilterQuery[] = [];
 
   const search = normalizeSearch(params.search) ?? null;
@@ -124,7 +108,6 @@ export async function buildProductFilter(
     });
   }
 
-  // Danh mục: hỗ trợ cả id lẫn slug, bao gồm danh mục con.
   const categoryKeys: string[] = [];
   if (params.categorySlug) categoryKeys.push(...splitCsv(params.categorySlug));
   if (params.categoryId) categoryKeys.push(...splitCsv(params.categoryId));
@@ -139,7 +122,6 @@ export async function buildProductFilter(
     });
   }
 
-  // Thương hiệu: hỗ trợ nhiều brand (CSV).
   const brands = [
     ...(params.brand ? [params.brand] : []),
     ...(params.brands?.length ? params.brands : []),
@@ -192,7 +174,6 @@ export interface ProductPage {
   meta: ReturnType<typeof buildMeta>;
 }
 
-/** Truy vấn danh sách sản phẩm có phân trang. */
 export async function queryProducts(
   params: ProductQueryParams,
 ): Promise<ProductPage> {
@@ -214,9 +195,6 @@ export async function queryProducts(
   };
 }
 
-/**
- * Sản phẩm liên quan — cùng danh mục hoặc cùng thương hiệu.
- */
 export async function getRelatedProducts(
   product: any,
   limit = 8,
@@ -239,7 +217,6 @@ export async function getRelatedProducts(
   return docs.map(toProductDto);
 }
 
-/** Tổng hợp số liệu cho trang danh mục / thương hiệu. */
 export async function getProductFacets() {
   const [brands, priceRange] = await Promise.all([
     BrandModel.find().sort({ name: 1 }).lean(),

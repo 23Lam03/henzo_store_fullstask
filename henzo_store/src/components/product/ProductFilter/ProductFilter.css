@@ -1,9 +1,3 @@
-/* ═══════════════════════════════════════════════════════════════════════════
-   BỘ LỌC SẢN PHẨM
-   - Panel nền trắng, đường kẻ mảnh, không gradient rực
-   - Mỗi nhóm là một section có thể thu gọn
-═══════════════════════════════════════════════════════════════════════════ */
-
 .product-filter {
   background: var(--color-surface);
   border: 1px solid var(--color-border);
@@ -11,8 +5,6 @@
   padding: var(--space-5);
   box-shadow: none;
 }
-
-/* ─── Header ─────────────────────────────────────────────────────────────── */
 
 .product-filter__header {
   display: flex;
@@ -67,8 +59,6 @@
   color: var(--color-danger);
 }
 
-/* ─── Section ───────────────────────────────────────────────────────────── */
-
 .product-filter__section {
   padding: var(--space-4) 0;
   border-bottom: 1px solid var(--color-border-subtle);
@@ -119,8 +109,6 @@
 
 .product-filter__section-body { overflow: hidden; }
 .product-filter__section-body.is-collapsed { display: none; }
-
-/* ─── Danh sách checkbox ────────────────────────────────────────────────── */
 
 .product-filter__list {
   display: flex;
@@ -212,8 +200,6 @@
   color: var(--color-primary);
 }
 
-/* ─── Khoảng giá ────────────────────────────────────────────────────────── */
-
 .product-filter__price-list {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -248,8 +234,6 @@
 }
 
 .product-filter__price-btn:first-child { grid-column: 1 / -1; }
-
-/* ─── Đánh giá ──────────────────────────────────────────────────────────── */
 
 .product-filter__rating-list {
   display: flex;
@@ -311,8 +295,6 @@
   color: var(--color-primary);
   font-weight: 600;
 }
-
-/* ─── Switch ────────────────────────────────────────────────────────────── */
 
 .product-filter__toggles {
   display: flex;

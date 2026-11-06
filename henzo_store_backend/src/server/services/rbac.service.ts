@@ -1,11 +1,3 @@
-/**
- * Nghiệp vụ phân quyền (RBAC) cho khu vực quản trị.
- *
- * Thứ tự ưu tiên quyền của một user:
- *   1. `User.permissions` (tuỳ chỉnh riêng cho user) — nếu có.
- *   2. `Role.permissions` trong DB (bản ghi do admin chỉnh sửa) — nếu có.
- *   3. `ROLE_PERMISSIONS` mặc định trong constants.
- */
 import { RoleModel } from '../models/Role';
 import {
   ALL_PERMISSIONS,
@@ -14,7 +6,6 @@ import {
 } from '../constants';
 import { RoleDoc } from '../models/Role';
 
-/** Ma trận quyền hạn đầy đủ (dùng cho màn hình phân quyền). */
 export async function getPermissionMatrix() {
   const custom = await RoleModel.find({}).lean();
 
@@ -46,9 +37,6 @@ export async function getPermissionMatrix() {
   return { roles, permissions: [...ALL_PERMISSIONS], matrix };
 }
 
-/**
- * Lấy quyền hạn hiệu tại của một vai trò (ưu tiên bản ghi trong DB).
- */
 export async function getRolePermissions(role: string): Promise<string[]> {
   const custom = await RoleModel.findOne({ name: role.toUpperCase() })
     .select('permissions')
@@ -59,9 +47,6 @@ export async function getRolePermissions(role: string): Promise<string[]> {
   return ROLE_PERMISSIONS[role] ?? [];
 }
 
-/**
- * Ghi đè quyền hạn của một vai trò.
- */
 export async function setRolePermissions(
   role: string,
   permissions: string[],

@@ -1,4 +1,3 @@
-/* Inventory Page */
 .seller-inventory__alerts { display: flex; flex-direction: column; gap: 10px; }
 .seller-inventory__alert { display: flex; align-items: center; gap: 12px; padding: 14px 20px; border-radius: var(--radius-sm); font-size: var(--font-size-sm); font-weight: 500; }
 .seller-inventory__alert--danger { background: var(--color-danger-soft); color: var(--color-danger); border: 1px solid var(--color-danger-soft); }
@@ -36,8 +35,6 @@
 .seller-inv-edit__btn--cancel { background: var(--color-danger-soft); color: var(--color-danger); border-color: var(--color-danger-soft); }
 .seller-inv-edit__btn--cancel:hover { background: var(--color-danger); color: white; }
 .seller-date { font-size: var(--font-size-xs); color: var(--color-text-muted); }
-
-/* Shared */
 .seller-table-wrap { overflow-x: auto; }
 .seller-table { width: 100%; border-collapse: collapse; font-size: var(--font-size-sm); }
 .seller-table th { padding: 10px 16px; text-align: left; font-weight: 600; color: var(--color-text-muted); font-size: var(--font-size-xs); text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid var(--color-border); white-space: nowrap; }

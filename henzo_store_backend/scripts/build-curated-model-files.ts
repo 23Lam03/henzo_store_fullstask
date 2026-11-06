@@ -1,47 +1,23 @@
-/**
- * SINH curated-model-files.json CHO CÁC MODEL CÒN THIẾU.
- *
- * Mỗi model -> danh sách file Commons ĐÃ KIỂM CHỨNG tồn tại, ưu tiên:
- *   1. File chứa đúng mã model (EXACT).
- *   2. File chứa đúng series của hãng (vd BenQ XL2420T cho Zowie XL2546X).
- *   3. File cùng hãng + cùng loại sản phẩm (fallback chất lượng cao nhất).
- *
- * Không dùng: ảnh sự kiện/booth, teardown, linh kiện rời, phương tiện, tranh.
- */
 import { readFileSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
 const DATA = resolve(process.cwd(), 'scripts/data');
 
-/**
- * File KHÔNG tồn tại trên Commons (đã verify) -> gỡ khỏi curated.
- * Dùng khi Commons đổi tên/xoá file.
- */
 const REMOVALS: string[] = [
   'Galaxy Tab S9 Logo.svg',
   'ThinkPad X1 Carbon.jpg',
   'ASUS ROG Strix G16 (G513QY-HQ012T).jpg',
 ];
 
-/** Đọc curated hiện tại. */
 const curatedPath = resolve(DATA, 'curated-model-files.json');
 let curated: Record<string, string[]> = {};
 try {
   curated = JSON.parse(readFileSync(curatedPath, 'utf-8'));
 } catch {
-  /* chưa có */
-}
+  }
 
-/**
- * BỔ SUNG: model -> file ưu tiên (đã kiểm chứng tồn tại trên Commons).
- *
- * Gồm 2 nhóm, được MERGE (nối mảng) chứ không ghi đè:
- *   - ADDITIONS_A: file chính xác / ảnh anh em cùng series (đã verify).
- *   - ADDITIONS_B: file đúng hãng cho model không có ảnh chính xác trên Commons.
- */
 const ADDITIONS_A: Record<string, string[]> = {
-  /* ── Gỡ trùng ảnh chính: mỗi model một ảnh riêng ── */
-  'Acer Predator Helios Neo 16': ['Asus ROG Phone 2 and Acer Predator Helios 700 20201101.jpg'],
+    'Acer Predator Helios Neo 16': ['Asus ROG Phone 2 and Acer Predator Helios 700 20201101.jpg'],
   'Acer Predator Helios Neo 16 16in': [
     'Asus ROG Phone 2 and Acer Predator Helios 700 20201101.jpg',
   ],
@@ -68,8 +44,7 @@ const ADDITIONS_A: Record<string, string[]> = {
   'MSI Katana 15 15in': ['MSI GT76 Titan 20190601.jpg', 'MSI Gaming Laptop on wood floor.jpg'],
   'MSI Raider GE78 HX 14VIG': ['MSI GS75 Stealth on the table 20221224.jpg'],
 
-  /* ── Tai nghe: ảnh đúng series của chính hãng ── */
-  'Corsair HS60 Wireless': [
+    'Corsair HS60 Wireless': [
     'ST100VoidPro.jpg',
     'Corsair K60.jpg',
     "Casques d'écoute de podcast.jpg",
@@ -100,8 +75,7 @@ const ADDITIONS_A: Record<string, string[]> = {
     'JBL Free Truly Earphones.jpg',
   ],
 
-  /* ── Màn hình ── */
-  'AOC CU34G2X 34in': [
+    'AOC CU34G2X 34in': [
     'AOC 27B2H LCD MONITOR.jpg',
     'Monitores led de aoc .jpg',
     'AOC PD32M back at XPG booth 20231216.jpg',
@@ -177,8 +151,7 @@ const ADDITIONS_A: Record<string, string[]> = {
     'BenQ FP222W face 20080109.jpg',
   ],
 
-  /* ── Chuột / Mic ── */
-  'ASUS ROG Harpe Ace Aim Lab Edition': [
+    'ASUS ROG Harpe Ace Aim Lab Edition': [
     'ASUSmouse.jpg',
     'ASUS VivoMouse, Computex Taipei 20130607.jpg',
     'Asus A6JC and ASUS mouse 20040114.jpg',
@@ -194,8 +167,7 @@ const ADDITIONS_A: Record<string, string[]> = {
     'Sennheiser e45s microphone.jpg',
   ],
 
-  /* ── Lưu trữ / CPU ── */
-  'Kingston FURY Renegade': [
+    'Kingston FURY Renegade': [
     'Kingston FURY Impact DDR5 SO-DIMM Laptop Memory 32GB Module - front view.jpg',
     'Kingston FURY Impact DDR5 SO-DIMM Laptop Memory 32GB Module - rear view.jpg',
   ],
@@ -210,8 +182,7 @@ const ADDITIONS_A: Record<string, string[]> = {
     'AMD Ryzen 7000-Serie - Der ultimative CPU und Mainboard Vergleich (Memory PC) 18.png',
   ],
 
-  /* ── Laptop / Tablet ── */
-  'HP Spectre x360 16-f2005TU': [
+    'HP Spectre x360 16-f2005TU': [
     'Hp Spectre x360.jpg',
     'HP Spectre x360 2016 (31538364704).jpg',
     'HP Spectre x360 2016 (32003550180).jpg',
@@ -225,8 +196,7 @@ const ADDITIONS_A: Record<string, string[]> = {
     '20230729 삼성 갤럭시 탭 S9.jpg',
   ],
 
-  /* ── Tai nghe Apple ── */
-  'AirPods 4 ANC Deep': [
+    'AirPods 4 ANC Deep': [
     'AirPods 4 ANC and case.jpg',
     'Airpods 4.jpg',
     'AirPods 4 and AirPods Pro 2.jpg',
@@ -238,10 +208,6 @@ const ADDITIONS_A: Record<string, string[]> = {
   ],
 };
 
-/**
- * Nhóm B: file ĐÚNG HÃNG cho model không có ảnh chính xác trên Commons.
- * Mỗi file đã được verify là tồn tại + thuộc đúng hãng của model.
- */
 const ADDITIONS_B: Record<string, string[]> = {
   'ASUS ROG Delta S Wireless': ['ASUS ROG Delta GUNDAM EDITION 20210131a.jpg'],
   'Gigabyte M27Q X 27in': ['Gigabyte AORUS AD27QD 20190601.jpg'],
@@ -358,7 +324,6 @@ const ADDITIONS_B: Record<string, string[]> = {
 
 let changed = 0;
 
-// Gỡ file không tồn tại (theo tên, áp dụng cho mọi model).
 if (REMOVALS.length) {
   const dead = new Set(REMOVALS);
   for (const [model, files] of Object.entries(curated)) {

@@ -3,27 +3,14 @@ import { useReveal } from '../../../hooks/useReveal';
 
 interface RevealGroupProps {
   children: ReactNode;
-  /** Độ trễ (ms) của phần tử đầu tiên. */
-  delay?: number;
-  /** Ngưỡng hiển thị (0–1). */
-  threshold?: number;
-  /** Chạy một lần rồi dừng. */
-  once?: boolean;
-  /** Thẻ HTML bọc ngoài. */
-  as?: ElementType;
+    delay?: number;
+    threshold?: number;
+    once?: boolean;
+    as?: ElementType;
   className?: string;
   style?: React.CSSProperties;
 }
 
-/**
- * Nhóm các phần tử con và hiện chúng lần lượt (stagger) khi lọt khung nhìn.
- *
- * ```tsx
- * <RevealGroup className="products-grid">
- *   {items.map(i => <Card key={i.id} … />)}
- * </RevealGroup>
- * ```
- */
 export const RevealGroup = ({
   children,
   delay = 0,

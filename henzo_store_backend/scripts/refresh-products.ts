@@ -1,19 +1,3 @@
-/**
- * Dọn sản phẩm CŨ (không còn trong dữ liệu mock hiện tại) rồi nạp lại.
- *
- * Vì sao cần:
- * - Trước đây `sellerData.ts` sinh tên kiểu "iPhone 16 Pro Max 256GB 437"
- *   (tên rác do modulo 20 tên). Các sản phẩm này đã nằm trong DB và vẫn
- *   hiện trên trang chủ -> ảnh sai, tên sai.
- * - `seed.ts --reset` xoá TOÀN BỘ dữ liệu (user, order, thanh toán...) — quá
- *   nặng cho việc chỉ sửa ảnh.
- *
- * Script này chỉ:
- *   1. Xoá các sản phẩm KHÔNG còn trong `frontend-mock.json`.
- *   2. Upsert lại toàn bộ sản phẩm từ mock (tên, slug, ảnh, giá...).
- *
- * Chạy: npx tsx scripts/refresh-products.ts
- */
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { connectDB, disconnectDB } from '../src/server/db';
@@ -56,8 +40,7 @@ async function main() {
 
   const MODEL_IMAGES = loadModelImages();
 
-  /** Tìm pool ảnh thật cho 1 tên sản phẩm (kèm fallback model cha). */
-  const poolFor = (name: string): string[] | null => {
+    const poolFor = (name: string): string[] | null => {
     const own = MODEL_IMAGES[modelName(name)]?.images;
     if (own?.length) return own;
     for (const parent of modelParentChain(modelName(name))) {
@@ -67,7 +50,6 @@ async function main() {
     return null;
   };
 
-  // ─── 1. Xoá sản phẩm không còn trong mock ──────────────────────────────────
   const keepSlugs = new Set<string>([
     ...mock.products.map((p: any) => p.slug),
     ...(mock.sellerProducts ?? []).map((p: any) => p.slug),
@@ -91,7 +73,6 @@ async function main() {
     console.log('[refresh] Không có sản phẩm cũ nào cần xoá.');
   }
 
-  // ─── 2. Cập nhật lại ảnh + tên cho toàn bộ sản phẩm còn lại ────────────────
   const all = [...mock.products, ...(mock.sellerProducts ?? [])];
   const variantCounter = new Map<string, number>();
   let updated = 0;
@@ -104,13 +85,12 @@ async function main() {
     let images: string[];
     if (pool?.length) {
       withReal++;
-      // Xoay vòng ảnh theo thứ tự biến thể của cùng model -> giao diện
-      // không bị lặp ảnh chính.
+
       const n = variantCounter.get(model) ?? 0;
       variantCounter.set(model, n + 1);
       const k = n % pool.length;
       const rotated = [...pool.slice(k), ...pool.slice(0, k)];
-      // Giữ thêm ảnh stock gốc cho trang chi tiết (nhiều góc nhìn).
+
       const extra = (p.images ?? []).filter((u: string) => !rotated.includes(u));
       images = [...rotated, ...extra].slice(0, 8);
     } else {
@@ -150,7 +130,6 @@ async function main() {
       `(${withReal} có ảnh thật theo model).`,
   );
 
-  // ─── 3. Báo cáo ảnh chính còn trùng nhau ───────────────────────────────────
   const after = (await ProductModel.find({}).select('images').lean()) as any[];
   const counts = new Map<string, number>();
   for (const p of after) {

@@ -1,10 +1,3 @@
-/**
- * TÌM ẢNH THẬT TỐT NHẤT CHO CÁC MODEL CÒN THIẾU.
- *
- * Gom TOÀN BỘ file đã thu thập (pool + cây category + prefix + strategy)
- * -> chấm điểm theo: trùng mã model > trùng series > trùng hãng + đúng loại
- * -> loại nhiễu (sự kiện, booth, teardown, người, logo, non-ASCII).
- */
 import { readFileSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
@@ -24,7 +17,6 @@ const tree = load('scripts/data/brand-tree.json', { cats: [], files: [] });
 const prefix = load('scripts/data/prefix-harvest.json', { allFiles: [] });
 const strategy = load('scripts/data/strategy-probe.json', {});
 
-/** File đã biết là chính xác (từ probe) -> ưu tiên tuyệt đối. */
 const EXACT: Record<string, string[]> = {
   'AirPods 4 ANC Deep': ['AirPods 4 ANC and case.jpg', 'Airpods 4.jpg', 'AirPods 4 and AirPods Pro 2.jpg'],
   'AirPods Pro 2 USB-C Deep': ['AirPods Pro 2.jpg', 'Airpods Pro 2 in dunkelblau.jpg', 'AirPods Pro 2 in dunkelblauem Case.jpg'],
@@ -33,7 +25,6 @@ const EXACT: Record<string, string[]> = {
   'AMD Ryzen 9 7950X3D': ['AMD Ryzen 9 9950X3D2 installed in socket.jpg', 'AMD Ryzen 9 9950X3D - DOVRESTI COMPRARLO¿ (1920p 30fps VP9 LQ-128kbit AAC)-00.01.02.300.png'],
 };
 
-/** Series/model codes dùng để chấm điểm. */
 const CODES: Record<string, string[]> = {
   'AOC CU34G2X 34in': ['CU34G2X', 'CU34G2', 'CU34'],
   'ASUS ROG Harpe Ace Aim Lab Edition': ['Harpe Ace', 'ROG Harpe', 'Harpe'],
@@ -77,7 +68,6 @@ const CODES: Record<string, string[]> = {
   'Samsung Galaxy Tab S9': ['Galaxy Tab S9', 'Tab S9'],
 };
 
-/** Brand + loại sản phẩm cho từng model (dùng để chấm fallback). */
 const BRAND_TYPE: Record<string, [string, string]> = {
   'AOC CU34G2X 34in': ['AOC', 'MONITOR'],
   'ASUS ROG Harpe Ace Aim Lab Edition': ['Asus', 'MOUSE'],
@@ -121,11 +111,9 @@ const BRAND_TYPE: Record<string, [string, string]> = {
   'Samsung Galaxy Tab S9': ['Samsung', 'TABLET'],
 };
 
-/** Nhiễu loại bỏ. */
 const NOISE =
   /(booth|gamescom|computex|taigi|expo|show|fair|conference|award|circus|teardown|disassembl|opened|circuit|PCB|schematic|diagram|logo|store|shop|shelf|packaging|package|people|person|\bman\b|\bwoman\b|hand|hands|team|player|esports|event|stage|crowd|portrait|drawing|sketch|illustration|poster|cover|book|church|temple|museum|aircraft|car |bike|train|ship|street|building|park|forest|mountain|beach|festival|concert|sign|street|statue|painting|anime|manga|celebrity|singer|actor|politician|military|regiment|battalion|troops|war |battle|warship|tank|plane|helicopter|ship|railway|locomotive|suv|rally|rugby|football|basketball|baseball|hockey|formula|grand prix)/i;
 
-/** File chỉ là ảnh chụp màn hình/poster sản phẩm khác -> loại. */
 const WEAK = /(spec tag|box contents|ports |back panel|rear view|stand base|cable|adapter|manual|packaging|warning|label|sticker|close ?up|macro|detail)/i;
 
 const all = new Set<string>();
@@ -155,13 +143,13 @@ function score(model: string, file: string): number {
     }
   }
   if (brand && t.includes(brand.toLowerCase())) s += 45;
-  // Ảnh đúng loại sản phẩm (dựa trên pool brand-type đã xác minh).
+
   const pool = brandPools[type]?.[brand] ?? [];
   if (pool.includes(file)) s += 30;
   const typePool = (imagePools as any)[type] ?? [];
   if (typePool.includes(file)) s += 18;
   if (s <= 0) return -1;
-  // Ưu tiên tên file ngắn, gọn (ảnh sản phẩm chụp riêng).
+
   s -= Math.min(12, file.length / 12);
   return s;
 }

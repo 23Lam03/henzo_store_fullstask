@@ -1,4 +1,3 @@
-/* ─── Back To Top ───────────────────────────────────────────────────────── */
 .back-to-top {
   position: fixed;
   bottom: var(--space-8);
@@ -18,8 +17,6 @@
   transition: all var(--transition-normal);
   animation: back-to-top-in 340ms var(--motion-ease);
 }
-
-/* Vòng sáng lan ra khi rê chuột */
 .back-to-top::after {
   content: '';
   position: absolute;

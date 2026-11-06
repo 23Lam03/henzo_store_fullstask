@@ -1,6 +1,3 @@
-/**
- * Nghiệp vụ xác thực.
- */
 import { z } from 'zod';
 import {
   UserModel,
@@ -17,7 +14,6 @@ import {
 import { conflict, unauthorized, badRequest } from '../http/errors';
 import { UserRole } from '../constants';
 
-// ─── Validation schemas ──────────────────────────────────────────────────────
 export const registerSchema = z.object({
   name: z.string().trim().min(1, 'Vui lòng nhập họ tên.'),
   email: z
@@ -62,18 +58,12 @@ export const updateProfileSchema = z.object({
   bio: z.string().optional(),
 });
 
-// ─── Nghiệp vụ ───────────────────────────────────────────────────────────────
-
 export interface AuthResult {
   user: ReturnType<typeof toPublicUser>;
   accessToken: string;
   refreshToken: string;
 }
 
-/**
- * Đăng ký tài khoản khách hàng.
- * Role luôn là CUSTOMER — không bao giờ nhận role từ client.
- */
 export async function register(data: z.infer<typeof registerSchema>): Promise<AuthResult> {
   const email = data.email.toLowerCase();
   const existing = await UserModel.findOne({ email });
@@ -95,7 +85,6 @@ export async function register(data: z.infer<typeof registerSchema>): Promise<Au
   return issueTokens(user);
 }
 
-/** Đăng nhập. Trả về token mới cho cả user lẫn store owner. */
 export async function login(
   data: z.infer<typeof loginSchema>,
 ): Promise<AuthResult> {
@@ -121,7 +110,6 @@ export async function login(
   return issueTokens(user);
 }
 
-/** Sinh access + refresh token cho user. */
 export function issueTokens(user: UserDoc | any): AuthResult {
   const role = user.role as string;
   const storeId = user.storeId ? String(user.storeId) : undefined;
@@ -140,7 +128,6 @@ export function issueTokens(user: UserDoc | any): AuthResult {
   return { user: toPublicUser(user), accessToken, refreshToken };
 }
 
-/** Lấy lại access token từ refresh token (hợp lệ). */
 export async function refreshSession(
   userId: string,
   role: string,
@@ -158,7 +145,6 @@ export async function refreshSession(
   return { user: toPublicUser(user), accessToken, refreshToken };
 }
 
-/** Đổi mật khẩu. */
 export async function changePassword(
   userId: string,
   data: z.infer<typeof changePasswordSchema>,
@@ -179,7 +165,6 @@ export async function changePassword(
   await user.save();
 }
 
-/** Cập nhật hồ sơ. */
 export async function updateProfile(
   userId: string,
   data: z.infer<typeof updateProfileSchema>,
@@ -208,9 +193,6 @@ export async function updateProfile(
   return toPublicUser(user);
 }
 
-/**
- * Đăng ký cửa hàng mới — tạo user role SHOP + store.
- */
 export async function registerStore(input: {
   name: string;
   email: string;
@@ -252,7 +234,6 @@ export async function registerStore(input: {
   return { user: toPublicUser(user), store };
 }
 
-/** Sinh slug duy nhất cho store. */
 async function uniqueStoreSlug(name: string): Promise<string> {
   const base =
     name

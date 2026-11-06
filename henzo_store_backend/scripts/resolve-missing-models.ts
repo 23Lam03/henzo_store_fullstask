@@ -1,24 +1,6 @@
-/**
- * TÌM ẢNH ĐÚNG MODEL cho các model còn thiếu / đang dùng ảnh pool dùng chung.
- *
- * QUY TẮC CHẶT (chỉ nhận ảnh khi tên file chứa MÃ MODEL):
- *   1. Tên file phải chứa ít nhất 1 token ĐẶC TRƯNG của model
- *      (token có chữ số: "hs60", "xl2566k", "xr273qk", "1000xm5"...).
- *      Nếu model không có token có số -> dùng token SERIES
- *      ("quietcomfort", "raptor", "m34wmu", "gram"...).
- *   2. Tên file phải chứa tên HÃNG.
- *   3. Tên file phải chứa từ khoá đúng LOẠI sản phẩm.
- *   4. Loại ảnh có từ cấm (sự kiện, người, teardown, logo, đồ vật khác...).
- *
- * Nguồn: Wikimedia Commons (search + intitle + category), Wikipedia pageimages.
- *
- * Chạy: npx tsx scripts/resolve-missing-models.ts [--apply]
- */
 import { readFileSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { getJson } from './lib/commons-files';
-
-/* ───────────────────────── Loại sản phẩm ───────────────────────── */
 
 const TYPE_KEYWORDS: Record<string, string[]> = {
   'Điện thoại': ['iphone', 'galaxy', 'pixel', 'oneplus', 'oppo', 'vivo', 'xiaomi', 'redmi', 'poco', 'honor', 'realme', 'nokia', 'tecno', 'huawei', 'motorola'],
@@ -32,15 +14,11 @@ const TYPE_KEYWORDS: Record<string, string[]> = {
   'Phụ kiện': ['charger', 'power bank', 'power adapter', 'hub', 'stream deck', 'wave', 'hd60', 'webcam', 'c920', 'brio', 'streamcam', 'cable', 'adapter', 'microphone', 'seiren', 'icue link', 'keys'],
 };
 
-/** Từ cấm: ảnh không phải sản phẩm. */
 const REJECT =
   /\b(disassembl|teardown|exploded|schematic|circuit|mainboard|motherboard|logic ?board|pcb|chipset|logo|icon|diagram|chart|booth|gamescom|comiket|esl|blast|person|people|man|woman|player|streamer|interview|autograph|crowd|audience|stage|signing|museum|store|office|desk|setup|box|package|unboxing|review|comparison|boit|tokyo-game-show|faceit|homestory|hwc|poster|banner|advert|swatch|book|cover|map|screenshot|interface|menu|wallpaper|blueprint|patent|drawing|return of|consair|church|fortress|aircraft|plane|airliner|boeing|mustang|regiment|massacre|saint|monster|dumpster|trash|bin\b|keyboard and mouse|mouse and keyboard|holding|hand|woman|man\b)\b/i;
 
-/** Từ báo hiệu ảnh bối cảnh. */
 const CONTEXT =
   /(with|and|&|plus|in the|on the|at the|during|vs\b|comparison|gamepad|keyboard and mouse|mouse and keyboard|holding|people|person|hand|hands|box|store|shop|window|table|wall)\b/i;
-
-/* ───────────────────────── Tiện ích ───────────────────────── */
 
 function norm(s: string): string {
   return s
@@ -52,7 +30,6 @@ function norm(s: string): string {
     .toLowerCase();
 }
 
-/** Token dừng (không mang thông tin model). */
 const STOP = new Set([
   'pro', 'plus', 'max', 'ultra', 'mini', 'air', 'se', 'gen', 'series', 'in',
   'inch', 'gb', 'tb', 'gaming', 'wireless', 'rgb', 'black', 'white', 'silver',
@@ -64,11 +41,6 @@ const STOP = new Set([
   'keys', 'hdd', 'ssd', 'nvme', 'ram', 'dimm', 'gaming', 'pc', 'v2', 'v3',
 ]);
 
-/**
- * Token ĐẶC TRƯNG của model:
- *   - token có chứa chữ số (mã model) -> mạnh nhất
- *   - token series dài >= 4 ký tự, không phải brand -> trung bình
- */
 function distinctive(model: string, brand: string): { hard: string[]; soft: string[] } {
   const brandToks = brand.toLowerCase().split(/[\s&]+/).filter((b) => b.length >= 3);
   const words = model
@@ -86,13 +58,11 @@ function distinctive(model: string, brand: string): { hard: string[]; soft: stri
       hard.push(lw);
       continue;
     }
-    // Token chữ đơn lẻ -> yếu
+
     if (w.length >= 4) soft.push(lw);
   }
   return { hard, soft };
 }
-
-/* ───────────────────────── Nguồn ảnh ───────────────────────── */
 
 interface Cand {
   title: string;
@@ -153,8 +123,6 @@ async function wikiMedia(page: string): Promise<Cand[]> {
   return out;
 }
 
-/* ───────────────────────── Chấm điểm ───────────────────────── */
-
 interface Verdict {
   ok: boolean;
   score: number;
@@ -189,7 +157,6 @@ function judge(c: Cand, model: string, brand: string, categoryName: string): Ver
   return { ok: true, score, reason: 'ok' };
 }
 
-/** Sinh truy vấn. */
 function queries(model: string, brand: string): string[] {
   const out: string[] = [];
   const base = model.replace(/\s+\d+(?:\.\d+)?in\b/gi, '').trim();

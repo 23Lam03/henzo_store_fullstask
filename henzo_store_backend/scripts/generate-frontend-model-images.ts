@@ -1,16 +1,3 @@
-/**
- * SINH file ảnh thật cho frontend: `henzo_store/src/data/modelImages.ts`.
- *
- * Vì sao cần:
- * - `products.ts` / `sellerData.ts` ở frontend là FALLBACK khi backend chưa
- *   sẵn sàng. Nếu chúng giữ ảnh stock Unsplash thì ảnh hiển thị SAI so với
- *   tên sản phẩm.
- * - Sinh tự động từ `scripts/data/model-images.json` + `lib/model-parents.ts`
- *   để frontend và backend LUÔN dùng cùng một bộ ảnh & cùng quy tắc gom
- *   model -> không thể lệch nhau.
- *
- * Chạy: npx tsx scripts/generate-frontend-model-images.ts
- */
 import { readFileSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { modelParentChain, MODEL_PARENT } from './lib/model-parents';
@@ -35,19 +22,16 @@ function main() {
     console.warn('[gen] Không có model-images.json -> file rỗng.');
   }
 
-  // Chỉ giữ entry có ảnh.
   const entries = Object.entries(raw).filter(
     ([, v]) => Array.isArray(v?.images) && v.images.length > 0,
   );
 
-  // Gom theo chuỗi model cha -> để frontend cũng fallback được.
   const lines: string[] = [];
   for (const [model, v] of entries.sort(([a], [b]) => a.localeCompare(b))) {
     const imgs = v.images.map((u) => `    '${u.replace(/'/g, "\\'")}',`).join('\n');
     lines.push(`  '${model.replace(/'/g, "\\'")}': [\n${imgs}\n  ],`);
   }
 
-  // Xuất MODEL_PARENT dạng literal để frontend không cần import chéo.
   const parentLines = Object.entries(MODEL_PARENT)
     .map(
       ([k, v]) =>
@@ -150,7 +134,7 @@ export function imagesForProduct(name: string): string[] | null {
     `[gen] Đã sinh ${DEST} (${entries.length} model có ảnh, ` +
       `${Object.keys(MODEL_PARENT).length} quan hệ model cha).`,
   );
-  // Kiểm tra chuỗi cha không bị đứt.
+
   let broken = 0;
   for (const [m] of entries) {
     for (const p of modelParentChain(m)) {

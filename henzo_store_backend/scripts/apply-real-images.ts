@@ -1,20 +1,3 @@
-/**
- * Áp dụng ảnh THẬT theo model + logo thương hiệu thật vào MongoDB.
- *
- * Vấn đề người dùng báo: "ảnh bị trùng lặp khi hiển thị lên giao diện" —
- * mọi sản phẩm cùng model dùng CHUNG một URL ảnh, nên danh sách lặp hàng
- * chục dòng giống hệt nhau.
- *
- * Cách sửa:
- * 1. Ảnh sản phẩm: dùng `scripts/data/model-images.json` — mỗi model có
- *    NHIỀU ảnh thật (Wikipedia/Wikimedia). Các biến thể của cùng model
- *    **xoay vòng** qua các ảnh đó nên không 2 sản phẩm nào trùng ảnh chính.
- * 2. Logo thương hiệu: bảng `brand-logos.ts` (Simple Icons + Wikimedia),
- *    hãng không có logo tự do thì dùng monogram SVG tự sinh.
- * 3. Màu thương hiệu: lấy từ `BRAND_COLORS`.
- *
- * Chạy: npx tsx scripts/apply-real-images.ts
- */
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { connectDB, disconnectDB } from '../src/server/db';
@@ -31,20 +14,11 @@ import { modelType } from './lib/model-type';
 import { isWrongType } from './lib/image-type';
 
 interface ModelImage {
-  /** Nhiều ảnh thật của model (khác nhau). */
-  images: string[];
+    images: string[];
   source: string;
   title: string;
 }
 
-/**
- * Gom sản phẩm theo model.
- *
- * Dùng chung `modelName()` của `lib/model-name.ts` để chuẩn hoá tên (bỏ
- * dung lượng, màu, mã kỹ thuật phụ) -> "ASUS ROG Harpe Ace Eclipse Gray"
- * và "ASUS ROG Harpe Ace" là CÙNG một thiết bị, phải gom chung để ảnh
- * xoay vòng đúng.
- */
 function modelKey(name: string): string {
   return modelName(name);
 }
@@ -52,7 +26,6 @@ function modelKey(name: string): string {
 async function main() {
   await connectDB();
 
-  // ─── 1. Ảnh sản phẩm theo model ────────────────────────────────────────
   let modelImages: Record<string, ModelImage> = {};
   try {
     modelImages = JSON.parse(
@@ -65,9 +38,6 @@ async function main() {
     console.warn('[apply] Không có model-images.json -> giữ ảnh theo danh mục.');
   }
 
-  // Pool ảnh theo LOẠI sản phẩm (40 ảnh/loại) — dùng khi model không có
-  // ảnh riêng. Nhờ vậy mỗi model thiếu ảnh nhận một ảnh KHÁC NHAU thay vì
-  // trùng với nhau.
   let typePools: Record<string, string[]> = {};
   try {
     typePools = JSON.parse(
@@ -84,7 +54,6 @@ async function main() {
     .select('name slug images categoryName')
     .lean()) as any[];
 
-  // Gom sản phẩm theo model để xoay vòng ảnh trong nhóm.
   const byModel = new Map<string, any[]>();
   for (const p of products) {
     const key = modelKey(String(p.name ?? ''));
@@ -96,22 +65,11 @@ async function main() {
   let inheritedCount = 0;
   const missingModels: string[] = [];
 
-  /**
-   * Tìm pool ảnh thật cho 1 model.
-   *
-   * Thứ tự ưu tiên:
-   *   1. Ảnh của đúng model.
-   *   2. Ảnh của model CHA (ví dụ "Samsung Galaxy S26 Ultra" -> "S25 Ultra"
-   *      -> "S24 Ultra"). Ảnh vẫn đúng dòng sản phẩm, đúng hãng.
-   *   3. Ảnh theo danh mục (fallback cuối cùng).
-   */
-  const poolFor = (
+    const poolFor = (
     model: string,
     type: string,
   ): { pool: string[] | null; inherited: boolean } => {
-    // Chỉ giữ ảnh ĐÚNG LOẠI sản phẩm — pool của một model có thể lẫn ảnh
-    // loại khác (vd pool "Vivo X200" chứa ảnh laptop Vivobook -> điện thoại
-    // bị gán ảnh laptop).
+
     const own = modelImages[model]?.images?.filter(
       (u) => !isWrongType(u, type),
     );
@@ -125,32 +83,10 @@ async function main() {
     return { pool: null, inherited: false };
   };
 
-  // ─── 3. Không để 2 model khác nhau dùng CHUNG ảnh chính ────────────────
-  //
-  // Vấn đề: nhiều model kế thừa cùng một pool ảnh (VD "iPhone 16 Plus"
-  // mượn pool của "iPhone 16") -> ảnh chính trùng giữa 2 dòng sản phẩm
-  // khác nhau, người dùng thấy "ảnh bị trùng lặp".
-  //
-  // Cách sửa: mỗi URL ảnh chính được "đặt trước" cho đúng 1 model. Model
-  // nào đã dùng hết pool riêng thì mới nhận ảnh dư từ model khác.
-  const thumbOwner = new Map<string, string>(); // url -> model đã dùng
-  /** url -> model đã "đặt trước" (áp dụng cho cả ảnh chính lẫn ảnh phụ). */
-  const reserved = new Map<string, string>();
+  const thumbOwner = new Map<string, string>();
+    const reserved = new Map<string, string>();
 
-  /**
-   * Chọn ảnh chính chưa bị model khác chiếm.
-   *
-   * Thứ tự ưu tiên (quan trọng về mặt nghiệp vụ):
-   *   1. Ảnh RIÊNG của model (đúng model nhất).
-   *   2. Ảnh theo LOẠI sản phẩm (đúng loại: bàn phím Corsair vẫn là ảnh
-   *      bàn phím, không phải ảnh chuột).
-   *   3. Ảnh theo danh mục (fallback cuối cùng).
-   *   4. Ảnh của model khác (cuối cùng — có thể sai loại).
-   *
-   * Bước 2 tồn tại để tránh trường hợp tai nghe Corsair bị gán ảnh
-   * chuột Corsair chỉ vì model cha hết ảnh.
-   */
-  const pickThumb = (
+    const pickThumb = (
     model: string,
     pool: string[] | null,
     type: string,
@@ -177,20 +113,13 @@ async function main() {
         if (!owner || owner === model) return url;
       }
     }
-    // Cuối cùng: dùng lại ảnh của model khác.
+
     const all = [...own, ...typePool, ...cats];
     if (!all.length) return '';
     return all[(offset + idx) % all.length];
   };
 
-  /**
-   * Ảnh phụ — cũng phải KHÁC ảnh chính VÀ khác ảnh phụ đã chọn, đồng thời
-   * không trùng với ảnh của model khác.
-   *
-   * Dùng `reserved` (url -> model) thay vì chỉ `thumbOwner` để ảnh phụ cũng
-   * được "đặt trước" — tránh việc 2 model khác nhau cùng có 1 ảnh phụ.
-   */
-  const pickExtras = (
+    const pickExtras = (
     model: string,
     pool: string[] | null,
     type: string,
@@ -213,7 +142,7 @@ async function main() {
         const url = tier[(offset + idx + k) % tier.length];
         if (url === main) continue;
         if (out.includes(url)) continue;
-        // Ảnh đã thuộc model khác -> ưu tiên ảnh khác.
+
         const owner = reserved.get(url);
         if (owner && owner !== model) continue;
         out.push(url);
@@ -221,7 +150,6 @@ async function main() {
       }
     }
 
-    // Nếu vẫn thiếu (pool nhỏ) -> lấy ảnh đã dùng, chấp nhận trùng ảnh phụ.
     if (out.length < count) {
       for (const tier of [own, typePool, cats]) {
         for (const url of tier) {
@@ -237,8 +165,6 @@ async function main() {
     return out;
   };
 
-  // Ưu tiên xử lý model CÓ ảnh riêng trước, để chúng "giữ" ảnh của mình
-  // trước khi model kế thừa (model cha) tới xin.
   const orderedModels = [...byModel.keys()].sort((a, b) => {
     const ownA = modelImages[a]?.images?.length ?? 0;
     const ownB = modelImages[b]?.images?.length ?? 0;
@@ -249,7 +175,6 @@ async function main() {
   for (const model of orderedModels) {
     const rows = byModel.get(model)!;
 
-    // Loại sản phẩm của model -> quyết định pool ảnh fallback.
     const type = modelType(model, String(rows[0]?.categoryName ?? ''));
 
     const { pool, inherited } = poolFor(model, type);
@@ -259,7 +184,6 @@ async function main() {
       fallbackCount += rows.length;
     }
 
-    // Sắp xếp theo slug để thứ tự xoay vòng ổn định giữa các lần chạy.
     rows.sort((a, b) =>
       String(a.slug ?? '').localeCompare(String(b.slug ?? '')),
     );
@@ -268,9 +192,6 @@ async function main() {
       const p = rows[idx];
       const catPool = CATEGORY_IMAGES[p.categoryName] ?? FALLBACK_IMAGES;
 
-      // OFFSET theo model: nhiều model dùng chung pool (kế thừa từ model cha)
-      // -> nếu cùng bắt đầu từ index 0, chúng sẽ chọn TRÙNG ảnh đầu tiên.
-      // Offset băm theo tên model giúp mỗi model chiếm một vị trí khác nhau.
       const offset = hashCode(model) % Math.max(pool?.length ?? 1, 1);
 
       const main = pickThumb(model, pool, type, catPool, idx, offset);
@@ -279,8 +200,6 @@ async function main() {
         reserved.set(main, model);
       }
 
-      // Ảnh phụ: mỗi biến thể cũng nên có ảnh KHÁC NHAU (ảnh 2, 3) để
-      // không bị lặp trong danh sách.
       const extras = pickExtras(
         model,
         pool,
@@ -313,7 +232,6 @@ async function main() {
     );
   }
 
-  // Kiểm tra ảnh chính còn trùng nhau không.
   const after = (await ProductModel.find({})
     .select('images')
     .lean()) as any[];
@@ -328,7 +246,6 @@ async function main() {
       `(tối đa ${dupes.length ? Math.max(...dupes.map((d) => d[1])) : 0} lần)`,
   );
 
-  // ─── 2. Logo + màu thương hiệu ─────────────────────────────────────────
   const brands = (await BrandModel.find({}).lean()) as any[];
   let brandUpdated = 0;
   for (const b of brands) {

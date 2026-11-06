@@ -1,26 +1,3 @@
-/**
- * GIA HẠN & CHUẨN HOÁ KHUYẾN MÃI.
- *
- * Vấn đề phát hiện khi audit mở rộng:
- *   - 190/197 khuyến mãi đã HẾT HẠN (endDate < hôm nay) nhưng `status`
- *     vẫn là `active` -> API `GET /api/promotions` lọc theo cả status và
- *     ngày nên chỉ còn 7 chương trình hiển thị. Trang "Khuyến mãi" của
- *     khách gần như trống, mục "Flash Sale" trên trang chủ không có dữ liệu.
- *   - Trạng thái trong DB không khớp trạng thái suy ra từ ngày
- *     (`promotionStatus()` trả `ended` nhưng DB lưu `active`).
- *
- * Cách sửa:
- *   1. Kéo dài thời hạn các chương trình đã hết hạn sao cho:
- *      - `endDate` mới > hôm nay.
- *      - Giữ nguyên thời lượng gốc (startDate -> endDate), chỉ dời mốc
- *        bắt đầu về sao cho chương trình đang "chạy".
- *   2. Chuẩn hoá `status` theo ngày: quá khứ -> `ended`, hiện tại -> `active`,
- *      tương lai -> `active` (sẽ tự chuyển sang `ended` khi hết hạn).
- *   3. Bảo đảm luôn có ít nhất 1 chương trình `flash_sale` đang hiệu lực
- *      (để trang chủ có mục Flash Sale).
- *
- * Chạy: npx tsx scripts/refresh-promotions.ts
- */
 import { connectDB, disconnectDB } from '../src/server/db';
 import { PromotionModel } from '../src/server/models/Promotion';
 import {
@@ -29,7 +6,6 @@ import {
   SellerPromotionStatus,
 } from '../src/server/constants';
 
-/** Thời lượng tối thiểu của một chương trình sau khi gia hạn (ngày). */
 const MIN_DURATION_DAYS = 7;
 
 async function main() {
@@ -48,26 +24,24 @@ async function main() {
     const end = new Date(p.endDate);
     const update: Record<string, any> = {};
 
-    // ─── 1. Gia hạn chương trình đã hết hạn ────────────────────────────
     if (end.getTime() < now.getTime()) {
       const durationMs = Math.max(
         end.getTime() - start.getTime(),
         MIN_DURATION_DAYS * 86400000,
       );
-      // Dời cửa sổ sang tương lai, giữ nguyên độ dài.
+
       const newStart = new Date(now.getTime());
       const newEnd = new Date(now.getTime() + durationMs);
       update.startDate = newStart;
       update.endDate = newEnd;
       extended++;
     } else if (end.getTime() - start.getTime() < MIN_DURATION_DAYS * 86400000) {
-      // Còn hiệu lực nhưng thời lượng quá ngắn -> kéo dài tối thiểu.
+
       update.endDate = new Date(
         start.getTime() + MIN_DURATION_DAYS * 86400000,
       );
     }
 
-    // ─── 2. Chuẩn hoá status theo ngày ─────────────────────────────────
     const newEnd = update.endDate ? new Date(update.endDate) : end;
     const newStart = update.startDate ? new Date(update.startDate) : start;
     const derived =
@@ -93,7 +67,6 @@ async function main() {
   console.log(`[promo] Gia hạn: ${extended} chương trình đã hết hạn`);
   console.log(`[promo] Chuẩn hoá status: ${statusFixed} chương trình`);
 
-  // ─── 3. Bảo đảm có flash sale đang hiệu lực ─────────────────────────
   const flash = await PromotionModel.find({
     type: PromotionType.FLASH_SALE,
     status: SellerPromotionStatus.ACTIVE,
@@ -101,8 +74,7 @@ async function main() {
     endDate: { $gte: now },
   });
   if (!flash.length) {
-    // Lấy 1 chương trình bất kỳ đang hiệu lực và đổi sang flash sale,
-    // hoặc tạo mới nếu không có.
+
     const candidate = await PromotionModel.findOne({
       status: SellerPromotionStatus.ACTIVE,
       startDate: { $lte: now },
@@ -133,7 +105,6 @@ async function main() {
     }
   }
 
-  // ─── 4. Báo cáo ──────────────────────────────────────────────────────
   const after = await PromotionModel.find({}).lean();
   const active = after.filter(
     (p: any) =>

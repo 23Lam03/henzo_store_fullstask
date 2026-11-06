@@ -1,6 +1,3 @@
-/**
- * Model Shipping — vận đơn vận chuyển của seller.
- */
 import { Schema, type InferSchemaType } from 'mongoose';
 import { defineModel } from './registry';
 import { ShippingStatus } from '../constants';
@@ -30,8 +27,7 @@ const shippingSchema = new Schema(
     weight: { type: Number, default: 0 },
     dimensions: { type: String, default: '' },
     shippingFee: { type: Number, default: 0 },
-    /** Tiền thu hộ (COD). */
-    codAmount: { type: Number, default: 0 },
+        codAmount: { type: Number, default: 0 },
     estimatedDelivery: { type: Date },
     actualDelivery: { type: Date },
   },

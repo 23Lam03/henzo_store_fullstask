@@ -54,11 +54,7 @@ export const ShopOrderListPage = () => {
   const [pendingAdvance, setPendingAdvance] = useState<{ order: SellerOrder; next: { label: string; next: string } } | null>(null);
   const perPage = 15;
 
-  /**
-   * Lọc + tìm kiếm + phân trang đều do BACKEND thực hiện, nên danh sách luôn
-   * đầy đủ (không bị giới hạn 100 bản ghi) và số liệu khớp với thực tế.
-   */
-  const fetchOrders = useCallback(
+    const fetchOrders = useCallback(
     async (nextPage: number, nextTab: string, nextSearch: string) => {
       setLoading(true);
       try {
@@ -82,7 +78,6 @@ export const ShopOrderListPage = () => {
     [loadOrders, toast],
   );
 
-  // Tải lại khi đổi tab hoặc đổi từ khoá tìm kiếm (debounce 300ms).
   useEffect(() => {
     const timer = window.setTimeout(() => {
       void fetchOrders(1, tab, search);
@@ -93,14 +88,7 @@ export const ShopOrderListPage = () => {
   const totalPages = Math.max(1, Math.ceil((ordersTotal || orders.length) / perPage));
   const paginated = orders;
 
-  /**
-   * Số đơn theo trạng thái lấy từ server (`statusCounts`) — chính xác toàn bộ
-   * đơn của cửa hàng, không bị giới hạn bởi `pageSize` đã tải về.
-   *
-   * `ordersTotal` là tổng của bộ lọc HIỆN TẠI (đã lọc trạng thái / tìm kiếm),
-   * nên badge "Tất cả" phải lấy tổng của `statusCounts` (luôn là toàn bộ).
-   */
-  const allCount = Object.values(orderStatusCounts).reduce(
+    const allCount = Object.values(orderStatusCounts).reduce(
     (sum, n) => sum + n,
     0,
   );
@@ -127,7 +115,7 @@ export const ShopOrderListPage = () => {
         </div>
       </div>
 
-      {/* Tabs */}
+      {}
       <div className="seller-tabs">
         {STATUS_TABS.map(t => (
           <button
@@ -143,7 +131,7 @@ export const ShopOrderListPage = () => {
         ))}
       </div>
 
-      {/* Search */}
+      {}
       <div className="seller-orders__search">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
         <input
@@ -155,7 +143,7 @@ export const ShopOrderListPage = () => {
         />
       </div>
 
-      {/* Table */}
+      {}
       <div className="admin-section">
         <div className="seller-table-wrap">
           <table className="seller-table">
@@ -227,7 +215,7 @@ export const ShopOrderListPage = () => {
           </table>
         </div>
 
-        {/* Pagination */}
+        {}
         {(ordersTotal || orders.length) > perPage && (
           <div className="seller-pagination">
             <span className="seller-pagination__info">
@@ -258,7 +246,7 @@ export const ShopOrderListPage = () => {
         )}
       </div>
 
-      {/* Order Detail Panel */}
+      {}
       {selectedOrder && (
         <>
           <div className="admin-detail-panel-overlay" onClick={() => setSelectedOrder(null)} />
@@ -270,7 +258,7 @@ export const ShopOrderListPage = () => {
               </button>
             </div>
             <div className="admin-detail-panel__body">
-              {/* Status */}
+              {}
               <div className="seller-order-timeline">
                 {orderStatuses.map(s => (
                   <div key={s} className={`seller-order-timeline__step ${s === selectedOrder.status ? 'active' : orderStatuses.indexOf(s) < orderStatuses.indexOf(selectedOrder.status) ? 'done' : ''}`}>

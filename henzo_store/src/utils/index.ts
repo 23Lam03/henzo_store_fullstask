@@ -1,4 +1,4 @@
-// ─── Number Formatting ─────────────────────────────────────────────────────────
+
 export const formatPrice = (price: number): string => {
   return new Intl.NumberFormat('vi-VN', {
     style: 'currency',
@@ -16,7 +16,6 @@ export const formatPercent = (value: number): string => {
   return `${value}%`;
 };
 
-// ─── Date Formatting ────────────────────────────────────────────────────────────
 export const formatDate = (date: string | Date, format: 'full' | 'short' | 'relative' = 'short'): string => {
   const d = typeof date === 'string' ? new Date(date) : date;
 
@@ -55,7 +54,6 @@ export const formatDate = (date: string | Date, format: 'full' | 'short' | 'rela
   }).format(d);
 };
 
-// ─── String Utilities ─────────────────────────────────────────────────────────
 export const slugify = (text: string): string => {
   return text
     .toLowerCase()
@@ -80,7 +78,6 @@ export const generateId = (): string => {
   return `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
 };
 
-// ─── Storage Utilities ─────────────────────────────────────────────────────────
 export const getStorageItem = <T>(key: string, defaultValue: T): T => {
   try {
     const item = localStorage.getItem(key);
@@ -93,20 +90,19 @@ export const getStorageItem = <T>(key: string, defaultValue: T): T => {
 export const setStorageItem = <T>(key: string, value: T): void => {
   try {
     localStorage.setItem(key, JSON.stringify(value));
-  } catch {
-    // Ignore quota exceeded errors
+  } catch {void 0; 
+
   }
 };
 
 export const removeStorageItem = (key: string): void => {
   try {
     localStorage.removeItem(key);
-  } catch {
-    // Ignore
+  } catch {void 0; 
+
   }
 };
 
-// ─── Array Utilities ───────────────────────────────────────────────────────────
 export const groupBy = <T>(array: T[], key: keyof T): Record<string, T[]> => {
   return array.reduce((result, item) => {
     const groupKey = String(item[key]);
@@ -126,12 +122,10 @@ export const chunk = <T>(array: T[], size: number): T[][] => {
   );
 };
 
-// ─── Classname Utility ─────────────────────────────────────────────────────────
 export const cx = (...classes: (string | boolean | undefined | null | number)[]): string => {
   return classes.filter(Boolean).join(' ');
 };
 
-// ─── Debounce Utility ─────────────────────────────────────────────────────────
 export const debounce = <T extends (...args: unknown[]) => unknown>(
   func: T,
   wait: number
@@ -143,7 +137,6 @@ export const debounce = <T extends (...args: unknown[]) => unknown>(
   };
 };
 
-// ─── Validation Utilities ─────────────────────────────────────────────────────
 export const isValidEmail = (email: string): boolean => {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 };
@@ -152,7 +145,6 @@ export const isValidPhone = (phone: string): boolean => {
   return /(03|05|07|08|09|01[2|6|8|9])[0-9]{8}$/.test(phone.replace(/\s/g, ''));
 };
 
-// ─── Rating Stars ─────────────────────────────────────────────────────────────
 export const getRatingStars = (rating: number): { full: number; half: boolean; empty: number } => {
   const full = Math.floor(rating);
   const half = rating % 1 >= 0.5;
@@ -160,7 +152,6 @@ export const getRatingStars = (rating: number): { full: number; half: boolean; e
   return { full, half, empty };
 };
 
-// ─── URL Utilities ────────────────────────────────────────────────────────────
 export const buildQueryString = (params: Record<string, string | number | boolean | undefined>): string => {
   const searchParams = new URLSearchParams();
   Object.entries(params).forEach(([key, value]) => {
@@ -181,7 +172,6 @@ export const parseQueryString = (search: string): Record<string, string> => {
   return result;
 };
 
-// ─── Color Utilities ─────────────────────────────────────────────────────────
 export const hexToRgba = (hex: string, alpha: number): string => {
   const r = parseInt(hex.slice(1, 3), 16);
   const g = parseInt(hex.slice(3, 5), 16);
@@ -189,5 +179,4 @@ export const hexToRgba = (hex: string, alpha: number): string => {
   return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 };
 
-// ─── LocalStorage Keys ─────────────────────────────────────────────────────────
 export { STORAGE_KEYS } from '../constants';

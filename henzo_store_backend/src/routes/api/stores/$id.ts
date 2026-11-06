@@ -22,7 +22,6 @@ export const Route = createFileRoute('/api/stores/$id')({
 
         if (!store) throw notFound('Không tìm thấy cửa hàng');
 
-        // Cửa hàng bị suspend chỉ admin mới xem được.
         const url = new URL(request.url);
         const includeInactive =
           url.searchParams.get('all') === '1' ||

@@ -1,6 +1,3 @@
-/**
- * API catalog — sản phẩm, danh mục, thương hiệu, cửa hàng, blog, khuyến mãi.
- */
 import {
   API_BASE_URL,
   apiFetch,
@@ -89,8 +86,7 @@ export interface StoreDetail extends Store {
 }
 
 export const catalogApi = {
-  /** Danh sách sản phẩm có phân trang. */
-  async products(query: ProductQuery = {}): Promise<ProductListResult> {
+    async products(query: ProductQuery = {}): Promise<ProductListResult> {
     const params: Record<string, QueryValue> = {
       page: query.page ?? 1,
       pageSize: query.pageSize ?? 20,
@@ -124,18 +120,15 @@ export const catalogApi = {
     };
   },
 
-  /** Bộ sưu tập sản phẩm cho trang chủ — 1 request cho nhiều nhóm. */
-  collections: (): Promise<ProductCollections> =>
+    collections: (): Promise<ProductCollections> =>
     apiFetch<ProductCollections>(`${API_BASE_URL}/products/collections`),
 
-  /** Chi tiết sản phẩm + sản phẩm liên quan (theo id hoặc slug). */
-  product: (idOrSlug: string): Promise<{ product: Product; related: Product[] }> =>
+    product: (idOrSlug: string): Promise<{ product: Product; related: Product[] }> =>
     apiFetch<{ product: Product; related: Product[] }>(
       `${API_BASE_URL}/products/${encodeURIComponent(idOrSlug)}`,
     ),
 
-  /** Cây danh mục (cấp 1 + con). */
-  categories: (): Promise<ProductCategory[]> =>
+    categories: (): Promise<ProductCategory[]> =>
     apiFetch<ProductCategory[]>(`${API_BASE_URL}/categories`),
 
   category: (slug: string): Promise<CategoryDetail> =>
@@ -167,8 +160,7 @@ export const catalogApi = {
       `${API_BASE_URL}/blog/${encodeURIComponent(slug)}`,
     ),
 
-  /** Chương trình khuyến mãi + voucher đang hiệu lực. */
-  promotions: (
+    promotions: (
     params: { storeId?: string; page?: number; pageSize?: number } = {},
   ): Promise<{
     promotions: Promotion[];
@@ -192,8 +184,7 @@ export const catalogApi = {
       totalPages: res.meta?.totalPages ?? 1,
     })),
 
-  /** Tìm kiếm nhanh — dùng cho thanh search trên header. */
-  async search(query: string): Promise<{
+    async search(query: string): Promise<{
     products: Product[];
     categories: string[];
     brands: string[];
@@ -209,12 +200,10 @@ export const catalogApi = {
     };
   },
 
-  // ─── Lịch sử tìm kiếm (yêu cầu đăng nhập) ──────────────────────────────────
   searchHistory: (): Promise<SearchHistory[]> =>
     apiFetch<SearchHistory[]>(`${API_BASE_URL}/search-history`),
 
-  /** Ghi lại một lượt tìm kiếm — server giữ tối đa 10 lượt gần nhất. */
-  recordSearch: (query: string): Promise<{ query: string }> =>
+    recordSearch: (query: string): Promise<{ query: string }> =>
     apiFetch<{ query: string }>(`${API_BASE_URL}/search-history`, {
       method: 'POST',
       body: { query },

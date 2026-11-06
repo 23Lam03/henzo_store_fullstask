@@ -1,6 +1,3 @@
-/**
- * API đơn hàng — đặt hàng, lịch sử, chi tiết, huỷ, theo dõi vận chuyển.
- */
 import { API_BASE_URL, apiFetch, apiFetchWithMeta, qs } from './client';
 import type { Order, OrderStatus, Payment } from '../../types';
 
@@ -59,8 +56,7 @@ export interface OrderTracking {
 }
 
 export const ordersApi = {
-  /** Danh sách đơn hàng của khách (có phân trang + lọc trạng thái). */
-  async list(
+    async list(
     params: { page?: number; pageSize?: number; status?: string } = {},
   ): Promise<{ orders: Order[]; total: number }> {
     const { data, meta } = await apiFetchWithMeta<Order[]>(
@@ -69,22 +65,19 @@ export const ordersApi = {
     return { orders: data ?? [], total: meta?.total ?? data?.length ?? 0 };
   },
 
-  /** Đặt hàng — server tính lại tiền, trừ kho & tạo vận đơn. */
-  create: (input: CreateOrderInput): Promise<Order> =>
+    create: (input: CreateOrderInput): Promise<Order> =>
     apiFetch<Order>(`${API_BASE_URL}/orders`, { method: 'POST', body: input }),
 
   detail: (id: string): Promise<Order> =>
     apiFetch<Order>(`${API_BASE_URL}/orders/${encodeURIComponent(id)}`),
 
-  /** Huỷ đơn (chỉ khi đơn còn ở trạng thái cho phép). */
-  cancel: (id: string, reason?: string): Promise<Order> =>
+    cancel: (id: string, reason?: string): Promise<Order> =>
     apiFetch<Order>(`${API_BASE_URL}/orders/${encodeURIComponent(id)}/cancel`, {
       method: 'POST',
       body: { reason: reason ?? '' },
     }),
 
-  /** Cập nhật trạng thái (seller/admin). */
-  updateStatus: (
+    updateStatus: (
     id: string,
     status: string,
     extra?: {
@@ -105,8 +98,7 @@ export const ordersApi = {
 };
 
 export const paymentsApi = {
-  /** Lịch sử giao dịch của khách + tổng hợp. */
-  async list(
+    async list(
     params: { page?: number; pageSize?: number } = {},
   ): Promise<{ payments: Payment[]; summary: { totalAmount: number; totalCount: number } }> {
     const { data } = await apiFetchWithMeta<{
@@ -117,7 +109,6 @@ export const paymentsApi = {
   },
 };
 
-/** Map trạng thái đơn của backend sang label tiếng Việt hiển thị cho khách. */
 export const ORDER_STATUS_LABELS: Record<OrderStatus, string> = {
   pending: 'Chờ xác nhận',
   confirmed: 'Đã xác nhận',

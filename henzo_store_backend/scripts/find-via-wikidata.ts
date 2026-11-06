@@ -1,8 +1,3 @@
-/**
- * Tìm ảnh qua Wikidata (P18) + Commons filetype:bitmap + tên file trực tiếp.
- *
- * Chạy: npx tsx scripts/find-via-wikidata.ts
- */
 const UA = 'henzo-store/1.0 (model image resolver; dev@henzo.local)';
 
 async function getJson(url: string): Promise<any> {
@@ -22,7 +17,6 @@ async function getJson(url: string): Promise<any> {
   return null;
 }
 
-/** Wikidata: tìm entity theo tên -> lấy ảnh (P18) + các mục khác. */
 async function wikidata(query: string) {
   const d = await getJson(
     `https://www.wikidata.org/w/api.php?action=wbsearchentities&format=json` +
@@ -44,7 +38,6 @@ async function wikidata(query: string) {
   return out;
 }
 
-/** Commons: tìm file bitmap (bỏ PDF). */
 async function commonsBitmap(query: string) {
   const d = await getJson(
     `https://commons.wikimedia.org/w/api.php?action=query&format=json` +
@@ -59,7 +52,6 @@ async function commonsBitmap(query: string) {
     .map((p) => String(p.title));
 }
 
-/** Commons: check 1 file cụ thể có tồn tại không. */
 async function commonsFile(title: string) {
   const d = await getJson(
     `https://commons.wikimedia.org/w/api.php?action=query&format=json` +

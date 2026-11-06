@@ -14,8 +14,7 @@ export const Route = createFileRoute('/api/seller/orders/')({
   server: {
     middleware: [corsMiddleware, requireAuth, requireStoreOwner],
     handlers: {
-      /** Danh sách đơn hàng của cửa hàng. */
-      GET: withErrorHandling(async ({ request, context }) => {
+            GET: withErrorHandling(async ({ request, context }) => {
         await connectDB();
         const scope = getStoreScope(context);
         const storeId = scope.storeId;
@@ -60,11 +59,7 @@ export const Route = createFileRoute('/api/seller/orders/')({
             .limit(pageSize)
             .lean(),
           OrderModel.countDocuments(filter),
-          // Đếm số ĐƠN (parent order) theo trạng thái của sub-order thuộc cửa hàng.
-          // Dùng `$addToSet` để mỗi đơn cha chỉ được tính 1 lần cho mỗi trạng
-          // thái -> khớp với `total` (số đơn) và với danh sách trả về.
-          // Lưu ý: `$match` trong pipeline KHÔNG tự ép chuỗi -> ObjectId nên
-          // phải dùng `aggSubOrderMatch()` (đã ép kiểu).
+
           OrderModel.aggregate([
             { $match: scope.aggSubOrderMatch() },
             { $unwind: '$subOrders' },
@@ -88,7 +83,6 @@ export const Route = createFileRoute('/api/seller/orders/')({
           ]),
         ]);
 
-        // Đếm số đơn theo từng trạng thái (dùng cho tab/badge ở UI).
         const statusCounts: Record<string, number> = {};
         for (const s of Object.values(SellerOrderStatus)) statusCounts[s] = 0;
         for (const c of counts) statusCounts[c._id] = c.count;

@@ -1,12 +1,3 @@
-/**
- * GÁN LẠI ẢNH CHO MODEL ĐANG THIẾU ẢNH HOẶC SAI LOẠI.
- *
- * Dùng pool sạch theo LOẠI (scripts/data/type-image-pools.json) — mỗi ảnh
- * trong pool đã được kiểm chứng là đúng loại (không phải ảnh chuột cho
- * bàn phím, ảnh cửa hàng...).
- *
- * Mỗi URL chỉ dùng cho MỘT model để không trùng ảnh giữa các model.
- */
 import { connectDB, disconnectDB } from '../../src/server/db';
 import { ProductModel } from '../../src/server/models/Product';
 import { modelName } from '../../lib/model-name';
@@ -40,7 +31,6 @@ for (const p of products) {
   }
 }
 
-/** URL đã dùng cho model nào. */
 const used = new Map<string, string>();
 for (const [model, list] of byModel) {
   for (const p of list) {
@@ -62,7 +52,6 @@ for (const [model, list] of byModel) {
   const m = meta.get(model)!;
   const pool = pools[m.type] ?? [];
 
-  // Ưu tiên ảnh trong pool chưa dùng cho model khác.
   const picked = new Set(have);
   for (const u of pool) {
     if (picked.size >= MIN_IMAGES) break;

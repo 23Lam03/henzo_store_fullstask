@@ -16,7 +16,6 @@ import {
 import { notFound, badRequest } from '@/server/http/errors';
 import { connectDB } from '@/server/db';
 
-/** Body cho thao tác hoàn tiền. */
 const refundSchema = z.object({
   paymentId: z.string().min(1, 'Thiếu mã giao dịch.'),
   reason: z.string().trim().max(500).optional(),
@@ -26,8 +25,7 @@ export const Route = createFileRoute('/api/admin/payments/')({
   server: {
     middleware: [corsMiddleware, requireAuth, requireAdmin, requirePermission('Quản lý thanh toán')],
     handlers: {
-      /** Danh sách giao dịch thanh toán toàn hệ thống + số liệu tổng hợp. */
-      GET: withErrorHandling(async ({ request }) => {
+            GET: withErrorHandling(async ({ request }) => {
         await connectDB();
         const url = new URL(request.url);
         const sp = url.searchParams;
@@ -35,7 +33,6 @@ export const Route = createFileRoute('/api/admin/payments/')({
 
         const filter: Record<string, any> = {};
 
-        // Trạng thái trong bảng admin dùng bộ khác với trạng thái lưu trong DB.
         const status = sp.get('status');
         if (status && status !== 'all') {
           const map: Record<string, string> = {
@@ -100,17 +97,7 @@ export const Route = createFileRoute('/api/admin/payments/')({
         );
       }),
 
-      /**
-       * Hoàn tiền cho một giao dịch.
-       *
-       * Nghiệp vụ:
-       * - Chỉ hoàn được giao dịch đang `success` hoặc `pending`.
-       * - Giao dịch đã hoàn rồi -> báo lỗi (idempotent, tránh hoàn 2 lần).
-       * - Đồng bộ trạng thái thanh toán của đơn: nếu **mọi** giao dịch của đơn
-       *   đã hoàn thì đơn chuyển sang `refunded`; nếu chỉ một phần thì đơn giữ
-       *   nguyên trạng thái (còn giao dịch khác chưa hoàn).
-       */
-      POST: withErrorHandling(async ({ request }) => {
+            POST: withErrorHandling(async ({ request }) => {
         await connectDB();
         const body = await readJson(request, refundSchema);
         const payment = await PaymentModel.findById(body.paymentId);
@@ -133,7 +120,6 @@ export const Route = createFileRoute('/api/admin/payments/')({
         payment.note = body.reason?.trim() || 'Hoàn tiền bởi quản trị viên';
         await payment.save();
 
-        // Đồng bộ trạng thái thanh toán của đơn.
         const order = await OrderModel.findById(payment.orderId);
         if (order) {
           const siblings = await PaymentModel.find({
@@ -155,7 +141,6 @@ export const Route = createFileRoute('/api/admin/payments/')({
   },
 });
 
-/** Escape regex để tìm kiếm an toàn. */
 function escapeRegex(text: string): string {
   return text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }

@@ -15,7 +15,6 @@ const addSchema = z.object({
   productId: z.string().min(1, 'Thiếu mã sản phẩm'),
 });
 
-/** Danh sách yêu thích của khách. */
 export const Route = createFileRoute('/api/wishlist/')({
   server: {
     middleware: [corsMiddleware, requireAuth],
@@ -44,8 +43,7 @@ export const Route = createFileRoute('/api/wishlist/')({
         return ok({ items, total: items.length });
       }),
 
-      /** Thêm vào danh sách yêu thích. */
-      POST: withErrorHandling(async ({ request, context }) => {
+            POST: withErrorHandling(async ({ request, context }) => {
         await connectDB();
         const body = await readJson(request, addSchema);
 

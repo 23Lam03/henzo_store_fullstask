@@ -1,6 +1,3 @@
-/**
- * API đánh giá sản phẩm.
- */
 import { API_BASE_URL, apiFetch, apiFetchWithMeta, qs } from './client';
 import type { Review } from '../../types';
 
@@ -21,8 +18,7 @@ export interface CreateReviewInput {
 }
 
 export const reviewsApi = {
-  /** Đánh giá của một sản phẩm + phân bố sao. */
-  async forProduct(
+    async forProduct(
     productId: string,
     params: { page?: number; pageSize?: number; minRating?: number } = {},
   ): Promise<{ reviews: Review[]; distribution: ReviewDistribution; total: number }> {
@@ -37,7 +33,6 @@ export const reviewsApi = {
     };
   },
 
-  /** Tạo đánh giá — backend tự kiểm tra đã mua hàng chưa để gắn "đã mua hàng thật". */
-  create: (input: CreateReviewInput): Promise<Review> =>
+    create: (input: CreateReviewInput): Promise<Review> =>
     apiFetch<Review>(`${API_BASE_URL}/reviews`, { method: 'POST', body: input }),
 };
