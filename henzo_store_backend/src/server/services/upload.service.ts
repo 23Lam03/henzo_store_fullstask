@@ -1,12 +1,22 @@
 /**
  * Lưu trữ file tải lên từ máy người dùng.
  *
- * Backend chạy trên Node nên dùng `node:fs` để ghi file thật xuống đĩa
- * rồi phục vụ lại qua route `/api/uploads/*`. Cách này giữ nguyên kiến trúc
- * "API-only" của dự án, không cần thêm dịch vụ ngoài như S3/Cloudinary.
+ * ## Vì sao lưu trong MongoDB?
+ *
+ * Backend chạy trên Node nên có thể ghi file thật xuống đĩa rồi phục vụ lại
+ * qua route `/api/uploads/*`. Tuy nhiên trên Render (và hầu hết PaaS) đĩa là
+ * **ephemeral**: mỗi lần deploy hoặc restart là mất sạch thư mục
+ * `storage/uploads` -> ảnh sản phẩm / ảnh đại diện người dùng đã upload
+ * biến mất khỏi hệ thống.
+ *
+ * Vì vậy file được lưu **song song**:
+ *   1. MongoDB (`UploadedImage`) — nguồn dữ liệu chính, sống dai.
+ *   2. Đĩa — cache nhanh cho request cục bộ, có thể mất mà không sao.
+ *
+ * Route `/api/uploads/:filename` đọc MongoDB trước, fallback sang đĩa.
  *
  * Quy tắc:
- *  - Chỉ nhận ảnh (jpeg/png/webp/gif/avif) và SVG cơ bản.
+ *  - Chỉ nhận ảnh (jpeg/png/webp/gif/avif).
  *  - Giới hạn kích thước file (mặc định 5MB).
  *  - Tên file được sinh lại từ UUID + extension — không dùng tên người dùng
  *    gửi lên (tránh path traversal & tránh ghi đè).
@@ -18,6 +28,7 @@ import path from 'node:path';
 import { randomUUID } from 'node:crypto';
 import { config } from '../../config/env';
 import { badRequest, unprocessable } from '../http/errors';
+import { UploadedImageModel } from '../models/UploadedImage';
 
 /** Định dạng ảnh được phép + magic number tương ứng. */
 const ALLOWED_TYPES: Record<string, { ext: string; magic: number[][] }> = {
@@ -29,6 +40,20 @@ const ALLOWED_TYPES: Record<string, { ext: string; magic: number[][] }> = {
 };
 
 export const ALLOWED_IMAGE_TYPES = Object.keys(ALLOWED_TYPES);
+
+/**
+ * Bật/tắt lưu ảnh vào MongoDB.
+ * Mặc định BẬT (cần cho production trên Render).
+ * Set `UPLOAD_STORE=mongo` để chỉ dùng MongoDB, `UPLOAD_STORE=disk` để
+ * chỉ dùng đĩa (mặc định khi dev).
+ */
+function useMongoStore(): boolean {
+  const mode = (config.UPLOAD_STORE ?? '').toLowerCase();
+  if (mode === 'mongo') return true;
+  if (mode === 'disk') return false;
+  // Mặc định: dùng MongoDB khi NODE_ENV=production, đĩa khi dev.
+  return config.isProd;
+}
 
 /** Thư mục lưu trữ tuyệt đối. */
 function uploadRoot(): string {
@@ -107,7 +132,28 @@ export async function saveUploadedImage(file: File): Promise<UploadedFile> {
   const filename = `${randomUUID()}${ext}`;
   const filePath = path.join(dir, filename);
 
-  await writeFile(filePath, buffer);
+  // Ghi xuống đĩa (cache nhanh). Lỗi ghi đĩa không chặn việc lưu vào
+  // MongoDB — trên Render disk có thể read-only hoặc hết chỗ.
+  try {
+    await writeFile(filePath, buffer);
+  } catch (error) {
+    console.warn('[upload] Không ghi được file xuống đĩa:', error);
+  }
+
+  // Lưu vào MongoDB — nguồn dữ liệu bền vững.
+  if (useMongoStore()) {
+    try {
+      await UploadedImageModel.create({
+        filename,
+        mimeType,
+        size: buffer.byteLength,
+        data: buffer,
+      });
+    } catch (error) {
+      console.error('[upload] Lưu ảnh vào MongoDB thất bại:', error);
+      throw unprocessable('Không lưu được ảnh. Vui lòng thử lại.');
+    }
+  }
 
   return {
     url: `${config.UPLOAD_PUBLIC_PATH}/${filename}`,
@@ -119,6 +165,65 @@ export async function saveUploadedImage(file: File): Promise<UploadedFile> {
   };
 }
 
+/**
+ * Đọc nội dung file đã upload.
+ *
+ * Thứ tự: MongoDB (bền vững) -> đĩa (cache cho dữ liệu cũ).
+ * Trả về `null` nếu không tìm thấy.
+ */
+export async function readUploadedImage(
+  filename: string,
+): Promise<{ data: Buffer; mimeType: string } | null> {
+  const safe = path.basename(filename);
+  if (!safe || safe !== filename) return null;
+
+  // 1. MongoDB
+  try {
+    // KHÔNG dùng `.lean()` — mongoose trả về BSON `Binary` khi lean, mà
+    // `Buffer.from(Binary)` sẽ ra mảng rỗng. Doc thường đã là Buffer.
+    const doc = await UploadedImageModel.findOne({ filename: safe });
+    if (doc?.data) {
+      const raw = doc.data as unknown;
+      const data = Buffer.isBuffer(raw)
+        ? raw
+        : Buffer.from(
+            typeof (raw as { buffer?: unknown }).buffer === 'object'
+              ? (raw as { buffer: Uint8Array }).buffer
+              : (raw as Uint8Array),
+          );
+      if (data.byteLength > 0) {
+        return { data, mimeType: doc.mimeType || 'application/octet-stream' };
+      }
+    }
+  } catch (error) {
+    console.warn('[upload] Không đọc được ảnh từ MongoDB:', error);
+  }
+
+  // 2. Đĩa
+  const filePath = resolveUploadPath(safe);
+  if (filePath && existsSync(filePath)) {
+    const { readFile } = await import('node:fs/promises');
+    const data = await readFile(filePath);
+    return { data, mimeType: mimeFromExt(safe) };
+  }
+
+  return null;
+}
+
+/** Đoán MIME type từ đuôi file. */
+function mimeFromExt(filename: string): string {
+  const ext = filename.slice(filename.lastIndexOf('.')).toLowerCase();
+  const MIME: Record<string, string> = {
+    '.jpg': 'image/jpeg',
+    '.jpeg': 'image/jpeg',
+    '.png': 'image/png',
+    '.webp': 'image/webp',
+    '.gif': 'image/gif',
+    '.avif': 'image/avif',
+  };
+  return MIME[ext] ?? 'application/octet-stream';
+}
+
 /** Xoá file đã tải lên (bỏ qua nếu file không tồn tại). */
 export async function removeUploadedFile(filePath: string): Promise<void> {
   try {
@@ -127,6 +232,21 @@ export async function removeUploadedFile(filePath: string): Promise<void> {
     /* file không tồn tại — bỏ qua */
   }
 }
+
+/**
+ * Xoá ảnh đã upload (cả bản trong MongoDB lẫn trên đĩa).
+ */
+export async function removeUploadedImage(filename: string): Promise<void> {
+  const safe = path.basename(filename);
+  try {
+    await UploadedImageModel.deleteOne({ filename: safe });
+  } catch {
+    /* bỏ qua */
+  }
+  const filePath = resolveUploadPath(safe);
+  if (filePath) await removeUploadedFile(filePath);
+}
+
 /**
  * Chuyển `filename` (do server sinh) thành đường dẫn tuyệt đối an toàn.
  * Chặn path traversal (`../`).

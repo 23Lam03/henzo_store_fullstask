@@ -1,0 +1,1 @@
+export { AdminStorePage } from './AdminStorePage';

@@ -1,0 +1,110 @@
+.brands-page {
+  padding-top: 40px;
+  padding-bottom: 80px;
+}
+
+.brands-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-6);
+}
+
+.brand-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.3s;
+  display: block;
+}
+
+.brand-card:hover {
+  border-color: var(--color-primary);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+
+.brand-card__banner {
+  height: 140px;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.brand-card__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.7) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.brand-card__logo-area {
+  width: 80px;
+  height: 80px;
+  background: rgba(255,255,255,0.95);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+  box-shadow: var(--shadow-sm);
+}
+
+/*
+ * Logo thương hiệu là SVG (Simple Icons / Wikimedia) — cần nền trắng và
+ * `object-fit: contain` để không bị méo/crop. Trước đây logo là ảnh Unsplash
+ * ngẫu nhiên nên `object-fit: cover` cắt mất logo.
+ */
+.brand-card__logo {
+  width: 46px;
+  height: 46px;
+  object-fit: contain;
+  padding: 4px;
+  background: #fff;
+  border-radius: var(--radius-sm);
+}
+
+.brand-card__body {
+  padding: 16px;
+  text-align: center;
+}
+
+.brand-card__name {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+  color: var(--color-text-primary);
+}
+
+.brand-card__tagline {
+  font-size: 0.8rem;
+  color: var(--color-text-secondary);
+  margin-bottom: 8px;
+  font-style: italic;
+}
+
+.brand-card__count {
+  font-size: 0.8rem;
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+@media (max-width: 1024px) {
+  .brands-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (max-width: 768px) {
+  .brands-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 480px) {
+  .brands-grid { grid-template-columns: 1fr; }
+}

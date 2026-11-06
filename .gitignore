@@ -1,0 +1,41 @@
+# ─── Secrets ──────────────────────────────────────────────────────────────────
+# File .env chứa MONGODB_URI + JWT secrets — TUYỆT ĐỐI không commit.
+.env
+.env.*
+!.env.example
+
+# ─── Dependencies ─────────────────────────────────────────────────────────────
+node_modules/
+
+# ─── Build output ─────────────────────────────────────────────────────────────
+dist/
+build/
+.output/
+.tanstack/
+.tmp/
+*.tsbuildinfo
+
+# ─── Dữ liệu runtime ──────────────────────────────────────────────────────────
+# Cache ảnh Wikimedia (361MB) + ảnh upload — không commit.
+storage/
+
+# ─── Logs ──────────────────────────────────────────────────────────────────────
+*.log
+npm-debug.log*
+yarn-error.log*
+logs/
+
+# ─── Coverage ─────────────────────────────────────────────────────────────────
+coverage/
+.nyc_output/
+
+# ─── OS / Editor ──────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
+*.swp
+
+# ─── Cursor / AI tooling ──────────────────────────────────────────────────────
+.cursor/

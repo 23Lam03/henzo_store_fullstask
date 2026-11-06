@@ -74,3 +74,7 @@ export { BlogModel, toBlogDto, type BlogDoc } from './Blog';
 export { AddressModel, toAddressDto, type AddressDoc } from './Address';
 export { SearchHistoryModel, type SearchHistoryDoc } from './SearchHistory';
 export { RoleModel, type RoleDoc } from './Role';
+export {
+  UploadedImageModel,
+  type UploadedImageDoc,
+} from './UploadedImage';

@@ -1,0 +1,127 @@
+.category-page__banner {
+  position: relative;
+  height: 240px;
+  border-radius: 0;
+  margin: 16px 0 24px;
+  background-size: cover;
+  background-position: center;
+  overflow: hidden;
+}
+
+.category-page__banner-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(100deg, rgba(22, 32, 31, 0.92) 0%, rgba(22, 32, 31, 0.55) 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 32px 40px;
+  color: #fff;
+}
+
+.category-page__banner-overlay h1 {
+  font-size: 36px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.category-page__banner-overlay p {
+  font-size: var(--font-size-md);
+  max-width: 500px;
+  opacity: 0.9;
+  line-height: 1.6;
+}
+
+.category-page {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: var(--space-8);
+  padding: 0 0 64px;
+}
+
+.category-page__sidebar {
+  position: sticky;
+  top: 100px;
+  height: fit-content;
+}
+
+.category-page__filter-group {
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  border: 1px solid var(--color-border);
+}
+
+.category-page__filter-group h3 {
+  font-size: var(--font-size-md);
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.category-page__filter-section h4 {
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.category-page__filter-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--font-size-base);
+  color: var(--color-text-primary);
+  cursor: pointer;
+  padding: 6px 0;
+}
+
+.category-page__filter-item input {
+  accent-color: var(--color-primary);
+}
+
+.category-page__main {
+  min-width: 0;
+}
+
+@media (max-width: 1024px) {
+  .category-page {
+    grid-template-columns: 1fr;
+  }
+
+  .category-page__sidebar {
+    display: none;
+  }
+
+  .category-page__banner {
+    height: 180px;
+  }
+
+  .category-page__banner-overlay h1 {
+    font-size: 28px;
+  }
+}
+
+@media (max-width: 768px) {
+  .category-page__banner {
+    height: 140px;
+    border-radius: var(--radius-sm);
+  }
+
+  .category-page__banner-overlay {
+    padding: 20px 24px;
+  }
+
+  .category-page__banner-overlay h1 {
+    font-size: var(--font-size-xl);
+  }
+
+  .category-page__banner-overlay p {
+    font-size: var(--font-size-sm);
+  }
+}

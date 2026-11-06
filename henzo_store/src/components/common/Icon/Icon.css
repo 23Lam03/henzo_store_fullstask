@@ -1,0 +1,28 @@
+/* ─── Icon utilities ─────────────────────────────────────────────────────── */
+
+.icon-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: var(--radius-xs);
+  flex-shrink: 0;
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
+}
+
+.icon-badge--success { background: var(--color-success-soft); color: var(--color-success); }
+.icon-badge--warning { background: var(--color-warning-soft); color: var(--color-warning); }
+.icon-badge--danger { background: var(--color-danger-soft); color: var(--color-danger); }
+.icon-badge--accent { background: var(--color-accent-soft); color: var(--color-accent); }
+.icon-badge--neutral { background: var(--color-surface-sunken); color: var(--color-text-secondary); }
+
+/* Icon dùng như bullet trong danh sách */
+.icon-inline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+  flex-shrink: 0;
+}

@@ -1,0 +1,141 @@
+.payments-page {
+  padding-top: 40px;
+  padding-bottom: 80px;
+}
+
+.payments-tabs {
+  display: flex;
+  gap: var(--space-1);
+  border-bottom: 2px solid var(--color-border);
+  margin-bottom: 32px;
+}
+
+.payments-tab {
+  padding: 12px 24px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  transition: all 0.2s;
+}
+
+.payments-tab:hover { color: var(--color-text-primary); }
+.payments-tab--active { color: var(--color-primary); border-bottom-color: var(--color-primary); }
+
+.payments-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-4);
+}
+
+.payment-card {
+  padding: 24px;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.payment-card:hover { border-color: var(--color-primary); }
+
+.payment-card--selected {
+  border-color: var(--color-primary);
+  background: var(--color-primary-soft);
+}
+
+.payment-card__badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: var(--color-primary);
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: var(--radius-sm);
+}
+
+.payment-card__icon {
+  color: var(--color-primary);
+}
+
+.payment-card__body { flex: 1; }
+
+.payment-card__name {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.payment-card__desc {
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+  margin-bottom: 8px;
+}
+
+.payment-card__fee {
+  font-size: 0.8rem;
+  color: var(--color-success);
+  font-weight: 600;
+}
+
+.payment-card__check {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: transparent;
+  transition: all 0.2s;
+  align-self: flex-end;
+}
+
+.payment-card--selected .payment-card__check {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: #fff;
+}
+
+.bank-accounts__info {
+  font-size: 0.95rem;
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+  background: var(--color-primary-soft);
+  border: 1px solid var(--color-primary-soft);
+  border-radius: var(--radius-md);
+  padding: 16px 20px;
+  margin-bottom: 24px;
+}
+
+.bank-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-4);
+}
+
+.bank-card { padding: 24px; }
+.bank-card__name { font-size: 1.1rem; font-weight: 700; margin-bottom: 16px; color: var(--color-primary); }
+.bank-card__details { display: flex; flex-direction: column; gap: 10px; }
+.bank-card__row { display: flex; flex-direction: column; gap: 2px; }
+.bank-card__label { font-size: 0.78rem; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 0.3px; }
+.bank-card__value { font-size: 0.95rem; font-weight: 600; }
+.bank-card__value--mono { font-family: monospace; letter-spacing: 1px; }
+
+@media (max-width: 1024px) {
+  .payments-grid { grid-template-columns: repeat(2, 1fr); }
+  .bank-list { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 640px) {
+  .payments-grid { grid-template-columns: 1fr; }
+  .bank-list { grid-template-columns: 1fr; }
+}

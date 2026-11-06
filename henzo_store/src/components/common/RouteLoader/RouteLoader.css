@@ -1,0 +1,44 @@
+/* Chỉ báo tải trang — dạng gạch ngang chạy ngược chiều. */
+
+.route-loader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  gap: var(--space-4);
+  padding: var(--space-8);
+}
+
+.route-loader__rules {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 132px;
+}
+
+.route-loader__rules span {
+  display: block;
+  height: 2px;
+  background: var(--color-border);
+  flex: 1;
+  transform-origin: left;
+  animation: route-loader-rule 1.1s var(--ease-out) infinite;
+}
+
+.route-loader__rules span:nth-child(2) { animation-delay: 0.12s; }
+.route-loader__rules span:nth-child(3) { animation-delay: 0.24s; }
+
+@keyframes route-loader-rule {
+  0% { background: var(--color-accent); transform: scaleX(0.2); }
+  50% { background: var(--color-accent); transform: scaleX(1); }
+  100% { background: var(--color-border); transform: scaleX(0.2); }
+}
+
+.route-loader__text {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-2xs);
+  font-weight: 600;
+  letter-spacing: var(--tracking-wider);
+  text-transform: uppercase;
+}

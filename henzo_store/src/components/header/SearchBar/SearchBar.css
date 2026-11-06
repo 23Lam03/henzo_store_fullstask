@@ -1,0 +1,272 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   SEARCH BAR — Ô tìm kiếm dạng "dòng kẻ biên tập" (editorial ruled field).
+   Không khung bo tròn, không nút tròn bóng đổ — chỉ một đường gạch chân mảnh.
+═══════════════════════════════════════════════════════════════════════════ */
+
+.search-bar {
+  position: relative;
+  width: 100%;
+}
+
+.search-bar__form {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--color-border-strong);
+  border-radius: 0;
+  overflow: visible;
+  transition: border-color var(--transition-fast);
+}
+
+.search-bar__form:hover { border-bottom-color: var(--color-text-muted); }
+
+.search-bar--focused .search-bar__form {
+  border-bottom-color: var(--color-primary);
+  border-bottom-width: 2px;
+  /* Ánh sáng lan nhẹ dọc theo đường gạch chân khi focus */
+  box-shadow: 0 6px 14px -10px rgba(31, 85, 87, 0.55);
+}
+
+/* Tiêu đề nhỏ kiểu biên tập viên đặt cạnh ô nhập */
+.search-bar__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-muted);
+  flex-shrink: 0;
+}
+
+.search-bar__input {
+  flex: 1;
+  padding: 9px 0;
+  font-size: var(--font-size-base);
+  color: var(--color-text-primary);
+  background: transparent;
+  border: none;
+  outline: none;
+  min-width: 0;
+}
+
+.search-bar__input::placeholder {
+  color: var(--color-text-muted);
+  text-overflow: ellipsis;
+}
+
+.search-bar__clear {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-1);
+  color: var(--color-text-muted);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  border-radius: var(--radius-xs);
+  transition: color var(--transition-fast);
+  flex-shrink: 0;
+}
+
+.search-bar__clear:hover { color: var(--color-text-primary); }
+
+/* Nút "Tìm": khối chữ nhạt vuông, không bo tròn */
+.search-bar__submit {
+  flex-shrink: 0;
+  padding: 6px 14px;
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  border-radius: var(--radius-xs);
+  background: var(--color-primary);
+  color: #fff;
+  border: 1px solid var(--color-primary);
+  box-shadow: none;
+  transition: background-color var(--transition-fast), border-color var(--transition-fast);
+}
+
+.search-bar__submit:hover {
+  background: var(--color-primary-hover);
+  border-color: var(--color-primary-hover);
+  box-shadow: none;
+}
+
+/* ─── Dropdown ──────────────────────────────────────────────────────────── */
+
+.search-bar__dropdown {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 0;
+  right: 0;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xs);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+  z-index: calc(var(--z-dropdown) + 1);
+  animation: search-dropdown-in 260ms var(--motion-ease);
+  max-height: 480px;
+  overflow-y: auto;
+}
+
+@keyframes search-dropdown-in {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.search-bar__section { padding: var(--space-2) 0; }
+
+.search-bar__section + .search-bar__section {
+  border-top: 1px solid var(--color-border);
+}
+
+.search-bar__section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-2) var(--space-4);
+}
+
+.search-bar__section-title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--font-size-2xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wider);
+  color: var(--color-text-muted);
+}
+
+.search-bar__clear-history {
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+  color: var(--color-accent);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: var(--radius-xs);
+  transition: background-color var(--transition-fast);
+}
+
+.search-bar__clear-history:hover { background: var(--color-accent-soft); }
+
+.search-bar__suggestion {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  padding: 9px var(--space-4);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-primary);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  transition: background-color var(--transition-fast);
+}
+
+.search-bar__suggestion:hover { background: var(--color-surface-2); }
+
+.search-bar__suggestion svg {
+  color: var(--color-text-muted);
+  flex-shrink: 0;
+}
+
+.search-bar__suggestion span { flex: 1; }
+
+.search-bar__remove {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  color: var(--color-text-muted);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  border-radius: var(--radius-xs);
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+}
+
+.search-bar__suggestion:hover .search-bar__remove { opacity: 1; }
+
+.search-bar__remove:hover {
+  color: var(--color-danger);
+  background: var(--color-danger-soft);
+}
+
+/* ─── Product Suggestion ─────────────────────────────────────────────── */
+
+.search-bar__suggestion--product { padding: var(--space-2) var(--space-4); }
+
+.search-bar__product-img {
+  width: 46px;
+  height: 46px;
+  border-radius: var(--radius-xs);
+  object-fit: contain;
+  padding: 4px;
+  background: var(--color-surface-2);
+  flex-shrink: 0;
+}
+
+.search-bar__product-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.search-bar__product-name {
+  font-weight: 600;
+  font-size: var(--font-size-sm);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.search-bar__product-price {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-accent);
+}
+
+/* ─── Keywords ─────────────────────────────────────────────────────────── */
+
+.search-bar__keywords {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4) var(--space-3);
+}
+
+.search-bar__keyword {
+  padding: 3px 10px;
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  background: transparent;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xs);
+  cursor: pointer;
+  transition: color var(--transition-fast), border-color var(--transition-fast),
+    background-color var(--transition-fast);
+}
+
+.search-bar__keyword:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+  background: transparent;
+}
+
+/* ─── Empty State ─────────────────────────────────────────────────────── */
+
+.search-bar__empty {
+  padding: var(--space-8) var(--space-4);
+  text-align: center;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}

@@ -1,0 +1,14 @@
+/* Nhãn hiệu Henzo — khung hairline + chữ H góc vuông. */
+
+.brand-mark {
+  display: block;
+  flex-shrink: 0;
+}
+
+.brand-mark--light {
+  color: var(--color-primary);
+}
+
+.brand-mark--dark {
+  color: #fff;
+}

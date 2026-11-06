@@ -5,21 +5,14 @@ import {
 } from '@tanstack/react-start/server';
 import type { Register } from '@tanstack/react-router';
 import type { RequestHandler } from '@tanstack/react-start/server';
+import { startImageWarmup } from '@/server/services/image-warmup.service';
 
 const startHandler = createStartHandler(defaultStreamHandler);
 
-/**
- * Khi client đóng socket giữa chừng (đóng tab, huỷ request, đổi trang),
- * Node hủy request với lỗi ECONNRESET / message "aborted". Đây là hành vi
- * bình thường, nhưng nếu để lỗi nổi lên, TanStack Start gọi `handleStartError`
- * -> `resolveErrorStatus` -> `console.error(error)`, in ra cả stack trace đầy
- * đủ trông giống server crash.
- *
- * Ở đây ta nuốt lỗi loại này và trả response rỗng. Client đã biến mất nên
- * response cũng không tới đâu, nhưng quan trọng là log không bị nhiễu.
- *
- * Mọi lỗi khác vẫn được ném lên để error handler chuẩn của framework xử lý.
- */
+// Render có disk ephemeral: mỗi lần restart là mất cache ảnh tải về.
+// Warm up nền ngay khi module được nạp (không chặn request).
+startImageWarmup();
+
 function isAbortedRequest(error: unknown): boolean {
   if (typeof error !== 'object' || error === null) return false;
   const err = error as { code?: string; name?: string; message?: string };

@@ -1,0 +1,141 @@
+/* ─── Register Page ───────────────────────────────────────────────────── */
+.register-page {
+  width: 100%;
+}
+
+.register-page__card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-lg);
+  padding: var(--space-10);
+}
+
+.register-page__header {
+  text-align: center;
+  margin-bottom: var(--space-8);
+}
+
+.register-page__title {
+  font-family: var(--font-family-display);
+  font-size: var(--font-size-3xl);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  letter-spacing: -0.02em;
+  margin-bottom: var(--space-2);
+}
+
+.register-page__subtitle {
+  font-size: var(--font-size-base);
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+}
+
+.register-page__form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+/* Các trường xuất hiện lần lượt khi trang vừa mở */
+.register-page__form > .input-group {
+  animation: hz-fade-up 520ms var(--motion-ease) both;
+}
+
+.register-page__form > .input-group:nth-child(1) { animation-delay: 70ms; }
+.register-page__form > .input-group:nth-child(2) { animation-delay: 125ms; }
+.register-page__form > .input-group:nth-child(3) { animation-delay: 180ms; }
+.register-page__form > .input-group:nth-child(4) { animation-delay: 235ms; }
+.register-page__form > .input-group:nth-child(5) { animation-delay: 290ms; }
+.register-page__form > .input-group:nth-child(6) { animation-delay: 345ms; }
+.register-page__form > .register-page__submit { animation-delay: 400ms; }
+
+/* Ô nhập có icon bên trái */
+.register-page__field {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.register-page__field-icon {
+  position: absolute;
+  left: 14px;
+  display: inline-flex;
+  color: var(--color-text-muted);
+  pointer-events: none;
+  transition: color var(--transition-fast);
+}
+
+.register-page__field:focus-within .register-page__field-icon {
+  color: var(--color-primary);
+}
+
+.register-page__input {
+  padding-left: 42px;
+  padding-right: 42px;
+  height: 46px;
+  border-radius: var(--radius-lg);
+  background: var(--color-surface-2);
+}
+
+.register-page__input:hover:not(:disabled) { background: var(--color-surface); }
+
+.register-page__field-action {
+  position: absolute;
+  right: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+  border-radius: var(--radius-sm);
+  color: var(--color-text-muted);
+  transition: color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.register-page__field-action:hover {
+  color: var(--color-primary);
+  background: var(--color-primary-soft);
+}
+
+.register-page__agree {
+  align-items: flex-start;
+  line-height: 1.5;
+}
+
+.register-page__agree .checkbox-custom { margin-top: 2px; }
+
+.register-page__terms {
+  color: var(--color-primary);
+  font-weight: 500;
+}
+
+.register-page__terms:hover { text-decoration: underline; }
+
+.register-page__submit {
+  height: 48px;
+  font-size: var(--font-size-md);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-primary);
+}
+
+.register-page__footer {
+  margin-top: var(--space-6);
+  padding-top: var(--space-5);
+  border-top: 1px solid var(--color-border-subtle);
+  text-align: center;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+.register-page__link {
+  color: var(--color-primary);
+  font-weight: 600;
+  margin-left: 4px;
+}
+
+.register-page__link:hover { text-decoration: underline; }
+
+/* ─── Responsive ──────────────────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .register-page__card { padding: var(--space-6); }
+}

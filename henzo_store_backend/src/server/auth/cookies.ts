@@ -1,34 +1,39 @@
 /**
  * Cookie refresh token (httpOnly).
+ *
  * - Path giới hạn ở /api/auth để browser chỉ gửi kèm cho endpoint auth.
- * - SameSite=Lax để hoạt động với SPA khác origin qua proxy.
+ * - SameSite:
+ *     · `Lax`  — mặc định cho dev (frontend & API cùng localhost).
+ *     · `None` — BẮT BUỘC khi deploy tách domain (Render: frontend là
+ *       `henzo-store.onrender.com`, API là `henzo-store-api.onrender.com`).
+ *       Cross-site cookie không được gửi với `Lax` -> refresh token không
+ *       bao giờ tới server -> user bị logout mỗi khi access token hết hạn.
+ *       `None` bắt buộc cookie phải có `Secure` (trình duyệt chặn nếu không).
  */
 import { config } from '../../config/env';
 
-export function buildRefreshCookie(token: string): string {
+/** Parts chung cho cả set và clear. */
+function baseParts(): string[] {
   const parts = [
-    `${config.COOKIE_NAME}=${token}`,
     'Path=/api/auth',
     'HttpOnly',
-    'SameSite=Lax',
+    `SameSite=${config.COOKIE_SAME_SITE}`,
     `Max-Age=${60 * 60 * 24 * 7}`,
   ];
-  if (config.COOKIE_SECURE) parts.push('Secure');
+  // `SameSite=None` bị trình duyệt từ chối nếu thiếu `Secure`.
+  if (config.COOKIE_SECURE || config.COOKIE_SAME_SITE === 'None') {
+    parts.push('Secure');
+  }
   if (config.COOKIE_DOMAIN) parts.push(`Domain=${config.COOKIE_DOMAIN}`);
-  return parts.join('; ');
+  return parts;
+}
+
+export function buildRefreshCookie(token: string): string {
+  return [`${config.COOKIE_NAME}=${token}`, ...baseParts()].join('; ');
 }
 
 export function clearRefreshCookie(): string {
-  const parts = [
-    `${config.COOKIE_NAME}=`,
-    'Path=/api/auth',
-    'HttpOnly',
-    'SameSite=Lax',
-    'Max-Age=0',
-  ];
-  if (config.COOKIE_SECURE) parts.push('Secure');
-  if (config.COOKIE_DOMAIN) parts.push(`Domain=${config.COOKIE_DOMAIN}`);
-  return parts.join('; ');
+  return [`${config.COOKIE_NAME}=`, ...baseParts(), 'Max-Age=0'].join('; ');
 }
 
 /** Đọc cookie từ header Cookie. */

@@ -1,0 +1,225 @@
+/* ─── Toolbar ────────────────────────────────────────────────────────────── */
+.admin-data-table__toolbar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-5);
+  border-bottom: 1px solid var(--color-border);
+  flex-wrap: wrap;
+}
+
+.admin-data-table__search {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xs);
+  padding: 7px 12px;
+  flex: 1;
+  min-width: 200px;
+  max-width: 360px;
+  transition: border-color var(--transition-fast), background-color var(--transition-fast),
+    box-shadow var(--transition-fast);
+}
+
+.admin-data-table__search:focus-within {
+  border-color: var(--color-primary);
+  background: var(--color-surface);
+  box-shadow: var(--focus-ring);
+}
+
+.admin-data-table__search svg { color: var(--color-text-muted); flex-shrink: 0; }
+
+.admin-data-table__search-input {
+  border: none;
+  background: transparent;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-primary);
+  flex: 1;
+  min-width: 0;
+  outline: none;
+}
+
+.admin-data-table__search-input::placeholder { color: var(--color-text-muted); }
+
+.admin-data-table__search-clear {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: var(--radius-full);
+  color: var(--color-text-muted);
+  transition: all var(--transition-fast);
+  flex-shrink: 0;
+}
+
+.admin-data-table__search-clear:hover {
+  background: var(--color-border);
+  color: var(--color-text-primary);
+}
+
+.admin-data-table__filters { display: flex; gap: var(--space-2); }
+
+.admin-data-table__filter-select {
+  padding: 8px 12px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  color: var(--color-text-primary);
+  font-size: var(--font-size-sm);
+  font-family: inherit;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.admin-data-table__filter-select:focus {
+  outline: none;
+  border-color: var(--color-primary);
+}
+
+.admin-data-table__info {
+  margin-left: auto;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+
+/* ─── Table Wrapper ────────────────────────────────────────────────────── */
+.admin-data-table__wrapper {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.admin-data-table__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--font-size-sm);
+}
+
+.admin-data-table__table thead tr {
+  background: var(--color-surface-2);
+  border-bottom: 1px solid var(--color-border-strong);
+}
+
+.admin-data-table__table th {
+  padding: 11px var(--space-4);
+  font-weight: 600;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-2xs);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wider);
+  white-space: nowrap;
+  user-select: none;
+}
+
+.admin-data-table__table th.sortable { cursor: pointer; }
+.admin-data-table__table th.sortable:hover { color: var(--color-text-primary); }
+
+.th-content {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.sort-icon { transition: transform var(--transition-fast); }
+.sort-icon.asc { transform: rotate(0deg); }
+.sort-icon.desc { transform: rotate(180deg); }
+
+.admin-data-table__table td {
+  padding: 13px var(--space-4);
+  color: var(--color-text-primary);
+  border-bottom: 1px solid var(--color-border-subtle);
+  vertical-align: middle;
+}
+
+.admin-data-table__table tbody tr.even { background: var(--color-surface); }
+.admin-data-table__table tbody tr.odd { background: var(--color-surface-2); }
+.admin-data-table__table tbody tr:hover { background: var(--color-primary-soft); }
+
+/* Dòng bảng hiện lần lượt — dàu mơi, không giật */
+.admin-data-table__row {
+  animation: hz-fade-up 380ms var(--motion-ease) both;
+}
+
+.admin-data-table__loading-row td { padding: 14px var(--space-4); }
+
+/* ─── Actions ──────────────────────────────────────────────────────────── */
+.admin-data-table__actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+/* ─── Empty State ──────────────────────────────────────────────────────── */
+.admin-data-table__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-10) var(--space-4);
+  color: var(--color-text-muted);
+  gap: var(--space-3);
+}
+
+.admin-data-table__empty svg { opacity: 0.4; }
+.admin-data-table__empty p { font-size: var(--font-size-base); margin: 0; }
+
+/* ─── Pagination ───────────────────────────────────────────────────────── */
+.admin-data-table__pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1);
+  padding: var(--space-4) var(--space-5);
+  border-top: 1px solid var(--color-border);
+}
+
+.admin-data-table__page-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 34px;
+  height: 34px;
+  padding: 0 8px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: border-color var(--transition-fast), color var(--transition-fast),
+    background-color var(--transition-fast);
+}
+
+.admin-data-table__page-btn:hover:not(:disabled) {
+  border-color: var(--color-border-strong);
+  color: var(--color-text-primary);
+  background: var(--color-surface-2);
+}
+
+.admin-data-table__page-btn.active {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: #fff;
+  font-weight: 600;
+}
+
+.admin-data-table__page-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ─── Responsive ───────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .admin-data-table__toolbar { gap: var(--space-2); }
+  .admin-data-table__search { max-width: 100%; }
+  .admin-data-table__info { display: none; }
+  .admin-data-table__table th,
+  .admin-data-table__table td { padding: 10px var(--space-3); font-size: var(--font-size-xs); }
+}

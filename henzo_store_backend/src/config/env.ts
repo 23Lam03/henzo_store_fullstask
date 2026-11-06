@@ -25,6 +25,12 @@ const envSchema = z.object({
     .enum(['true', 'false'])
     .default('false')
     .transform((v) => v === 'true'),
+  /**
+   * SameSite của cookie refresh.
+   * - `Lax`  : dev (cùng origin).
+   * - `None` : deploy tách domain — bắt buộc để refresh token được gửi.
+   */
+  COOKIE_SAME_SITE: z.enum(['Lax', 'Strict', 'None']).default('Lax'),
 
   // CORS — danh sách origin được phép, phân tách bằng dấu phẩy
   CORS_ORIGINS: z.string().default('http://localhost:5173,http://localhost:3000'),
@@ -36,6 +42,13 @@ const envSchema = z.object({
   UPLOAD_MAX_SIZE: z.coerce.number().int().positive().default(5 * 1024 * 1024),
   /** Đường dẫn public để đọc lại file đã tải lên. */
   UPLOAD_PUBLIC_PATH: z.string().default('/api/uploads'),
+  /**
+   * Nơi lưu ảnh upload.
+   * - `mongo` — lưu trong MongoDB (bền vững, dùng cho Render).
+   * - `disk`  — chỉ lưu trên đĩa (nhanh, nhưng mất khi restart).
+   * Mặc định: `mongo` khi production, `disk` khi dev.
+   */
+  UPLOAD_STORE: z.enum(['mongo', 'disk']).optional(),
 
   // ─── Proxy & cache ảnh Wikimedia ─────────────────────────────────────────
   /** Thư mục cache ảnh tải về từ Wikimedia. */

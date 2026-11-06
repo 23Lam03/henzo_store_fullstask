@@ -1,0 +1,11 @@
+.customer-id {
+  font-size: var(--font-size-xs);
+  background: var(--color-background);
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  color: var(--color-primary);
+  font-weight: 600;
+}
+.customer-cell { display: flex; align-items: center; gap: var(--space-3); }
+.customer-name { font-weight: 600; margin: 0; }
+.customer-email { font-size: var(--font-size-xs); color: var(--color-text-muted); margin: 0; }

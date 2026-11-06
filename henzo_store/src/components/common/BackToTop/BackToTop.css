@@ -1,0 +1,58 @@
+/* ─── Back To Top ───────────────────────────────────────────────────────── */
+.back-to-top {
+  position: fixed;
+  bottom: var(--space-8);
+  right: var(--space-6);
+  width: 48px;
+  height: 48px;
+  background: var(--gradient-primary);
+  color: white;
+  border: none;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-primary);
+  z-index: var(--z-sticky);
+  transition: all var(--transition-normal);
+  animation: back-to-top-in 340ms var(--motion-ease);
+}
+
+/* Vòng sáng lan ra khi rê chuột */
+.back-to-top::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-primary);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.back-to-top:hover::after {
+  animation: hz-ring-out 700ms var(--motion-ease-out);
+}
+
+@keyframes back-to-top-in {
+  from { opacity: 0; transform: translateY(14px) scale(0.8); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.back-to-top:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-glow);
+}
+
+.back-to-top:active {
+  transform: translateY(0);
+}
+
+@media (max-width: 480px) {
+  .back-to-top {
+    bottom: var(--space-4);
+    right: var(--space-4);
+    width: 42px;
+    height: 42px;
+  }
+}

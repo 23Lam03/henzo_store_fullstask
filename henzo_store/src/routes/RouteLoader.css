@@ -1,0 +1,41 @@
+.route-loader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  padding: 48px;
+}
+
+.route-loader__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.route-loader__spinner {
+  display: flex;
+  gap: 8px;
+}
+
+.route-loader__dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  animation: route-loader-bounce 1.4s ease-in-out infinite both;
+}
+
+.route-loader__dot:nth-child(1) { animation-delay: -0.32s; }
+.route-loader__dot:nth-child(2) { animation-delay: -0.16s; }
+
+.route-loader__text {
+  font-size: 14px;
+  color: var(--color-text-secondary);
+  font-weight: 500;
+}
+
+@keyframes route-loader-bounce {
+  0%, 80%, 100% { transform: scale(0); }
+  40% { transform: scale(1); }
+}

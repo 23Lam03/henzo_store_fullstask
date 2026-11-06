@@ -1,0 +1,68 @@
+/* Support Page */
+.seller-support__search { display: flex; align-items: center; gap: 10px; padding: 10px 16px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-sm); margin-bottom: 20px; max-width: 400px; transition: all var(--transition-fast); }
+.seller-support__search:focus-within { border-color: var(--color-primary); box-shadow: 0 0 0 3px var(--color-primary-soft); }
+.seller-support__search svg { color: var(--color-text-muted); flex-shrink: 0; }
+.seller-support__search-input { flex: 1; border: none; background: none; font-size: var(--font-size-sm); color: var(--color-text-primary); }
+.seller-support__search-input::placeholder { color: var(--color-text-muted); }
+
+.seller-tabs { display: flex; gap: 4px; overflow-x: auto; padding-bottom: 0; border-bottom: 2px solid var(--color-border); margin-bottom: 20px; }
+.seller-tab { display: flex; align-items: center; gap: 6px; padding: 10px 16px; border-radius: var(--radius-md) var(--radius-md) 0 0; font-size: var(--font-size-sm); font-weight: 500; color: var(--color-text-muted); background: transparent; border: none; border-bottom: 3px solid transparent; transition: all var(--transition-fast); cursor: pointer; white-space: nowrap; margin-bottom: -2px; }
+.seller-tab:hover { color: var(--color-primary); }
+.seller-tab--active { color: var(--color-primary); border-bottom-color: var(--color-primary); font-weight: 700; }
+.seller-tab__count { background: var(--color-danger); color: white; font-size: 10px; font-weight: 700; padding: 1px 6px; border-radius: var(--radius-xs); min-width: 18px; text-align: center; }
+
+.seller-tickets-list { display: flex; flex-direction: column; gap: 12px; }
+
+.seller-ticket-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 20px;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.seller-ticket-card:hover { box-shadow: var(--shadow-card); border-color: var(--color-primary-soft); }
+.seller-ticket-card--new { border-left: 4px solid var(--color-danger); }
+.seller-ticket-card--selected { border-color: var(--color-primary); box-shadow: 0 0 0 2px var(--color-primary-soft); }
+
+.seller-ticket-card__header { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.seller-ticket-card__badges { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+.seller-ticket-code { font-family: monospace; font-size: var(--font-size-xs); font-weight: 700; color: var(--color-primary); background: var(--color-primary-soft); padding: 3px 8px; border-radius: var(--radius-sm); }
+.seller-ticket-date { font-size: var(--font-size-xs); color: var(--color-text-muted); flex-shrink: 0; }
+.seller-ticket-card__subject { font-size: var(--font-size-md); font-weight: 700; color: var(--color-text-primary); margin: 0; }
+.seller-ticket-card__footer { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+.seller-ticket-customer { display: flex; align-items: center; gap: 6px; font-size: var(--font-size-sm); color: var(--color-text-secondary); font-weight: 500; }
+.seller-ticket-preview { flex: 1; font-size: var(--font-size-sm); color: var(--color-text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.seller-ticket-messages { display: flex; align-items: center; gap: 4px; font-size: var(--font-size-xs); color: var(--color-text-muted); }
+
+/* Messages */
+.seller-ticket-messages-list { display: flex; flex-direction: column; gap: 12px; max-height: 400px; overflow-y: auto; padding-right: 4px; }
+.seller-msg { padding: 12px 16px; border-radius: var(--radius-sm); max-width: 85%; }
+.seller-msg--incoming { background: var(--color-background); border: 1px solid var(--color-border); align-self: flex-start; }
+.seller-msg--outgoing { background: var(--color-primary-soft); border: 1px solid var(--color-primary-soft); align-self: flex-end; }
+.seller-msg__header { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 6px; }
+.seller-msg__sender { font-size: var(--font-size-xs); font-weight: 700; color: var(--color-text-primary); }
+.seller-msg__time { font-size: 11px; color: var(--color-text-muted); }
+.seller-msg__content { font-size: var(--font-size-sm); color: var(--color-text-secondary); margin: 0; line-height: 1.6; }
+
+/* Reply */
+.seller-ticket-reply { display: flex; flex-direction: column; gap: 10px; margin-top: 16px; }
+.seller-ticket-reply__actions { display: flex; justify-content: flex-end; gap: 8px; }
+
+/* Panel overlay */
+.admin-detail-panel-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); backdrop-filter: blur(2px); z-index: calc(500 - 1); animation: fade-in 0.2s ease; }
+
+/* Pagination/Empty reuse from other pages */
+.seller-pagination { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; border-top: 1px solid var(--color-border); flex-wrap: wrap; gap: 12px; }
+.seller-pagination__info { font-size: var(--font-size-sm); color: var(--color-text-muted); }
+.seller-pagination__buttons { display: flex; gap: 4px; }
+.seller-pagination__btn { min-width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: var(--radius-xs); font-size: var(--font-size-sm); font-weight: 500; color: var(--color-text-secondary); background: var(--color-surface); border: 1px solid var(--color-border); transition: all var(--transition-fast); cursor: pointer; padding: 0 8px; }
+.seller-pagination__btn:hover:not(:disabled) { border-color: var(--color-primary); color: var(--color-primary); }
+.seller-pagination__btn--active { background: var(--color-primary); color: white; border-color: var(--color-primary); font-weight: 700; }
+.seller-pagination__btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.seller-empty { display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 60px 20px; color: var(--color-text-muted); }
+.seller-empty svg { color: var(--color-border); }
+.seller-empty p { font-size: var(--font-size-sm); margin: 0; }

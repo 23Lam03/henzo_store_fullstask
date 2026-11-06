@@ -1,0 +1,30 @@
+.order-id-code {
+  font-size: var(--font-size-xs);
+  background: var(--color-background);
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  color: var(--color-primary);
+  font-weight: 600;
+}
+.address-text {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  max-width: 200px;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.order-amount { font-weight: 700; color: var(--color-danger); }
+.order-status-select {
+  padding: 4px 8px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+  color: var(--color-text-primary);
+  font-size: var(--font-size-xs);
+  font-family: inherit;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+.order-status-select:focus { outline: none; border-color: var(--color-primary); }

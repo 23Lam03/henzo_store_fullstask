@@ -1,0 +1,56 @@
+.confirm-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(3px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.18s ease;
+}
+
+.confirm-modal {
+  background: #fff;
+  border-radius: var(--radius-sm);
+  width: 400px;
+  max-width: 90vw;
+  box-shadow: var(--shadow-xl);
+  animation: slideUp 0.24s var(--motion-ease);
+}
+
+.confirm-modal__header {
+  padding: 20px 24px 0;
+  h3 {
+    margin: 0;
+    font-size: var(--font-size-lg);
+    font-weight: 600;
+    color: var(--color-text-primary);
+  }
+}
+
+.confirm-modal__body {
+  padding: 16px 24px;
+  p {
+    margin: 0;
+    color: #555;
+    line-height: 1.5;
+  }
+}
+
+.confirm-modal__footer {
+  padding: 16px 24px 20px;
+  display: flex;
+  gap: var(--space-3);
+  justify-content: flex-end;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(14px) scale(0.97); opacity: 0; }
+  to { transform: translateY(0) scale(1); opacity: 1; }
+}

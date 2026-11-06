@@ -1,0 +1,129 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+#  HENZO STORE — CẤU HÌNH DEPLOY LÊN RENDER
+# ═══════════════════════════════════════════════════════════════════════════════
+#
+#  Cách dùng:
+#    1. Push code lên GitHub.
+#    2. Vào Render Dashboard → New → Blueprint → chọn repo này.
+#    3. Render đọc file `render.yaml` và tự tạo 2 service.
+#
+#  ⚠️  Biến môi trường BẮT BUỘC phải set tay trong Render Dashboard
+#     (không để trong file này vì chứa bí mật):
+#       · MONGODB_URI
+#       · JWT_ACCESS_SECRET
+#       · JWT_REFRESH_SECRET
+#       · CORS_ORIGINS
+#       · VITE_API_URL
+#     Render tự sinh `PORT` và `RENDER_EXTERNAL_URL`.
+#
+#  Thứ tự thực hiện (quan trọng):
+#    Bước 1 — Deploy API trước, chờ tới khi domain API hoạt động.
+#    Bước 2 — Copy domain API → đặt làm `VITE_API_URL` của web service.
+#    Bước 3 — Copy domain web → đặt làm `CORS_ORIGINS` của API service.
+#    Bước 4 — Deploy lại (hoặc trigger deploy) để áp dụng.
+# ═══════════════════════════════════════════════════════════════════════════════
+
+services:
+  # ─── API (TanStack Start + MongoDB) ─────────────────────────────────────────
+  - type: web
+    name: henzo-store-api
+    runtime: node
+    plan: free
+    rootDir: henzo_store_backend
+    buildCommand: npm ci && npm run build
+    startCommand: node server.mjs
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      - key: NODE_VERSION
+        value: 22
+      - key: NODE_ENV
+        value: production
+      # ─── Database ───
+      - key: MONGODB_URI
+        sync: false # BẮT BUỘC set tay trong Dashboard
+      # ─── JWT ───
+      - key: JWT_ACCESS_SECRET
+        sync: false # BẮT BUỘC set tay trong Dashboard
+      - key: JWT_REFRESH_SECRET
+        sync: false # BẮT BUỘC set tay trong Dashboard
+      - key: JWT_ACCESS_EXPIRES
+        value: 15m
+      - key: JWT_REFRESH_EXPIRES
+        value: 7d
+      # ─── Cookie (deploy tách domain -> SameSite=None + Secure) ───
+      - key: COOKIE_NAME
+        value: henzo_refresh_token
+      - key: COOKIE_SECURE
+        value: 'true'
+      - key: COOKIE_SAME_SITE
+        value: None
+      # ─── CORS: domain frontend (sau khi deploy web) ───
+      - key: CORS_ORIGINS
+        sync: false # BẮT BUỘC set tay, ví dụ: https://henzo-store.onrender.com
+      # ─── Upload ảnh (lưu trong MongoDB vì disk của Render là ephemeral) ───
+      - key: UPLOAD_STORE
+        value: mongo
+      - key: UPLOAD_DIR
+        value: storage/uploads
+      - key: UPLOAD_MAX_SIZE
+        value: 5242880
+      - key: UPLOAD_PUBLIC_PATH
+        value: /api/uploads
+      # ─── Cache ảnh Wikimedia (Render disk chỉ ~1GB) ───
+      - key: IMAGE_CACHE_DIR
+        value: storage/image-cache
+      - key: IMAGE_CACHE_MAX_BYTES
+        value: 419430400 # 400MB
+      - key: IMAGE_WARMUP
+        value: 'on'
+      - key: IMAGE_WARMUP_CONCURRENCY
+        value: '3'
+
+  # ─── Frontend (SPA tĩnh) ───────────────────────────────────────────────────
+  # Render dùng `type: web` + `runtime: static` cho static site.
+  # `routes` bắt buộc cho SPA: mọi path không phải file thật -> index.html
+  # để React Router xử lý client-side routing (nếu không, F5 trên
+  # /products/... sẽ ra 404).
+  #
+  # KHÔNG dùng `rootDir` cho service này: tài liệu Render không nhất quán
+  # về việc `staticPublishPath` được tính từ repo root hay từ rootDir.
+  # Bỏ `rootDir` thì cả hai cách hiểu đều ra cùng kết quả — đường dẫn
+  # publish được tính từ gốc repo.
+  - type: web
+    name: henzo-store-web
+    runtime: static
+    buildCommand: cd henzo_store && npm ci && npm run build
+    staticPublishPath: ./henzo_store/dist
+    autoDeploy: true
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    headers:
+      # Cache assets có hash -> immutable.
+      - path: /assets/*
+        name: Cache-Control
+        value: public, max-age=31536000, immutable
+      # index.html không được cache (để nhận bundle mới ngay sau deploy).
+      - path: /*
+        name: Cache-Control
+        value: no-cache
+      - path: /*
+        name: X-Frame-Options
+        value: SAMEORIGIN
+      - path: /*
+        name: X-Content-Type-Options
+        value: nosniff
+      - path: /*
+        name: Referrer-Policy
+        value: strict-origin-when-cross-origin
+    envVars:
+      - key: NODE_VERSION
+        value: 22
+      # Render Static Site phục vụ ở domain gốc -> base path phải là '/'
+      - key: VITE_BASE_PATH
+        value: /
+      # Domain API (sau khi deploy API lần đầu)
+      - key: VITE_API_URL
+        sync: false # BẮT BUỘC set tay, ví dụ: https://henzo-store-api.onrender.com/api

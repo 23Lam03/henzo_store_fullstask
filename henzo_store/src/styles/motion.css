@@ -1,0 +1,345 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   HENZO STORE — MOTION SYSTEM
+   Chuyển động dùng chung cho toàn bộ giao diện.
+
+   Nguyên tắc:
+   - Mềm mại, chậm, tự nhiên — không nhảy, không xoay, không overshoot lạ.
+   - Mọi hiệu ứng cuộn đều dựa trên IntersectionObserver (không dùng scroll listener).
+   - Tôn trọng prefers-reduced-motion: nội dung hiện ngay, không ẩn.
+═══════════════════════════════════════════════════════════════════════════ */
+
+:root {
+  --motion-duration: 620ms;
+  --motion-duration-fast: 320ms;
+  --motion-duration-slow: 900ms;
+  --motion-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --motion-ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+/* ═══ KEYFRAMES ════════════════════════════════════════════════════════════ */
+
+@keyframes hz-fade-up {
+  from { opacity: 0; transform: translate3d(0, 26px, 0); }
+  to { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+
+@keyframes hz-fade-down {
+  from { opacity: 0; transform: translate3d(0, -18px, 0); }
+  to { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+
+@keyframes hz-slide-left {
+  from { opacity: 0; transform: translate3d(-32px, 0, 0); }
+  to { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+
+@keyframes hz-slide-right {
+  from { opacity: 0; transform: translate3d(32px, 0, 0); }
+  to { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+
+@keyframes hz-scale-in {
+  from { opacity: 0; transform: scale(0.94); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes hz-blur-in {
+  from { opacity: 0; filter: blur(10px); transform: translate3d(0, 14px, 0); }
+  to { opacity: 1; filter: blur(0); transform: translate3d(0, 0, 0); }
+}
+
+@keyframes hz-page-in {
+  from { opacity: 0; transform: translate3d(0, 10px, 0); }
+  to { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+
+/* Vòng sáng lan ra — dùng cho badge, nút yêu thích */
+@keyframes hz-ring-out {
+  0% { opacity: 0.55; transform: scale(0.85); }
+  100% { opacity: 0; transform: scale(1.7); }
+}
+
+/* Nhịp đập nhẹ cho icon yêu thích */
+@keyframes hz-beat {
+  0% { transform: scale(1); }
+  22% { transform: scale(1.22); }
+  45% { transform: scale(0.94); }
+  70% { transform: scale(1.08); }
+  100% { transform: scale(1); }
+}
+
+/* Chạy dọc cho dải thương hiệu */
+@keyframes hz-marquee {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-50%, 0, 0); }
+}
+
+/* Ken Burns — ảnh hero phóng chậm */
+@keyframes hz-ken-burns {
+  from { transform: scale(1.04) translate3d(0, 0, 0); }
+  to { transform: scale(1.13) translate3d(-1.2%, -1.4%, 0); }
+}
+
+/* Rung nhẹ khi báo lỗi form */
+@keyframes hz-shake {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  20% { transform: translate3d(-6px, 0, 0); }
+  40% { transform: translate3d(5px, 0, 0); }
+  60% { transform: translate3d(-3px, 0, 0); }
+  80% { transform: translate3d(2px, 0, 0); }
+}
+
+/* Ánh sáng quét ngang qua nút */
+@keyframes hz-sheen {
+  0% { transform: translateX(-120%) skewX(-18deg); }
+  100% { transform: translateX(220%) skewX(-18deg); }
+}
+
+/* Vạch chạy dưới gạch chân tiêu đề */
+@keyframes hz-underline {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+/* Số đếm tăng — dùng cho CountUp */
+@keyframes hz-tick {
+  0% { transform: translateY(-40%); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
+/* ═══ REVEAL KHI CUỘN ══════════════════════════════════════════════════════ */
+
+[data-reveal] {
+  opacity: 0;
+  transition:
+    opacity var(--motion-duration) var(--motion-ease),
+    transform var(--motion-duration) var(--motion-ease),
+    filter var(--motion-duration) var(--motion-ease);
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: opacity, transform;
+}
+
+[data-reveal='up'] { transform: translate3d(0, 26px, 0); }
+[data-reveal='down'] { transform: translate3d(0, -18px, 0); }
+[data-reveal='left'] { transform: translate3d(-32px, 0, 0); }
+[data-reveal='right'] { transform: translate3d(32px, 0, 0); }
+[data-reveal='scale'] { transform: scale(0.94); }
+[data-reveal='blur'] { transform: translate3d(0, 14px, 0); filter: blur(10px); }
+
+[data-reveal].is-revealed {
+  opacity: 1;
+  transform: none;
+  filter: none;
+}
+
+/* Stagger: các phần tử con tự động lệch thời gian khi nhóm được hiện */
+[data-reveal-group] > * {
+  opacity: 0;
+  transform: translate3d(0, 22px, 0);
+  transition:
+    opacity var(--motion-duration) var(--motion-ease),
+    transform var(--motion-duration) var(--motion-ease);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+[data-reveal-group].is-revealed > * {
+  opacity: 1;
+  transform: none;
+}
+
+[data-reveal-group].is-revealed > *:nth-child(1) { transition-delay: 0ms; }
+[data-reveal-group].is-revealed > *:nth-child(2) { transition-delay: 65ms; }
+[data-reveal-group].is-revealed > *:nth-child(3) { transition-delay: 130ms; }
+[data-reveal-group].is-revealed > *:nth-child(4) { transition-delay: 195ms; }
+[data-reveal-group].is-revealed > *:nth-child(5) { transition-delay: 260ms; }
+[data-reveal-group].is-revealed > *:nth-child(6) { transition-delay: 325ms; }
+[data-reveal-group].is-revealed > *:nth-child(7) { transition-delay: 390ms; }
+[data-reveal-group].is-revealed > *:nth-child(8) { transition-delay: 455ms; }
+[data-reveal-group].is-revealed > *:nth-child(n + 9) { transition-delay: 520ms; }
+
+/* ═══ CHUYỂN TRANG ══════════════════════════════════════════════════════════ */
+
+.page-transition {
+  animation: hz-page-in 420ms var(--motion-ease) both;
+}
+
+/* ═══ NÚT ═══════════════════════════════════════════════════════════════════ */
+
+.btn {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.btn:active:not(:disabled) {
+  transform: translateY(1px) scale(0.985);
+}
+
+/* Ánh sáng quét khi rê chuột vào nút chính */
+.btn-primary::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 42%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.22),
+    transparent
+  );
+  transform: translateX(-120%) skewX(-18deg);
+  pointer-events: none;
+  z-index: -1;
+}
+
+.btn-primary:hover:not(:disabled)::after {
+  animation: hz-sheen 780ms var(--motion-ease-in-out);
+}
+
+.btn-secondary:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+/* ═══ LIÊN KẾT CÓ GẠCH CHÂN ════════════════════════════════════════════════ */
+
+.link-underline {
+  position: relative;
+}
+
+.link-underline::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform var(--motion-duration-fast) var(--motion-ease);
+}
+
+.link-underline:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* ═══ MARQUEE ═══════════════════════════════════════════════════════════════ */
+
+.hz-marquee {
+  position: relative;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent,
+    #000 8%,
+    #000 92%,
+    transparent
+  );
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+
+.hz-marquee__track {
+  display: flex;
+  width: max-content;
+  animation: hz-marquee 38s linear infinite;
+}
+
+.hz-marquee:hover .hz-marquee__track {
+  animation-play-state: paused;
+}
+
+/* ═══ HERO — KEN BURNS ══════════════════════════════════════════════════════ */
+
+.hz-ken-burns {
+  animation: hz-ken-burns 9s ease-out both;
+}
+
+/* ═══ RING / BEAT ══════════════════════════════════════════════════════════ */
+
+.hz-ring {
+  position: relative;
+}
+
+.hz-ring::after {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: inherit;
+  border: 1px solid currentColor;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.hz-ring.is-active::after {
+  animation: hz-ring-out 700ms var(--motion-ease-out);
+}
+
+.hz-beat {
+  animation: hz-beat 520ms var(--motion-ease);
+}
+
+/* ═══ LẮC KHI LỖI ═══════════════════════════════════════════════════════════ */
+
+.hz-shake {
+  animation: hz-shake 420ms var(--motion-ease-in-out);
+}
+
+/* ═══ SỐ ĐẾM TĂNG ═══════════════════════════════════════════════════════════ */
+
+.hz-count-up {
+  display: inline-block;
+  font-variant-numeric: tabular-nums;
+}
+
+.hz-count-up.is-ticking {
+  animation: hz-tick 240ms var(--motion-ease);
+}
+
+/* ═══ VẠCH CHẠY DƯỚI TIÊU ĐỀ ═══════════════════════════════════════════════ */
+
+.hz-underline-draw {
+  transform-origin: left;
+  animation: hz-underline 700ms var(--motion-ease) both;
+}
+
+/* ═══ ICON XOAY NHẸ KHI RÊ CHUỘT ═══════════════════════════════════════════ */
+
+.hz-icon-spin:hover svg {
+  animation: hz-spin 620ms var(--motion-ease);
+}
+
+@keyframes hz-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* ═══ REDUCE MOTION ═════════════════════════════════════════════════════════ */
+
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+    transition: none !important;
+  }
+
+  [data-reveal-stagger] > *,
+  [data-reveal-group] > * {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .page-transition,
+  .hz-ken-burns,
+  .hz-marquee__track,
+  .hz-beat,
+  .hz-shake,
+  .btn-primary:hover:not(:disabled)::after {
+    animation: none !important;
+  }
+}

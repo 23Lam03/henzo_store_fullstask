@@ -1,0 +1,1 @@
+export { AdminOrderPage } from './AdminOrderPage';

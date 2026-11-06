@@ -1,0 +1,133 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   THƯ VIỆN ẢNH SẢN PHẨM
+   - Ảnh chính bo góc vừa, viền mảnh, nền trung tính
+   - Thumbnail dạng thanh ngang, viền active dạng gạch dưới mảnh
+═══════════════════════════════════════════════════════════════════════════ */
+
+.gallery {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.gallery__main {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  background: var(--color-surface);
+  cursor: zoom-in;
+  border: 1px solid var(--color-border);
+}
+
+.gallery__main--zoomed {
+  cursor: zoom-out;
+}
+
+/* Ảnh sản phẩm: contain để không cắt khung sản phẩm */
+.gallery__main-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: var(--space-5);
+  transition: transform var(--transition-slow);
+}
+
+.gallery__main--zoomed .gallery__main-img {
+  transform: scale(2);
+  transform-origin: var(--zoom-x) var(--zoom-y);
+  padding: 0;
+}
+
+.gallery__zoom-hint {
+  position: absolute;
+  bottom: var(--space-4);
+  right: var(--space-4);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 6px 12px;
+  border-radius: var(--radius-full);
+  background: rgba(12, 16, 15, 0.6);
+  color: #fff;
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+  backdrop-filter: blur(10px);
+  pointer-events: none;
+}
+
+.gallery__badge {
+  position: absolute;
+  top: var(--space-4);
+  left: var(--space-4);
+  padding: 5px 12px;
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  letter-spacing: var(--tracking-wide);
+  z-index: 2;
+}
+
+.gallery__badge--sale {
+  background: var(--color-danger);
+  color: #fff;
+}
+
+.gallery__badge--new {
+  background: var(--color-primary);
+  color: #fff;
+}
+
+.gallery__thumbs {
+  display: flex;
+  gap: var(--space-3);
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding-bottom: 2px;
+}
+
+.gallery__thumbs::-webkit-scrollbar { display: none; }
+
+.gallery__thumb {
+  position: relative;
+  width: 76px;
+  height: 76px;
+  flex-shrink: 0;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  padding: 0;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  cursor: pointer;
+  transition: border-color var(--transition-fast), transform var(--transition-fast);
+}
+
+.gallery__thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 6px;
+  display: block;
+}
+
+.gallery__thumb:hover {
+  border-color: var(--color-border-strong);
+  transform: translateY(-2px);
+}
+
+.gallery__thumb--active {
+  border-color: var(--color-primary);
+  box-shadow: inset 0 0 0 1px var(--color-primary);
+}
+
+@media (max-width: 768px) {
+  .gallery__main {
+    aspect-ratio: 4 / 3;
+    border-radius: var(--radius-sm);
+  }
+
+  .gallery__thumb {
+    width: 62px;
+    height: 62px;
+  }
+}

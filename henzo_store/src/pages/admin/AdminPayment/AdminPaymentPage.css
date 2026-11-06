@@ -1,0 +1,16 @@
+.txn-id {
+  font-size: var(--font-size-xs);
+  background: var(--color-background);
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  color: var(--color-primary);
+  font-weight: 600;
+}
+.order-id-small {
+  font-size: var(--font-size-xs);
+  background: var(--color-background);
+  padding: 2px 6px;
+  border-radius: var(--radius-sm);
+  color: var(--color-text-muted);
+}
+.payment-amount { font-weight: 700; color: var(--color-success); }

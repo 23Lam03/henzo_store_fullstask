@@ -1,0 +1,32 @@
+.compare-page {
+  padding: 32px 0 64px;
+}
+
+.compare-page__header {
+  margin-bottom: 32px;
+}
+
+.compare-page__header h1 {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin-bottom: 8px;
+}
+
+.compare-page__header p {
+  font-size: var(--font-size-md);
+  color: var(--color-text-secondary);
+}
+
+.compare-page__suggestions {
+  margin-top: 32px;
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.compare-page__suggestions h3 {
+  font-size: var(--font-size-md);
+  font-weight: 700;
+  color: var(--color-text-primary);
+}

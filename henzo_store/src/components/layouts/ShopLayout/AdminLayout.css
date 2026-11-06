@@ -1,0 +1,193 @@
+/* ─── Admin/Shop Layout ────────────────────────────────────────────────── */
+.admin-layout {
+  display: flex;
+  min-height: 100vh;
+  background: var(--color-background);
+}
+
+.admin-layout__sidebar {
+  width: var(--sidebar-width);
+  background: var(--color-surface);
+  border-right: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  z-index: var(--z-modal);
+  transition: width var(--transition-normal);
+  overflow: hidden;
+}
+
+.admin-layout__sidebar--collapsed {
+  width: var(--sidebar-collapsed);
+}
+
+@media (max-width: 767px) {
+  .admin-layout__sidebar {
+    transform: translateX(-100%);
+    transition: transform var(--transition-normal);
+  }
+  .admin-layout__sidebar--mobile-open {
+    transform: translateX(0);
+  }
+}
+
+.admin-layout__sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-4) var(--space-4);
+  border-bottom: 1px solid var(--color-border);
+  min-height: 64px;
+  gap: var(--space-3);
+}
+
+.admin-layout__logo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  text-decoration: none;
+  overflow: hidden;
+  flex: 1;
+}
+
+.admin-layout__logo-text {
+  font-family: var(--font-family-display);
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+}
+
+.admin-layout__collapse-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: transparent;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  color: var(--color-text-muted);
+  transition: all var(--transition-fast);
+  flex-shrink: 0;
+}
+
+.admin-layout__collapse-btn:hover {
+  color: var(--color-primary);
+  border-color: var(--color-primary);
+  background: var(--color-primary-soft);
+}
+
+.admin-layout__mobile-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  z-index: calc(var(--z-modal) - 1);
+  animation: fade-in var(--transition-fast) ease;
+}
+
+/* ─── Main Area ────────────────────────────────────────────────────────── */
+.admin-layout__main {
+  flex: 1;
+  margin-left: var(--sidebar-width);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  transition: margin-left var(--transition-normal);
+}
+
+.admin-layout__main--collapsed {
+  margin-left: var(--sidebar-collapsed);
+}
+
+@media (max-width: 767px) {
+  .admin-layout__main {
+    margin-left: 0;
+  }
+}
+
+/* ─── Topbar ───────────────────────────────────────────────────────────── */
+.admin-layout__topbar {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-sticky);
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: 0 var(--space-6);
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  min-height: 64px;
+  box-shadow: var(--shadow-sm);
+}
+
+.admin-layout__mobile-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background: transparent;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  color: var(--color-text-secondary);
+  transition: all var(--transition-fast);
+}
+
+.admin-layout__mobile-toggle:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.admin-layout__topbar-spacer {
+  flex: 1;
+}
+
+.admin-layout__topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.admin-layout__user {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.admin-layout__user-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-full);
+  object-fit: cover;
+  border: 2px solid var(--color-primary);
+}
+
+.admin-layout__user-name {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+@media (max-width: 480px) {
+  .admin-layout__user-name { display: none; }
+}
+
+/* ─── Content ──────────────────────────────────────────────────────────── */
+.admin-layout__content {
+  flex: 1;
+  padding: var(--space-6);
+}
+
+@media (min-width: 1024px) {
+  .admin-layout__content {
+    padding: var(--space-8);
+  }
+}

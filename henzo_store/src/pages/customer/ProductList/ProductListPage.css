@@ -1,0 +1,95 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   TRANG DANH SÁCH SẢN PHẨM
+   - Cột lọc dính bên trái, lưới sản phẩm bên phải
+═══════════════════════════════════════════════════════════════════════════ */
+
+.product-list-page {
+  padding: var(--space-8) 0 var(--space-16);
+}
+
+.product-list-page__header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
+  flex-wrap: wrap;
+}
+
+.product-list-page__title {
+  font-family: var(--font-family-display);
+  font-size: var(--font-size-3xl);
+  font-weight: 600;
+  letter-spacing: var(--tracking-tight);
+  color: var(--color-text-primary);
+}
+
+.product-list-page__sub {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  margin-top: var(--space-2);
+}
+
+.product-list-page__filter-toggle {
+  display: none;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 9px 16px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  cursor: pointer;
+  transition: border-color var(--transition-fast), color var(--transition-fast);
+}
+
+.product-list-page__filter-toggle:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.product-list-page__layout {
+  display: grid;
+  grid-template-columns: 268px minmax(0, 1fr);
+  gap: var(--space-6);
+  align-items: start;
+}
+
+.product-list-page__sidebar {
+  position: sticky;
+  top: calc(var(--header-height) + var(--space-4));
+  max-height: calc(100vh - var(--header-height) - var(--space-8));
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border) transparent;
+}
+
+.product-list-page__sidebar::-webkit-scrollbar { width: 5px; }
+.product-list-page__sidebar::-webkit-scrollbar-track { background: transparent; }
+.product-list-page__sidebar::-webkit-scrollbar-thumb {
+  background: var(--color-border-strong);
+  border-radius: var(--radius-full);
+}
+
+.product-list-page__main { min-width: 0; }
+
+@media (max-width: 1100px) {
+  .product-list-page__layout { grid-template-columns: minmax(0, 1fr); }
+
+  .product-list-page__filter-toggle { display: inline-flex; }
+
+  .product-list-page__sidebar {
+    position: static;
+    max-height: none;
+    display: none;
+  }
+
+  .product-list-page__sidebar.open { display: block; }
+}
+
+@media (max-width: 768px) {
+  .product-list-page { padding-top: var(--space-5); }
+  .product-list-page__title { font-size: var(--font-size-xl); }
+}

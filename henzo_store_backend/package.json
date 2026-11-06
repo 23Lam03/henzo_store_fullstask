@@ -3,14 +3,19 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "main": "dist/server/server.js",  
+  "main": "dist/server/server.js",
   "scripts": {
     "dev": "vite dev --port 4000",
     "build": "vite build",
-    "start": "node dist/server/server.js",
+    "start": "node server.mjs",
+    "preview": "node server.mjs",
     "seed": "tsx scripts/seed.ts",
+    "preload-images": "tsx scripts/preload-image-cache.ts",
     "typecheck": "tsc --noEmit",
     "typecheck:scripts": "tsc --noEmit -p tsconfig.scripts.json"
+  },
+  "engines": {
+    "node": ">=20"
   },
   "keywords": [],
   "author": "",
@@ -23,6 +28,7 @@
     "cookie": "^1.0.2",
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.11.3",
+    "srvx": "^1.0.8",
     "zod": "^4.1.13"
   },
   "devDependencies": {

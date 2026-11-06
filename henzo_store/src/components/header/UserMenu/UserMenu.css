@@ -1,0 +1,112 @@
+/* ─── User Menu ─────────────────────────────────────────────────────────── */
+.user-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  width: 280px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xs);
+  box-shadow: var(--shadow-xl);
+  z-index: var(--z-dropdown);
+  overflow: hidden;
+  animation: fade-down var(--transition-normal) ease;
+}
+
+.user-menu__profile {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-5);
+  background: var(--gradient-hero);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.user-menu__avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-full);
+  object-fit: cover;
+  border: 2px solid var(--color-primary);
+}
+
+.user-menu__info {
+  flex: 1;
+  min-width: 0;
+}
+
+.user-menu__name {
+  font-size: var(--font-size-base);
+  font-weight: 700;
+  color: var(--color-text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.user-menu__role {
+  font-size: var(--font-size-sm);
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+.user-menu__links {
+  padding: var(--space-2) 0;
+}
+
+.user-menu__link {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: 10px var(--space-5);
+  font-size: var(--font-size-base);
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  transition: all var(--transition-fast);
+}
+
+.user-menu__link:hover {
+  color: var(--color-primary);
+  background: var(--color-primary-soft);
+}
+
+.user-menu__link svg {
+  flex-shrink: 0;
+}
+
+.user-menu__link--admin {
+  color: var(--color-accent);
+}
+
+.user-menu__link--admin:hover {
+  color: var(--color-accent);
+  background: var(--color-accent-soft);
+}
+
+.user-menu__footer {
+  padding: var(--space-3) var(--space-5);
+  border-top: 1px solid var(--color-border);
+}
+
+.user-menu__logout {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  padding: 10px var(--space-4);
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  color: var(--color-danger);
+  background: transparent;
+  border: 1px solid var(--color-danger-soft);
+  border-radius: var(--radius-xs);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  justify-content: center;
+}
+
+.user-menu__logout:hover {
+  background: var(--color-danger-soft);
+  border-color: var(--color-danger);
+}
