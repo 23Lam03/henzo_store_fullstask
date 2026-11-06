@@ -60,17 +60,7 @@ if (typeof handler !== 'function') {
  * Cookie refresh-token dùng `SameSite=None; Secure` khi chạy production
  * nên response phải có `Access-Control-Allow-Credentials: true`.
  */
-const corsOrigins = (process.env.CORS_ORIGINS ?? '')
-  .split(',')
-  .map((o) => o.trim())
-  .filter(Boolean);
-
-/** Chọn origin được phép echo lại response. */
-function resolveOrigin(requestOrigin) {
-  if (!corsOrigins.length) return requestOrigin ?? null;
-  if (requestOrigin && corsOrigins.includes(requestOrigin)) return requestOrigin;
-  return corsOrigins[0] ?? null;
-}
+const { corsOrigins, resolveOrigin } = await import('./cors.mjs');
 
 /** Middleware CORS + log nhẹ các lỗi. */
 const middleware = [

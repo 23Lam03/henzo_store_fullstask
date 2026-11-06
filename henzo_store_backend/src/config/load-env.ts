@@ -6,8 +6,8 @@
  * - Vite đã nạp `.env` khi chạy dev/build, nên hàm này sẽ là no-op.
  */
 import { existsSync, readFileSync } from 'node:fs';
-import { dirname, resolve } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { resolve } from 'node:path';
+import { PROJECT_ROOT } from './paths';
 
 function parseEnvFile(content: string): Record<string, string> {
   const result: Record<string, string> = {};
@@ -24,29 +24,38 @@ function parseEnvFile(content: string): Record<string, string> {
     ) {
       value = value.slice(1, -1);
     }
-    if (key) result[key] = value;
+    // Dòng có giá trị rỗng (vd `UPLOAD_STORE=`) nghĩa là "chưa đặt" ->
+    // KHÔNG đưa vào `process.env`, để zod dùng giá trị mặc định.
+    // Nếu đưa vào, giá trị rỗng sẽ fail validate enum và server không
+    // khởi động được.
+    if (!key || value === '') continue;
+    result[key] = value;
   }
   return result;
 }
 
-/** Tìm thư mục gốc dự án (chứa `package.json`) bằng cách đi lên từ `startDir`. */
-function findProjectRoot(startDir: string): string {
-  let dir = startDir;
-  for (let i = 0; i < 6; i += 1) {
-    if (existsSync(resolve(dir, 'package.json'))) return dir;
-    const parent = dirname(dir);
-    if (parent === dir) break;
-    dir = parent;
-  }
-  return startDir;
+/**
+ * Có đang chạy ở môi trường production (Paas) không?
+ *
+ * - `NODE_ENV=production` — cách chuẩn.
+ * - `process.env.RENDER` — Render tự set biến này cho mọi service.
+ *   Cần thiết vì nếu service được tạo thủ công và quên set `NODE_ENV`,
+ *   code sẽ tưởng đang ở dev và đọc nhầm file `.env.example` (template)
+ *   như cấu hình thật -> giá trị rỗng trong template làm fail validate.
+ */
+function isProduction(): boolean {
+  return (
+    process.env.NODE_ENV === 'production' ||
+    process.env.RENDER === 'true' ||
+    Boolean(process.env.RENDER)
+  );
 }
 
 /** Đọc `.env` tại gốc dự án (hoặc `.env.local`, `.env.development`). */
 export function loadEnvFiles(rootDir?: string): void {
-  // `import.meta.url` -> `src/config/load-env.ts` -> gốc dự án là 2 cấp trên.
-  const here =
-    rootDir ??
-    findProjectRoot(dirname(dirname(dirname(fileURLToPath(import.meta.url)))));
+  // `PROJECT_ROOT` được dò từ vị trí file để không phụ thuộc `process.cwd()`
+  // (trên Render cwd có thể là `/opt/render/project/src`).
+  const here = rootDir ?? PROJECT_ROOT;
 
   const candidates = [
     '.env.local',
@@ -58,7 +67,7 @@ export function loadEnvFiles(rootDir?: string): void {
   // nào. Ở production (Render) tuyệt đối không nạp file mẫu — nếu không,
   // các giá trị mặc định trong ví dụ (vd `NODE_ENV=development`,
   // `COOKIE_SAME_SITE=Lax`) có thể lọt vào config thật.
-  if (process.env.NODE_ENV !== 'production') {
+  if (!isProduction()) {
     candidates.push('.env.example');
   }
 

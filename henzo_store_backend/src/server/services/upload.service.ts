@@ -27,6 +27,7 @@ import { existsSync } from 'node:fs';
 import path from 'node:path';
 import { randomUUID } from 'node:crypto';
 import { config } from '../../config/env';
+import { resolveFromRoot } from '../../config/paths';
 import { badRequest, unprocessable } from '../http/errors';
 import { UploadedImageModel } from '../models/UploadedImage';
 
@@ -59,7 +60,7 @@ function useMongoStore(): boolean {
 function uploadRoot(): string {
   return path.isAbsolute(config.UPLOAD_DIR)
     ? config.UPLOAD_DIR
-    : path.resolve(process.cwd(), config.UPLOAD_DIR);
+    : resolveFromRoot(config.UPLOAD_DIR);
 }
 
 /** Đảm bảo thư mục lưu trữ tồn tại. */

@@ -22,6 +22,7 @@ import { mkdir, readFile, readdir, stat, unlink, writeFile } from 'node:fs/promi
 import { existsSync } from 'node:fs';
 import path from 'node:path';
 import { config } from '../../config/env';
+import { resolveFromRoot } from '../../config/paths';
 
 /** Host được phép proxy (chỉ Wikimedia). */
 const ALLOWED_HOSTS = [
@@ -49,11 +50,12 @@ const CACHE_MAX_BYTES = (() => {
 const USER_AGENT =
   'HenzoStore/1.0 (https://henzo.vn; image-proxy) node-fetch';
 
-/** Thư mục cache. */
+/**
+ * Thư mục cache. */
 function cacheRoot(): string {
   const dir = path.isAbsolute(config.IMAGE_CACHE_DIR)
     ? config.IMAGE_CACHE_DIR
-    : path.resolve(process.cwd(), config.IMAGE_CACHE_DIR);
+    : resolveFromRoot(config.IMAGE_CACHE_DIR);
   if (!existsSync(dir)) mkdir(dir, { recursive: true });
   return dir;
 }
