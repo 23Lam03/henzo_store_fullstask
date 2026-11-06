@@ -1,0 +1,1323 @@
+==============================================================================
+HENZO STORE — MÔ TẢ API
+==============================================================================
+
+Base URL (Render)   : https://henzo-store.onrender.com/api
+Base URL (local)    : http://localhost:4000/api
+Tổng số endpoint   : 85
+
+QUY ƯỚC CHUNG
+------------------------------------------------------------------------------
+  • Mọi endpoint trả về JSON với cấu trúc:
+      Thành công : { "success": true, "data": ..., "meta"?: {...} }
+      Thất bại  : { "success": false, "data": null, "error": { "code", "message" } }
+  • Phân trang: tham số "page" (mặc định 1) và "pageSize" (mặc định 20).
+      Kết quả nằm trong "meta": { page, pageSize, total, totalPages }.
+  • Xác thực: gửi header "Authorization: Bearer <access_token>".
+      Access token nhận từ POST /api/auth/login hoặc POST /api/auth/refresh.
+      Refresh token nằm trong cookie httpOnly "henzo_refresh_token" (path=/api/auth).
+  • Quyền truy cập:
+      - Công khai  : không cần token
+      - [AUTH]     : cần đăng nhập
+      - [ADMIN]   : role ADMIN / MODERATOR / STAFF
+      - [SELLER]  : role SHOP, chỉ thao tác dữ liệu của chính cửa hàng
+
+MÃ LỖI THƯỜNG GẶP
+------------------------------------------------------------------------------
+  400 BAD_REQUEST     — dữ liệu gửi lên không hợp lệ
+  401 UNAUTHORIZED   — chưa đăng nhập hoặc token hết hạn
+  403 FORBIDDEN      — đã đăng nhập nhưng không đủ quyền
+  404 NOT_FOUND      — không tìm thấy dữ liệu
+  500 INTERNAL_ERROR — lỗi máy chủ
+
+VÍ DỤ GỌI API
+------------------------------------------------------------------------------
+  # Đăng nhập -> lấy access token
+  curl -X POST https://henzo-store.onrender.com/api/auth/login \
+    -H "Content-Type: application/json" \
+    -d '{"email":"customer@henzo.com","password":"123456"}'
+
+  # Gọi endpoint cần xác thực
+  curl https://henzo-store.onrender.com/api/cart \
+    -H "Authorization: Bearer <access_token>"
+
+  # Danh sách sản phẩm có lọc + phân trang
+  curl "https://henzo-store.onrender.com/api/products?category=iphone&minPrice=10000000&page=1&pageSize=5"
+
+  # Response mẫu (GET /api/products)
+  {
+    "success": true,
+    "data": [ { "id": "...", "name": "iPhone 15 Pro Max 256GB", "price": 29990000, ... } ],
+    "meta": { "page": 1, "pageSize": 5, "total": 570, "totalPages": 114 }
+  }
+
+  # Response mẫu khi lỗi
+  {
+    "success": false,
+    "data": null,
+    "error": { "code": "UNAUTHORIZED", "message": "Chưa đăng nhập" }
+  }
+
+==============================================================================
+
+------------------------------------------------------------------------------
+KIỂM TRA SỨC KHOẺ  (/api/health)
+------------------------------------------------------------------------------
+  Endpoint hệ thống.
+
+  [  1] GET  /api/health
+
+      GET
+        Kiểm tra server còn sống và kết nối MongoDB thành công hay không.
+
+
+------------------------------------------------------------------------------
+PROXY ẢNH  (/api/image)
+------------------------------------------------------------------------------
+  Proxy ảnh Wikimedia qua backend để tránh bị chặn 429 rate-limit khi nhiều người xem cùng lúc. Ảnh được cache trên đĩa (giới hạn 400MB) nên mọi client dùng chung 1 bản tải về.
+
+  [  2] GET  /api/image
+
+      GET
+        Proxy ảnh Wikimedia. Nhận URL ảnh gốc, trả về ảnh đã cache trên server — tránh bị Wikimedia chặn 429 khi nhiều người xem cùng lúc.
+
+      Query params:
+      url — URL ảnh gốc cần proxy
+
+
+------------------------------------------------------------------------------
+XÁC THỰC & TÀI KHOẢN  (/api/auth)
+------------------------------------------------------------------------------
+  Đăng ký, đăng nhập, làm mới token, hồ sơ. Access token trả về trong body, refresh token nằm trong cookie httpOnly (path=/api/auth).
+
+  [  3] POST  /api/auth/login
+
+      POST
+        Đăng nhập. Trả access token trong body và set cookie refresh token (httpOnly).
+
+      Body (POST):
+      email — Email
+      password — Mật khẩu
+
+  [  4] POST  /api/auth/logout
+
+      POST
+        Đăng xuất — xoá cookie refresh token và vô hiệu hoá refresh token hiện tại.
+
+  [  5] GET  /api/auth/me [AUTH]
+
+      GET
+        Lấy thông tin người dùng đang đăng nhập (hồ sơ, vai trò, quyền).
+
+  [  6] POST  /api/auth/password [AUTH]
+
+      POST
+        Đổi mật khẩu. Yêu cầu mật khẩu hiện tại và mật khẩu mới tối thiểu 6 ký tự.
+
+      Body (POST):
+      currentPassword — Mật khẩu hiện tại
+      newPassword — Mật khẩu mới
+      confirmPassword — Xác nhận mật khẩu mới
+
+  [  7] PATCH  /api/auth/profile [AUTH]
+
+      PATCH
+        Cập nhật hồ sơ (tên, email, số điện thoại, ảnh đại diện, địa chỉ).
+
+      Body (PATCH):
+      name — Tên
+      email — Email
+      phone — Số điện thoại
+      avatar — URL ảnh đại diện
+      address — Địa chỉ đầy đủ
+      province — Tỉnh / Thành phố
+      district — Quận / Huyện
+      ward — Phường / Xã
+
+  [  8] POST  /api/auth/refresh
+
+      POST
+        Làm mới access token bằng cookie refresh token. Dùng khi access token hết hạn.
+
+  [  9] POST  /api/auth/register
+
+      POST
+        Đăng ký tài khoản khách hàng. Role luôn là CUSTOMER, không nhận role từ client.
+
+      Body (POST):
+      name — Tên
+      email — Email
+      phone — Số điện thoại
+      password — Mật khẩu
+
+
+------------------------------------------------------------------------------
+SẢN PHẨM  (/api/products)
+------------------------------------------------------------------------------
+  Danh mục sản phẩm, chi tiết, đánh giá, bộ sưu tập.
+
+  [ 10] GET  /api/products
+
+      GET
+        Danh sách sản phẩm có phân trang và bộ lọc nhiều điều kiện.
+
+      Query params:
+      q — Từ khoá tìm kiếm
+      search — Từ khoá tìm kiếm
+      categoryId — ID danh mục
+      category — Slug danh mục
+      categorySlug — Slug danh mục
+      brand — Tên thương hiệu
+      brands — Danh sách thương hiệu, phân tách bằng dấu phẩy
+      storeId — ID cửa hàng
+      minPrice — Giá thấp nhất
+      maxPrice — Giá cao nhất
+      rating — Số sao (1-5)
+      inStock — Chỉ lấy sản phẩm còn hàng (true/false)
+      hasDiscount — Chỉ lấy sản phẩm đang giảm giá (true/false)
+      featured — Sản phẩm nổi bật (true/false)
+      isNew — Sản phẩm mới (true/false)
+      isHot — Sản phẩm bán chạy (true/false)
+      sort — Trường sắp xếp
+      order — Thứ tự: asc | desc
+
+  [ 11] GET  /api/products/{id}
+
+      GET
+        Chi tiết một sản phẩm.
+
+      Path params:
+      id — ID của bản ghi
+
+  [ 12] GET  /api/products/{id}/reviews
+
+      GET
+        Danh sách đánh giá của một sản phẩm.
+
+      Path params:
+      id — ID của bản ghi
+
+      Query params:
+      minRating — Đánh giá tối thiểu
+
+  [ 13] GET  /api/products/collections
+
+      GET
+        Các bộ sưu tập sản phẩm được gợi ý (mua kèm, sản phẩm tương tự...).
+
+
+------------------------------------------------------------------------------
+DANH MỤC  (/api/categories)
+------------------------------------------------------------------------------
+  Cây danh mục sản phẩm.
+
+  [ 14] GET  /api/categories
+
+      GET
+        Cây danh mục sản phẩm.
+
+      Query params:
+      flat — true = trả danh sách phẳng
+
+  [ 15] GET  /api/categories/{slug}
+
+      GET
+        Chi tiết danh mục kèm số lượng sản phẩm.
+
+      Path params:
+      slug — Slug duy nhất
+
+
+------------------------------------------------------------------------------
+THƯƠNG HIỆU  (/api/brands)
+------------------------------------------------------------------------------
+  Danh sách thương hiệu và logo.
+
+  [ 16] GET  /api/brands
+
+      GET
+        Danh sách thương hiệu kèm logo và số sản phẩm.
+
+  [ 17] GET  /api/brands/{slug}
+
+      GET
+        Chi tiết thương hiệu.
+
+      Path params:
+      slug — Slug duy nhất
+
+
+------------------------------------------------------------------------------
+CỬA HÀNG  (/api/stores)
+------------------------------------------------------------------------------
+  Thông tin cửa hàng bán hàng.
+
+  [ 18] GET  /api/stores
+
+      GET
+        Danh sách cửa hàng bán hàng trên sàn.
+
+      Query params:
+      status — Trạng thái
+      verified — Chỉ lấy cửa hàng đã xác minh (true/false)
+      q — Từ khoá tìm kiếm
+
+  [ 19] GET  /api/stores/{id}
+
+      GET
+        Chi tiết cửa hàng.
+
+      Path params:
+      id — ID của bản ghi
+
+      Query params:
+      all — true = bỏ giới hạn phân trang
+
+
+------------------------------------------------------------------------------
+GIỎ HÀNG  (/api/cart)
+------------------------------------------------------------------------------
+  Giỏ hàng của người dùng đang đăng nhập.
+
+  [ 20] GET | PATCH | DELETE  /api/cart [AUTH]
+
+      GET
+        Lấy giỏ hàng của người dùng.
+      PATCH
+        Chọn / bỏ chọn nhiều sản phẩm trong giỏ cùng lúc.
+      DELETE
+        Xoá toàn bộ giỏ hàng.
+
+      Query params:
+      selected — Trạng thái chọn (true/false)
+
+      Body (PATCH):
+      selected — Trạng thái chọn (true/false)
+
+  [ 21] POST  /api/cart/items [AUTH]
+
+      POST
+        Thêm sản phẩm vào giỏ.
+
+      Body (POST):
+      productId — ID sản phẩm
+      quantity — Số lượng
+
+  [ 22] PATCH | PUT | DELETE  /api/cart/items/{productId} [AUTH]
+
+      PATCH
+        Đổi số lượng hoặc trạng thái chọn của một sản phẩm trong giỏ.
+      PUT
+        Thay thế toàn bộ thông tin sản phẩm trong giỏ.
+      DELETE
+        Xoá một sản phẩm khỏi giỏ.
+
+      Path params:
+      productId — ID sản phẩm
+
+      Body (PATCH):
+      quantity — Số lượng
+      selected — Trạng thái chọn (true/false)
+
+      Body (PUT):
+      quantity — Số lượng
+      selected — Trạng thái chọn (true/false)
+
+
+------------------------------------------------------------------------------
+ĐƠN HÀNG  (/api/orders)
+------------------------------------------------------------------------------
+  Đặt hàng, theo dõi, huỷ, cập nhật trạng thái.
+
+  [ 23] GET | POST  /api/orders [AUTH]
+
+      GET
+        Danh sách đơn hàng của người dùng (lọc theo trạng thái).
+      POST
+        Tạo đơn hàng từ các sản phẩm trong giỏ.
+
+      Query params:
+      status — Trạng thái
+
+      Body (POST):
+      items — Danh sách sản phẩm trong đơn
+      shippingName — Tên người nhận
+      shippingPhone — Số điện thoại người nhận
+      address — Địa chỉ đầy đủ
+
+  [ 24] GET  /api/orders/{id} [AUTH]
+
+      GET
+        Chi tiết đơn hàng.
+
+      Path params:
+      id — ID của bản ghi
+
+  [ 25] POST  /api/orders/{id}/cancel [AUTH]
+
+      POST
+        Huỷ đơn hàng (chỉ khi còn đủ hạn).
+
+      Path params:
+      id — ID của bản ghi
+
+      Body (POST):
+      reason — Lý do / ghi chú xử lý
+
+  [ 26] PATCH  /api/orders/{id}/status [AUTH]
+
+      PATCH
+        Cập nhật trạng thái đơn, ghi chú, mã vận đơn, đơn vị vận chuyển.
+
+      Path params:
+      id — ID của bản ghi
+
+      Body (PATCH):
+      status — Trạng thái
+      note — Ghi chú nội bộ
+      trackingNumber — Mã vận đơn
+      shippingPartner — Đơn vị vận chuyển
+
+  [ 27] GET  /api/orders/{id}/tracking [AUTH]
+
+      GET
+        Lịch sử vận chuyển của đơn hàng.
+
+      Path params:
+      id — ID của bản ghi
+
+
+------------------------------------------------------------------------------
+YÊU THÍCH  (/api/wishlist)
+------------------------------------------------------------------------------
+  Danh sách sản phẩm yêu thích.
+
+  [ 28] GET | POST  /api/wishlist [AUTH]
+
+      GET
+        Danh sách sản phẩm yêu thích.
+      POST
+        Thêm sản phẩm vào yêu thích.
+
+      Body (POST):
+      productId — ID sản phẩm
+
+  [ 29] POST | DELETE  /api/wishlist/{productId} [AUTH]
+
+      POST
+        Thêm sản phẩm vào danh sách yêu thích.
+      DELETE
+        Bỏ sản phẩm khỏi danh sách yêu thích.
+
+      Path params:
+      productId — ID sản phẩm
+
+
+------------------------------------------------------------------------------
+ĐÁNH GIÁ  (/api/reviews)
+------------------------------------------------------------------------------
+  Viết đánh giá sản phẩm đã mua.
+
+  [ 30] POST  /api/reviews [AUTH]
+
+      POST
+        Viết đánh giá cho sản phẩm đã mua.
+
+      Body (POST):
+      productId — ID sản phẩm
+      rating — Số sao (1-5)
+      comment — Nội dung đánh giá
+      images — Danh sách URL ảnh
+      orderId — ID đơn hàng đã mua
+
+
+------------------------------------------------------------------------------
+KHUYẾN MÃI  (/api/promotions)
+------------------------------------------------------------------------------
+  Mã giảm giá và chương trình khuyến mãi đang chạy.
+
+  [ 31] GET  /api/promotions
+
+      GET
+        Các chương trình khuyến mãi đang chạy.
+
+      Query params:
+      storeId — ID cửa hàng
+
+
+------------------------------------------------------------------------------
+THANH TOÁN  (/api/payments)
+------------------------------------------------------------------------------
+  Lịch sử thanh toán.
+
+  [ 32] GET  /api/payments [AUTH]
+
+      GET
+        Lịch sử thanh toán của người dùng.
+
+      Query params:
+      status — Trạng thái
+      method — Phương thức thanh toán
+
+
+------------------------------------------------------------------------------
+ĐỊA CHỈ  (/api/addresses)
+------------------------------------------------------------------------------
+  Sổ địa chỉ giao hàng.
+
+  [ 33] GET | POST  /api/addresses [AUTH]
+
+      GET
+        Sổ địa chỉ giao hàng.
+      POST
+        Thêm địa chỉ giao hàng.
+
+      Body (POST):
+      label — Nhãn địa chỉ (Nhà / Văn phòng / Kho)
+      name — Tên
+      phone — Số điện thoại
+      address — Địa chỉ đầy đủ
+      province — Tỉnh / Thành phố
+      district — Quận / Huyện
+      ward — Phường / Xã
+
+  [ 34] PATCH | DELETE  /api/addresses/{id} [AUTH]
+
+      PATCH
+        Cập nhật địa chỉ.
+      DELETE
+        Xoá địa chỉ.
+
+      Path params:
+      id — ID của bản ghi
+
+      Body (PATCH):
+      label — Nhãn địa chỉ (Nhà / Văn phòng / Kho)
+      name — Tên
+      phone — Số điện thoại
+      address — Địa chỉ đầy đủ
+      province — Tỉnh / Thành phố
+      district — Quận / Huyện
+      ward — Phường / Xã
+
+
+------------------------------------------------------------------------------
+THÔNG BÁO  (/api/notifications)
+------------------------------------------------------------------------------
+  Thông báo từ hệ thống.
+
+  [ 35] GET | PATCH | DELETE  /api/notifications [AUTH]
+
+      GET
+        Danh sách thông báo của người dùng.
+      PATCH
+        Đánh dấu thông báo đã đọc.
+      DELETE
+        Xoá thông báo.
+
+      Query params:
+      unread — Chỉ lấy thông báo chưa đọc (true/false)
+      type — Loại (ví dụ: percent | fixed, loại thông báo, loại giảm giá)
+      all — true = bỏ giới hạn phân trang
+      id — ID của bản ghi
+
+
+------------------------------------------------------------------------------
+LỊCH SỬ TÌM KIẾM  (/api/search-history)
+------------------------------------------------------------------------------
+  Từ khoá đã tìm.
+
+  [ 36] GET | POST | DELETE  /api/search-history [AUTH]
+
+      GET
+        Lịch sử từ khoá đã tìm.
+      POST
+        Ghi một từ khoá vào lịch sử tìm kiếm.
+      DELETE
+        Xoá lịch sử tìm kiếm.
+
+      Body (POST):
+      query — Từ khoá tìm kiếm
+
+
+------------------------------------------------------------------------------
+HỖ TRỢ  (/api/support)
+------------------------------------------------------------------------------
+  Phiếu hỗ trợ / khiếu nại.
+
+  [ 37] GET | POST  /api/support/tickets [AUTH]
+
+      GET
+        Danh sách phiếu hỗ trợ.
+      POST
+        Tạo phiếu hỗ trợ / khiếu nại mới.
+
+      Query params:
+      status — Trạng thái
+
+      Body (POST):
+      subject — Tiêu đề phiếu hỗ trợ
+      content — Nội dung tin nhắn
+      attachments — Danh sách file đính kèm
+
+  [ 38] GET | POST  /api/support/tickets/{id} [AUTH]
+
+      GET
+        Chi tiết phiếu hỗ trợ kèm các tin nhắn.
+      POST
+        Gửi tin nhắn bổ sung vào phiếu hỗ trợ.
+
+      Path params:
+      id — ID của bản ghi
+
+      Body (POST):
+      content — Nội dung tin nhắn
+      attachments — Danh sách file đính kèm
+
+
+------------------------------------------------------------------------------
+ĐỊA CHỈ HÀNH CHÍNH  (/api/locations)
+------------------------------------------------------------------------------
+  Tỉnh / huyện / xã. Dùng cho form địa chỉ giao hàng.
+
+  [ 39] GET  /api/locations/districts/{code}/wards
+
+      GET
+        Danh sách phường / xã thuộc quận / huyện.
+
+      Path params:
+      code — Mã giảm giá / mã tỉnh huyện
+
+  [ 40] GET  /api/locations/provinces
+
+      GET
+        Danh sách tỉnh / thành phố.
+
+  [ 41] GET  /api/locations/provinces/{code}
+
+      GET
+        Chi tiết một tỉnh.
+
+      Path params:
+      code — Mã giảm giá / mã tỉnh huyện
+
+  [ 42] GET  /api/locations/provinces/{code}/districts
+
+      GET
+        Danh sách quận / huyện thuộc tỉnh.
+
+      Path params:
+      code — Mã giảm giá / mã tỉnh huyện
+
+  [ 43] GET  /api/locations/provinces/{code}/wards
+
+      GET
+        Danh sách phường / xã thuộc tỉnh.
+
+      Path params:
+      code — Mã giảm giá / mã tỉnh huyện
+
+
+------------------------------------------------------------------------------
+BLOG  (/api/blog)
+------------------------------------------------------------------------------
+  Bài viết blog.
+
+  [ 44] GET  /api/blog
+
+      GET
+        Danh sách bài viết blog.
+
+      Query params:
+      q — Từ khoá tìm kiếm
+      category — Slug danh mục
+
+  [ 45] GET  /api/blog/{slug}
+
+      GET
+        Chi tiết bài viết blog.
+
+      Path params:
+      slug — Slug duy nhất
+
+
+------------------------------------------------------------------------------
+QUẢN TRỊ (ADMIN)  (/api/admin)
+------------------------------------------------------------------------------
+  Khu vực quản trị. Yêu cầu role ADMIN / MODERATOR / STAFF. MODERATOR và STAFF còn phải có permission tương ứng cho từng thao tác.
+
+  [ 46] GET | PUT  /api/admin/access/roles [ADMIN]
+
+      GET
+        Danh sách vai trò quản trị và các quyền mặc định của từng vai trò.
+      PUT
+        Cập nhật danh sách quyền của một vai trò.
+
+      Body (PUT):
+      role — Vai trò: ADMIN | MODERATOR | STAFF | SHOP | CUSTOMER
+      permissions — Danh sách quyền được cấp
+
+  [ 47] GET | POST  /api/admin/access/staff [ADMIN]
+
+      GET
+        Danh sách tài khoản quản trị viên (ADMIN / MODERATOR / STAFF).
+      POST
+        Tạo tài khoản quản trị viên mới và gán quyền.
+
+      Query params:
+      role — Vai trò: ADMIN | MODERATOR | STAFF | SHOP | CUSTOMER
+      search — Từ khoá tìm kiếm
+
+      Body (POST):
+      name — Tên
+      email — Email
+      password — Mật khẩu
+      role — Vai trò: ADMIN | MODERATOR | STAFF | SHOP | CUSTOMER
+      permissions — Danh sách quyền được cấp
+
+  [ 48] GET | PATCH | DELETE  /api/admin/access/staff/{id} [ADMIN]
+
+      GET
+        Chi tiết tài khoản quản trị viên.
+      PATCH
+        Cập nhật vai trò, quyền hoặc trạng thái của tài khoản quản trị viên.
+      DELETE
+        Xoá tài khoản quản trị viên.
+
+      Path params:
+      id — ID của bản ghi
+
+      Body (PATCH):
+      name — Tên
+      email — Email
+      role — Vai trò: ADMIN | MODERATOR | STAFF | SHOP | CUSTOMER
+      permissions — Danh sách quyền được cấp
+      status — Trạng thái
+
+  [ 49] GET  /api/admin/customers [ADMIN]
+
+      GET
+        Danh sách khách hàng (lọc theo trạng thái, tìm theo tên / email / SĐT).
+
+      Query params:
+      status — Trạng thái
+      search — Từ khoá tìm kiếm
+
+  [ 50] GET | PATCH | POST | DELETE  /api/admin/customers/{id} [ADMIN]
+
+      GET
+        Chi tiết khách hàng kèm lịch sử đơn hàng.
+      PATCH
+        Cập nhật hồ sơ khách hàng.
+      POST
+        Thao tác quản trị lên khách hàng (khoá, mở khoá, điều chỉnh điểm...).
+      DELETE
+        Xoá khách hàng.
+
+      Path params:
+      id — ID của bản ghi
+
+      Body (PATCH):
+      name — Tên
+      email — Email
+      phone — Số điện thoại
+      address — Địa chỉ đầy đủ
+      avatar — URL ảnh đại diện
+      points — Điểm thưởng / điểm tích luỹ của khách hàng
+      action — Hành động cần thực hiện (khoá, duyệt, phản hồi, điều chỉnh điểm...)
+
+      Body (POST):
+      name — Tên
+      email — Email
+      phone — Số điện thoại
+      address — Địa chỉ đầy đủ
+      avatar — URL ảnh đại diện
+      points — Điểm thưởng / điểm tích luỹ của khách hàng
+      action — Hành động cần thực hiện (khoá, duyệt, phản hồi, điều chỉnh điểm...)
+
+  [ 51] GET  /api/admin/dashboard [ADMIN]
+
+      GET
+        Số liệu tổng quan: doanh thu, số đơn, khách hàng, sản phẩm bán chạy.
+
+  [ 52] GET  /api/admin/finance [ADMIN]
+
+      GET
+        Số liệu tài chính: doanh thu, chi phí, lợi nhuận theo khoảng thời gian.
+
+  [ 53] GET | POST  /api/admin/notifications [ADMIN]
+
+      GET
+        Danh sách thông báo do quản trị viên gửi.
+      POST
+        Gửi thông báo tới nhóm người dùng được chọn.
+
+      Query params:
+      type — Loại (ví dụ: percent | fixed, loại thông báo, loại giảm giá)
+
+      Body (POST):
+      title — Tiêu đề
+      message — Nội dung thông báo
+      type — Loại (ví dụ: percent | fixed, loại thông báo, loại giảm giá)
+      audience — Đối tượng nhận: all | customer | seller | staff
+      link — Đường dẫn khi người dùng bấm vào thông báo
+
+  [ 54] GET  /api/admin/orders [ADMIN]
+
+      GET
+        Danh sách toàn bộ đơn hàng trên sàn.
+
+      Query params:
+      status — Trạng thái
+      paymentStatus — Trạng thái thanh toán
+      paymentMethod — Phương thức thanh toán
+      storeId — ID cửa hàng
+      customerId — ID khách hàng
+      search — Từ khoá tìm kiếm
+
+  [ 55] GET | PATCH | POST  /api/admin/orders/{id} [ADMIN]
+
+      GET
+        Chi tiết đơn hàng.
+      PATCH
+        Cập nhật trạng thái / ghi chú của đơn hàng.
+      POST
+        Ghi chú hoặc xử lý thủ công một đơn hàng.
+
+      Path params:
+      id — ID của bản ghi
+
+      Body (PATCH):
+      status — Trạng thái
+      note — Ghi chú nội bộ
+
+      Body (POST):
+      status — Trạng thái
+      note — Ghi chú nội bộ
+
+  [ 56] GET | POST  /api/admin/payments [ADMIN]
+
+      GET
+        Danh sách giao dịch thanh toán.
+      POST
+        Xử lý thủ công một giao dịch (đánh dấu đã thanh toán, hoàn tiền, ghi chú lý do).
+
+      Query params:
+      status — Trạng thái
+      method — Phương thức thanh toán
+      search — Từ khoá tìm kiếm
+
+      Body (POST):
+      paymentId — ID giao dịch thanh toán
+      reason — Lý do / ghi chú xử lý
+
+  [ 57] GET | PATCH | DELETE  /api/admin/products [ADMIN]
+
+      GET
+        Danh sách sản phẩm trên sàn kèm bộ lọc quản trị.
+      PATCH
+        Cập nhật hàng loạt thuộc tính sản phẩm (nổi bật, mới, bán chạy, trạng thái).
+      DELETE
+        Xoá hàng loạt sản phẩm.
+
+      Query params:
+      status — Trạng thái
+      stock — Số lượng tồn kho
+      storeId — ID cửa hàng
+      categoryId — ID danh mục
+      isHot — Sản phẩm bán chạy (true/false)
+      isNew — Sản phẩm mới (true/false)
+      isFeatured — Sản phẩm nổi bật (true/false)
+      search — Từ khoá tìm kiếm
+      id — ID của bản ghi
+
+      Body (PATCH):
+      name — Tên
+      description — Mô tả chi tiết
+      shortDescription — Mô tả ngắn
+      price — Giá bán (VNĐ)
+      originalPrice — Giá gốc trước khi giảm (VNĐ)
+      stock — Số lượng tồn kho
+      minStock — Ngưỡng cảnh báo hết hàng
+      status — Trạng thái
+      isFeatured — Sản phẩm nổi bật (true/false)
+      isHot — Sản phẩm bán chạy (true/false)
+      isNew — Sản phẩm mới (true/false)
+      categoryId — ID danh mục
+      categoryName — Tên danh mục
+      brand — Tên thương hiệu
+      images — Danh sách URL ảnh
+      tags — Danh sách thẻ
+      sku — Mã SKU
+      specifications — Thông số kỹ thuật (object)
+
+  [ 58] GET  /api/admin/products/{id} [ADMIN]
+
+      GET
+        Chi tiết sản phẩm.
+
+      Path params:
+      id — ID của bản ghi
+
+  [ 59] GET | POST  /api/admin/promotions [ADMIN]
+
+      GET
+        Danh sách chương trình khuyến mãi.
+      POST
+        Tạo chương trình khuyến mãi.
+
+      Query params:
+      type — Loại (ví dụ: percent | fixed, loại thông báo, loại giảm giá)
+      search — Từ khoá tìm kiếm
+
+      Body (POST):
+      title — Tiêu đề
+      description — Mô tả chi tiết
+      image — URL ảnh
+      discount — Mức giảm giá
+      code — Mã giảm giá / mã tỉnh huyện
+      type — Loại (ví dụ: percent | fixed, loại thông báo, loại giảm giá)
+      startDate — Ngày bắt đầu hiệu lực
+      endDate — Ngày kết thúc hiệu lực
+      status — Trạng thái
+
+  [ 60] GET | PATCH | DELETE  /api/admin/promotions/{id} [ADMIN]
+
+      GET
+        Chi tiết chương trình khuyến mãi.
+      PATCH
+        Cập nhật chương trình khuyến mãi.
+      DELETE
+        Xoá chương trình khuyến mãi.
+
+      Path params:
+      id — ID của bản ghi
+
+      Body (PATCH):
+      title — Tiêu đề
+      description — Mô tả chi tiết
+      image — URL ảnh
+      discount — Mức giảm giá
+      code — Mã giảm giá / mã tỉnh huyện
+      type — Loại (ví dụ: percent | fixed, loại thông báo, loại giảm giá)
+      startDate — Ngày bắt đầu hiệu lực
+      endDate — Ngày kết thúc hiệu lực
+      status — Trạng thái
+
+  [ 61] GET  /api/admin/reports [ADMIN]
+
+      GET
+        Báo cáo tổng hợp theo khoảng thời gian.
+
+  [ 62] GET | POST  /api/admin/reviews [ADMIN]
+
+      GET
+        Danh sách đánh giá của khách hàng.
+      POST
+        Xử lý đánh giá (phản hồi, duyệt, ẩn).
+
+      Query params:
+      visibility — Ai được thấy: public | private
+      rating — Số sao (1-5)
+      productId — ID sản phẩm
+      storeId — ID cửa hàng
+      search — Từ khoá tìm kiếm
+      id — ID của bản ghi
+
+      Body (POST):
+      action — Hành động cần thực hiện (khoá, duyệt, phản hồi, điều chỉnh điểm...)
+      reply — Nội dung phản hồi
+
+  [ 63] GET | POST  /api/admin/stores [ADMIN]
+
+      GET
+        Danh sách cửa hàng trên sàn.
+      POST
+        Tạo cửa hàng mới.
+
+      Query params:
+      status — Trạng thái
+      verified — Chỉ lấy cửa hàng đã xác minh (true/false)
+      search — Từ khoá tìm kiếm
+
+      Body (POST):
+      name — Tên
+      slug — Slug duy nhất
+      email — Email
+      phone — Số điện thoại
+      address — Địa chỉ đầy đủ
+      avatar — URL ảnh đại diện
+      banner — URL ảnh bìa
+      description — Mô tả chi tiết
+      isVerified — Cửa hàng đã xác minh (true/false)
+      status — Trạng thái
+      taxId — Mã số thuế
+      bankAccount — Số tài khoản ngân hàng
+      bankName — Tên ngân hàng
+
+  [ 64] GET | PATCH | POST | DELETE  /api/admin/stores/{id} [ADMIN]
+
+      GET
+        Chi tiết cửa hàng.
+      PATCH
+        Cập nhật thông tin cửa hàng.
+      POST
+        Thao tác quản trị lên cửa hàng (xác minh, duyệt, khoá).
+      DELETE
+        Xoá cửa hàng.
+
+      Path params:
+      id — ID của bản ghi
+
+      Body (PATCH):
+      name — Tên
+      email — Email
+      phone — Số điện thoại
+      address — Địa chỉ đầy đủ
+      avatar — URL ảnh đại diện
+      banner — URL ảnh bìa
+      description — Mô tả chi tiết
+      isVerified — Cửa hàng đã xác minh (true/false)
+      status — Trạng thái
+      taxId — Mã số thuế
+      bankAccount — Số tài khoản ngân hàng
+      bankName — Tên ngân hàng
+      action — Hành động cần thực hiện (khoá, duyệt, phản hồi, điều chỉnh điểm...)
+
+      Body (POST):
+      name — Tên
+      email — Email
+      phone — Số điện thoại
+      address — Địa chỉ đầy đủ
+      avatar — URL ảnh đại diện
+      banner — URL ảnh bìa
+      description — Mô tả chi tiết
+      isVerified — Cửa hàng đã xác minh (true/false)
+      status — Trạng thái
+      taxId — Mã số thuế
+      bankAccount — Số tài khoản ngân hàng
+      bankName — Tên ngân hàng
+      action — Hành động cần thực hiện (khoá, duyệt, phản hồi, điều chỉnh điểm...)
+
+  [ 65] GET  /api/admin/support/tickets [ADMIN]
+
+      GET
+        Danh sách phiếu hỗ trợ trên toàn sàn.
+
+      Query params:
+      status — Trạng thái
+      priority — Độ ưu tiên: low | normal | high | urgent
+      category — Slug danh mục
+      scope — Phạm vi dữ liệu
+      storeId — ID cửa hàng
+      search — Từ khoá tìm kiếm
+
+  [ 66] GET | PATCH | POST | DELETE  /api/admin/support/tickets/{id} [ADMIN]
+
+      GET
+        Chi tiết phiếu hỗ trợ kèm lịch sử tin nhắn.
+      PATCH
+        Cập nhật trạng thái, độ ưu tiên hoặc người phụ trách.
+      POST
+        Gửi tin nhắn trả lời khách hàng.
+      DELETE
+        Xoá phiếu hỗ trợ.
+
+      Path params:
+      id — ID của bản ghi
+
+      Body (PATCH):
+      status — Trạng thái
+      priority — Độ ưu tiên: low | normal | high | urgent
+      assignee — Người phụ trách xử lý
+      note — Ghi chú nội bộ
+      message — Nội dung thông báo
+
+      Body (POST):
+      status — Trạng thái
+      priority — Độ ưu tiên: low | normal | high | urgent
+      assignee — Người phụ trách xử lý
+      note — Ghi chú nội bộ
+      message — Nội dung thông báo
+
+  [ 67] POST  /api/admin/uploads [ADMIN]
+
+      POST
+        Tải lên tệp (ảnh, tài liệu) và nhận về URL công khai.
+
+
+------------------------------------------------------------------------------
+CỬA HÀNG (SELLER)  (/api/seller)
+------------------------------------------------------------------------------
+  Khu vực người bán. Yêu cầu role SHOP và chỉ thao tác được với sản phẩm / đơn hàng của chính cửa hàng đó.
+
+  [ 68] GET  /api/seller/dashboard [SELLER]
+
+      GET
+        Tổng quan hoạt động của cửa hàng: doanh thu, đơn hàng, sản phẩm.
+
+      Query params:
+      period — Khoảng thời gian: day | week | month | quarter | year
+
+  [ 69] GET  /api/seller/inventory [SELLER]
+
+      GET
+        Danh sách tồn kho của cửa hàng theo SKU.
+
+      Query params:
+      status — Trạng thái
+      lowStock — Chỉ lấy sản phẩm sắp hết hàng (true/false)
+      outOfStock — Chỉ lấy sản phẩm đã hết hàng (true/false)
+      q — Từ khoá tìm kiếm
+
+  [ 70] GET | PATCH  /api/seller/inventory/{sku} [SELLER]
+
+      GET
+        Chi tiết tồn kho một SKU.
+      PATCH
+        Cập nhật số lượng tồn và ngưỡng cảnh báo hết hàng.
+
+      Path params:
+      sku — Mã SKU
+
+      Body (PATCH):
+      stock — Số lượng tồn kho
+      minStock — Ngưỡng cảnh báo hết hàng
+
+  [ 71] GET | PATCH | DELETE  /api/seller/notifications [SELLER]
+
+      GET
+        Danh sách thông báo dành cho cửa hàng.
+      PATCH
+        Đánh dấu thông báo đã đọc.
+      DELETE
+        Xoá thông báo.
+
+      Query params:
+      unread — Chỉ lấy thông báo chưa đọc (true/false)
+      all — true = bỏ giới hạn phân trang
+      id — ID của bản ghi
+
+  [ 72] GET  /api/seller/orders [SELLER]
+
+      GET
+        Danh sách đơn hàng của cửa hàng.
+
+      Query params:
+      status — Trạng thái
+      q — Từ khoá tìm kiếm
+      sort — Trường sắp xếp
+
+  [ 73] GET  /api/seller/orders/{id} [SELLER]
+
+      GET
+        Chi tiết đơn hàng của cửa hàng.
+
+      Path params:
+      id — ID của bản ghi
+
+  [ 74] PATCH  /api/seller/orders/{id}/status [SELLER]
+
+      PATCH
+        Cập nhật trạng thái đơn hàng của cửa hàng.
+
+      Path params:
+      id — ID của bản ghi
+
+      Body (PATCH):
+      status — Trạng thái
+
+  [ 75] GET  /api/seller/payments [SELLER]
+
+      GET
+        Lịch sử thanh toán của cửa hàng.
+
+      Query params:
+      status — Trạng thái
+      method — Phương thức thanh toán
+
+  [ 76] GET | POST  /api/seller/products [SELLER]
+
+      GET
+        Danh sách sản phẩm của cửa hàng.
+      POST
+        Đăng sản phẩm mới.
+
+      Query params:
+      status — Trạng thái
+      category — Slug danh mục
+      brand — Tên thương hiệu
+      q — Từ khoá tìm kiếm
+      inStock — Chỉ lấy sản phẩm còn hàng (true/false)
+      lowStock — Chỉ lấy sản phẩm sắp hết hàng (true/false)
+      sort — Trường sắp xếp
+
+      Body (POST):
+      name — Tên
+      slug — Slug duy nhất
+      description — Mô tả chi tiết
+      shortDescription — Mô tả ngắn
+      price — Giá bán (VNĐ)
+      originalPrice — Giá gốc trước khi giảm (VNĐ)
+      images — Danh sách URL ảnh
+      categoryId — ID danh mục
+      categoryName — Tên danh mục
+      brand — Tên thương hiệu
+      stock — Số lượng tồn kho
+      minStock — Ngưỡng cảnh báo hết hàng
+      sku — Mã SKU
+      tags — Danh sách thẻ
+      specifications — Thông số kỹ thuật (object)
+
+  [ 77] GET | PATCH | DELETE  /api/seller/products/{id} [SELLER]
+
+      GET
+        Chi tiết sản phẩm của cửa hàng.
+      PATCH
+        Cập nhật sản phẩm của cửa hàng.
+      DELETE
+        Xoá sản phẩm của cửa hàng.
+
+      Path params:
+      id — ID của bản ghi
+
+      Body (PATCH):
+      name — Tên
+      description — Mô tả chi tiết
+      shortDescription — Mô tả ngắn
+      price — Giá bán (VNĐ)
+      originalPrice — Giá gốc trước khi giảm (VNĐ)
+      images — Danh sách URL ảnh
+      categoryId — ID danh mục
+      categoryName — Tên danh mục
+      brand — Tên thương hiệu
+      stock — Số lượng tồn kho
+      minStock — Ngưỡng cảnh báo hết hàng
+      sku — Mã SKU
+      tags — Danh sách thẻ
+      specifications — Thông số kỹ thuật (object)
+      isFeatured — Sản phẩm nổi bật (true/false)
+      isNew — Sản phẩm mới (true/false)
+      isHot — Sản phẩm bán chạy (true/false)
+      status — Trạng thái
+
+  [ 78] GET | POST  /api/seller/promotions [SELLER]
+
+      GET
+        Danh sách mã giảm giá của cửa hàng.
+      POST
+        Tạo mã giảm giá cho cửa hàng.
+
+      Query params:
+      status — Trạng thái
+      type — Loại (ví dụ: percent | fixed, loại thông báo, loại giảm giá)
+
+      Body (POST):
+      name — Tên
+      type — Loại (ví dụ: percent | fixed, loại thông báo, loại giảm giá)
+      code — Mã giảm giá / mã tỉnh huyện
+      discountType — Kiểu giảm giá: percent | fixed
+      discountValue — Giá trị giảm
+      minOrderValue — Giá trị đơn tối thiểu để dùng mã
+      maxDiscount — Mức giảm tối đa
+      startDate — Ngày bắt đầu hiệu lực
+      endDate — Ngày kết thúc hiệu lực
+      status — Trạng thái
+      usageLimit — Số lần tối đa được dùng
+      targetProducts — Danh sách ID sản phẩm áp dụng
+      targetCategories — Danh sách ID danh mục áp dụng
+
+  [ 79] GET | PATCH | DELETE  /api/seller/promotions/{id} [SELLER]
+
+      GET
+        Chi tiết mã giảm giá.
+      PATCH
+        Cập nhật mã giảm giá.
+      DELETE
+        Xoá mã giảm giá.
+
+      Path params:
+      id — ID của bản ghi
+
+      Body (PATCH):
+      status — Trạng thái
+      name — Tên
+      code — Mã giảm giá / mã tỉnh huyện
+      discountType — Kiểu giảm giá: percent | fixed
+      discountValue — Giá trị giảm
+      minOrderValue — Giá trị đơn tối thiểu để dùng mã
+      maxDiscount — Mức giảm tối đa
+      startDate — Ngày bắt đầu hiệu lực
+      endDate — Ngày kết thúc hiệu lực
+      usageLimit — Số lần tối đa được dùng
+
+  [ 80] GET  /api/seller/reviews [SELLER]
+
+      GET
+        Danh sách đánh giá sản phẩm của cửa hàng.
+
+      Query params:
+      rating — Số sao (1-5)
+      hidden — Lọc theo đánh giá đang bị ẩn (true/false)
+      responded — Lọc theo đánh giá đã được phản hồi (true/false)
+
+  [ 81] PATCH  /api/seller/reviews/{id} [SELLER]
+
+      PATCH
+        Phản hồi hoặc ẩn đánh giá của sản phẩm cửa hàng.
+
+      Path params:
+      id — ID của bản ghi
+
+      Body (PATCH):
+      action — Hành động cần thực hiện (khoá, duyệt, phản hồi, điều chỉnh điểm...)
+      response — Nội dung trả lời
+
+  [ 82] GET | POST  /api/seller/shipping [SELLER]
+
+      GET
+        Cấu hình vận chuyển và phí giao hàng của cửa hàng.
+      POST
+        Cập nhật cấu hình vận chuyển và phí giao hàng của cửa hàng.
+
+      Query params:
+      status — Trạng thái
+
+  [ 83] GET  /api/seller/support/tickets [SELLER]
+
+      GET
+        Danh sách phiếu hỗ trợ của cửa hàng.
+
+      Query params:
+      status — Trạng thái
+      category — Slug danh mục
+
+  [ 84] GET | POST | PATCH  /api/seller/support/tickets/{id} [SELLER]
+
+      GET
+        Chi tiết phiếu hỗ trợ của cửa hàng.
+      POST
+        Gửi tin nhắn trả lời khách hàng.
+      PATCH
+        Cập nhật trạng thái, độ ưu tiên của phiếu hỗ trợ của cửa hàng.
+
+      Path params:
+      id — ID của bản ghi
+
+      Body (POST):
+      content — Nội dung tin nhắn
+      attachments — Danh sách file đính kèm
+
+      Body (PATCH):
+      content — Nội dung tin nhắn
+      attachments — Danh sách file đính kèm
+
+  [ 85] POST  /api/seller/uploads [SELLER]
+
+      POST
+        Tải lên ảnh sản phẩm và nhận về URL công khai.
+
+
+==============================================================================
+TỔNG CỘNG: 85 endpoint
+==============================================================================
