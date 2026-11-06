@@ -5,22 +5,26 @@
 #  Cách dùng:
 #    1. Push code lên GitHub.
 #    2. Vào Render Dashboard → New → Blueprint → chọn repo này.
-#    3. Render đọc file `render.yaml` và tự tạo 2 service.
+#    3. Render đọc file `render.yaml` và tự tạo 2 service:
+#       · henzo-store-api      -> https://henzo-store-api.onrender.com
+#       · henzo-store-fullstask-> https://henzo-store-fullstask.onrender.com
 #
 #  ⚠️  Biến môi trường BẮT BUỘC phải set tay trong Render Dashboard
 #     (không để trong file này vì chứa bí mật):
 #       · MONGODB_URI
 #       · JWT_ACCESS_SECRET
 #       · JWT_REFRESH_SECRET
-#       · CORS_ORIGINS
-#       · VITE_API_URL
+#
+#     Các biến còn lại (CORS_ORIGINS, VITE_API_URL) đã tự động trỏ về
+#     domain Render qua `fromService` — không cần set tay.
+#
 #     Render tự sinh `PORT` và `RENDER_EXTERNAL_URL`.
 #
-#  Thứ tự thực hiện (quan trọng):
-#    Bước 1 — Deploy API trước, chờ tới khi domain API hoạt động.
-#    Bước 2 — Copy domain API → đặt làm `VITE_API_URL` của web service.
-#    Bước 3 — Copy domain web → đặt làm `CORS_ORIGINS` của API service.
-#    Bước 4 — Deploy lại (hoặc trigger deploy) để áp dụng.
+#  Thứ tự thực hiện:
+#    Bước 1 — Tạo blueprint, điền 3 secret ở trên.
+#    Bước 2 — Render tự deploy API (đây là service quan trọng nhất).
+#    Bước 3 — Render tự deploy static site.
+#    Bước 4 — Mở https://henzo-store-fullstask.onrender.com để kiểm tra.
 # ═══════════════════════════════════════════════════════════════════════════════
 
 services:
@@ -58,9 +62,14 @@ services:
         value: 'true'
       - key: COOKIE_SAME_SITE
         value: None
-      # ─── CORS: domain frontend (sau khi deploy web) ───
+      # ─── CORS: domain frontend ───
+      # Tự động trỏ về static site qua `RENDER_EXTERNAL_URL` -> không phải
+      # copy tay, không bị lệch khi đổi tên service.
       - key: CORS_ORIGINS
-        sync: false # BẮT BUỘC set tay, ví dụ: https://henzo-store.onrender.com
+        fromService:
+          type: web
+          name: henzo-store-fullstask
+          envVarKey: RENDER_EXTERNAL_URL
       # ─── Upload ảnh (lưu trong MongoDB vì disk của Render là ephemeral) ───
       - key: UPLOAD_STORE
         value: mongo
@@ -90,8 +99,11 @@ services:
   # về việc `staticPublishPath` được tính từ repo root hay từ rootDir.
   # Bỏ `rootDir` thì cả hai cách hiểu đều ra cùng kết quả — đường dẫn
   # publish được tính từ gốc repo.
+  #
+  # Tên service quyết định domain: `henzo-store-fullstask` ->
+  # https://henzo-store-fullstask.onrender.com
   - type: web
-    name: henzo-store-web
+    name: henzo-store-fullstask
     runtime: static
     buildCommand: cd henzo_store && npm ci && npm run build
     staticPublishPath: ./henzo_store/dist
@@ -124,6 +136,10 @@ services:
       # Render Static Site phục vụ ở domain gốc -> base path phải là '/'
       - key: VITE_BASE_PATH
         value: /
-      # Domain API (sau khi deploy API lần đầu)
+      # Domain API — tự động trỏ về service `henzo-store-api` qua
+      # `RENDER_EXTERNAL_URL`. Không cần copy tay, không bị lệch khi đổi tên.
       - key: VITE_API_URL
-        sync: false # BẮT BUỘC set tay, ví dụ: https://henzo-store-api.onrender.com/api
+        fromService:
+          type: web
+          name: henzo-store-api
+          envVarKey: RENDER_EXTERNAL_URL

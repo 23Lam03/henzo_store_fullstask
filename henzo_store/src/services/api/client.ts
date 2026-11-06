@@ -7,8 +7,29 @@
  * - Access token hết hạn -> tự refresh một lần rồi thử lại request.
  */
 
-export const API_BASE_URL =
-  import.meta.env.VITE_API_URL ?? 'http://localhost:4000/api';
+/**
+ * Chuẩn hoá base URL của API.
+ *
+ * `VITE_API_URL` có thể được cấu hình theo nhiều cách:
+ *   · `https://api.example.com/api`  -> giữ nguyên
+ *   · `https://api.example.com`     -> tự thêm `/api`
+ *   · `https://api.example.com/`    -> tự thêm `/api`
+ *
+ * Việc tự thêm `/api` rất quan trọng khi deploy lên Render: Blueprint
+ * lấy domain qua `RENDER_EXTERNAL_URL` — biến này **không** có đuôi
+ * `/api`, nếu không chuẩn hoá thì mọi request sẽ trỏ tới
+ * `https://api.example.com/products` và nhận 404.
+ */
+function normalizeApiBaseUrl(raw: string): string {
+  const trimmed = raw.trim().replace(/\/+$/, '');
+  if (!trimmed) return 'http://localhost:4000/api';
+  if (/\/api$/.test(trimmed)) return trimmed;
+  return `${trimmed}/api`;
+}
+
+export const API_BASE_URL = normalizeApiBaseUrl(
+  import.meta.env.VITE_API_URL ?? 'http://localhost:4000/api',
+);
 
 /**
  * Gốc của API (không kèm `/api`) — dùng để dựng URL tuyệt đối cho tài nguyên
