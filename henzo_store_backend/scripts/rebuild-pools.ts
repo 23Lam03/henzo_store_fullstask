@@ -1,0 +1,243 @@
+/**
+ * GỘP TOÀN BỘ FILE COMMONS ĐÃ THU THẬP + XÂY POOL (HÃNG × LOẠI) CHẶT CHẼN.
+ *
+ * Nguồn:
+ *   - image-pools / expanded-pools / curated-model-files / type-category-files
+ *   - brand-tree (cây category theo hãng) / prefix-harvest / strategy-probe
+ *   - fulltext-probe / intitle-model-probe / code-model-probe
+ *
+ * Xuất: scripts/data/universe.json  +  scripts/data/brand-type-pools.json
+ */
+import { existsSync, readFileSync, writeFileSync } from 'node:fs';
+import { resolve } from 'node:path';
+
+const DATA = resolve(process.cwd(), 'scripts/data');
+
+function readJson<T>(f: string, fallback: T): T {
+  const p = resolve(DATA, f);
+  if (!existsSync(p)) return fallback;
+  try {
+    return JSON.parse(readFileSync(p, 'utf-8')) as T;
+  } catch {
+    return fallback;
+  }
+}
+
+const universe = new Set<string>();
+function addAll(v: unknown): void {
+  if (Array.isArray(v)) {
+    for (const x of v) {
+      if (typeof x === 'string') universe.add(x);
+      else if (x && typeof x === 'object') {
+        const o = x as Record<string, unknown>;
+        if (typeof o.title === 'string') universe.add(o.title);
+        if (typeof o.file === 'string') universe.add(o.file);
+      }
+    }
+  } else if (v && typeof v === 'object') {
+    for (const x of Object.values(v as Record<string, unknown>)) addAll(x);
+  }
+}
+for (const f of [
+  'image-pools.json',
+  'expanded-pools.json',
+  'curated-model-files.json',
+  'candidate-categories.json',
+  'brand-category-files.json',
+  'model-categories.json',
+  'category-product-files.json',
+  'type-brand-pools.json',
+  'type-category-files.json',
+]) {
+  addAll(readJson(f, {}));
+}
+
+// Các probe mới: danh sách file phẳng.
+for (const f of ['brand-tree.json', 'prefix-harvest.json']) {
+  const d = readJson<any>(f, {});
+  if (Array.isArray(d.files)) d.files.forEach((x: string) => universe.add(x));
+  if (Array.isArray(d.allFiles)) d.allFiles.forEach((x: string) => universe.add(x));
+}
+for (const f of ['strategy-probe.json', 'fulltext-probe.json', 'intitle-model-probe.json']) {
+  const d = readJson<any>(f, {});
+  for (const rec of Object.values<any>(d)) {
+    if (Array.isArray(rec?.files)) rec.files.forEach((x: string) => universe.add(x));
+    if (Array.isArray(rec)) rec.forEach((x: string) => universe.add(x));
+  }
+}
+// code-model-probe: rec.files là object map.
+{
+  const d = readJson<any>('code-model-probe.json', {});
+  for (const rec of Object.values<any>(d)) {
+    if (rec?.files && typeof rec.files === 'object') {
+      for (const key of Object.keys(rec.files)) {
+        if (/\.(jpe?g|png|webp)$/i.test(key)) universe.add(key);
+      }
+    }
+    for (const list of Object.values<any>(rec?.cats ?? {})) {
+      if (Array.isArray(list)) list.forEach((x: string) => universe.add(x));
+    }
+  }
+}
+
+const allFiles = [...universe].filter((f) => /\.(jpe?g|png|webp)$/i.test(f));
+
+/** Nhiễu — loại bỏ (sự kiện, người, phương tiện, tranh, teardown, logo...). */
+const NOISE = new RegExp(
+  [
+    'wcg', 'grand ?final', 'esport', 'tournament', 'championship',
+    '\\bbooth\\b', '\\bperson\\b', '\\bpeople\\b', '\\bman\\b', '\\bwoman\\b',
+    '\\bboy\\b', '\\bgirl\\b', '\\bgamer\\b', 'holding', 'broken', 'cracked',
+    'damaged', 'poster', 'advert', 'disassembl', 'teardown', '\\bpcb\\b',
+    'chipset', 'raspberry', 'microbit', 'arduino', 'zipper', 'storage bag',
+    'palm ?top', '8088', 'columbia data', '\\blogo\\b', '\\bicon\\b',
+    'diagram', '\\bchart\\b', 'packaging', '\\bstage\\b', 'crowd', 'interview',
+    'conference', 'signage', '\\bwall\\b', '\\bshelf\\b', 'store ?front',
+    'shop ?front', 'unsplash', 'flag of', 'coat of arms',
+    '\\bmeme\\b', 'exhibition', 'concert', 'album cover', 'toy', 'miniature',
+    'model ?railway', 'die ?cast', 'action ?figure', 'lego', 'museum',
+    'building', 'street', 'landscape', 'church', 'castle', 'mountain',
+    'beach', 'sunset', '\\bbird\\b', 'insect', 'plant', 'flower', 'animal',
+    '\\bdog\\b', '\\bcat\\b', '\\bhorse\\b', '\\bfish\\b', '\\btree\\b',
+    'forest', '\\bsky\\b', 'cloud chamber', 'rolls-royce', 'rolls royce',
+    'porsche', 'ferrari', '\\bbmw\\b', 'nissan', 'ford ', 'bentley',
+    'aston', 'lamborghini', 'toyota', 'honda', 'mercedes', '\\bboat\\b',
+    '\\bship\\b', '\\btrain\\b', 'aircraft', 'cemetery', 'graffiti', 'mural',
+    'statue', 'painting', 'engraving', '\\bcoin\\b', 'stamp', 'banknote',
+    'comic', 'book cover', 'portrait', 'headquarters', '\\bmall\\b',
+    'expo', '\\bfair\\b', 'computer ?expo', 'it ?show', 'computex',
+    'taipei', 'tokyo ?game', 'gamescom', 'ces ?20', 'ifa ?20', 'mwc',
+    'showcase', 'show ?floor', 'display ?case', '\\bstand\\b',
+    'live ?stream', 'livestream', 'streaming', '\\bsetup\\b',
+    'keyboard ?layout', 'layout', 'wiring', 'circuit', 'internals?',
+    'unboxing', 'review', '\\bfront\\b', '\\bback\\b', '\\brear\\b',
+    '\\bbottom\\b', 'underside', 'wall ?mount', '\\bpanel\\b', '\\bport\\b',
+    '\\bconnector\\b', '\\bbutton\\b', '\\bstand\\b', 'underside',
+    '\\bwith\\b.*\\band\\b', 'accessor', '\\bcable\\b', '\\bbox\\b',
+    '\\bpackage\\b', '\\bmanual\\b', '\\bwarranty\\b', '\\bserial\\b',
+    '\\bsticker\\b', '\\blabel\\b', '\\bbarcode\\b', '\\bprice\\b',
+    '\\bmodel\\b.*\\bnotebook\\b', 'screenshot', 'app ?icon',
+    // nhiễu mới phát hiện:
+    'rolls royce', 'silver cloud', 'cloud alpha', 'cloud iii', 'cloud ii',
+    '\\bom ?ii\\b', 'good omens', 'bad omens', 'xbox ?360', 'raptor ?27',
+    'renegade fury', 'gp950 batteries', 'm34d-', 'm34s-', 'm34-', 'm340',
+    '\\bhp3par\\b', 'hp42s', 'hp123', 'hpqg', 'hpm-70', 'hp7970',
+    'garage', '\\bhope\\b', 'azure', 'azureus', 'cs50', 'sword art',
+    'drone', 'rifle', 'sniper', 'cannon', 'artillery', 'rebel ?alliance',
+    'phoenix', 'dragon', 'wizard', 'knight', 'sword', 'armour', 'armor',
+  ].join('|'),
+  'i',
+);
+
+/**
+ * Loại sản phẩm: cặp (từ khóa bắt buộc, từ khóá phụ trợ).
+ */
+const TYPE_RULES: Array<{ type: string; must: RegExp; also?: RegExp }> = [
+  { type: 'HEADSET', must: /headset|headphone|earphone|earbuds|head ?band/i },
+  { type: 'MONITOR', must: /\bmonitor\b|lcd ?monitor|flat ?panel/i },
+  { type: 'MOUSE', must: /\bmouse\b/i, also: /computer|gaming|wireless|optical/i },
+  { type: 'KEYBOARD', must: /\bkeyboard\b|\bkey ?board\b|\btkl\b|tenkeyless/i },
+  { type: 'MIC', must: /microphone|\bmic\b|\bmicro ?phone\b/i },
+  { type: 'WEBCAM', must: /web ?cam/i },
+  {
+    type: 'STORAGE',
+    must: /\bssd\b|nvme|\bm\. ?2\b|solid ?state|hard ?disk|\bhdd\b/i,
+  },
+  {
+    type: 'RAM',
+    must: /\bram\b|dimm|sdram|memory module|ddr[345]|\bfury\b|\btrident\b|ripjaws/i,
+  },
+  { type: 'COOLER', must: /cooler|cooling|heatsink|radiator|\bwater ?cool/i },
+  { type: 'PSU', must: /power ?supply|\bpsu\b/i },
+  {
+    type: 'GPU',
+    must: /\brtx\b|\bgtx\b|geforce|graphics ?card|\bgpu\b|radeon|\bquadro\b/i,
+  },
+  {
+    type: 'CPU',
+    must: /\bryzen\b|\bcore i[3579]\b|processor|\bcpu\b|threadripper|\bepyc\b/i,
+  },
+  { type: 'PC_CASE', must: /\bcase\b|tower|chassis|mini ?itx|midi ?tower/i },
+  { type: 'LAPTOP', must: /laptop|notebook|macbook|thinkpad|ideapad|zenbook/i },
+  { type: 'TABLET', must: /\btablet\b|ipad|galaxy ?tab/i },
+  {
+    type: 'PHONE',
+    must: /iphone|galaxy s\d|galaxy a\d|galaxy z|pixel|huawei|xiaomi|redmi|one ?plus|oppo|vivo|honor|mobile phone|smartphone|nokia|realme|poco|motorola/i,
+  },
+  { type: 'ACCESSORY', must: /\bhub\b|adapter|charger|dock|\bcable\b|mouse ?pad/i },
+];
+
+/** Hãng. */
+const BRANDS = [
+  'Apple', 'Samsung', 'Xiaomi', 'Huawei', 'Honor', 'Oppo', 'Vivo', 'OnePlus',
+  'Google', 'Realme', 'Poco', 'Nokia', 'Motorola', 'Dell', 'HP', 'Asus', 'Acer',
+  'Lenovo', 'Microsoft', 'Logitech', 'Razer', 'Corsair', 'SteelSeries', 'HyperX',
+  'Kingston', 'Crucial', 'G.Skill', 'Seagate', 'Western Digital', 'Thermaltake',
+  'DeepCool', 'Arctic', 'Noctua', 'Cooler Master', 'be quiet', 'NZXT', 'Lian Li',
+  'Antec', 'Aerocool', 'Fractal', 'Phanteks', 'MSI', 'Gigabyte', 'AOC',
+  'ViewSonic', 'BenQ', 'Zowie', 'LG', 'Alienware', 'Elgato', 'Keychron',
+  'Pulsar', 'Roccat', 'Fantek', 'Trust', 'Edifier', 'JBL', 'Bose', 'Sony',
+  'Soundcore', 'Anker', 'Belkin', 'Ducky', 'Glorious', 'Endgame Gear',
+  'Redragon', 'Bloody', 'Havit', 'Targus', 'SanDisk', 'Teamgroup', 'Adata',
+  'Lexar', 'Sabrent', 'PNY', 'Buffalo', 'Seasonic', 'EVGA', 'Cougar', 'ASRock',
+  'Palit', 'Sapphire', 'Zotac', 'Gainward', 'Inno3D', 'AKG', 'Audio-Technica',
+  'Sennheiser', 'Fifine', 'Blue', 'Shure', 'Samson', 'Astro', 'Turtle Beach',
+  'Creative', 'WD', 'ASUS', 'ASUSTeK', 'AMD', 'Intel',
+];
+
+function norm(s: string): string {
+  return s
+    .toLowerCase()
+    .replace(/[_\-.,()'"]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+const out: Record<string, Record<string, string[]>> = {};
+
+for (const file of allFiles) {
+  if (NOISE.test(file)) continue;
+  const n = norm(file);
+
+  let type = '';
+  for (const rule of TYPE_RULES) {
+    if (!rule.must.test(file)) continue;
+    if (rule.also && !rule.also.test(file) && rule.type === 'MOUSE') continue;
+    type = rule.type;
+    break;
+  }
+  if (!type) continue;
+
+  let brand = '';
+  let bestLen = 0;
+  for (const b of BRANDS) {
+    const bn = norm(b);
+    if (bn.length <= bestLen) continue;
+    if (n.includes(bn)) {
+      brand = b;
+      bestLen = bn.length;
+    }
+  }
+  if (!brand) continue;
+
+  out[type] ??= {};
+  (out[type][brand] ??= []).push(file);
+}
+
+for (const t of Object.keys(out)) {
+  for (const b of Object.keys(out[t])) out[t][b] = [...new Set(out[t][b])];
+}
+
+writeFileSync(resolve(DATA, 'brand-type-pools.json'), JSON.stringify(out, null, 2), 'utf-8');
+writeFileSync(resolve(DATA, 'universe.json'), JSON.stringify([...allFiles].sort(), null, 2), 'utf-8');
+
+console.log(`[pool] universe=${allFiles.length} -> ${Object.keys(out).length} loại`);
+for (const [t, brands] of Object.entries(out)) {
+  const total = Object.values(brands).reduce((a, v) => a + v.length, 0);
+  console.log(
+    `  ${t}: ${total} (${Object.keys(brands).length} brand) -> ${Object.entries(brands)
+      .sort((a, c) => c[1].length - a[1].length)
+      .map(([b, v]) => `${b}:${v.length}`)
+      .join(', ')}`,
+  );
+}

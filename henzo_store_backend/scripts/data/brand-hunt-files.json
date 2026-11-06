@@ -1,0 +1,69 @@
+{
+  "MONITOR": {
+    "Gigabyte": [
+      "Gigabyte AORUS AD27QD 20190601.jpg"
+    ],
+    "Razer": [],
+    "BenQ": [],
+    "LG": [],
+    "ViewSonic": [
+      "ViewSonic ViewPanel VG150.jpg",
+      "ViewSonic VG1930wm monitor.JPG",
+      "ViewSonic VG2230wm.jpg",
+      "Viewsonic-crt.png",
+      "Viewsonic-ve170.jpg",
+      "Viewsonic-vg181.jpg"
+    ],
+    "Philips": [
+      "Philips (LCD) and Sun Microsystems (CRT) monitors.jpg",
+      "DVI input Philips 17S4LSB.jpg",
+      "Philips DECT Babyphone 20070513.jpg",
+      "Philips 221S8LDAB-96 spec tag 20190919.jpg"
+    ],
+    "HP": [],
+    "Samsung": [],
+    "Dell": [],
+    "MSI": []
+  },
+  "LAPTOP": {
+    "Gigabyte": []
+  },
+  "HEADSET": {
+    "HyperX": [],
+    "Corsair": [],
+    "SteelSeries": [
+      "SteelSeries 4h.JPG",
+      "SteelSeries 3H.JPG"
+    ]
+  },
+  "MOUSE": {
+    "Corsair": [],
+    "SteelSeries": [],
+    "Endgame Gear": [],
+    "Asus": []
+  },
+  "KEYBOARD": {
+    "Corsair": [
+      "Corsair K60.jpg",
+      "Corsair K65 1 2017-01-01.jpg"
+    ],
+    "SteelSeries": [
+      "SteelSeries Apex 5.jpg",
+      "SteelSeries QS1 -- slider.jpg",
+      "SteelSeries QS1 -- top.jpg",
+      "SteelSeries QS1 -- recognition.jpg",
+      "SteelSeries QS1 -- branding.jpg",
+      "SteelSeries QS1 -- opened, facing front.jpg",
+      "SteelSeries QS1 -- opened, facing rear.jpg",
+      "SteelSeries QS1 -- contact clearance in lid.jpg"
+    ]
+  },
+  "RAM": {
+    "G.Skill": [
+      "G.Skill RipjawsX DDR3 memory modules.JPG"
+    ]
+  },
+  "ACCESSORY": {
+    "Razer": []
+  }
+}

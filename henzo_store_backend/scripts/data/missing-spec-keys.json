@@ -1,0 +1,2372 @@
+[
+  {
+    "key": "iPhone 16 Pro Max",
+    "category": "Điện thoại",
+    "brand": "Apple",
+    "count": 4,
+    "samples": [
+      "iPhone 16 Pro Max 256GB",
+      "iPhone 16 Pro Max 128GB",
+      "iPhone 16 Pro Max 256GB 256GB"
+    ]
+  },
+  {
+    "key": "iPhone 16 Pro",
+    "category": "Điện thoại",
+    "brand": "Apple",
+    "count": 4,
+    "samples": [
+      "iPhone 16 Pro 128GB",
+      "iPhone 16 Pro 128GB",
+      "iPhone 16 Pro 256GB"
+    ]
+  },
+  {
+    "key": "iPhone 16",
+    "category": "Điện thoại",
+    "brand": "Apple",
+    "count": 4,
+    "samples": [
+      "iPhone 16 128GB",
+      "iPhone 16 128GB",
+      "iPhone 16 256GB"
+    ]
+  },
+  {
+    "key": "Samsung Galaxy S26 Ultra",
+    "category": "Điện thoại",
+    "brand": "Samsung",
+    "count": 4,
+    "samples": [
+      "Samsung Galaxy S26 Ultra 256GB",
+      "Samsung Galaxy S26 Ultra 128GB",
+      "Samsung Galaxy S26 Ultra 256GB"
+    ]
+  },
+  {
+    "key": "Samsung Galaxy Z Fold6",
+    "category": "Điện thoại",
+    "brand": "Samsung",
+    "count": 4,
+    "samples": [
+      "Samsung Galaxy Z Fold6 256GB",
+      "Samsung Galaxy Z Fold6 128GB",
+      "Samsung Galaxy Z Fold6 256GB"
+    ]
+  },
+  {
+    "key": "Samsung Galaxy Z Flip6",
+    "category": "Điện thoại",
+    "brand": "Samsung",
+    "count": 4,
+    "samples": [
+      "Samsung Galaxy Z Flip6 256GB",
+      "Samsung Galaxy Z Flip6 128GB",
+      "Samsung Galaxy Z Flip6 256GB"
+    ]
+  },
+  {
+    "key": "Xiaomi 15 Ultra",
+    "category": "Điện thoại",
+    "brand": "Xiaomi",
+    "count": 4,
+    "samples": [
+      "Xiaomi 15 Ultra 256GB",
+      "Xiaomi 15 Ultra 128GB",
+      "Xiaomi 15 Ultra 256GB"
+    ]
+  },
+  {
+    "key": "OPPO Find X8 Pro",
+    "category": "Điện thoại",
+    "brand": "OPPO",
+    "count": 4,
+    "samples": [
+      "OPPO Find X8 Pro 256GB",
+      "OPPO Find X8 Pro 128GB",
+      "OPPO Find X8 Pro 256GB"
+    ]
+  },
+  {
+    "key": "Vivo X200 Pro",
+    "category": "Điện thoại",
+    "brand": "Vivo",
+    "count": 4,
+    "samples": [
+      "Vivo X200 Pro 256GB",
+      "Vivo X200 Pro 128GB",
+      "Vivo X200 Pro 256GB"
+    ]
+  },
+  {
+    "key": "Google Pixel 9 Pro XL",
+    "category": "Điện thoại",
+    "brand": "Google",
+    "count": 4,
+    "samples": [
+      "Google Pixel 9 Pro XL 256GB",
+      "Google Pixel 9 Pro XL 128GB",
+      "Google Pixel 9 Pro XL 256GB"
+    ]
+  },
+  {
+    "key": "Realme GT 6",
+    "category": "Điện thoại",
+    "brand": "Realme",
+    "count": 4,
+    "samples": [
+      "Realme GT 6 256GB",
+      "Realme GT 6 128GB",
+      "Realme GT 6 256GB"
+    ]
+  },
+  {
+    "key": "Poco F6 Pro",
+    "category": "Điện thoại",
+    "brand": "Xiaomi",
+    "count": 4,
+    "samples": [
+      "Poco F6 Pro 512GB",
+      "Poco F6 Pro 128GB",
+      "Poco F6 Pro 256GB"
+    ]
+  },
+  {
+    "key": "Nokia G42",
+    "category": "Điện thoại",
+    "brand": "Nokia",
+    "count": 4,
+    "samples": [
+      "Nokia G42 128GB",
+      "Nokia G42 128GB",
+      "Nokia G42 256GB"
+    ]
+  },
+  {
+    "key": "OnePlus 13",
+    "category": "Điện thoại",
+    "brand": "OnePlus",
+    "count": 4,
+    "samples": [
+      "OnePlus 13 256GB",
+      "OnePlus 13 128GB",
+      "OnePlus 13 256GB"
+    ]
+  },
+  {
+    "key": "Samsung Galaxy A56",
+    "category": "Điện thoại",
+    "brand": "Samsung",
+    "count": 4,
+    "samples": [
+      "Samsung Galaxy A56 256GB",
+      "Samsung Galaxy A56 128GB",
+      "Samsung Galaxy A56 256GB"
+    ]
+  },
+  {
+    "key": "iPhone 15 Pro Max",
+    "category": "Điện thoại",
+    "brand": "Apple",
+    "count": 4,
+    "samples": [
+      "iPhone 15 Pro Max 256GB",
+      "iPhone 15 Pro Max 128GB",
+      "iPhone 15 Pro Max 256GB"
+    ]
+  },
+  {
+    "key": "Samsung Galaxy S25 Ultra",
+    "category": "Điện thoại",
+    "brand": "Samsung",
+    "count": 4,
+    "samples": [
+      "Samsung Galaxy S25 Ultra 256GB",
+      "Samsung Galaxy S25 Ultra 128GB",
+      "Samsung Galaxy S25 Ultra 256GB"
+    ]
+  },
+  {
+    "key": "iPhone 16e",
+    "category": "Điện thoại",
+    "brand": "Apple",
+    "count": 4,
+    "samples": [
+      "iPhone 16e 128GB",
+      "iPhone 16e 128GB",
+      "iPhone 16e 256GB"
+    ]
+  },
+  {
+    "key": "ASUS ROG Phone 9 Pro",
+    "category": "Điện thoại",
+    "brand": "ASUS",
+    "count": 4,
+    "samples": [
+      "ASUS ROG Phone 9 Pro 512GB",
+      "ASUS ROG Phone 9 Pro 128GB",
+      "ASUS ROG Phone 9 Pro 256GB"
+    ]
+  },
+  {
+    "key": "Xiaomi Redmi Note 14 Pro 5G",
+    "category": "Điện thoại",
+    "brand": "Xiaomi",
+    "count": 1,
+    "samples": [
+      "Xiaomi Redmi Note 14 Pro 5G 256GB"
+    ]
+  },
+  {
+    "key": "OPPO Reno13",
+    "category": "Điện thoại",
+    "brand": "OPPO",
+    "count": 4,
+    "samples": [
+      "OPPO Reno13 256GB",
+      "OPPO Reno13 128GB",
+      "OPPO Reno13 256GB"
+    ]
+  },
+  {
+    "key": "Vivo V40 5G",
+    "category": "Điện thoại",
+    "brand": "Vivo",
+    "count": 4,
+    "samples": [
+      "Vivo V40 5G 256GB",
+      "Vivo V40 5G 128GB",
+      "Vivo V40 5G 256GB"
+    ]
+  },
+  {
+    "key": "Honor Magic7 Pro",
+    "category": "Điện thoại",
+    "brand": "Honor",
+    "count": 4,
+    "samples": [
+      "Honor Magic7 Pro 512GB",
+      "Honor Magic7 Pro 128GB",
+      "Honor Magic7 Pro 256GB"
+    ]
+  },
+  {
+    "key": "Tecno Spark 30 Pro",
+    "category": "Điện thoại",
+    "brand": "Tecno",
+    "count": 4,
+    "samples": [
+      "Tecno Spark 30 Pro 256GB",
+      "Tecno Spark 30 Pro 128GB",
+      "Tecno Spark 30 Pro 256GB"
+    ]
+  },
+  {
+    "key": "MacBook Pro 16\" M4 Pro",
+    "category": "Laptop",
+    "brand": "Apple",
+    "count": 4,
+    "samples": [
+      "MacBook Pro 16\" M4 Pro 512GB",
+      "MacBook Pro 16\" M4 Pro 16\" 512GB",
+      "MacBook Pro 16\" M4 Pro 16\" 1TB"
+    ]
+  },
+  {
+    "key": "MacBook Pro 14\" M4 Pro",
+    "category": "Laptop",
+    "brand": "Apple",
+    "count": 4,
+    "samples": [
+      "MacBook Pro 14\" M4 Pro 512GB",
+      "MacBook Pro 14\" M4 Pro 14\" 512GB",
+      "MacBook Pro 14\" M4 Pro 14\" 1TB"
+    ]
+  },
+  {
+    "key": "MacBook Air 15\" M4",
+    "category": "Laptop",
+    "brand": "Apple",
+    "count": 4,
+    "samples": [
+      "MacBook Air 15\" M4 256GB",
+      "MacBook Air 15\" M4 15\" 512GB",
+      "MacBook Air 15\" M4 15\" 1TB"
+    ]
+  },
+  {
+    "key": "ASUS ROG Strix G16",
+    "category": "Laptop",
+    "brand": "ASUS",
+    "count": 4,
+    "samples": [
+      "ASUS ROG Strix G16 G614JIR",
+      "ASUS ROG Strix G16 16\" 512GB",
+      "ASUS ROG Strix G16 16\" 1TB"
+    ]
+  },
+  {
+    "key": "ASUS ROG Zephyrus G16",
+    "category": "Laptop",
+    "brand": "ASUS",
+    "count": 4,
+    "samples": [
+      "ASUS ROG Zephyrus G16 GU605MI",
+      "ASUS ROG Zephyrus G16 16\" 512GB",
+      "ASUS ROG Zephyrus G16 16\" 1TB"
+    ]
+  },
+  {
+    "key": "ASUS TUF Gaming A15",
+    "category": "Laptop",
+    "brand": "ASUS",
+    "count": 4,
+    "samples": [
+      "ASUS TUF Gaming A15 FA507UI",
+      "ASUS TUF Gaming A15 15\" 512GB",
+      "ASUS TUF Gaming A15 15\" 1TB"
+    ]
+  },
+  {
+    "key": "MSI Raider GE78 HX",
+    "category": "Laptop",
+    "brand": "MSI",
+    "count": 4,
+    "samples": [
+      "MSI Raider GE78 HX 14VIG",
+      "MSI Raider GE78 HX 16\" 512GB",
+      "MSI Raider GE78 HX 16\" 1TB"
+    ]
+  },
+  {
+    "key": "MSI Stealth 16 AI Studio",
+    "category": "Laptop",
+    "brand": "MSI",
+    "count": 4,
+    "samples": [
+      "MSI Stealth 16 AI Studio A1VIG",
+      "MSI Stealth 16 AI Studio 16\" 512GB",
+      "MSI Stealth 16 AI Studio 16\" 1TB"
+    ]
+  },
+  {
+    "key": "Lenovo LOQ 15",
+    "category": "Laptop",
+    "brand": "Lenovo",
+    "count": 4,
+    "samples": [
+      "Lenovo LOQ 15IRX9",
+      "Lenovo LOQ 15 15\" 512GB",
+      "Lenovo LOQ 15 15\" 1TB"
+    ]
+  },
+  {
+    "key": "Dell Alienware x16",
+    "category": "Laptop",
+    "brand": "Dell",
+    "count": 4,
+    "samples": [
+      "Dell Alienware x16 R2",
+      "Dell Alienware x16 16\" 512GB",
+      "Dell Alienware x16 16\" 1TB"
+    ]
+  },
+  {
+    "key": "HP Omen 16",
+    "category": "Laptop",
+    "brand": "HP",
+    "count": 4,
+    "samples": [
+      "HP Omen 16-wf0093TX",
+      "HP Omen 16 16\" 512GB",
+      "HP Omen 16 16\" 1TB"
+    ]
+  },
+  {
+    "key": "HP Spectre x360 16",
+    "category": "Laptop",
+    "brand": "HP",
+    "count": 4,
+    "samples": [
+      "HP Spectre x360 16-f2005TU",
+      "HP Spectre x360 16 16\" 512GB",
+      "HP Spectre x360 16 16\" 1TB"
+    ]
+  },
+  {
+    "key": "Acer Predator Helios Neo 16",
+    "category": "Laptop",
+    "brand": "Acer",
+    "count": 4,
+    "samples": [
+      "Acer Predator Helios Neo 16 PHN16-72",
+      "Acer Predator Helios Neo 16 16\" 512GB",
+      "Acer Predator Helios Neo 16 16\" 1TB"
+    ]
+  },
+  {
+    "key": "Acer Swift Go 14",
+    "category": "Laptop",
+    "brand": "Acer",
+    "count": 4,
+    "samples": [
+      "Acer Swift Go 14 SFG14-73",
+      "Acer Swift Go 14 14\" 512GB",
+      "Acer Swift Go 14 14\" 1TB"
+    ]
+  },
+  {
+    "key": "Gigabyte AORUS 16X",
+    "category": "Laptop",
+    "brand": "Gigabyte",
+    "count": 4,
+    "samples": [
+      "Gigabyte AORUS 16X 14KF",
+      "Gigabyte AORUS 16X 16\" 512GB",
+      "Gigabyte AORUS 16X 16\" 1TB"
+    ]
+  },
+  {
+    "key": "Razer Blade 16",
+    "category": "Laptop",
+    "brand": "Razer",
+    "count": 4,
+    "samples": [
+      "Razer Blade 16 RZ09-0485EDH3",
+      "Razer Blade 16 16\" 512GB",
+      "Razer Blade 16 16\" 1TB"
+    ]
+  },
+  {
+    "key": "ASUS ZenBook 14 OLED",
+    "category": "Laptop",
+    "brand": "ASUS",
+    "count": 4,
+    "samples": [
+      "ASUS ZenBook 14 OLED UX3405MA",
+      "ASUS ZenBook 14 OLED 14\" 512GB",
+      "ASUS ZenBook 14 OLED 14\" 1TB"
+    ]
+  },
+  {
+    "key": "Samsung Galaxy Book4 Ultra 16\"",
+    "category": "Laptop",
+    "brand": "Samsung",
+    "count": 4,
+    "samples": [
+      "Samsung Galaxy Book4 Ultra 16\"",
+      "Samsung Galaxy Book4 Ultra 16\" 16\" 512GB",
+      "Samsung Galaxy Book4 Ultra 16\" 16\" 1TB"
+    ]
+  },
+  {
+    "key": "ASUS VivoBook 15 OLED",
+    "category": "Laptop",
+    "brand": "ASUS",
+    "count": 4,
+    "samples": [
+      "ASUS VivoBook 15 OLED K1504VA",
+      "ASUS VivoBook 15 OLED 15\" 512GB",
+      "ASUS VivoBook 15 OLED 15\" 1TB"
+    ]
+  },
+  {
+    "key": "PC Gaming RTX 5090 Supreme",
+    "category": "PC Gaming",
+    "brand": "Custom",
+    "count": 1,
+    "samples": [
+      "PC Gaming RTX 5090 Supreme"
+    ]
+  },
+  {
+    "key": "PC Gaming RTX 5080 Pro Gamer",
+    "category": "PC Gaming",
+    "brand": "Custom",
+    "count": 1,
+    "samples": [
+      "PC Gaming RTX 5080 Pro Gamer"
+    ]
+  },
+  {
+    "key": "PC Gaming RTX 4070 Ti SUPER PowerKing",
+    "category": "PC Gaming",
+    "brand": "Custom",
+    "count": 1,
+    "samples": [
+      "PC Gaming RTX 4070 Ti SUPER PowerKing"
+    ]
+  },
+  {
+    "key": "PC Gaming RTX 4060 Ti GamingX",
+    "category": "PC Gaming",
+    "brand": "Custom",
+    "count": 1,
+    "samples": [
+      "PC Gaming RTX 4060 Ti GamingX"
+    ]
+  },
+  {
+    "key": "PC Workstation RTX 4090 Creator",
+    "category": "PC Gaming",
+    "brand": "Custom",
+    "count": 1,
+    "samples": [
+      "PC Workstation RTX 4090 Creator"
+    ]
+  },
+  {
+    "key": "PC Gaming RTX 4070 SUPER Midnight",
+    "category": "PC Gaming",
+    "brand": "Custom",
+    "count": 1,
+    "samples": [
+      "PC Gaming RTX 4070 SUPER Midnight"
+    ]
+  },
+  {
+    "key": "PC Gaming RTX 4080 SUPER Phantom",
+    "category": "PC Gaming",
+    "brand": "Custom",
+    "count": 1,
+    "samples": [
+      "PC Gaming RTX 4080 SUPER Phantom"
+    ]
+  },
+  {
+    "key": "PC Streaming RTX 4070 OBS Studio",
+    "category": "PC Gaming",
+    "brand": "Custom",
+    "count": 1,
+    "samples": [
+      "PC Streaming RTX 4070 OBS Studio"
+    ]
+  },
+  {
+    "key": "PC Esports Arena RTX 4060 Ti Tournament",
+    "category": "PC Gaming",
+    "brand": "Custom",
+    "count": 1,
+    "samples": [
+      "PC Esports Arena RTX 4060 Ti Tournament"
+    ]
+  },
+  {
+    "key": "PC Mini ITX RTX 4070 Ghost",
+    "category": "PC Gaming",
+    "brand": "Custom",
+    "count": 1,
+    "samples": [
+      "PC Mini ITX RTX 4070 Ghost"
+    ]
+  },
+  {
+    "key": "PC Gaming RTX 4090 Phantom Pro",
+    "category": "PC Gaming",
+    "brand": "Custom",
+    "count": 1,
+    "samples": [
+      "PC Gaming RTX 4090 Phantom Pro"
+    ]
+  },
+  {
+    "key": "PC VR Ready RTX 4070 Ti Metaverse",
+    "category": "PC Gaming",
+    "brand": "Custom",
+    "count": 1,
+    "samples": [
+      "PC VR Ready RTX 4070 Ti Metaverse"
+    ]
+  },
+  {
+    "key": "PC Budget Gaming RTX 3060 Starter",
+    "category": "PC Gaming",
+    "brand": "Custom",
+    "count": 1,
+    "samples": [
+      "PC Budget Gaming RTX 3060 Starter"
+    ]
+  },
+  {
+    "key": "PC Silent Build RTX 4070 Whisper",
+    "category": "PC Gaming",
+    "brand": "Custom",
+    "count": 1,
+    "samples": [
+      "PC Silent Build RTX 4070 Whisper"
+    ]
+  },
+  {
+    "key": "Samsung Odyssey G8",
+    "category": "Màn hình",
+    "brand": "Samsung",
+    "count": 2,
+    "samples": [
+      "Samsung Odyssey G8 34\" QD-OLED",
+      "Samsung Odyssey G8 32\""
+    ]
+  },
+  {
+    "key": "LG UltraGear 27GR95QE",
+    "category": "Màn hình",
+    "brand": "LG",
+    "count": 2,
+    "samples": [
+      "LG UltraGear 27GR95QE 27\" OLED",
+      "LG UltraGear 27GR95QE 27\""
+    ]
+  },
+  {
+    "key": "ASUS ProArt PA32UCG-K",
+    "category": "Màn hình",
+    "brand": "ASUS",
+    "count": 2,
+    "samples": [
+      "ASUS ProArt PA32UCG-K 32\" Mini LED",
+      "ASUS ProArt PA32UCG-K 32\""
+    ]
+  },
+  {
+    "key": "Dell Alienware AW3225QF",
+    "category": "Màn hình",
+    "brand": "Dell",
+    "count": 2,
+    "samples": [
+      "Dell Alienware AW3225QF 32\" 4K OLED",
+      "Dell Alienware AW3225QF 32\""
+    ]
+  },
+  {
+    "key": "MSI MAG 321UPX",
+    "category": "Màn hình",
+    "brand": "MSI",
+    "count": 2,
+    "samples": [
+      "MSI MAG 321UPX 32\" 4K QD-OLED",
+      "MSI MAG 321UPX 32\""
+    ]
+  },
+  {
+    "key": "ViewSonic XG272-2K-OLED",
+    "category": "Màn hình",
+    "brand": "ViewSonic",
+    "count": 2,
+    "samples": [
+      "ViewSonic XG272-2K-OLED 27\" Gaming",
+      "ViewSonic XG272-2K-OLED 27\""
+    ]
+  },
+  {
+    "key": "HP Omen 27qs",
+    "category": "Màn hình",
+    "brand": "HP",
+    "count": 2,
+    "samples": [
+      "HP Omen 27qs 27\" QHD 280Hz",
+      "HP Omen 27qs 27\""
+    ]
+  },
+  {
+    "key": "AOC AGON PRO AG274QZM",
+    "category": "Màn hình",
+    "brand": "AOC",
+    "count": 2,
+    "samples": [
+      "AOC AGON PRO AG274QZM 27\" Mini LED",
+      "AOC AGON PRO AG274QZM 27\""
+    ]
+  },
+  {
+    "key": "Gigabyte M32UC",
+    "category": "Màn hình",
+    "brand": "Gigabyte",
+    "count": 2,
+    "samples": [
+      "Gigabyte M32UC 32\" 4K Curved 160Hz",
+      "Gigabyte M32UC 32\""
+    ]
+  },
+  {
+    "key": "Lenovo Legion R32fc-30",
+    "category": "Màn hình",
+    "brand": "Lenovo",
+    "count": 2,
+    "samples": [
+      "Lenovo Legion R32fc-30 32\" FHD 165Hz",
+      "Lenovo Legion R32fc-30 32\""
+    ]
+  },
+  {
+    "key": "Samsung ViewFinity S8",
+    "category": "Màn hình",
+    "brand": "Samsung",
+    "count": 2,
+    "samples": [
+      "Samsung ViewFinity S8 S32B800N 32\" 4K IPS",
+      "Samsung ViewFinity S8 32\""
+    ]
+  },
+  {
+    "key": "Logitech G915 TKL Lightspeed",
+    "category": "Bàn phím",
+    "brand": "Logitech",
+    "count": 4,
+    "samples": [
+      "Logitech G915 TKL Lightspeed Wireless",
+      "Logitech G915 TKL Lightspeed Graphite",
+      "Logitech G915 TKL Lightspeed Pale Gray"
+    ]
+  },
+  {
+    "key": "Razer BlackWidow V4 Pro",
+    "category": "Bàn phím",
+    "brand": "Razer",
+    "count": 4,
+    "samples": [
+      "Razer BlackWidow V4 Pro",
+      "Razer BlackWidow V4 Pro Black",
+      "Razer BlackWidow V4 Pro White"
+    ]
+  },
+  {
+    "key": "SteelSeries Arctis Nova Pro Wireless",
+    "category": "Tai nghe",
+    "brand": "SteelSeries",
+    "count": 2,
+    "samples": [
+      "SteelSeries Arctis Nova Pro Wireless",
+      "SteelSeries Arctis Nova Pro Wireless White"
+    ]
+  },
+  {
+    "key": "HyperX Cloud III Wireless",
+    "category": "Tai nghe",
+    "brand": "HyperX",
+    "count": 1,
+    "samples": [
+      "HyperX Cloud III Wireless"
+    ]
+  },
+  {
+    "key": "Corsair K100 RGB OPX Optical",
+    "category": "Bàn phím",
+    "brand": "Corsair",
+    "count": 4,
+    "samples": [
+      "Corsair K100 RGB OPX Optical",
+      "Corsair K100 RGB OPX Optical Black",
+      "Corsair K100 RGB OPX Optical White"
+    ]
+  },
+  {
+    "key": "ASUS ROG Harpe Ace Aim Lab Edition",
+    "category": "Chuột",
+    "brand": "ASUS",
+    "count": 4,
+    "samples": [
+      "ASUS ROG Harpe Ace Aim Lab Edition",
+      "ASUS ROG Harpe Ace Aim Lab Edition Eclipse Gray",
+      "ASUS ROG Harpe Ace Aim Lab Edition Tonal Silver"
+    ]
+  },
+  {
+    "key": "Razer Huntsman V3 Pro",
+    "category": "Bàn phím",
+    "brand": "Razer",
+    "count": 4,
+    "samples": [
+      "Razer Huntsman V3 Pro",
+      "Razer Huntsman V3 Pro Black",
+      "Razer Huntsman V3 Pro White"
+    ]
+  },
+  {
+    "key": "Logitech G502 X Plus Lightspeed",
+    "category": "Chuột",
+    "brand": "Logitech",
+    "count": 4,
+    "samples": [
+      "Logitech G502 X Plus Lightspeed",
+      "Logitech G502 X Plus Lightspeed Graphite",
+      "Logitech G502 X Plus Lightspeed Pale Gray"
+    ]
+  },
+  {
+    "key": "Endgame Gear XM2we Wireless",
+    "category": "Chuột",
+    "brand": "Endgame Gear",
+    "count": 4,
+    "samples": [
+      "Endgame Gear XM2we Wireless",
+      "Endgame Gear XM2we Wireless Black",
+      "Endgame Gear XM2we Wireless White"
+    ]
+  },
+  {
+    "key": "SteelSeries Apex Pro TKL Wireless",
+    "category": "Bàn phím",
+    "brand": "SteelSeries",
+    "count": 4,
+    "samples": [
+      "SteelSeries Apex Pro TKL Wireless",
+      "SteelSeries Apex Pro TKL Wireless Black",
+      "SteelSeries Apex Pro TKL Wireless White"
+    ]
+  },
+  {
+    "key": "ROCCAT Vulcan II Mini Air",
+    "category": "Bàn phím",
+    "brand": "ROCCAT",
+    "count": 4,
+    "samples": [
+      "ROCCAT Vulcan II Mini Air",
+      "ROCCAT Vulcan II Mini Air Black",
+      "ROCCAT Vulcan II Mini Air White"
+    ]
+  },
+  {
+    "key": "Logitech G Pro X 60% TKL Lightspeed",
+    "category": "Bàn phím",
+    "brand": "Logitech",
+    "count": 1,
+    "samples": [
+      "Logitech G Pro X 60% TKL Lightspeed"
+    ]
+  },
+  {
+    "key": "Corsair HS80 RGB USB",
+    "category": "Tai nghe",
+    "brand": "Corsair",
+    "count": 3,
+    "samples": [
+      "Corsair HS80 RGB USB",
+      "Corsair HS80 RGB USB White",
+      "Corsair HS80 RGB USB Carbon"
+    ]
+  },
+  {
+    "key": "JBL Quantum 910 Wireless",
+    "category": "Tai nghe",
+    "brand": "JBL",
+    "count": 3,
+    "samples": [
+      "JBL Quantum 910 Wireless",
+      "JBL Quantum 910 Wireless Blue",
+      "JBL Quantum 910 Wireless Sand"
+    ]
+  },
+  {
+    "key": "ASUS ROG Delta S Wireless",
+    "category": "Tai nghe",
+    "brand": "ASUS",
+    "count": 4,
+    "samples": [
+      "ASUS ROG Delta S Wireless",
+      "ASUS ROG Delta S Wireless Eclipse Gray",
+      "ASUS ROG Delta S Wireless Tonal Silver"
+    ]
+  },
+  {
+    "key": "Zowie XL2566K",
+    "category": "Màn hình",
+    "brand": "BenQ",
+    "count": 2,
+    "samples": [
+      "Zowie XL2566K 360Hz eSports Monitor",
+      "Zowie XL2566K 27\""
+    ]
+  },
+  {
+    "key": "Logitech MX Keys S",
+    "category": "Bàn phím",
+    "brand": "Logitech",
+    "count": 1,
+    "samples": [
+      "Logitech MX Keys S"
+    ]
+  },
+  {
+    "key": "Corsair Katar Pro XT Wireless",
+    "category": "Chuột",
+    "brand": "Corsair",
+    "count": 4,
+    "samples": [
+      "Corsair Katar Pro XT Wireless",
+      "Corsair Katar Pro XT Wireless Black",
+      "Corsair Katar Pro XT Wireless White"
+    ]
+  },
+  {
+    "key": "Intel Core i9-14900K",
+    "category": "PC Gaming",
+    "brand": "Intel",
+    "count": 1,
+    "samples": [
+      "Intel Core i9-14900K"
+    ]
+  },
+  {
+    "key": "Samsung Galaxy S26+",
+    "category": "Điện thoại",
+    "brand": "Samsung",
+    "count": 4,
+    "samples": [
+      "Samsung Galaxy S26+ 256GB",
+      "Samsung Galaxy S26+ 128GB",
+      "Samsung Galaxy S26+ 256GB"
+    ]
+  },
+  {
+    "key": "Lenovo ThinkPad X1 Carbon Gen 12",
+    "category": "Laptop",
+    "brand": "Lenovo",
+    "count": 4,
+    "samples": [
+      "Lenovo ThinkPad X1 Carbon Gen 12",
+      "Lenovo ThinkPad X1 Carbon Gen 12 14\" 512GB",
+      "Lenovo ThinkPad X1 Carbon Gen 12 14\" 1TB"
+    ]
+  },
+  {
+    "key": "Dell XPS 16",
+    "category": "Laptop",
+    "brand": "Dell",
+    "count": 4,
+    "samples": [
+      "Dell XPS 16 9640",
+      "Dell XPS 16 16\" 512GB",
+      "Dell XPS 16 16\" 1TB"
+    ]
+  },
+  {
+    "key": "Microsoft Surface Laptop 7",
+    "category": "Laptop",
+    "brand": "Microsoft",
+    "count": 4,
+    "samples": [
+      "Microsoft Surface Laptop 7 Copilot+",
+      "Microsoft Surface Laptop 7 13\" 512GB",
+      "Microsoft Surface Laptop 7 13\" 1TB"
+    ]
+  },
+  {
+    "key": "Huawei MateBook X Pro",
+    "category": "Laptop",
+    "brand": "Huawei",
+    "count": 4,
+    "samples": [
+      "Huawei MateBook X Pro 2024",
+      "Huawei MateBook X Pro 14\" 512GB",
+      "Huawei MateBook X Pro 14\" 1TB"
+    ]
+  },
+  {
+    "key": "LG Gram 17",
+    "category": "Laptop",
+    "brand": "LG",
+    "count": 4,
+    "samples": [
+      "LG Gram 17 17Z90S-G.AA85N",
+      "LG Gram 17 17\" 512GB",
+      "LG Gram 17 17\" 1TB"
+    ]
+  },
+  {
+    "key": "Dell Inspiron 15",
+    "category": "Laptop",
+    "brand": "Dell",
+    "count": 4,
+    "samples": [
+      "Dell Inspiron 15 3530",
+      "Dell Inspiron 15 15\" 512GB",
+      "Dell Inspiron 15 15\" 1TB"
+    ]
+  },
+  {
+    "key": "PC Streaming Pro RTX 4080 + Dual PC Setup",
+    "category": "PC Gaming",
+    "brand": "Custom",
+    "count": 1,
+    "samples": [
+      "PC Streaming Pro RTX 4080 + Dual PC Setup"
+    ]
+  },
+  {
+    "key": "BenQ PD3225U",
+    "category": "Màn hình",
+    "brand": "BenQ",
+    "count": 2,
+    "samples": [
+      "BenQ PD3225U 32\" 4K USB-C",
+      "BenQ PD3225U 32\""
+    ]
+  },
+  {
+    "key": "Philips 27E2N7900",
+    "category": "Màn hình",
+    "brand": "Philips",
+    "count": 2,
+    "samples": [
+      "Philips 27E2N7900 27\" 4K USB-C HDR",
+      "Philips 27E2N7900 27\""
+    ]
+  },
+  {
+    "key": "Zowie XL2546X",
+    "category": "Màn hình",
+    "brand": "BenQ",
+    "count": 2,
+    "samples": [
+      "Zowie XL2546X 24.5\" 280Hz eSports",
+      "Zowie XL2546X 24.5\""
+    ]
+  },
+  {
+    "key": "Razer Raptor 27\"",
+    "category": "Màn hình",
+    "brand": "Razer",
+    "count": 2,
+    "samples": [
+      "Razer Raptor 27\" 2K 165Hz Tổng hợp",
+      "Razer Raptor 27\" 27\""
+    ]
+  },
+  {
+    "key": "Logitech G Pro X Superlight 2",
+    "category": "Chuột",
+    "brand": "Logitech",
+    "count": 4,
+    "samples": [
+      "Logitech G Pro X Superlight 2",
+      "Logitech G Pro X Superlight 2 Graphite",
+      "Logitech G Pro X Superlight 2 Pale Gray"
+    ]
+  },
+  {
+    "key": "Razer DeathAdder V3 Pro",
+    "category": "Chuột",
+    "brand": "Razer",
+    "count": 4,
+    "samples": [
+      "Razer DeathAdder V3 Pro 2",
+      "Razer DeathAdder V3 Pro Black",
+      "Razer DeathAdder V3 Pro White"
+    ]
+  },
+  {
+    "key": "iPhone 16 Plus",
+    "category": "Điện thoại",
+    "brand": "Apple",
+    "count": 3,
+    "samples": [
+      "iPhone 16 Plus 128GB",
+      "iPhone 16 Plus 256GB",
+      "iPhone 16 Plus 512GB"
+    ]
+  },
+  {
+    "key": "iPhone 15 Pro",
+    "category": "Điện thoại",
+    "brand": "Apple",
+    "count": 3,
+    "samples": [
+      "iPhone 15 Pro 128GB",
+      "iPhone 15 Pro 256GB",
+      "iPhone 15 Pro 512GB"
+    ]
+  },
+  {
+    "key": "iPhone 15",
+    "category": "Điện thoại",
+    "brand": "Apple",
+    "count": 3,
+    "samples": [
+      "iPhone 15 128GB",
+      "iPhone 15 256GB",
+      "iPhone 15 512GB"
+    ]
+  },
+  {
+    "key": "Samsung Galaxy S26",
+    "category": "Điện thoại",
+    "brand": "Samsung",
+    "count": 3,
+    "samples": [
+      "Samsung Galaxy S26 128GB",
+      "Samsung Galaxy S26 256GB",
+      "Samsung Galaxy S26 512GB"
+    ]
+  },
+  {
+    "key": "Samsung Galaxy S25+",
+    "category": "Điện thoại",
+    "brand": "Samsung",
+    "count": 3,
+    "samples": [
+      "Samsung Galaxy S25+ 128GB",
+      "Samsung Galaxy S25+ 256GB",
+      "Samsung Galaxy S25+ 512GB"
+    ]
+  },
+  {
+    "key": "Samsung Galaxy S24 Ultra",
+    "category": "Điện thoại",
+    "brand": "Samsung",
+    "count": 3,
+    "samples": [
+      "Samsung Galaxy S24 Ultra 128GB",
+      "Samsung Galaxy S24 Ultra 256GB",
+      "Samsung Galaxy S24 Ultra 512GB"
+    ]
+  },
+  {
+    "key": "Samsung Galaxy S24+",
+    "category": "Điện thoại",
+    "brand": "Samsung",
+    "count": 3,
+    "samples": [
+      "Samsung Galaxy S24+ 128GB",
+      "Samsung Galaxy S24+ 256GB",
+      "Samsung Galaxy S24+ 512GB"
+    ]
+  },
+  {
+    "key": "Samsung Galaxy A36",
+    "category": "Điện thoại",
+    "brand": "Samsung",
+    "count": 3,
+    "samples": [
+      "Samsung Galaxy A36 128GB",
+      "Samsung Galaxy A36 256GB",
+      "Samsung Galaxy A36 512GB"
+    ]
+  },
+  {
+    "key": "Samsung Galaxy A16",
+    "category": "Điện thoại",
+    "brand": "Samsung",
+    "count": 3,
+    "samples": [
+      "Samsung Galaxy A16 128GB",
+      "Samsung Galaxy A16 256GB",
+      "Samsung Galaxy A16 512GB"
+    ]
+  },
+  {
+    "key": "Xiaomi 15",
+    "category": "Điện thoại",
+    "brand": "Xiaomi",
+    "count": 3,
+    "samples": [
+      "Xiaomi 15 128GB",
+      "Xiaomi 15 256GB",
+      "Xiaomi 15 512GB"
+    ]
+  },
+  {
+    "key": "Xiaomi 14T Pro",
+    "category": "Điện thoại",
+    "brand": "Xiaomi",
+    "count": 3,
+    "samples": [
+      "Xiaomi 14T Pro 128GB",
+      "Xiaomi 14T Pro 256GB",
+      "Xiaomi 14T Pro 512GB"
+    ]
+  },
+  {
+    "key": "Poco X6 Pro",
+    "category": "Điện thoại",
+    "brand": "Xiaomi",
+    "count": 3,
+    "samples": [
+      "Poco X6 Pro 128GB",
+      "Poco X6 Pro 256GB",
+      "Poco X6 Pro 512GB"
+    ]
+  },
+  {
+    "key": "Redmi Note 14 Pro 5G",
+    "category": "Điện thoại",
+    "brand": "Xiaomi",
+    "count": 3,
+    "samples": [
+      "Redmi Note 14 Pro 5G 128GB",
+      "Redmi Note 14 Pro 5G 256GB",
+      "Redmi Note 14 Pro 5G 512GB"
+    ]
+  },
+  {
+    "key": "OPPO Find X8",
+    "category": "Điện thoại",
+    "brand": "OPPO",
+    "count": 3,
+    "samples": [
+      "OPPO Find X8 128GB",
+      "OPPO Find X8 256GB",
+      "OPPO Find X8 512GB"
+    ]
+  },
+  {
+    "key": "Vivo X200",
+    "category": "Điện thoại",
+    "brand": "Vivo",
+    "count": 3,
+    "samples": [
+      "Vivo X200 128GB",
+      "Vivo X200 256GB",
+      "Vivo X200 512GB"
+    ]
+  },
+  {
+    "key": "Google Pixel 9",
+    "category": "Điện thoại",
+    "brand": "Google",
+    "count": 3,
+    "samples": [
+      "Google Pixel 9 128GB",
+      "Google Pixel 9 256GB",
+      "Google Pixel 9 512GB"
+    ]
+  },
+  {
+    "key": "Realme 13 Pro+",
+    "category": "Điện thoại",
+    "brand": "Realme",
+    "count": 3,
+    "samples": [
+      "Realme 13 Pro+ 128GB",
+      "Realme 13 Pro+ 256GB",
+      "Realme 13 Pro+ 512GB"
+    ]
+  },
+  {
+    "key": "OnePlus 12",
+    "category": "Điện thoại",
+    "brand": "OnePlus",
+    "count": 3,
+    "samples": [
+      "OnePlus 12 128GB",
+      "OnePlus 12 256GB",
+      "OnePlus 12 512GB"
+    ]
+  },
+  {
+    "key": "Honor Magic6 Pro",
+    "category": "Điện thoại",
+    "brand": "Honor",
+    "count": 3,
+    "samples": [
+      "Honor Magic6 Pro 128GB",
+      "Honor Magic6 Pro 256GB",
+      "Honor Magic6 Pro 512GB"
+    ]
+  },
+  {
+    "key": "iPad Pro M4",
+    "category": "Điện thoại",
+    "brand": "Apple",
+    "count": 3,
+    "samples": [
+      "iPad Pro M4 256GB 13\"",
+      "iPad Pro M4 512GB 13\"",
+      "iPad Pro M4 1TB 13\""
+    ]
+  },
+  {
+    "key": "iPad Air M3",
+    "category": "Điện thoại",
+    "brand": "Apple",
+    "count": 3,
+    "samples": [
+      "iPad Air M3 256GB 13\"",
+      "iPad Air M3 512GB 13\"",
+      "iPad Air M3 1TB 13\""
+    ]
+  },
+  {
+    "key": "iPad 10th Generation",
+    "category": "Điện thoại",
+    "brand": "Apple",
+    "count": 3,
+    "samples": [
+      "iPad 10th Generation 256GB 13\"",
+      "iPad 10th Generation 512GB 13\"",
+      "iPad 10th Generation 1TB 13\""
+    ]
+  },
+  {
+    "key": "Samsung Galaxy Tab S9 Ultra",
+    "category": "Điện thoại",
+    "brand": "Samsung",
+    "count": 3,
+    "samples": [
+      "Samsung Galaxy Tab S9 Ultra 256GB 13\"",
+      "Samsung Galaxy Tab S9 Ultra 512GB 13\"",
+      "Samsung Galaxy Tab S9 Ultra 1TB 13\""
+    ]
+  },
+  {
+    "key": "Samsung Galaxy Tab S10+",
+    "category": "Điện thoại",
+    "brand": "Samsung",
+    "count": 3,
+    "samples": [
+      "Samsung Galaxy Tab S10+ 256GB 13\"",
+      "Samsung Galaxy Tab S10+ 512GB 13\"",
+      "Samsung Galaxy Tab S10+ 1TB 13\""
+    ]
+  },
+  {
+    "key": "Xiaomi Pad 6",
+    "category": "Điện thoại",
+    "brand": "Xiaomi",
+    "count": 3,
+    "samples": [
+      "Xiaomi Pad 6 256GB 13\"",
+      "Xiaomi Pad 6 512GB 13\"",
+      "Xiaomi Pad 6 1TB 13\""
+    ]
+  },
+  {
+    "key": "MacBook Pro 14\" M3 Pro",
+    "category": "Laptop",
+    "brand": "Apple",
+    "count": 3,
+    "samples": [
+      "MacBook Pro 14\" M3 Pro 14\" 512GB",
+      "MacBook Pro 14\" M3 Pro 14\" 1TB",
+      "MacBook Pro 14\" M3 Pro 14\" 2TB"
+    ]
+  },
+  {
+    "key": "MacBook Pro 16\" M3 Max",
+    "category": "Laptop",
+    "brand": "Apple",
+    "count": 3,
+    "samples": [
+      "MacBook Pro 16\" M3 Max 16\" 512GB",
+      "MacBook Pro 16\" M3 Max 16\" 1TB",
+      "MacBook Pro 16\" M3 Max 16\" 2TB"
+    ]
+  },
+  {
+    "key": "MacBook Air 13\" M4",
+    "category": "Laptop",
+    "brand": "Apple",
+    "count": 3,
+    "samples": [
+      "MacBook Air 13\" M4 13\" 512GB",
+      "MacBook Air 13\" M4 13\" 1TB",
+      "MacBook Air 13\" M4 13\" 2TB"
+    ]
+  },
+  {
+    "key": "ASUS ROG Swift OLED",
+    "category": "Laptop",
+    "brand": "ASUS",
+    "count": 3,
+    "samples": [
+      "ASUS ROG Swift OLED 14\" 512GB",
+      "ASUS ROG Swift OLED 14\" 1TB",
+      "ASUS ROG Swift OLED 14\" 2TB"
+    ]
+  },
+  {
+    "key": "MSI Titan 18 HX",
+    "category": "Laptop",
+    "brand": "MSI",
+    "count": 3,
+    "samples": [
+      "MSI Titan 18 HX 18\" 512GB",
+      "MSI Titan 18 HX 18\" 1TB",
+      "MSI Titan 18 HX 18\" 2TB"
+    ]
+  },
+  {
+    "key": "MSI Katana 15",
+    "category": "Laptop",
+    "brand": "MSI",
+    "count": 3,
+    "samples": [
+      "MSI Katana 15 15\" 512GB",
+      "MSI Katana 15 15\" 1TB",
+      "MSI Katana 15 15\" 2TB"
+    ]
+  },
+  {
+    "key": "Dell XPS 15",
+    "category": "Laptop",
+    "brand": "Dell",
+    "count": 3,
+    "samples": [
+      "Dell XPS 15 15\" 512GB",
+      "Dell XPS 15 15\" 1TB",
+      "Dell XPS 15 15\" 2TB"
+    ]
+  },
+  {
+    "key": "Dell G16",
+    "category": "Laptop",
+    "brand": "Dell",
+    "count": 3,
+    "samples": [
+      "Dell G16 16\" 512GB",
+      "Dell G16 16\" 1TB",
+      "Dell G16 16\" 2TB"
+    ]
+  },
+  {
+    "key": "Lenovo Legion Pro 7",
+    "category": "Laptop",
+    "brand": "Lenovo",
+    "count": 3,
+    "samples": [
+      "Lenovo Legion Pro 7 16\" 512GB",
+      "Lenovo Legion Pro 7 16\" 1TB",
+      "Lenovo Legion Pro 7 16\" 2TB"
+    ]
+  },
+  {
+    "key": "Lenovo IdeaPad Slim 5",
+    "category": "Laptop",
+    "brand": "Lenovo",
+    "count": 3,
+    "samples": [
+      "Lenovo IdeaPad Slim 5 14\" 512GB",
+      "Lenovo IdeaPad Slim 5 14\" 1TB",
+      "Lenovo IdeaPad Slim 5 14\" 2TB"
+    ]
+  },
+  {
+    "key": "Lenovo Yoga Pro 7",
+    "category": "Laptop",
+    "brand": "Lenovo",
+    "count": 3,
+    "samples": [
+      "Lenovo Yoga Pro 7 14\" 512GB",
+      "Lenovo Yoga Pro 7 14\" 1TB",
+      "Lenovo Yoga Pro 7 14\" 2TB"
+    ]
+  },
+  {
+    "key": "HP Victus 15",
+    "category": "Laptop",
+    "brand": "HP",
+    "count": 3,
+    "samples": [
+      "HP Victus 15 15\" 512GB",
+      "HP Victus 15 15\" 1TB",
+      "HP Victus 15 15\" 2TB"
+    ]
+  },
+  {
+    "key": "HP Envy x360 14",
+    "category": "Laptop",
+    "brand": "HP",
+    "count": 3,
+    "samples": [
+      "HP Envy x360 14 14\" 512GB",
+      "HP Envy x360 14 14\" 1TB",
+      "HP Envy x360 14 14\" 2TB"
+    ]
+  },
+  {
+    "key": "Acer Nitro V 15",
+    "category": "Laptop",
+    "brand": "Acer",
+    "count": 3,
+    "samples": [
+      "Acer Nitro V 15 15\" 512GB",
+      "Acer Nitro V 15 15\" 1TB",
+      "Acer Nitro V 15 15\" 2TB"
+    ]
+  },
+  {
+    "key": "Gigabyte AORUS M15",
+    "category": "Laptop",
+    "brand": "Gigabyte",
+    "count": 3,
+    "samples": [
+      "Gigabyte AORUS M15 15\" 512GB",
+      "Gigabyte AORUS M15 15\" 1TB",
+      "Gigabyte AORUS M15 15\" 2TB"
+    ]
+  },
+  {
+    "key": "Razer Blade 14",
+    "category": "Laptop",
+    "brand": "Razer",
+    "count": 3,
+    "samples": [
+      "Razer Blade 14 14\" 512GB",
+      "Razer Blade 14 14\" 1TB",
+      "Razer Blade 14 14\" 2TB"
+    ]
+  },
+  {
+    "key": "Microsoft Surface Pro 12",
+    "category": "Laptop",
+    "brand": "Microsoft",
+    "count": 3,
+    "samples": [
+      "Microsoft Surface Pro 12 12\" 512GB",
+      "Microsoft Surface Pro 12 12\" 1TB",
+      "Microsoft Surface Pro 12 12\" 2TB"
+    ]
+  },
+  {
+    "key": "LG Gram 14",
+    "category": "Laptop",
+    "brand": "LG",
+    "count": 3,
+    "samples": [
+      "LG Gram 14 14\" 512GB",
+      "LG Gram 14 14\" 1TB",
+      "LG Gram 14 14\" 2TB"
+    ]
+  },
+  {
+    "key": "Samsung Odyssey G9",
+    "category": "Màn hình",
+    "brand": "Samsung",
+    "count": 1,
+    "samples": [
+      "Samsung Odyssey G9 34\""
+    ]
+  },
+  {
+    "key": "Samsung Odyssey Neo G8",
+    "category": "Màn hình",
+    "brand": "Samsung",
+    "count": 1,
+    "samples": [
+      "Samsung Odyssey Neo G8 32\""
+    ]
+  },
+  {
+    "key": "Samsung Odyssey OLED G8",
+    "category": "Màn hình",
+    "brand": "Samsung",
+    "count": 1,
+    "samples": [
+      "Samsung Odyssey OLED G8 32\""
+    ]
+  },
+  {
+    "key": "LG UltraWide 34\"",
+    "category": "Màn hình",
+    "brand": "LG",
+    "count": 1,
+    "samples": [
+      "LG UltraWide 34\" 34\""
+    ]
+  },
+  {
+    "key": "LG UltraGear 32GP950",
+    "category": "Màn hình",
+    "brand": "LG",
+    "count": 1,
+    "samples": [
+      "LG UltraGear 32GP950 32\""
+    ]
+  },
+  {
+    "key": "Dell UltraSharp U2723QE",
+    "category": "Màn hình",
+    "brand": "Dell",
+    "count": 1,
+    "samples": [
+      "Dell UltraSharp U2723QE 27\""
+    ]
+  },
+  {
+    "key": "Dell Alienware AW2723DZD",
+    "category": "Màn hình",
+    "brand": "Dell",
+    "count": 1,
+    "samples": [
+      "Dell Alienware AW2723DZD 27\""
+    ]
+  },
+  {
+    "key": "ASUS ROG Swift PG32UCDM",
+    "category": "Màn hình",
+    "brand": "ASUS",
+    "count": 1,
+    "samples": [
+      "ASUS ROG Swift PG32UCDM 32\""
+    ]
+  },
+  {
+    "key": "ASUS ProArt PA279CV",
+    "category": "Màn hình",
+    "brand": "ASUS",
+    "count": 1,
+    "samples": [
+      "ASUS ProArt PA279CV 27\""
+    ]
+  },
+  {
+    "key": "AOC CU34G2X",
+    "category": "Màn hình",
+    "brand": "AOC",
+    "count": 1,
+    "samples": [
+      "AOC CU34G2X 34\""
+    ]
+  },
+  {
+    "key": "AOC AGON U27G3X",
+    "category": "Màn hình",
+    "brand": "AOC",
+    "count": 1,
+    "samples": [
+      "AOC AGON U27G3X 27\""
+    ]
+  },
+  {
+    "key": "BenQ MO320U",
+    "category": "Màn hình",
+    "brand": "BenQ",
+    "count": 1,
+    "samples": [
+      "BenQ MO320U 32\""
+    ]
+  },
+  {
+    "key": "Gigabyte M27Q X",
+    "category": "Màn hình",
+    "brand": "Gigabyte",
+    "count": 1,
+    "samples": [
+      "Gigabyte M27Q X 27\""
+    ]
+  },
+  {
+    "key": "Gigabyte M34WMU",
+    "category": "Màn hình",
+    "brand": "Gigabyte",
+    "count": 1,
+    "samples": [
+      "Gigabyte M34WMU 34\""
+    ]
+  },
+  {
+    "key": "MSI MPG 271QRX",
+    "category": "Màn hình",
+    "brand": "MSI",
+    "count": 1,
+    "samples": [
+      "MSI MPG 271QRX 27\""
+    ]
+  },
+  {
+    "key": "MSI MAG 401QR",
+    "category": "Màn hình",
+    "brand": "MSI",
+    "count": 1,
+    "samples": [
+      "MSI MAG 401QR 32\""
+    ]
+  },
+  {
+    "key": "HP Victus 27q",
+    "category": "Màn hình",
+    "brand": "HP",
+    "count": 1,
+    "samples": [
+      "HP Victus 27q 27\""
+    ]
+  },
+  {
+    "key": "ViewSonic ColorPro VP3200-3K",
+    "category": "Màn hình",
+    "brand": "ViewSonic",
+    "count": 1,
+    "samples": [
+      "ViewSonic ColorPro VP3200-3K 32\""
+    ]
+  },
+  {
+    "key": "Philips 34E2N5600",
+    "category": "Màn hình",
+    "brand": "Philips",
+    "count": 1,
+    "samples": [
+      "Philips 34E2N5600 34\""
+    ]
+  },
+  {
+    "key": "Lenovo ThinkVision T32p-30",
+    "category": "Màn hình",
+    "brand": "Lenovo",
+    "count": 1,
+    "samples": [
+      "Lenovo ThinkVision T32p-30 32\""
+    ]
+  },
+  {
+    "key": "Acer Nitro XR273QK",
+    "category": "Màn hình",
+    "brand": "Acer",
+    "count": 1,
+    "samples": [
+      "Acer Nitro XR273QK 27\""
+    ]
+  },
+  {
+    "key": "Acer Predator XB273K",
+    "category": "Màn hình",
+    "brand": "Acer",
+    "count": 1,
+    "samples": [
+      "Acer Predator XB273K 27\""
+    ]
+  },
+  {
+    "key": "Corsair Xeneon 27QHD240",
+    "category": "Màn hình",
+    "brand": "Corsair",
+    "count": 1,
+    "samples": [
+      "Corsair Xeneon 27QHD240 27\""
+    ]
+  },
+  {
+    "key": "Logitech MX Master 3S",
+    "category": "Chuột",
+    "brand": "Logitech",
+    "count": 3,
+    "samples": [
+      "Logitech MX Master 3S Graphite",
+      "Logitech MX Master 3S Pale Gray",
+      "Logitech MX Master 3S MX Stone"
+    ]
+  },
+  {
+    "key": "Logitech G502 Hero",
+    "category": "Chuột",
+    "brand": "Logitech",
+    "count": 3,
+    "samples": [
+      "Logitech G502 Hero Graphite",
+      "Logitech G502 Hero Pale Gray",
+      "Logitech G502 Hero MX Stone"
+    ]
+  },
+  {
+    "key": "Razer DeathAdder V3",
+    "category": "Chuột",
+    "brand": "Razer",
+    "count": 3,
+    "samples": [
+      "Razer DeathAdder V3 Black",
+      "Razer DeathAdder V3 White",
+      "Razer DeathAdder V3 Chromium"
+    ]
+  },
+  {
+    "key": "Razer Viper V3 Pro",
+    "category": "Chuột",
+    "brand": "Razer",
+    "count": 3,
+    "samples": [
+      "Razer Viper V3 Pro Black",
+      "Razer Viper V3 Pro White",
+      "Razer Viper V3 Pro Chromium"
+    ]
+  },
+  {
+    "key": "Razer Basilisk V3",
+    "category": "Chuột",
+    "brand": "Razer",
+    "count": 3,
+    "samples": [
+      "Razer Basilisk V3 Black",
+      "Razer Basilisk V3 White",
+      "Razer Basilisk V3 Chromium"
+    ]
+  },
+  {
+    "key": "ASUS ROG Harpe Ace",
+    "category": "Chuột",
+    "brand": "ASUS",
+    "count": 3,
+    "samples": [
+      "ASUS ROG Harpe Ace Eclipse Gray",
+      "ASUS ROG Harpe Ace Tonal Silver",
+      "ASUS ROG Harpe Ace Moonlight White"
+    ]
+  },
+  {
+    "key": "Corsair M75 Wireless",
+    "category": "Chuột",
+    "brand": "Corsair",
+    "count": 3,
+    "samples": [
+      "Corsair M75 Wireless Black",
+      "Corsair M75 Wireless White",
+      "Corsair M75 Wireless Carbon"
+    ]
+  },
+  {
+    "key": "SteelSeries Rival 650 Wireless",
+    "category": "Chuột",
+    "brand": "SteelSeries",
+    "count": 3,
+    "samples": [
+      "SteelSeries Rival 650 Wireless Black",
+      "SteelSeries Rival 650 Wireless White",
+      "SteelSeries Rival 650 Wireless Mango"
+    ]
+  },
+  {
+    "key": "Keychron Q1 Pro",
+    "category": "Bàn phím",
+    "brand": "Keychron",
+    "count": 3,
+    "samples": [
+      "Keychron Q1 Pro Carbon Black",
+      "Keychron Q1 Pro Grey",
+      "Keychron Q1 Pro Snow"
+    ]
+  },
+  {
+    "key": "Keychron Q1 Max",
+    "category": "Bàn phím",
+    "brand": "Keychron",
+    "count": 3,
+    "samples": [
+      "Keychron Q1 Max Carbon Black",
+      "Keychron Q1 Max Grey",
+      "Keychron Q1 Max Snow"
+    ]
+  },
+  {
+    "key": "Keychron K2 Pro",
+    "category": "Bàn phím",
+    "brand": "Keychron",
+    "count": 3,
+    "samples": [
+      "Keychron K2 Pro Carbon Black",
+      "Keychron K2 Pro Grey",
+      "Keychron K2 Pro Snow"
+    ]
+  },
+  {
+    "key": "MX Keys S",
+    "category": "Bàn phím",
+    "brand": "Logitech",
+    "count": 3,
+    "samples": [
+      "MX Keys S Graphite",
+      "MX Keys S Pale Gray",
+      "MX Keys S MX Stone"
+    ]
+  },
+  {
+    "key": "Razer Cynara V3",
+    "category": "Bàn phím",
+    "brand": "Razer",
+    "count": 3,
+    "samples": [
+      "Razer Cynara V3 Black",
+      "Razer Cynara V3 White",
+      "Razer Cynara V3 Chromium"
+    ]
+  },
+  {
+    "key": "SteelSeries Apex 3 Wireless",
+    "category": "Bàn phím",
+    "brand": "SteelSeries",
+    "count": 3,
+    "samples": [
+      "SteelSeries Apex 3 Wireless Black",
+      "SteelSeries Apex 3 Wireless White",
+      "SteelSeries Apex 3 Wireless Mango"
+    ]
+  },
+  {
+    "key": "Corsair K70 RGB Pro",
+    "category": "Bàn phím",
+    "brand": "Corsair",
+    "count": 3,
+    "samples": [
+      "Corsair K70 RGB Pro Black",
+      "Corsair K70 RGB Pro White",
+      "Corsair K70 RGB Pro Carbon"
+    ]
+  },
+  {
+    "key": "ASUS ROG Azoth Extreme",
+    "category": "Bàn phím",
+    "brand": "ASUS",
+    "count": 3,
+    "samples": [
+      "ASUS ROG Azoth Extreme Eclipse Gray",
+      "ASUS ROG Azoth Extreme Tonal Silver",
+      "ASUS ROG Azoth Extreme Moonlight White"
+    ]
+  },
+  {
+    "key": "ROCCAT Kone XP Air",
+    "category": "Bàn phím",
+    "brand": "ROCCAT",
+    "count": 3,
+    "samples": [
+      "ROCCAT Kone XP Air Black",
+      "ROCCAT Kone XP Air White",
+      "ROCCAT Kone XP Air Gray"
+    ]
+  },
+  {
+    "key": "Sony WH-1000XM5",
+    "category": "Tai nghe",
+    "brand": "Sony",
+    "count": 3,
+    "samples": [
+      "Sony WH-1000XM5 Black",
+      "Sony WH-1000XM5 Silver",
+      "Sony WH-1000XM5 Midnight Blue"
+    ]
+  },
+  {
+    "key": "Sony WF-1000XM5",
+    "category": "Tai nghe",
+    "brand": "Sony",
+    "count": 3,
+    "samples": [
+      "Sony WF-1000XM5 Black",
+      "Sony WF-1000XM5 Silver",
+      "Sony WF-1000XM5 Midnight Blue"
+    ]
+  },
+  {
+    "key": "AirPods Pro 2 USB-C",
+    "category": "Tai nghe",
+    "brand": "Apple",
+    "count": 5,
+    "samples": [
+      "AirPods Pro 2 USB-C Titanium Gray",
+      "AirPods Pro 2 USB-C Natural Titanium",
+      "AirPods Pro 2 USB-C Deep Blue"
+    ]
+  },
+  {
+    "key": "AirPods Max",
+    "category": "Tai nghe",
+    "brand": "Apple",
+    "count": 5,
+    "samples": [
+      "AirPods Max Titanium Gray",
+      "AirPods Max Natural Titanium",
+      "AirPods Max Deep Blue"
+    ]
+  },
+  {
+    "key": "AirPods 4 ANC",
+    "category": "Tai nghe",
+    "brand": "Apple",
+    "count": 5,
+    "samples": [
+      "AirPods 4 ANC Titanium Gray",
+      "AirPods 4 ANC Natural Titanium",
+      "AirPods 4 ANC Deep Blue"
+    ]
+  },
+  {
+    "key": "Bose QuietComfort Ultra",
+    "category": "Tai nghe",
+    "brand": "Bose",
+    "count": 3,
+    "samples": [
+      "Bose QuietComfort Ultra Black",
+      "Bose QuietComfort Ultra White",
+      "Bose QuietComfort Ultra Sandstone"
+    ]
+  },
+  {
+    "key": "JBL Tour One M2",
+    "category": "Tai nghe",
+    "brand": "JBL",
+    "count": 1,
+    "samples": [
+      "JBL Tour One M2 Sand"
+    ]
+  },
+  {
+    "key": "Corsair HS60 Wireless",
+    "category": "Tai nghe",
+    "brand": "Corsair",
+    "count": 3,
+    "samples": [
+      "Corsair HS60 Wireless Black",
+      "Corsair HS60 Wireless White",
+      "Corsair HS60 Wireless Carbon"
+    ]
+  },
+  {
+    "key": "Logitech G Pro X 2 Gaming Headset",
+    "category": "Tai nghe",
+    "brand": "Logitech",
+    "count": 3,
+    "samples": [
+      "Logitech G Pro X 2 Gaming Headset Graphite",
+      "Logitech G Pro X 2 Gaming Headset Pale Gray",
+      "Logitech G Pro X 2 Gaming Headset MX Stone"
+    ]
+  },
+  {
+    "key": "NVIDIA GeForce RTX 4090 Founders Edition",
+    "category": "PC Gaming",
+    "brand": "NVIDIA",
+    "count": 1,
+    "samples": [
+      "NVIDIA GeForce RTX 4090 Founders Edition"
+    ]
+  },
+  {
+    "key": "NVIDIA GeForce RTX 4080 SUPER Founders Edition",
+    "category": "PC Gaming",
+    "brand": "NVIDIA",
+    "count": 1,
+    "samples": [
+      "NVIDIA GeForce RTX 4080 SUPER Founders Edition"
+    ]
+  },
+  {
+    "key": "NVIDIA GeForce RTX 4070 Ti SUPER Founders Edition",
+    "category": "PC Gaming",
+    "brand": "NVIDIA",
+    "count": 1,
+    "samples": [
+      "NVIDIA GeForce RTX 4070 Ti SUPER Founders Edition"
+    ]
+  },
+  {
+    "key": "AMD Ryzen 9 7950X3D",
+    "category": "PC Gaming",
+    "brand": "AMD",
+    "count": 1,
+    "samples": [
+      "AMD Ryzen 9 7950X3D"
+    ]
+  },
+  {
+    "key": "AMD Ryzen 7 7800X3D",
+    "category": "PC Gaming",
+    "brand": "AMD",
+    "count": 1,
+    "samples": [
+      "AMD Ryzen 7 7800X3D"
+    ]
+  },
+  {
+    "key": "AMD Ryzen 5 7600X",
+    "category": "PC Gaming",
+    "brand": "AMD",
+    "count": 1,
+    "samples": [
+      "AMD Ryzen 5 7600X"
+    ]
+  },
+  {
+    "key": "Intel Core i7-14700K",
+    "category": "PC Gaming",
+    "brand": "Intel",
+    "count": 1,
+    "samples": [
+      "Intel Core i7-14700K"
+    ]
+  },
+  {
+    "key": "Intel Core i5-14600K",
+    "category": "PC Gaming",
+    "brand": "Intel",
+    "count": 1,
+    "samples": [
+      "Intel Core i5-14600K"
+    ]
+  },
+  {
+    "key": "Corsair RM850x",
+    "category": "PC Gaming",
+    "brand": "Corsair",
+    "count": 1,
+    "samples": [
+      "Corsair RM850x"
+    ]
+  },
+  {
+    "key": "Corsair RM750e",
+    "category": "PC Gaming",
+    "brand": "Corsair",
+    "count": 1,
+    "samples": [
+      "Corsair RM750e"
+    ]
+  },
+  {
+    "key": "Corsair MP700 Pro SE",
+    "category": "PC Gaming",
+    "brand": "Corsair",
+    "count": 1,
+    "samples": [
+      "Corsair MP700 Pro SE"
+    ]
+  },
+  {
+    "key": "G.Skill Trident Z5 RGB",
+    "category": "PC Gaming",
+    "brand": "G.Skill",
+    "count": 1,
+    "samples": [
+      "G.Skill Trident Z5 RGB 64GB"
+    ]
+  },
+  {
+    "key": "G.Skill Ripjaws S5",
+    "category": "PC Gaming",
+    "brand": "G.Skill",
+    "count": 1,
+    "samples": [
+      "G.Skill Ripjaws S5 32GB"
+    ]
+  },
+  {
+    "key": "Samsung 990 PRO",
+    "category": "PC Gaming",
+    "brand": "Samsung",
+    "count": 2,
+    "samples": [
+      "Samsung 990 PRO 4TB",
+      "Samsung 990 PRO 2TB"
+    ]
+  },
+  {
+    "key": "Samsung 870 EVO",
+    "category": "PC Gaming",
+    "brand": "Samsung",
+    "count": 1,
+    "samples": [
+      "Samsung 870 EVO 1TB"
+    ]
+  },
+  {
+    "key": "Western Digital Black SN850X",
+    "category": "PC Gaming",
+    "brand": "Western Digital",
+    "count": 1,
+    "samples": [
+      "Western Digital Black SN850X 2TB"
+    ]
+  },
+  {
+    "key": "Western Digital Blue SN580",
+    "category": "PC Gaming",
+    "brand": "Western Digital",
+    "count": 1,
+    "samples": [
+      "Western Digital Blue SN580 1TB"
+    ]
+  },
+  {
+    "key": "Crucial P3 Plus",
+    "category": "PC Gaming",
+    "brand": "Crucial",
+    "count": 1,
+    "samples": [
+      "Crucial P3 Plus 2TB"
+    ]
+  },
+  {
+    "key": "Crucial T500",
+    "category": "PC Gaming",
+    "brand": "Crucial",
+    "count": 1,
+    "samples": [
+      "Crucial T500 1TB"
+    ]
+  },
+  {
+    "key": "Seagate FireCuda 530",
+    "category": "PC Gaming",
+    "brand": "Seagate",
+    "count": 1,
+    "samples": [
+      "Seagate FireCuda 530 2TB"
+    ]
+  },
+  {
+    "key": "Seagate Barracuda Compute",
+    "category": "PC Gaming",
+    "brand": "Seagate",
+    "count": 1,
+    "samples": [
+      "Seagate Barracuda Compute 4TB"
+    ]
+  },
+  {
+    "key": "ASUS TUF Gaming VG32AQL3A",
+    "category": "PC Gaming",
+    "brand": "Asus",
+    "count": 1,
+    "samples": [
+      "ASUS TUF Gaming VG32AQL3A"
+    ]
+  },
+  {
+    "key": "Cooler Master MTT G200 V2",
+    "category": "PC Gaming",
+    "brand": "Cooler Master",
+    "count": 1,
+    "samples": [
+      "Cooler Master MTT G200 V2"
+    ]
+  },
+  {
+    "key": "DeepCool AK620 Digital",
+    "category": "PC Gaming",
+    "brand": "DeepCool",
+    "count": 1,
+    "samples": [
+      "DeepCool AK620 Digital"
+    ]
+  },
+  {
+    "key": "Logitech C920 HD Pro Webcam",
+    "category": "Phụ kiện",
+    "brand": "Logitech",
+    "count": 1,
+    "samples": [
+      "Logitech C920 HD Pro Webcam"
+    ]
+  },
+  {
+    "key": "Elgato Stream Deck XL",
+    "category": "Phụ kiện",
+    "brand": "Elgato",
+    "count": 1,
+    "samples": [
+      "Elgato Stream Deck XL"
+    ]
+  },
+  {
+    "key": "Belkin BoostCharge 3-in-1 MagSafe",
+    "category": "Phụ kiện",
+    "brand": "Belkin",
+    "count": 1,
+    "samples": [
+      "Belkin BoostCharge 3-in-1 MagSafe"
+    ]
+  },
+  {
+    "key": "Anker 737 Power Bank 24K",
+    "category": "Phụ kiện",
+    "brand": "Anker",
+    "count": 1,
+    "samples": [
+      "Anker 737 Power Bank 24K"
+    ]
+  },
+  {
+    "key": "Apple 20W USB-C Power Adapter",
+    "category": "Phụ kiện",
+    "brand": "Apple",
+    "count": 1,
+    "samples": [
+      "Apple 20W USB-C Power Adapter"
+    ]
+  },
+  {
+    "key": "Samsung 45W Travel Adapter",
+    "category": "Phụ kiện",
+    "brand": "Samsung",
+    "count": 1,
+    "samples": [
+      "Samsung 45W Travel Adapter"
+    ]
+  },
+  {
+    "key": "Logitech Brio 4K Webcam",
+    "category": "Phụ kiện",
+    "brand": "Logitech",
+    "count": 1,
+    "samples": [
+      "Logitech Brio 4K Webcam"
+    ]
+  },
+  {
+    "key": "Razer Seiren V2 Pro",
+    "category": "Phụ kiện",
+    "brand": "Razer",
+    "count": 1,
+    "samples": [
+      "Razer Seiren V2 Pro"
+    ]
+  },
+  {
+    "key": "Corsair iCUE LINK System Hub",
+    "category": "Phụ kiện",
+    "brand": "Corsair",
+    "count": 1,
+    "samples": [
+      "Corsair iCUE LINK System Hub"
+    ]
+  },
+  {
+    "key": "SteelSeries Sonar Wireless",
+    "category": "Phụ kiện",
+    "brand": "SteelSeries",
+    "count": 1,
+    "samples": [
+      "SteelSeries Sonar Wireless"
+    ]
+  },
+  {
+    "key": "HyperX Cloud III Sumi USB",
+    "category": "Phụ kiện",
+    "brand": "HyperX",
+    "count": 1,
+    "samples": [
+      "HyperX Cloud III Sumi USB"
+    ]
+  },
+  {
+    "key": "Elgato Wave:3",
+    "category": "Phụ kiện",
+    "brand": "Elgato",
+    "count": 1,
+    "samples": [
+      "Elgato Wave:3"
+    ]
+  },
+  {
+    "key": "Elgato HD60 X",
+    "category": "Phụ kiện",
+    "brand": "Elgato",
+    "count": 1,
+    "samples": [
+      "Elgato HD60 X"
+    ]
+  },
+  {
+    "key": "Keychron K3 Pro Low Profile",
+    "category": "Phụ kiện",
+    "brand": "Keychron",
+    "count": 1,
+    "samples": [
+      "Keychron K3 Pro Low Profile"
+    ]
+  },
+  {
+    "key": "Lenovo ThinkPad TrackPoint Keyboard II",
+    "category": "Phụ kiện",
+    "brand": "Lenovo",
+    "count": 1,
+    "samples": [
+      "Lenovo ThinkPad TrackPoint Keyboard II"
+    ]
+  }
+]

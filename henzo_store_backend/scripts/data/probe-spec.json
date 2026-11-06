@@ -1,0 +1,47 @@
+{
+  "HyperX Cloud III Wireless": {
+    "brand": "HyperX",
+    "queries": ["HyperX Cloud III", "HyperX Cloud", "HyperX headset", "intitle:HyperX Cloud"],
+    "categories": ["HyperX Cloud III", "HyperX Cloud", "HyperX headsets"]
+  },
+  "HyperX Cloud III Wireless Red": {
+    "brand": "HyperX",
+    "queries": ["HyperX Cloud III", "HyperX Cloud Red", "HyperX Cloud 3"],
+    "categories": ["HyperX Cloud III"]
+  },
+  "HyperX Cloud Alpha Wireless": {
+    "brand": "HyperX",
+    "queries": ["HyperX Cloud Alpha", "HyperX Cloud Alpha Wireless", "HyperX Cloud"],
+    "categories": ["HyperX Cloud Alpha"]
+  },
+  "HyperX Cloud Alpha Wireless Red": {
+    "brand": "HyperX",
+    "queries": ["HyperX Cloud Alpha Red", "HyperX Cloud Alpha"],
+    "categories": ["HyperX Cloud Alpha"]
+  },
+  "Corsair HS60 Wireless": {
+    "brand": "Corsair",
+    "queries": ["Corsair HS60", "Corsair headset wireless", "intitle:Corsair HS"],
+    "categories": ["Corsair headsets", "Corsair HS60"]
+  },
+  "Corsair HS60 Wireless Carbon": {
+    "brand": "Corsair",
+    "queries": ["Corsair HS60 Carbon", "Corsair HS60"],
+    "categories": ["Corsair HS60"]
+  },
+  "Corsair HS80 RGB USB": {
+    "brand": "Corsair",
+    "queries": ["Corsair HS80", "intitle:Corsair HS"],
+    "categories": ["Corsair headsets", "Corsair HS80"]
+  },
+  "Corsair HS80 RGB USB Carbon": {
+    "brand": "Corsair",
+    "queries": ["Corsair HS80 Carbon", "Corsair HS80"],
+    "categories": ["Corsair HS80"]
+  },
+  "Corsair K100 RGB OPX Optical": {
+    "brand": "Corsair",
+    "queries": ["Corsair K100", "Corsair K100 RGB", "Corsair STRAFE", "Corsair keyboard"],
+    "categories": ["Corsair keyboards", "Corsair K100"]
+  }
+}

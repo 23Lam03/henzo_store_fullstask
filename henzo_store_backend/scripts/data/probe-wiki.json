@@ -1,0 +1,30 @@
+{
+  "page:HyperX": [
+    {
+      "title": "HP Omen",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/f/f3/HP_Omen_logo.svg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=original",
+      "via": "en:pageimage"
+    }
+  ],
+  "page:HyperX Cloud": [],
+  "page:Cloud (headset)": [],
+  "page:Corsair Gaming": [
+    {
+      "title": "Corsair Gaming",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/5/5d/Corsair_Headquarters.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=original",
+      "via": "en:pageimage"
+    },
+    {
+      "title": "Corsair Gaming",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/5/5d/Corsair_Headquarters.jpg?utm_source=de.wikipedia.org&utm_campaign=api&utm_content=original",
+      "via": "de:pageimage"
+    }
+  ],
+  "page:Corsair HS60": [],
+  "page:List of Corsair products": [],
+  "page:HyperX Cloud II": [],
+  "wd:HyperX Cloud": [],
+  "wd:Corsair HS60": [],
+  "wd:Corsair HS80": [],
+  "wd:HyperX Cloud Alpha": []
+}

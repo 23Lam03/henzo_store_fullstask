@@ -1,0 +1,19 @@
+node_modules/
+dist/
+build/
+coverage/
+storage/
+
+# Biến môi trường — KHÔNG commit
+.env
+.env.*
+!.env.example
+
+# Log
+*.log
+npm-debug.log*
+yarn-error.log*
+
+# Cache
+.cache/
+.DS_Store

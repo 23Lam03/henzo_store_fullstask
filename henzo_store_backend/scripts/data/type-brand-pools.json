@@ -1,0 +1,596 @@
+{
+  "HEADSET": {
+    "sony": [
+      "Sony Ericsson Bluetooth Headset HBH-PV705 (2220451715).jpg",
+      "Sony Ericsson Bluetooth Headset HBH-PV705 - Top End.jpg",
+      "Sony S Wireless Headphones (47103208).jpeg"
+    ],
+    "logitech": [
+      "Logitech G733 and Twitch Headphone Stand at K7 Entertainment live studio 20251004.jpg"
+    ],
+    "razer": [
+      "Razer Dadeland Mall, Miami Florida, February 2023 - Headphones.jpg"
+    ],
+    "sennheiser": [
+      "Gili Meno Island, Cowon iAudio U2 player, Sennheiser earphones, Indonesia.jpg",
+      "DJ player on iPad, Pioneer EFX-500, Sennheiser headphone - ＃gearporn ＃moving ＃party (2012-05-30 by j bizzie).jpg",
+      "Sennheiser monitor headphone in front of Alesis M1A (2014-05-18 by David Hilowitz).jpg",
+      "Sennheiser RS 175 wireless headphone + station 2,44 ghz.jpg"
+    ]
+  },
+  "MONITOR": {
+    "samsung": [
+      "Samsung monitor with VESA mount.jpg",
+      "Monitorë HP & Samsung.jpg"
+    ],
+    "dell": [
+      "Dual Dell monitor workstation setup.jpg",
+      "Dell monitors, ROG gaming chairs and Sony XDCAM of TPCU at Gamforce 20251220.jpg"
+    ],
+    "lg": [
+      "LG L194WT-SF LCD monitor.jpg",
+      "LG UltraWide monitors.jpg",
+      "Monitor lcd lg de frente.jpeg",
+      "Monitor lcd lg diagonal.jpeg",
+      "Computer-Monitor LG L194WT-SF und goldener Schnitt.png"
+    ],
+    "viewsonic": [
+      "ViewSonic monitor at Platform 2, TRA Baifu Station 20221113.jpg"
+    ]
+  },
+  "MOUSE": {
+    "logitech": [
+      "Logitech iFeel mouse-IMG 8431-black.jpg",
+      "Logitech iFeel mouse-IMG 8431-white.jpg",
+      "Logitech Mouse mechanical assembly IMG 20170323.jpg",
+      "Douglas Engelbart's prototype mouth (replica) & Logitech three-button Depraz mouse designed by André Guignard, Computer History Museum, 2009-11-15.jpg",
+      "Logitech MX900 bluetooth mouse.jpg",
+      "Logitech Red mouse on a mouse pad.jpg"
+    ]
+  },
+  "KEYBOARD": {
+    "logitech": [
+      "Logitech K835 TKL (Norwegian layout) (51253001971).png",
+      "Logitech G PRO TKL gaming keyboard - English (United States) layout.jpg",
+      "Mechanical Logitech keyboard.jpg",
+      "Logitech G515 Lightspeed TKL Wireless Keyboard.jpg"
+    ],
+    "razer": [
+      "Razer Deathstalker Keyboard.jpg",
+      "Razer BlackWidow Ultimate 2014 Elite Mechanical Gaming Keyboard.jpg",
+      "Razer Arctosa keyboard-top-ar 16to9 PNr°0325.jpg",
+      "Razer Ornata Chroma keyboard-top PNr°0463.jpg",
+      "Green mechanical switch Razer keyboard - Levi Loot.jpg"
+    ],
+    "keychron": [
+      "End - Keychron K8 Non-Backlight Wireless Mechanical Keyboard.jpg",
+      "F1 - Keychron K8 Non-Backlight Wireless Mechanical Keyboard.jpg"
+    ],
+    "microsoft": [
+      "Camera zoom burst on a Microsoft computer keyboard in Tuntorp 4.jpg",
+      "Camera zoom burst on a Microsoft computer keyboard in Tuntorp 2.jpg",
+      "Camera zoom burst on a Microsoft computer keyboard in Tuntorp 3.jpg",
+      "Camera zoom burst on a Microsoft computer keyboard in Tuntorp 5.jpg",
+      "Camera zoom burst on a Microsoft computer keyboard in Tuntorp 6.jpg",
+      "Camera zoom burst on a Microsoft computer keyboard in Tuntorp 7.jpg",
+      "Camera zoom burst on a Microsoft computer keyboard in Tuntorp 8.jpg",
+      "Camera zoom burst on a Microsoft computer keyboard in Tuntorp 10.jpg",
+      "Camera zoom burst on a Microsoft computer keyboard in Tuntorp 8 - banner.jpg",
+      "Microsoft Wired Keyboard 200 - controller-6257.jpg",
+      "Microsoft Wired Keyboard 200 - controller-6337.jpg"
+    ],
+    "roccat": [
+      "ROCCAT™ Ryos MK Pro – Mechanical Gaming Keyboard (11947220216).jpg",
+      "ROCCAT™ Ryos MK Pro – Mechanical Gaming Keyboard (11946666203).jpg",
+      "ROCCAT™ Ryos MK Pro – Mechanical Gaming Keyboard (11947206086).jpg"
+    ]
+  },
+  "MIC": {
+    "blue": [
+      "Blue Microphones Bottle setting - bfor recording session.jpg"
+    ]
+  },
+  "WEBCAM": {
+    "hp": [
+      "Hp web camera closeup.jpg"
+    ]
+  },
+  "STORAGE": {
+    "samsung": [
+      "SSD-Samsung-EVO-860-250Gb.jpg",
+      "Dual SSD SATA adapter with Samsung 860 EVO SSD and 2.5-inch enclosure.jpg",
+      "Samsung T5 Portable External SSD (Solid State Drive) (43544308485).jpg"
+    ],
+    "kingston": [
+      "Kingston HyperX 120GB 3K SSD.JPG",
+      "2023 Dysk SSD Kingston NV2 2TB.jpg"
+    ],
+    "crucial": [
+      "Crucial MX100 SSD 256GB 20140905.jpg"
+    ],
+    "seagate": [
+      "SEAGATE 7200.9 160GB HDD+2230 256GB NVME SSD+SANDISK X400 256GB SSD.jpg",
+      "Seagate BarraCuda Compute 2TB 3.5-inch SATA HDD - top view.jpg",
+      "Seagate BarraCuda Compute 2TB 3.5-inch SATA HDD - bottom view (circuit board).jpg"
+    ],
+    "western digital": [
+      "Western Digital Caviar Green 2TB 3.5-inch SATA HDD - top view.jpg",
+      "Western Digital Caviar Green 2TB 3.5-inch SATA HDD - bottom view (circuit board).jpg"
+    ]
+  },
+  "RAM": {
+    "crucial": [
+      "Assorted DDR3 desktop memory modules (Crucial Ballistix, Crucial, Lenovo and Ramaxel).jpg",
+      "Crucial 32GB DDR5-4800 SODIMM CT32G48C40S5.M16A1 - front view.jpg",
+      "Crucial 32GB DDR5-4800 SODIMM CT32G48C40S5.M16A1 - rear view.jpg",
+      "Crucial Ballistix Sport 8GB DDR4-2400 UDIMM BLS4G4D240FSA.jpg",
+      "Micron Crucial 32GB DDR4-2666 LRDIMM ECC MTA36ASF4G72LZ-2G6D1SG - front view.jpg",
+      "Micron Crucial 32GB DDR4-2666 LRDIMM ECC MTA36ASF4G72LZ-2G6D1SG - rear view.jpg"
+    ],
+    "kingston": [
+      "Kingston FURY Impact DDR5 SO-DIMM Laptop Memory 32GB Module - front view.jpg",
+      "Kingston FURY Impact DDR5 SO-DIMM Laptop Memory 32GB Module - rear view.jpg",
+      "RAM DIMM 4GB by Kingston-top PNr°0306.jpg",
+      "KingstonSDRAM4GDDR3KVR1333D3N9Front20200531.jpg",
+      "KingstonSDRAM4GDDR3KVR1333D3N9Back20200531.jpg",
+      "Kingston DDR3-1333 2 Gb.jpg",
+      "2016032601 8GB-Kingston-RAM-240pin.jpg"
+    ],
+    "samsung": [
+      "Samsung 32GB DDR4-2133 ECC LRDIMM M386A4G40DM0-CPB - front view.jpg",
+      "Samsung 32GB DDR4-2133 ECC LRDIMM M386A4G40DM0-CPB - rear view.jpg",
+      "Samsung 8GB DDR4-2400 ECC Registered RDIMM M393A1G40EB1-CRC0Q - front view.jpg",
+      "Samsung 8GB DDR4-2400 ECC Registered RDIMM M393A1G40EB1-CRC0Q - rear view.jpg",
+      "2008 Intel Developer Forum Taipei Day1 Showcase Samsung DDR3 DRAM Modules.jpg",
+      "Microspot DC-300 - 72 pin DIMM - Samsung KM44C1000BJ-7-8441.jpg"
+    ]
+  },
+  "COOLER": {
+    "asus": [
+      "ASUS heatsink 20071127.jpg"
+    ],
+    "nzxt": [
+      "NZXT Kraken X52 cooler in H500i.jpg"
+    ]
+  },
+  "PSU": {
+    "seasonic": [
+      "24-pin ATX power plug from a Seasonic PSU 20131105.jpg"
+    ]
+  },
+  "GPU": {
+    "nvidia": [
+      "Nvidia geforce ti 4600 gpu 2007-11-27 23-03.jpg",
+      "NVidia GeForce 6600GT AGP with GPU 2009-01-27.jpg",
+      "NVIDIA GPU reflow.jpg",
+      "Nvidia-GPU and passive cooled VRAM.jpg",
+      "Nvidia GeForce GT120 for Mac Pro.jpg",
+      "Palit GeForce GTX 750 StormX OC - nvidia GM107-300-A2-0217.jpg"
+    ]
+  },
+  "PC_CASE": {
+    "thermaltake": [
+      "Thermaltake chassis.jpg",
+      "Thermaltake V9 Case.jpg"
+    ],
+    "antec": [
+      "Silent PC-Antec P180.JPG",
+      "Antec ISK110 mini-PC rear.JPG"
+    ],
+    "fractal": [
+      "Legendary Fractal Torrent Airflow Case PC Build. (Intel i7-14700kf - RTX 4070 Ti Super).webm"
+    ],
+    "acer": [
+      "Chillblast Fusion Tracer with green case lighting.jpg"
+    ],
+    "lian li": [
+      "Lian Li PC-A05FN.png"
+    ],
+    "corsair": [
+      "Corsair 4000D Airflow mid-tower ATX case.tif"
+    ]
+  },
+  "LAPTOP": {
+    "hp": [
+      "Laptophp.png",
+      "Hewlett-Packard Pavilion dm1 laptop keyboard and touchpad.jpg",
+      "HP Victus 15 gaming laptop side view.jpg",
+      "Child interacting with a laptop touchpad while sitting at a table.jpg",
+      "ThinkPad X40 ontop the HP Compaq NC4400.jpg",
+      "HP Compaq Nc2400 and a ThinkPad X40.jpg",
+      "ThinkPad X40 above a HP nc2400.jpg",
+      "Manufacturing plate with serial number of HP Elitebook 840 laptop (cropped).jpg",
+      "Glasses lying on laptop touchpad and erroneously producing strange effect on scrren.webm",
+      "HP Pavilion dv2000 laptop.jpg"
+    ],
+    "lenovo": [
+      "Lenovo ThinkPad T490.jpg",
+      "Trashed Lenovo IdeaPad.jpg",
+      "Type label on lower side of Lenovo ThinkPad T410 laptop from 2011.jpg",
+      "Lenovo G500s laptop-2903.jpg",
+      "Lenovo G500s laptop-2905.jpg",
+      "Lenovo IdeaPad 320.jpg"
+    ],
+    "apple": [
+      "Apple MacBookPros 13-15-17 stacked 08-2009.jpg",
+      "ThinkPad T61, 380z and Apple iBook.jpg",
+      "Apple MacBook Pro, model A1278-8106.jpg",
+      "Apple MacBook Pro, model A1278-8107.jpg",
+      "Apple MacBook Pro, model A1278-8109.jpg",
+      "Apple MacBook Pro, model A1278-8111.jpg",
+      "Apple MacBook Pro, model A1278-8112.jpg"
+    ],
+    "microsoft": [
+      "CES 2012 - Microsoft notebooks (6764013075).jpg"
+    ],
+    "dell": [
+      "Dell Inspiron Notebook and Hitachi.jpg"
+    ],
+    "asus": [
+      "Asus laptops on a Ubuntu Party 12.10.jpg",
+      "Asus - czyszczenie laptopa.JPG"
+    ],
+    "samsung": [
+      "Samsung Chromebook Series 3 internals.JPG"
+    ],
+    "framework": [
+      "Framework Laptop 13 - 2023 AMD Ryzen - Internal motherboard and component view.jpg",
+      "2 girls testing an expansion card on Framework Laptop 13.jpg"
+    ],
+    "acer": [
+      "Acer Extensa 5235 laptop-2891.jpg"
+    ],
+    "xiaomi": [
+      "Xiaomi Notebook Air 12.5 Motherboard.jpg"
+    ],
+    "lg": [
+      "HK 2010 Computer Festival IT Show shop LG Laptop.JPG"
+    ],
+    "msi": [
+      "MSI_laptop_with_English_Wikipedia_screenshot_20100614.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "MSI_laptop_with_English_Wikipedia_screenshot_20100614_%282%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "Twitch_T-shirt%2C_Peanuts_T-shirt%2C_Aorus_laptop_and_MSI_laptop_%2814892417627%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original"
+    ],
+    "microsoft surface": [
+      "A_platinum_Microsoft_Surface_Laptop_Go.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "Microsoft_Surface_Laptop_7.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original"
+    ]
+  },
+  "TABLET": {
+    "google": [
+      "Google ATAP's Project Tango tablet (15387052663).jpg",
+      "1st gen Comparison iPad Mini & Google Nexus 7 & Kindle Fire Wikipedia screen 03 2013 6262.jpg"
+    ],
+    "samsung": [
+      "IPad Pro 1st Generation and Samsung Galaxy Tab S8 Ultra's thickness.jpg",
+      "Android back button on a Samsung tablet.jpg",
+      "Samsung tablet.jpg",
+      "Samsung tablet.png",
+      "Samsung Tablet.jpg",
+      "Samsung Tablet.png",
+      "Samsung Galaxy Tab S2 displaying Android lock screen.jpg",
+      "Samsung Galaxy Tab 2.jpg"
+    ],
+    "apple ipad": [
+      "U.S._Marine_Corps_Sgt._Andrew_W._Morey_uses_an_Apple_iPad_tablet_computer_to_look_up_grid_coordinates_aboard_a_UH-1Y_Venom_helicopter_at_Forward_Operating_Base_Edinburgh%2C_Afghanistan%2C_July_16%2C_2011_110716-M-AN675-005.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original"
+    ]
+  },
+  "PHONE": {
+    "apple": [
+      "Apple iPhone.webp",
+      "Phone-apple-iphone.svg",
+      "Phone-apple-iphone-v2.svg",
+      "Apple iPhone 5c (15051866545).jpg",
+      "Apple iPhone 5c (15051866795).jpg",
+      "Apple iPhone 5c (15051866985).jpg",
+      "Apple iPhone 5c (14865204500).jpg",
+      "Apple iPhone 5c (14865311897).jpg",
+      "Apple iPhone 4 Bumper.jpg",
+      "Apple iPhone vs HTC Hero2.jpg",
+      "Apple iPhone 7 in Apple leather case.jpg",
+      "Apple iPhone Fold.jpg",
+      "Apple foldable iPhone.jpg",
+      "Apple iPhone Ultra.jpg",
+      "Apple iPhone Ultra Fold.jpg",
+      "Apple iPhone fold.jpg",
+      "Apple iPhone ultra.jpg",
+      "Apple Foldable iPhone Ultra.jpg",
+      "Apple iPhone 12 Pro - Cameras (50535314721).jpg",
+      "MC Macau Apple Store Galaxy mall Nov 2016.jpg",
+      "Samsung Galaxy S6 edge vs Apple iPhone 6 (17012053954).jpg",
+      "Apple iPhone 2G 8GB - cable.jpg"
+    ],
+    "oppo": [
+      "OPPO X 2021 Rollable Concept Handset Roll Motor.jpg",
+      "OPPO X 2021 Rollable Concept Handset 6.8mm滑轮卷轴.jpg",
+      "Back view of OPPO Find X8 (November 1, 2024).jpg",
+      "Oppo A37.jpg",
+      "OPPO Reno A 128GB.jpg",
+      "SZ 深圳 Shenzhen 龍華區 Longhua District 景龍建設路 Jinglong Jianshe Road 壹方天地 Uniwalk Mall shop Smartphones OPPO September 2023 R12S 06.jpg",
+      "SZ 深圳 Shenzhen 龍華區 Longhua District 景龍建設路 Jinglong Jianshe Road 壹方天地 Uniwalk Mall shop Smartphones OPPO September 2023 R12S 09.jpg",
+      "Oppo Reno7 back.jpg",
+      "Opportunity-Driven Multiple Access.jpg"
+    ],
+    "huawei": [
+      "Notification LED Huawei.webm",
+      "Celu Huawei y5 por detras.jpg",
+      "Belinda Huawei 2021.jpg",
+      "GD 廣東 Guangdong 廣州 Guangzhou 花城大道 HuaCheng Avenue GT Land 春廣場 Spring Plaza mall shop Huawei Store 華為 Mate XT 三摺手機 folding smartphone tablet September 2024 R12S 01.jpg",
+      "GD 廣東 Guangdong 廣州 Guangzhou 花城大道 HuaCheng Avenue GT Land 春廣場 Spring Plaza mall shop Huawei Store 華為 Mate XT 三摺手機 folding smartphone tablet September 2024 R12S 09.jpg",
+      "Back view of Huawei Mate 60 Pro.jpg",
+      "Huawei GR3 TAG-L03.jpg",
+      "Huawei P10 Back.jpg",
+      "About Huawei Pura 70 White.jpg",
+      "SZ 深圳 Shenzhen 龍崗 Longgang 五和大道 Wuhe Blvd 雅南路 Ya'nan Road Coco Park mall shop Huawei Smartphone Store October 2023 R12S 16.jpg",
+      "SZ 深圳 Shenzhen 龍崗 Longgang 五和大道 Wuhe Blvd 雅南路 Ya'nan Road Coco Park mall shop Huawei Smartphone Store October 2023 R12S 18.jpg",
+      "Huawei Nova 2 plus.png",
+      "Huawei NM Card.jpg",
+      "Huawei Finger print unit B.jpg",
+      "Huawei cameras A.jpg",
+      "SIM TRAY - Huawei.jpg",
+      "Huawei Finger print unit A.jpg",
+      "Huawei cameras B.jpg",
+      "Huawei U1220S (Digi Mobil).jpg",
+      "Huawei W1-U00 - motor for vibrating alert-7760.jpg",
+      "Huawei W1-U00 - motor for vibrating alert-0012.jpg",
+      "Huawei W1-U00 - motor for vibrating alert-0013.jpg",
+      "Huawei y 600 wiki.jpeg"
+    ],
+    "xiaomi": [
+      "Xiaomi, Realme, Infinix, Poco and Motorola Smartphones in Zabrze, Silesian Voivodeship, Poland, March 2024.jpg",
+      "Black shark xiaomi.jpg",
+      "Back view of Xiaomi MIX Fold 4 (November 1, 2024).jpg",
+      "XiaomiMi8ProBack20190714.jpg",
+      "XiaomiMi8ProFront20190714.jpg",
+      "Xiaomi Redmi 6A Блакитний 00001 03 Головний екран.jpg",
+      "Xiaomi Redmi 6A Блакитний 00001 01.jpg",
+      "Xiaomi Redmi 6A Блакитний 00001 02 Камера.jpg",
+      "Xiaomi Redmi 6A Блакитний 00001 04 Набір номерів.jpg",
+      "Xiaomi Redmi 6A Блакитний 00001 06 лівий екран.jpg",
+      "Xiaomi Redmi 6A Блакитний 00001 05 Набір номерів.jpg",
+      "Xiaomi Redmi 6A Блакитний 00001 07Верхнє меню.jpg",
+      "Xiaomi Redmi 6A Блакитний 00001 08 Верхнє меню.jpg",
+      "Xiaomi Redmi 6A Блакитний 00001 09 правий екран, програми.jpg",
+      "Xiaomi Mi 11 Ultra back.jpg",
+      "The back of Xiaomi 12SU.jpg",
+      "Xiaomi 14T Pro and Xiaomi 14T at the Ayala Malls Central Bloc (2025-01-09).jpg",
+      "Xiaomi Redmi Note 10 Pro.jpg",
+      "Xiaomi 15 Ultra 003.jpg",
+      "Xiaomi-14T-Pro---RuinDig 110.jpg",
+      "Xiaomi 10 Youth 5G.jpg"
+    ],
+    "samsung": [
+      "Carcasa Samsung Galaxy Trend.jpeg",
+      "Größenvergleich Samsung Galaxy S10 und S20 Ultra 5G.jpg",
+      "Back of a Samsung Galaxy S20 Plus 5G.jpg",
+      "Back of the Samsung Galaxy S22.jpg",
+      "Back of the Samsung Galaxy S22 Ultra.jpg",
+      "Back of the Samsung Galaxy A53 5G.jpg",
+      "Back of the Samsung Galaxy A33 5G.jpg",
+      "Back of the Samsung Galaxy S23.jpg",
+      "Close angled view of a Samsung Galaxy A12's Camera.png",
+      "Google Pixel 8 Pro and Samsung Galaxy S24 Ultra.jpg",
+      "Samsung mobile phone battery.JPG",
+      "Samsung Galaxy 3 GT-I5800 (8).jpg",
+      "Samsung smartphone battery, Hillegersberg, Rotterdam (2022) 01.jpg",
+      "Samsung smartphone battery, Hillegersberg, Rotterdam (2022) 03.jpg",
+      "Samsung smartphone battery, Hillegersberg, Rotterdam (2022) 02.jpg",
+      "Samsung smartphone battery, Hillegersberg, Rotterdam (2022) 06.jpg",
+      "Samsung smartphone battery, Hillegersberg, Rotterdam (2022) 05.jpg",
+      "Samsung smartphone battery, Hillegersberg, Rotterdam (2022) 04.jpg",
+      "Samsung smartphone battery, Hillegersberg, Rotterdam (2022) 07.jpg",
+      "Samsung smartphone battery, Hillegersberg, Rotterdam (2022) 08.jpg",
+      "Samsung Galaxy Nexus battery 1.JPG",
+      "Samsung Galaxy Nexus battery 2.JPG",
+      "20250825 203820 Samsung battery from Samsung Galaxy Tab 2 7.0.jpg",
+      "Inflated ExtremeCells battery (Samsung Galaxy Note 4).jpg",
+      "Samsung galaxy Note - Snap 2556.JPG",
+      "Samsung galaxy Note - Snap 2557.JPG",
+      "Samsung galaxy Note - Snap 2558.JPG",
+      "Samsung galaxy Note - Snap 2559.JPG",
+      "Samsung galaxy Note - Snap 2566.JPG",
+      "Samsung galaxy Note - Snap 2567.JPG",
+      "Samsung galaxy Note - Snap 2568.JPG",
+      "Samsung Galaxy S4 update.JPG",
+      "Samsung Galaxy S4 with black cover.jpg",
+      "Top of Galaxy Core Advance with Samsung Ultrasonic Cover (display on).JPG",
+      "Top of Galaxy Core Advance with Samsung Ultrasonic Cover (display off).JPG",
+      "Top of Galaxy Core Advance with Samsung Ultrasonic Cover (display on) cropped.jpg",
+      "SamsungGalaxyS8ActiveToughstand.jpg",
+      "Samsung Galaxy Note FE.png",
+      "Samsung Galaxy J6 purple lavender.jpg",
+      "Samsung Galaxy S7 launch, Barcelona 2016 (25345531481).jpg",
+      "Samsung Galaxy S7 launch, Barcelona 2016 (25070876659).jpg",
+      "SamsungGalaxyS20plus5G128G2020SMG9860TestCharging20210914042415.jpg",
+      "SAMSUNG Galaxy S22 Ultra TPU CASE (2).jpg",
+      "SAMSUNG Galaxy S22 Ultra TPU CASE.jpg",
+      "Samsung Galaxy TriFold.jpg",
+      "Samsung Galaxy Z TriFold.jpg",
+      "Samsung Galaxy Trifold.jpg",
+      "Samsung Galaxy Z Trifold.jpg",
+      "2010 Samsung Galaxy Reliance Mart.jpg",
+      "20201109 Samsung Galaxy Trend.jpg",
+      "((FileSamsung Galaxy S4 in downloading mode.jpgthumbSamsung Galaxy S4 in downloading mode)) – kopija.jpg",
+      "A vector illustration of the front of the Samsung Galaxy A50 in Blue 3.png",
+      "Samsung Galaxy S Sprint jeh.jpg",
+      "Samsung Galaxy M12.jpg",
+      "Samsung-Galaxy-A52s-2021.jpg",
+      "Handy Panzerglas Anbringen Anleitung – Wie Schutzfolie auf Iphone, Samsung & Huawei Aufkleben.webm",
+      "Samsung Galaxy S23 Plus with defective display.webm",
+      "Photo of Samsung Galaxy J3 Prime.jpg",
+      "Samsung Galaxy Note 7 Air New Zealand.jpg",
+      "Sign prohibiting the use of Samsung Galaxy Note 7, Eastmain River Airport, Quebec, Canada.jpg",
+      "HK mobile Iphone power charging USB cable connectors Sept-2013 One to Many n Samsung.JPG",
+      "Samsung Galaxy Note 5, S6 edge+ and Note 7 20161010b.jpg",
+      "Samsung Galaxy Note 10 (Infinity-O).jpg",
+      "Samsung mobile phone E1130 06 light.jpg",
+      "Motorola DynaTAC and Samsung Galaxy Note Edge.jpg",
+      "Samsung galaxy young.jpg",
+      "Samsung Galaxy Young.jpg",
+      "Samsung Galaxy S4.svg",
+      "Samsung Galaxy Note shows Wiki article jeh.jpg"
+    ],
+    "google": [
+      "Google Pixel and Pixel XL smartphones (30155268545).jpg",
+      "Google Pixel and Pixel XL smartphones (30155266465).jpg",
+      "Google Pixel and Pixel XL smartphones (30120254046).jpg",
+      "Google Pixel and Pixel XL smartphones (30155267665).jpg",
+      "Ayaan's Google Pixel.png",
+      "Google Pixel White 01.jpg",
+      "Google Pixel 6 back (Kinda Coral).svg",
+      "Google Pixel 6 back (Stormy Black).svg",
+      "Google Pixel 6 back (Sorta Seafoam).svg",
+      "Google Pixel 6 Pro back (Cloudy White).svg",
+      "Google Pixel 6 Pro back (Sorta Sunny).svg",
+      "Google Pixel 6 Pro back (Stormy Black).svg",
+      "Google Pixel.jpg",
+      "Google Pixel 8 Pro with Google Pixel 7 Pro.jpg",
+      "Back-google-pixel-3a.jpg",
+      "Google Pixel 7A.jpg",
+      "Camera of Google Pixel 9 - 3.jpg",
+      "Camera of Google Pixel 9 - 5.jpg",
+      "Google Pixel 9 Pro XL (back).jpg",
+      "Google Pixel 9a (Iris) rear.svg",
+      "Google Pixel 9a (Peony) rear.svg",
+      "Google Pixel 9a (Porcelain) rear.svg",
+      "Google Pixel 9a (Obsidian) rear.svg",
+      "Mid-20th century Việt Nam-themed Google Pixel 4a cover, Hillegersberg, Rotterdam (2022) 01.jpg",
+      "Mid-20th century Việt Nam-themed Google Pixel 4a cover, Hillegersberg, Rotterdam (2022) 03.jpg",
+      "Mid-20th century Việt Nam-themed Google Pixel 4a cover, Hillegersberg, Rotterdam (2022) 02.jpg",
+      "Mid-20th century Việt Nam-themed Google Pixel 4a cover, Hillegersberg, Rotterdam (2022) 04.jpg",
+      "Google Pixel 6 front.svg",
+      "Google Pixel 6 Pro front.svg",
+      "Google Pixel 7 back (Lemongrass).svg",
+      "Google Pixel 7 back (Obsidian).svg",
+      "Google Pixel 7 back (Snow).svg",
+      "Google Pixel 7 front.svg",
+      "Google Pixel 7 Pro back (Obsidian).svg",
+      "Google Pixel 7 Pro back (Snow).svg",
+      "Google Pixel 7 Pro back (Hazel).svg",
+      "Google Pixel 7 Pro front.svg",
+      "Google Pixel 8 back (Hazel).svg",
+      "Google Pixel 8 back (Obsidian).svg",
+      "Google Pixel 8 back (Rose).svg",
+      "Google Pixel 8 front.svg",
+      "Google Pixel 8 Pro back (Bay).svg",
+      "Google Pixel 8 Pro back (Obsidian).svg",
+      "Google Pixel 8 Pro back (Porcelain).svg",
+      "Google Pixel 8 Pro front.svg",
+      "Google Pixel Fold back (Obsidian).svg",
+      "Google Pixel Fold back (Porcelain).svg",
+      "Google Pixel Fold front (Obsidian).svg",
+      "Google Pixel Fold front (Porcelain).svg",
+      "Google Pixel Fold inside (Obsidian).svg",
+      "Google Pixel Fold inside (Porcelain).svg",
+      "Google Pixel 8 back (Mint).svg",
+      "Google Pixel 8 Pro back (Mint).svg",
+      "Google Pixel 9 (Obsidian) front.svg",
+      "Google Pixel 9 (Peony) front.svg",
+      "Google Pixel 9 (Obsidian) rear.svg",
+      "Google Pixel 9 (Porcelain) front.svg",
+      "Google Pixel 9 (Peony) rear.svg",
+      "Google Pixel 9 (Porcelain) rear.svg",
+      "Google Pixel 9 (Wintergreen) front.svg",
+      "Google Pixel 9 (Wintergreen) rear.svg",
+      "Google Pixel 9 Pro (Obsidian) rear.svg",
+      "Google Pixel 9 Pro (Hazel) front.svg",
+      "Google Pixel 9 Pro (Hazel) rear.svg",
+      "Google Pixel 9 Pro (Porcelain) front.svg",
+      "Google Pixel 9 Pro (Porcelain) rear.svg",
+      "Google Pixel 9 Pro (Rose Quartz) front.svg",
+      "Google Pixel 9 Pro (Rose Quartz) rear.svg",
+      "Google Pixel 9 Pro XL (Hazel) front.svg",
+      "Google Pixel 9 Pro XL (Hazel) rear.svg",
+      "Google Pixel 9 Pro XL (Obsidian) front.svg",
+      "Google Pixel 9 Pro XL (Obsidian) rear.svg",
+      "Google Pixel 9 Pro XL (Porcelain) front.svg",
+      "Google Pixel 9 Pro XL (Porcelain) rear.svg",
+      "Google Pixel 9 Pro XL (Rose Quartz) rear.svg",
+      "Google Pixel 9 Pro XL (Rose Quartz) front.svg",
+      "Google Pixel 9 Pro Fold (Obsidian) front folded.svg",
+      "Google Pixel 9 Pro Fold (Porcelain) front folded.svg",
+      "Google Pixel 9 Pro Fold (Obsidian) rear folded.svg",
+      "Google Pixel 9 Pro Fold (Porcelain) rear folded.svg",
+      "Google Pixel 9 Pro Fold (Obsidian) unfolded.svg",
+      "Google Pixel 9 Pro Fold (Porcelain) unfolded.svg"
+    ],
+    "honor": [
+      "Back view of Honor 200 Pro Black.jpg",
+      "Honor Magic V Flip (May 1, 2025).jpg",
+      "Honor Magic V5.jpg",
+      "HONOR 20 PRO.png"
+    ],
+    "vivo": [
+      "Back view of VIVO X Fold 3 (November 1, 2024).jpg",
+      "Vivo V20 back.jpg",
+      "Vivo X60 Pro+ Orange.jpg",
+      "Filial da Vivo, em Belo Horizonte (05 03 2009).jpg"
+    ],
+    "realme": [
+      "Back Smartphone The realme 16 Pro 2026-08-11 Titan battery 03.jpg"
+    ],
+    "oneplus": [
+      "Oneplus One camera.jpg",
+      "Oneplus One outside.jpg",
+      "OnePlus 5 with protective case.png",
+      "Charging OnePlus 3 smartphone.jpg"
+    ],
+    "nokia": [
+      "Nokia mobile phone headset jack - 20130310.jpg",
+      "Nokia mobile phone USB charging cable - 20130310.jpg",
+      "Nokia mobile phone with Vietnamese T9 keyboard.jpg"
+    ]
+  },
+  "ACCESSORY": {
+    "samsung": [
+      "Samsung mouse and mousepad 20060822.jpg"
+    ],
+    "logitech": [
+      "Logitech Logimouse Ball 1983.jpg",
+      "Logitech iFeel mouse-IMG 8431-black.jpg",
+      "Logitech iFeel mouse-IMG 8431-white.jpg",
+      "Logitech Mouse mechanical assembly IMG 20170323.jpg",
+      "Douglas Engelbart's prototype mouth (replica) & Logitech three-button Depraz mouse designed by André Guignard, Computer History Museum, 2009-11-15.jpg",
+      "Logitech MX900 bluetooth mouse.jpg",
+      "Logitech Red mouse on a mouse pad.jpg",
+      "Logitech G PRO TKL gaming keyboard - English (United States) layout.jpg"
+    ],
+    "apple": [
+      "Apple USB Mouse autopsy.JPG",
+      "Apple mousepad.jpeg",
+      "071015-de apple-keyboard.jpg",
+      "Apple Keyboard II-2.jpg",
+      "AppleOldKeyboard.jpg",
+      "Apple Keyboard Macintosh IIci.jpg",
+      "Apple Keyboards 2nd 3rd Gen right.png",
+      "Apple (Standard) keyboard M0116 - Caps Lock.jpg",
+      "Apple Magic Keyboard Profile.jpg",
+      "AppleDesign Keyboard (Alps,WO) -- side.jpg",
+      "AppleDesign Keyboard (NMB,B) -- ADB downstream port.jpg",
+      "AppleDesign Keyboard (NMB,B) -- side.jpg",
+      "AppleDesign Keyboard (NMB) -- power key.jpg",
+      "Apple Wireless Keyboard (2295366333).jpg",
+      "AppleDesign Keyboard (NMB,B) -- keycap detail 1.jpg",
+      "AppleDesign Keyboard (NMB,B) -- keycap detail 2.jpg",
+      "AppleDesign Keyboard (NMB,B) -- keystem orientation.jpg",
+      "AppleDesign Keyboard (NMB,B) -- switches.jpg",
+      "Apple Desktop Bus keyboard Orange Alps - key switches.JPG",
+      "Apple Desktop Bus keyboard SMK - close up of locking SMK key switch on left.JPG",
+      "AppleDesign Keyboard with sliders.jpg",
+      "Apple Macintosh keypad and mouse 1984 makffm.jpg",
+      "Apple Keyboard German.jpeg"
+    ],
+    "razer": [
+      "Razer Deathstalker Keyboard.jpg",
+      "Razer BlackWidow Ultimate 2014 Elite Mechanical Gaming Keyboard.jpg"
+    ],
+    "belkin": [
+      "Belkin F5U700 USB hub back.jpg",
+      "Belkin F5U700 USB hub front.jpg",
+      "Belkin F5U700 USB hub open.jpg",
+      "Belkin F5U700 USB hub GL850G.jpg"
+    ]
+  },
+  "CPU": {},
+  "SMARTWATCH": {}
+}
