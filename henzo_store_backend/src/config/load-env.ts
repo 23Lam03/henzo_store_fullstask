@@ -52,8 +52,15 @@ export function loadEnvFiles(rootDir?: string): void {
     '.env.local',
     `.env.${process.env.NODE_ENV ?? 'development'}`,
     '.env',
-    '.env.example',
   ];
+
+  // `.env.example` CHỈ dùng làm fallback khi đang dev và chưa có file `.env`
+  // nào. Ở production (Render) tuyệt đối không nạp file mẫu — nếu không,
+  // các giá trị mặc định trong ví dụ (vd `NODE_ENV=development`,
+  // `COOKIE_SAME_SITE=Lax`) có thể lọt vào config thật.
+  if (process.env.NODE_ENV !== 'production') {
+    candidates.push('.env.example');
+  }
 
   for (const name of candidates) {
     const file = resolve(here, name);
