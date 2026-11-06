@@ -31,7 +31,7 @@
 
 ```
                     ┌──────────────────────────────┐
-                    │   henzo-store-web.onrender.com│  ← Static Site (React SPA)
+                    │ henzo-store-fullstask.onrender.com│  ← Static Site (React SPA)
                     │   (frontend, CDN toàn cầu)    │
                     └───────────────┬──────────────┘
                                     │ fetch() + Authorization header
@@ -91,7 +91,7 @@
 ```
 ┌────────────────────────────────────────────────────────┐
 │  henzo-store-api      type: web, runtime: node        │
-│  henzo-store-web      type: web, runtime: static      │
+│  henzo-store-fullstask type: web, runtime: static     │
 └────────────────────────────────────────────────────────┘
 ```
 
@@ -102,15 +102,17 @@
   MONGODB_URI          (for henzo-store-api)
   JWT_ACCESS_SECRET    (for henzo-store-api)
   JWT_REFRESH_SECRET   (for henzo-store-api)
-  CORS_ORIGINS         (for henzo-store-api)
-  VITE_API_URL         (for henzo-store-web)
 ```
+
+> 💡 Chỉ còn **3 biến**. `CORS_ORIGINS` và `VITE_API_URL` đã được khai báo
+> trong `render.yaml` bằng `fromService` — Render tự trỏ sang domain thật
+> của service kia, không cần copy tay.
 
 5. Nhập giá trị (xem **Bước 2** để lấy đúng nội dung) → click **Apply**
 
 > 🎯 Blueprint tự tạo cả 2 service + gán tên domain tự động:
 > - `henzo-store-api.onrender.com`
-> - `henzo-store-web.onrender.com`
+> - `henzo-store-fullstask.onrender.com`
 >
 > Render có thể đổi tên nếu tên đã bị chiếm. Ghi lại tên thực tế.
 
@@ -141,20 +143,21 @@ JWT_REFRESH_SECRET=<giá trị của bạn>
 | `JWT_ACCESS_SECRET` | `JWT_ACCESS_SECRET=` → copy phần sau dấu `=` |
 | `JWT_REFRESH_SECRET` | `JWT_REFRESH_SECRET=` → copy phần sau dấu `=` |
 
-Còn 2 biến này điền theo domain Render:
-
-| Trường trong Render | Giá trị |
-|---|---|
-| `CORS_ORIGINS` | `https://henzo-store-web.onrender.com` |
-| `VITE_API_URL` | `https://henzo-store-api.onrender.com/api` |
-
-> 💡 **Từ phiên bản mới nhất, `CORS_ORIGINS` không bắt buộc phải set.**
-> Backend tự đọc `RENDER_EXTERNAL_URL` của chính nó. Tuy nhiên nên set
-> thủ công vì domain **frontend** là domain của service khác — backend
-> không tự biết.
+> 💡 **Chỉ 3 biến này cần set tay.** `CORS_ORIGINS` và `VITE_API_URL` đã
+> được `render.yaml` khai báo tự động:
 >
-> `VITE_API_URL` **vẫn bắt buộc** — biến này được inline lúc build
-> frontend, không có env nào khác thay thế được.
+> ```yaml
+> # API
+> - key: CORS_ORIGINS
+>   fromService: { type: web, name: henzo-store-fullstask, envVarKey: RENDER_EXTERNAL_URL }
+>
+> # Web
+> - key: VITE_API_URL
+>   fromService: { type: web, name: henzo-store-api, envVarKey: RENDER_EXTERNAL_URL }
+> ```
+>
+> Nếu bạn đổi tên service trong Dashboard, cứ sửa `name:` trong
+> `render.yaml` rồi push — Render sẽ tự cập nhật biến trỏ đúng.
 
 > 🔒 **Vì sao tài liệu này không ghi sẵn giá trị thật?**
 > `MONGODB_URI` chứa mật khẩu database. Nếu nó nằm trong file markdown
@@ -207,7 +210,7 @@ vite v8.3.5 building ssr environment for production...
 
 ▶ Starting
 [SERVER] Henzo Store API đang chạy tại http://0.0.0.0:10000
-[SERVER] CORS origins: https://henzo-store-web.onrender.com
+[SERVER] CORS origins: https://henzo-store-fullstask.onrender.com
 [warmup] Sẽ tải trước ảnh nền sau 3000ms (3 luồng)...
 [warmup] Cần tải 1337 ảnh.
 [warmup] 100/1337 — tải mới 98, lỗi 0
@@ -262,90 +265,90 @@ Tất cả phải trả JSON có `"success": true`.
 
 ---
 
-## 6. Bước 4 — Điền `VITE_API_URL` cho web
+## 6. Bước 4 — `VITE_API_URL` và `CORS_ORIGINS` (tự động)
 
-> **Tại sao cần bước này?** `VITE_API_URL` được **inline vào lúc build**
-> (Vite thay thế chuỗi trong code lúc bundle). Sửa env sau khi build không
-> có tác dụng — phải **build lại**.
+> ✅ **Bước này giờ không cần làm gì thủ công nữa.**
+>
+> `render.yaml` đã khai báo 2 biến này bằng `fromService` — Render tự
+> trỏ chúng về domain thật của service kia:
+>
+> ```yaml
+> # API — cho phép origin của static site
+> - key: CORS_ORIGINS
+>   fromService: { type: web, name: henzo-store-fullstask, envVarKey: RENDER_EXTERNAL_URL }
+>
+> # Web — trỏ về API
+> - key: VITE_API_URL
+>   fromService: { type: web, name: henzo-store-api, envVarKey: RENDER_EXTERNAL_URL }
+> ```
+>
+> Render cập nhật giá trị này mỗi khi sync Blueprint, nên đổi tên service
+> không làm hỏng liên kết.
 
-**Cách 1 — qua Dashboard (nhanh hơn nếu đã tạo Blueprint):**
+### 6.1 Xác nhận đã tự trỏ đúng
 
-1. Vào **henzo-store-web** → **Environment**
-2. Kiểm tra `VITE_API_URL` đã có sẵn từ Blueprint → nếu sai thì sửa
-3. `VITE_BASE_PATH` phải là `/`
-4. Click **Save Changes**
-5. Vào tab **Events** → tìm dòng deploy gần nhất → click **Deploy** (manual deploy)
+Vào **henzo-store-api** → **Environment** → kiểm tra:
 
-**Cách 2 — sửa trong `render.yaml` rồi push (bền vững hơn):**
+| Biến | Giá trị mong đợi |
+|---|---|
+| `CORS_ORIGINS` | `https://henzo-store-fullstask.onrender.com` |
+| `UPLOAD_STORE` | `mongo` |
+| `NODE_ENV` | `production` |
 
-Sửa file `render.yaml` tại gốc repo:
+Vào **henzo-store-fullstask** → **Environment** → kiểm tra:
 
-```yaml
-      - key: VITE_API_URL
-        value: https://henzo-store-api.onrender.com/api
-```
+| Biến | Giá trị mong đợi |
+|---|---|
+| `VITE_API_URL` | `https://henzo-store-api.onrender.com` |
+| `VITE_BASE_PATH` | `/` |
 
-```bash
-cd /Users/leduclam/Documents/henzo_store_fullstask
-git add render.yaml
-git commit -m "chore: khai bao VITE_API_URL"
-git push
-```
+> 💡 `VITE_API_URL` **không có** đuôi `/api` — frontend tự thêm vào
+> (`normalizeApiBaseUrl()` trong `src/services/api/client.ts`). Nếu bạn
+> cố tình thêm `/api` thì vẫn đúng, vì hàm này phát hiện đuôi `/api`
+> sẵn có và giữ nguyên.
 
-> 💡 **Nên làm Cả 2**: đặt trong `render.yaml` để lần deploy sau không bị mất,
-> và set trong Dashboard để áp dụng ngay.
+### 6.2 Nếu `VITE_API_URL` bị trỏ sai
 
-### 6.1 Kiểm tra web đã build lại
+Thường do Render chưa sync Blueprint sau khi tạo. Cách xử lý:
 
-Mở tab **Logs** của `henzo-store-web`, tìm dòng build mới nhất. Lần này
-`VITE_API_URL` sẽ được đưa vào bundle.
+1. Vào **henzo-store-api** → copy đúng domain (không có `/api`)
+2. Vào **henzo-store-fullstask** → **Environment** → sửa `VITE_API_URL`
+3. Click **Save Changes**
+4. Vào tab **Events** → click **Deploy** (manual deploy) để **build lại**
+   — `VITE_*` được inline lúc build, sửa env mà không build lại thì vô tác dụng
+
+### 6.3 Kiểm tra web đã build đúng
 
 ```bash
 # Kiểm tra từ máy local
-curl -s https://henzo-store-web.onrender.com | grep -o 'src="[^"]*index[^"]*"'
+curl -s https://henzo-store-fullstask.onrender.com | grep -o 'src="[^"]*index[^"]*"'
 ```
 
 ---
 
-## 7. Bước 5 — Điền `CORS_ORIGINS` cho API
+## 7. Bước 5 — Kiểm tra CORS hoạt động
 
 > **Tại sao cần?** Backend chỉ trả header CORS cho origin nằm trong danh
-> sách này. Không có nó → trình duyệt chặn mọi request từ web.
-
-**Cách 1 — Dashboard:**
-
-1. Vào **henzo-store-api** → **Environment**
-2. Sửa `CORS_ORIGINS`:
-   ```
-   https://henzo-store-web.onrender.com
-   ```
-   Nhiều domain thì phân tách bằng dấu phẩy:
-   ```
-   https://henzo-store-web.onrender.com,https://www.henzo.vn,https://henzo.vn
-   ```
-3. Click **Save Changes** → tab **Events** → **Deploy**
-
-**Cách 2 — `render.yaml`:**
-
-```yaml
-      - key: CORS_ORIGINS
-        value: https://henzo-store-web.onrender.com
-```
+> sách cho phép. Không có nó → trình duyệt chặn mọi request từ web.
 
 ```bash
-git add render.yaml && git commit -m "chore: khai bao CORS_ORIGINS" && git push
+curl -s -i -X OPTIONS https://henzo-store-api.onrender.com/api/auth/login \
+  -H "Origin: https://henzo-store-fullstask.onrender.com" \
+  -H "Access-Control-Request-Method: POST" \
+  | grep -i "access-control-allow-origin"
+# Phải trả về: access-control-allow-origin: https://henzo-store-fullstask.onrender.com
 ```
 
-### ⚠️ Nếu bạn dùng tên domain KHÁC
+### ⚠️ Nếu Render đặt tên service khác
 
-Ví dụ Render đặt tên service là `henzo-store-web-xyz`:
+Nếu Render báo tên đã bị chiếm và đổi tên service (ví dụ
+`henzo-store-fullstask-xyz`), sửa `name:` trong `render.yaml` cho khớp
+rồi push — Blueprint sẽ tự trỏ lại:
 
-| Biến | Giá trị phải là |
-|---|---|
-| `CORS_ORIGINS` | `https://henzo-store-web-xyz.onrender.com` |
-| `VITE_API_URL` | `https://henzo-store-api-abc.onrender.com/api` |
-
-**Luôn copy chính xác tên domain Render hiển thị**, không tự đoán.
+```yaml
+  - type: web
+    name: henzo-store-fullstask-xyz   # <- tên thực tế trên Render
+```
 
 ---
 
@@ -355,7 +358,7 @@ Chạy checklist này từ terminal local:
 
 ```bash
 API=https://henzo-store-api.onrender.com
-WEB=https://henzo-store-web.onrender.com
+WEB=https://henzo-store-fullstask.onrender.com
 
 echo "── 1. API health"
 curl -s $API/api/health | head -c 120; echo
@@ -395,7 +398,7 @@ HTTP 200
 HTTP 200
 HTTP 200
 ── 5. CORS preflight từ domain web
-access-control-allow-origin: https://henzo-store-web.onrender.com
+access-control-allow-origin: https://henzo-store-fullstask.onrender.com
 ── 6. Image proxy
 HTTP 200, 133747 bytes
 ```
@@ -407,7 +410,7 @@ HTTP 200, 133747 bytes
 
 ## 9. Bước 7 — Đăng nhập lần đầu (test thật)
 
-1. Mở `https://henzo-store-web.onrender.com`
+1. Mở `https://henzo-store-fullstask.onrender.com`
 2. Click **Đăng nhập** → tab **Khách hàng**
 3. Tài khoản test:
 
@@ -542,7 +545,7 @@ Trong DevTools → Console sẽ thấy:
 
 ```
 Access to fetch at 'https://henzo-store-api.onrender.com/api/products'
-from origin 'https://henzo-store-web.onrender.com' has been blocked by CORS policy
+from origin 'https://henzo-store-fullstask.onrender.com' has been blocked by CORS policy
 ```
 
 **Checklist:**
@@ -558,7 +561,7 @@ from origin 'https://henzo-store-web.onrender.com' has been blocked by CORS poli
 **Test nhanh CORS:**
 ```bash
 curl -s -i -X OPTIONS https://henzo-store-api.onrender.com/api/auth/login \
-  -H "Origin: https://henzo-store-web.onrender.com" \
+  -H "Origin: https://henzo-store-fullstask.onrender.com" \
   -H "Access-Control-Request-Method: POST" \
   | grep -i "access-control-allow-origin"
 # Phải trả về đúng domain web của bạn
@@ -591,7 +594,7 @@ Ví dụ vào `/products/iphone-15-pro-max-256gb` rồi F5 → 404.
 **Nguyên nhân:** Thiếu SPA rewrite rule (Render CDN không tự biết serve `index.html`).
 
 **Fix 1 — Dashboard:**
-1. `henzo-store-web` → **Settings** → **Redirects/Rewrites**
+1. `henzo-store-fullstask` → **Settings** → **Redirects/Rewrites**
 2. **Add Rule**:
    - Source Path: `/*`
    - Destination Path: `/index.html`
@@ -688,14 +691,23 @@ Render tự động build lại (`autoDeploy: true`).
 
 ### Tôi muốn đổi tên service thì sao?
 
-Đổi tên trong Dashboard → Render sẽ đổi domain → **phải cập nhật cả 2 biến**:
+Đổi tên trong Dashboard → Render sẽ đổi domain. **Không cần set lại
+`CORS_ORIGINS` / `VITE_API_URL`** — chúng dùng `fromService` nên Render tự
+cập nhật khi sync Blueprint.
 
-```bash
-# API
-CORS_ORIGINS = https://<tên-web-mới>.onrender.com
-# Web
-VITE_API_URL = https://<tên-api-mới>.onrender.com/api
+Việc cần làm: sửa `name:` trong `render.yaml` cho khớp tên mới rồi push:
+
+```yaml
+- type: web
+  name: henzo-store-fullstask-xyz   # tên mới trên Render
+
+- type: web
+  name: henzo-store-api-abc         # tên mới trên Render
 ```
+
+Render đọc `name:` trong blueprint để biết service nào là của ai. Nếu
+sửa tên trên Dashboard mà không sửa blueprint, lần sync Blueprint tới sẽ
+ghi đè ngược lại tên cũ.
 
 ### Free plan có đủ dùng không?
 
@@ -712,7 +724,7 @@ Nếu traffic thật, nên nâng lên `starter` ($7/tháng).
 ### Làm sao xem log đầy đủ?
 
 - **henzo-store-api** → tab **Logs** (log runtime) hoặc **Events** (log build)
-- **henzo-store-web** → tab **Logs** (chỉ có log build)
+- **henzo-store-fullstask** → tab **Logs** (chỉ có log build)
 
 ### Có thể deploy frontend chung với backend không?
 
@@ -766,10 +778,10 @@ Giữ cho cache ảnh sống dai qua các lần deploy:
 
 - [ ] Đăng nhập Render bằng GitHub
 - [ ] Tạo Blueprint từ repo `henzo_store_fullstask`
-- [ ] Điền 5 biến bắt buộc
+- [ ] Điền 3 secret bắt buộc (`MONGODB_URI`, `JWT_ACCESS_SECRET`, `JWT_REFRESH_SECRET`)
 - [ ] API build xong, `/api/health` trả `database: connected`
-- [ ] `VITE_API_URL` đã set và web đã build lại
-- [ ] `CORS_ORIGINS` đã set và API đã deploy lại
+- [ ] `CORS_ORIGINS` trỏ đúng `https://henzo-store-fullstask.onrender.com`
+- [ ] `VITE_API_URL` trỏ đúng `https://henzo-store-api.onrender.com`
 - [ ] CORS preflight trả đúng origin
 - [ ] F5 trên `/products` không bị 404
 - [ ] Đăng nhập được, cookie có `SameSite=None` + `Secure`
