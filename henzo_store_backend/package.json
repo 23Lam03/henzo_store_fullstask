@@ -3,11 +3,11 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "main": ".output/server/index.mjs",
+  "main": "dist/server/server.js",  
   "scripts": {
     "dev": "vite dev --port 4000",
     "build": "vite build",
-    "start": "node .output/server/index.mjs",
+    "start": "node dist/server/server.js",
     "seed": "tsx scripts/seed.ts",
     "typecheck": "tsc --noEmit",
     "typecheck:scripts": "tsc --noEmit -p tsconfig.scripts.json"
